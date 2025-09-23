@@ -1,3 +1,18 @@
+<!-- 🌺 Header -->
+<header style="background:#004d40; color:#fff; padding:20px 0; text-align:center;">
+  <nav style="max-width:1000px; margin:auto; display:flex; justify-content:space-around; align-items:center; flex-wrap:wrap;">
+    <div style="font-size:1.5rem; font-weight:bold; letter-spacing:1px;">
+      Kingdom Living
+    </div>
+    <div>
+      <a href="index.html" style="color:#fff; margin:0 15px; text-decoration:none;">Home</a>
+      <a href="about.html" style="color:#fff; margin:0 15px; text-decoration:none;">About</a>
+      <a href="shop.html" style="color:#fff; margin:0 15px; text-decoration:none;">Shop</a>
+      <a href="contact.html" style="color:#fff; margin:0 15px; text-decoration:none;">Contact</a>
+    </div>
+  </nav>
+</header>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -134,3 +149,16 @@
   </footer>
 </body>
 </html>
+<!-- 🌺 Footer -->
+<footer style="background:#263238; color:#fff; text-align:center; padding:20px; margin-top:40px;">
+  <p>&copy; <span id="year"></span> Kingdom Living Ministries. All rights reserved.</p>
+  <p style="font-size:0.9rem; color:#ccc;">Sharing the Kingdom of God through books, devotionals, and resources for pastors worldwide.</p>
+</footer>
+
+<script>
+  // auto-update copyright year
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+
+
