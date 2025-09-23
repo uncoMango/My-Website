@@ -1,58 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Keaupuni a Ke Akua</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kingdom Inspired Resources</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: #333;
+      background: #fefcf8 url('images/pattern.png') repeat;
+    }
+    header {
+      background: linear-gradient(90deg, #008080, #20c997);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+    header p {
+      margin: 0.5rem 0 0;
+      font-size: 1.2rem;
+    }
+    nav {
+      text-align: center;
+      background: #f4f4f4;
+      padding: 0.8rem;
+    }
+    nav a {
+      margin: 0 1rem;
+      text-decoration: none;
+      color: #008080;
+      font-weight: bold;
+    }
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+    .hero h2 {
+      color: #008080;
+      font-size: 2rem;
+    }
+    .hero p {
+      max-width: 600px;
+      margin: auto;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+    .btn {
+      display: inline-block;
+      background: #ff7f50;
+      color: white;
+      padding: 0.8rem 1.2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 1.5rem;
+    }
+    .btn:hover {
+      background: #e5673e;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+      max-width: 1100px;
+      margin: auto;
+    }
+    .feature {
+      background: white;
+      border-radius: 15px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .feature h3 {
+      color: #008080;
+      margin-top: 0.5rem;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #f4f4f4;
+      margin-top: 2rem;
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-b from-teal-50 to-white text-gray-800 font-sans">
-  <!-- Header -->
-  <header class="bg-teal-700 text-white p-6 shadow-lg">
-    <h1 class="text-3xl font-bold">Keaupuni a Ke Akua</h1>
-    <p class="text-sm">Living the Kingdom of God • Hawaiian Style</p>
+<body>
+  <header>
+    <h1>Kingdom Inspired Resources</h1>
+    <p>Faith, ʻOhana, and Healthy Living with Aloha 🌺</p>
   </header>
 
-  <!-- Hero -->
-  <section class="text-center py-12">
-    <h2 class="text-4xl font-extrabold text-teal-800">Healthy Living • Pastoral Tools • Kingdom Message</h2>
-    <p class="mt-4 text-lg max-w-2xl mx-auto">Books, devotionals, and planners to equip pastors and believers — with the aloha spirit of Hawai‘i and the Kingdom of God at the center.</p>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+  </nav>
+
+  <section class="hero">
+    <h2>Welcome!</h2>
+    <p>
+      Our mission is to equip pastors, leaders, and believers with resources that
+      bring together faith, healthy living, and the aloha spirit. From practical planners
+      to devotionals and books, everything is created with a Kingdom mindset and
+      Polynesian heart.
+    </p>
+    <a href="shop.html" class="btn">Visit the Shop</a>
   </section>
 
-  <!-- Products -->
-  <section class="grid md:grid-cols-3 gap-6 px-6 py-12">
-    <div class="bg-white rounded-2xl shadow-md p-6 text-center">
-      <h3 class="text-xl font-semibold mb-2">Healthy Eating Book</h3>
-      <p class="mb-4">A guide to nourishing body and spirit with wholesome, God-given foods.</p>
-      <a href="#" class="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700">Buy on Amazon</a>
+  <section class="features">
+    <div class="feature">
+      <h3>📖 Devotionals</h3>
+      <p>Daily encouragement rooted in God’s Word, written with a Hawaiian heartbeat.</p>
     </div>
-    <div class="bg-white rounded-2xl shadow-md p-6 text-center">
-      <h3 class="text-xl font-semibold mb-2">Pastor’s Day Planner</h3>
-      <p class="mb-4">Stay organized in ministry with a monthly planner designed for pastors.</p>
-      <a href="#" class="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700">Get on Etsy</a>
+    <div class="feature">
+      <h3>🗓 Planners</h3>
+      <p>Stay organized and focused with monthly and yearly planners designed for ministry.</p>
     </div>
-    <div class="bg-white rounded-2xl shadow-md p-6 text-center">
-      <h3 class="text-xl font-semibold mb-2">Pastor’s Devotional</h3>
-      <p class="mb-4">Daily encouragement rooted in Scripture and Kingdom vision.</p>
-      <a href="#" class="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700">Buy on Amazon</a>
+    <div class="feature">
+      <h3>🥗 Healthy Living</h3>
+      <p>Books and guides to nourish both body and spirit, honoring God’s temple.</p>
     </div>
   </section>
 
-  <!-- Contact -->
-  <section class="bg-teal-50 py-12 px-6 text-center">
-    <h3 class="text-2xl font-semibold mb-4">Stay Connected</h3>
-    <p class="mb-6">Have questions or want to connect? Send me a message.</p>
-    <form class="max-w-md mx-auto space-y-4">
-      <input type="text" placeholder="Your Name" class="w-full p-3 rounded-lg border border-gray-300" />
-      <input type="email" placeholder="Your Email" class="w-full p-3 rounded-lg border border-gray-300" />
-      <textarea placeholder="Your Message" class="w-full p-3 rounded-lg border border-gray-300"></textarea>
-      <button class="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 w-full">Send</button>
-    </form>
-  </section>
-
-  <!-- Footer -->
-  <footer class="bg-teal-700 text-white text-center p-4 mt-12">
-    <p>&copy; 2025 Keaupuni a Ke Akua. All rights reserved.</p>
+  <footer>
+    <p>&copy; 2025 Kingdom Inspired Resources | Made with Aloha 🌴</p>
   </footer>
 </body>
 </html>
