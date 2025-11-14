@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 import markdown
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='/static')
 
 # Page order for navigation
 ORDER = ["home", "aloha_wellness", "call_to_repentance", "pastor_planners", "nahenahe_voice"]
@@ -786,3 +786,4 @@ if __name__ == "__main__":
     print("🔐 Admin: http://localhost:5000/admin")
 
     app.run(debug=True, host="0.0.0.0", port=5000)
+
