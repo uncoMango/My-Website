@@ -705,16 +705,84 @@ def admin_save():
         save_content(data)
     
     return redirect("/admin?key=KeAupuni2025!")
+
+@app.route("/data-deletion")
+def data_deletion():
+    """Facebook Data Deletion Instructions Page"""
+    return '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Deletion Instructions - Ke Aupuni O Ke Akua Press</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; line-height: 1.6; color: #333; }
+        h1 { color: #2c5282; border-bottom: 3px solid #2c5282; padding-bottom: 10px; }
+        h2 { color: #4a5568; margin-top: 30px; }
+        .contact-box { background: #f7fafc; border-left: 4px solid #2c5282; padding: 15px; margin: 20px 0; }
+        ul { margin: 15px 0; }
+        li { margin: 10px 0; }
+        .highlight { background: #fef5e7; padding: 2px 5px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>Data Deletion Instructions</h1>
+    <p><strong>Ke Aupuni O Ke Akua Press - Social Media Manager Application</strong></p>
     
-    return redirect(url_for("admin", page=page_id) + "?key=KeAupuni2025!")
+    <h2>What Data We Collect</h2>
+    <p>Our Social Media Manager application uses Facebook Login to authenticate users and post content on their behalf. We collect and store:</p>
+    <ul>
+        <li>Your Facebook User ID</li>
+        <li>Your name and email address</li>
+        <li>Access tokens for posting to your Facebook pages</li>
+        <li>Page IDs of pages you manage</li>
+    </ul>
+    
+    <h2>How to Request Data Deletion</h2>
+    
+    <h3>Method 1: Revoke App Access (Immediate)</h3>
+    <ol>
+        <li>Go to your <a href="https://www.facebook.com/settings?tab=business_tools" target="_blank">Facebook Settings</a></li>
+        <li>Click on "Apps and Websites"</li>
+        <li>Find "Social Media Manager" or "AutoPoster"</li>
+        <li>Click "Remove"</li>
+    </ol>
+    
+    <h3>Method 2: Email Request</h3>
+    <div class="contact-box">
+        <p><strong>Send a data deletion request to:</strong></p>
+        <p>Email: <span class="highlight">hoaaina61@gmail.com</span></p>
+        <p>Subject Line: "Data Deletion Request - Social Media Manager"</p>
+    </div>
+    
+    <h2>What Happens After Deletion Request</h2>
+    <ul>
+        <li><strong>Within 24 hours:</strong> Your access tokens will be invalidated</li>
+        <li><strong>Within 7 days:</strong> All personal data will be permanently deleted</li>
+        <li><strong>Within 30 days:</strong> All backup data will be purged</li>
+    </ul>
+    
+    <h2>Questions or Concerns?</h2>
+    <div class="contact-box">
+        <p><strong>Contact:</strong> Ke Aupuni O Ke Akua Press, Molokaʻi, Hawaiʻi<br>
+        Email: hoaaina61@gmail.com</p>
+    </div>
+    
+    <hr style="margin: 40px 0;">
+    <p style="text-align: center; color: #718096; font-size: 14px;">
+        © 2025 Ke Aupuni O Ke Akua Press. All rights reserved.
+    </p>
+</body>
+</html>'''
+
 if __name__ == "__main__":
     # Initialize data file if it doesn't exist
     if not DATA_FILE.exists():
         initial_data = {"order": ORDER, "pages": DEFAULT_PAGES}
         save_content(initial_data)
     
-    print("?? Starting Ke Aupuni O Ke Akua website...")
-    print("????? Visit: http://localhost:5000")
-    print("?? Admin: http://localhost:5000/admin")
+    print("🌺 Starting Ke Aupuni O Ke Akua website...")
+    print("🌐🌐 Visit: http://localhost:5000")
+    print("🔐 Admin: http://localhost:5000/admin")
 
     app.run(debug=True, host="0.0.0.0", port=5000)
