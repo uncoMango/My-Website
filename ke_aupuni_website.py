@@ -1,12 +1,17 @@
-# ke_aupuni_o_ke_akua.py
-# Complete Hawaiian Kingdom website with working admin and beautiful content
+# ke_aupuni_website.py
+# Complete Hawaiian Kingdom website with CD photo gallery
 
-from flask import Flask, request, redirect, render_template_string, abort, url_for
+from flask import Flask, request, redirect, render_template_string, abort, url_for, send_from_directory
 import json
 from pathlib import Path
 import markdown
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
+
+# Serve static files
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory('static', filename)
 
 # Page order for navigation
 ORDER = ["home", "aloha_wellness", "call_to_repentance", "pastor_planners", "nahenahe_voice"]
@@ -154,6 +159,11 @@ Order your Pastor Planner today and experience the peace that comes from organiz
     "nahenahe_voice": {
         "title": "The Nahenahe Voice of Nahono'opi'ilani - Musical Legacy",
         "hero_image": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=1200&q=80",
+        "gallery_images": [
+            "/static/images/legacy-album/cover1.jpg",
+            "/static/images/legacy-album/cover2.jpg",
+            "/static/images/legacy-album/cover3.jpg"
+        ],
         "body_md": """## Preserving the Gentle Voice of Hawaiian Music
 
 **Nahenahe** means "soft, sweet, melodious" in Hawaiian - the perfect description for the musical legacy we celebrate and preserve through the work of Nahono'opi'ilani.
@@ -195,7 +205,7 @@ Through recordings, sheet music, and live performances, the legacy of Nahono'opi
     }
 }
 
-# Enhanced CSS with better styling
+# Enhanced CSS with gallery styles
 ENHANCED_STYLE = """
 :root {
     --primary-bg: #f8f5f0;
@@ -344,6 +354,79 @@ body {
     color: var(--accent-teal);
 }
 
+/* CD Gallery Styles */
+.cd-gallery {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 2px solid rgba(255,255,255,0.3);
+}
+
+.cd-gallery h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    color: white;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.9);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.gallery-item {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+}
+
+.modal-content {
+    margin: 50px auto;
+    display: block;
+    max-width: 90%;
+    max-height: 90vh;
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    color: #fff;
+    font-size: 50px;
+    cursor: pointer;
+}
+
+.close-modal:hover {
+    color: var(--accent-warm);
+}
+
 .buy-section {
     text-align: center;
     margin-top: 2rem;
@@ -461,14 +544,13 @@ textarea.form-control {
 }
 
 @media (max-width: 768px) {
-
-@media (max-width: 768px) {
     .nav-container { flex-direction: column; gap: 1rem; padding: 0 1rem; }
     .nav-menu { flex-wrap: wrap; justify-content: center; gap: 1rem; }
     .hero { height: 45vh; min-height: 300px; }
     .hero h1 { font-size: 2rem; }
     .container { margin-top: -2rem; padding: 0 1rem 2rem; }
     .content-card { padding: 2rem 1.5rem; }
+    .gallery-grid { grid-template-columns: 1fr; gap: 15px; }
 }
 """
 
@@ -532,7 +614,7 @@ def render_page(page_id, data):
         current_page=page_id
     )
 
-# HTML Template
+# HTML Template with Gallery Support
 PAGE_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -565,6 +647,19 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
         <article class="content-card">
             {{ body_html|safe }}
             
+            {% if page.get('gallery_images') %}
+            <div class="cd-gallery">
+                <h2>🎵 Album Gallery</h2>
+                <div class="gallery-grid">
+                    {% for img in page.gallery_images %}
+                    <div class="gallery-item">
+                        <img src="{{ img }}" alt="Legacy Album" onclick="openModal('{{ img }}')">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            
             {% if page.product_url %}
             <div class="buy-section">
                 <a href="{{ page.product_url }}" target="_blank" class="buy-button">
@@ -578,10 +673,28 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     <footer class="footer">
         <p>&copy; 2025 Ke Aupuni O Ke Akua. All rights reserved. Made with aloha in Hawai?i.</p>
     </footer>
+    
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+    
+    <script>
+        function openModal(src) {
+            document.getElementById('imageModal').style.display = 'block';
+            document.getElementById('modalImage').src = src;
+        }
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+        document.onkeydown = function(e) {
+            if (e.key === 'Escape') closeModal();
+        };
+    </script>
 </body>
 </html>"""
 
-# Admin Template
+# Admin Template (unchanged)
 ADMIN_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -647,8 +760,8 @@ ADMIN_TEMPLATE = """<!DOCTYPE html>
     
     <script>
         function loadPage(pageId) {
-    window.location.href = '/admin?page=' + pageId + '&key=KeAupuni2025!';
-}
+            window.location.href = '/admin?page=' + pageId + '&key=KeAupuni2025!';
+        }
     </script>
 </body>
 </html>"""
@@ -675,13 +788,6 @@ def admin():
     data = load_content()
     current_page = request.args.get("page", "home")
     current_data = data["pages"].get(current_page, {})
-    
-    return render_template_string(ADMIN_TEMPLATE,
-        style=ENHANCED_STYLE,
-        pages=data["pages"],
-        current_page=current_page,
-        current_data=current_data
-    )
     
     return render_template_string(ADMIN_TEMPLATE,
         style=ENHANCED_STYLE,
@@ -782,8 +888,7 @@ if __name__ == "__main__":
         save_content(initial_data)
     
     print("🌺 Starting Ke Aupuni O Ke Akua website...")
-    print("🌐🌐 Visit: http://localhost:5000")
+    print("🌐 Visit: http://localhost:5000")
     print("🔐 Admin: http://localhost:5000/admin")
 
     app.run(debug=True, host="0.0.0.0", port=5000)
-
