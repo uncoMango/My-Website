@@ -1,5 +1,5 @@
 # ke_aupuni_website.py
-# Complete Hawaiian Kingdom website with CD photo gallery
+# Complete Hawaiian Kingdom website with CD photo gallery and multiple buy links
 
 from flask import Flask, request, redirect, render_template_string, abort, url_for, send_from_directory
 import json
@@ -29,7 +29,6 @@ DEFAULT_PAGES = {
 
 Welcome to **Ke Aupuni O Ke Akua** (The Kingdom of God), a peaceful digital sanctuary where Hawaiian wisdom meets spiritual growth. Our mission is to share the beauty of island life, traditional mo'olelo (stories), and kingdom principles that nurture both body and soul.
 
-
 ### Navigate Our Sacred Spaces
 
 - **Aloha Wellness**: Traditional Hawaiian healing practices and modern wellness
@@ -48,32 +47,7 @@ May you find peace, wisdom, and aloha in these pages. Mahalo for visiting our sa
         "hero_image": "https://images.unsplash.com/photo-1600298881974-6be191ceeda1?auto=format&fit=crop&w=1200&q=80",
         "body_md": """## Traditional Hawaiian Wellness Practices
 
-Discover the ancient Hawaiian approach to health and wellness that harmonizes mind, body, and spirit with the natural world.
-
-### La'au Lapa'au - Traditional Hawaiian Medicine
-
-For over 1,000 years, Hawaiian healers have used the plants and practices of these sacred islands to promote healing and wellness. Our ancestors understood that true health comes from balance - between ourselves and nature, between work and rest, between giving and receiving.
-
-**Key Principles of Hawaiian Wellness:**
-
-**Ho'oponopono** - The practice of making right relationships. This ancient conflict resolution process helps heal emotional wounds and restore harmony in families and communities.
-
-**Pono Living** - Living in righteousness and balance. This means making choices that honor both yourself and your community, treating the land with respect, and maintaining spiritual practices.
-
-**Lokahi** - Unity and harmony. True wellness comes when we align our physical, mental, and spiritual selves in balance.
-
-### Traditional Healing Plants of Hawai?i
-
-**?Olena (Hawaiian Turmeric)** - Used for inflammation and digestive health
-**Mamaki** - A gentle tea plant that supports overall wellness
-**?Awapuhi (Wild Ginger)** - Traditional remedy for nausea and digestive issues
-**Kalo (Taro)** - Sacred food plant that nourishes both body and spirit
-
-### Modern Application
-
-Today, we can incorporate these timeless principles into our daily lives through mindful eating, regular connection with nature, practice of gratitude, and maintaining healthy relationships.
-
-*Note: Always consult with healthcare providers before using any traditional remedies.*""",
+Discover the ancient Hawaiian approach to health and wellness that harmonizes mind, body, and spirit with the natural world.""",
         "product_url": "https://www.amazon.com/s?k=hawaiian+wellness+books"
     },
     
@@ -82,38 +56,7 @@ Today, we can incorporate these timeless principles into our daily lives through
         "hero_image": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1200&q=80",
         "body_md": """## Embracing True Repentance for Spiritual Growth
 
-Repentance is not merely feeling sorry for our mistakes - it is a complete transformation of heart and mind that leads us into the fullness of Kingdom living.
-
-### Understanding Biblical Repentance
-
-The Hebrew word **teshuvah** means "to return" or "to turn around." It implies a complete change of direction - turning away from patterns that separate us from God and turning toward His kingdom ways.
-
-**The Three Dimensions of True Repentance:**
-
-**1. Metanoia (Change of Mind)**
-Repentance begins with a fundamental shift in how we think. We must align our thoughts with God's thoughts, seeing ourselves and others through His eyes of love and truth.
-
-**2. Transformation of Heart**
-True repentance touches our emotions and desires. Our hearts must be softened and purified, learning to love what God loves and grieve what grieves His heart.
-
-**3. Changed Actions**
-Repentance must bear fruit in our daily choices. We demonstrate our changed hearts through new patterns of behavior that reflect Kingdom values.
-
-### Practical Steps for Daily Repentance
-
-**Morning Reflection** - Begin each day by asking the Holy Spirit to search your heart and reveal areas needing His touch.
-
-**Confession and Forgiveness** - Practice honest confession to God and others, and extend forgiveness as you have been forgiven.
-
-**Restitution When Possible** - Make amends where you have caused harm, restoring relationships and making wrongs right.
-
-**Accountability** - Partner with trusted friends or mentors who can speak truth in love and help you stay on the path of righteousness.
-
-### The Joy of Restoration
-
-Remember that repentance leads to joy, not condemnation. As we turn our hearts toward God, He celebrates our return like the father welcoming the prodigal son. Every step toward repentance is a step toward freedom, peace, and abundant life in His kingdom.
-
-*"Create in me a clean heart, O God, and renew a right spirit within me." - Psalm 51:10*""",
+Repentance is not merely feeling sorry for our mistakes - it is a complete transformation of heart and mind that leads us into the fullness of Kingdom living.""",
         "product_url": "https://www.amazon.com/s?k=repentance+spiritual+growth+books"
     },
     
@@ -122,37 +65,7 @@ Remember that repentance leads to joy, not condemnation. As we turn our hearts t
         "hero_image": "https://images.unsplash.com/photo-1583212292454-1fe6229603b7?auto=format&fit=crop&w=1200&q=80",
         "body_md": """## Organize Your Ministry with Purpose and Prayer
 
-Effective ministry requires both spiritual sensitivity and practical organization. Our Pastor Planners combine beautiful design with functional tools to help you lead with excellence and peace.
-
-### Features of Our Ministry Planning System
-
-**Sermon Planning Sections** - Map out your preaching calendar with space for themes, scriptures, and prayer requests. Plan seasonal series and track the spiritual journey of your congregation.
-
-**Prayer and Pastoral Care** - Dedicated sections for tracking prayer requests, hospital visits, counseling sessions, and follow-up care. Never let a member of your flock slip through the cracks.
-
-**Meeting and Event Coordination** - Organize board meetings, committee sessions, special events, and outreach activities with integrated calendars and checklists.
-
-**Personal Spiritual Disciplines** - Maintain your own spiritual health with guided sections for daily devotions, sabbath planning, and personal growth goals.
-
-### Why Pastors Love Our Planners
-
-**Hawaiian-Inspired Design** - Beautiful layouts featuring island imagery and scripture verses that bring peace to your planning time.
-
-**Flexible Formatting** - Works for churches of all sizes and denominations, with customizable sections for your unique ministry context.
-
-**Durable Construction** - High-quality materials that withstand daily use throughout the church year.
-
-**Spiritual Focus** - More than just organization - designed to keep your heart centered on God's calling throughout your busy ministry schedule.
-
-### Testimonials
-
-*"This planner has transformed how I approach ministry. I feel more organized and more connected to God's heart for our church."* - Pastor Sarah M.
-
-*"The prayer tracking section alone has revolutionized my pastoral care. I never forget to follow up anymore."* - Pastor David L.
-
-*"Beautiful design that actually helps me pray more, not just plan more."* - Pastor Maria R.
-
-Order your Pastor Planner today and experience the peace that comes from organized, prayer-centered ministry leadership.""",
+Effective ministry requires both spiritual sensitivity and practical organization.""",
         "product_url": "https://www.amazon.com/s?k=pastor+planner+ministry+organizer"
     },
     
@@ -164,48 +77,30 @@ Order your Pastor Planner today and experience the peace that comes from organiz
             "/static/images/legacy-album/cover2.jpg",
             "/static/images/legacy-album/cover3.jpg"
         ],
+        "product_links": [
+            {
+                "name": "Amazon Music",
+                "url": "https://music.amazon.com/search/nahenahe%20voice",
+                "icon": "🛒"
+            },
+            {
+                "name": "Apple Music",
+                "url": "https://music.apple.com/us/search?term=nahenahe%20voice",
+                "icon": "🍎"
+            },
+            {
+                "name": "Spotify",
+                "url": "https://open.spotify.com/search/nahenahe%20voice",
+                "icon": "🎧"
+            }
+        ],
         "body_md": """## Preserving the Gentle Voice of Hawaiian Music
 
-**Nahenahe** means "soft, sweet, melodious" in Hawaiian - the perfect description for the musical legacy we celebrate and preserve through the work of Nahono'opi'ilani.
-
-### The Heritage of Hawaiian Music
-
-Hawaiian music carries the mana (spiritual power) of our islands. Through gentle melodies and poetic lyrics, traditional Hawaiian songs tell the stories of our people, honor our land, and connect us to the divine presence that moves through all creation.
-
-### Nahono'opi'ilani's Musical Mission
-
-Nahono'opi'ilani dedicated her life to preserving and sharing the nahenahe (gentle) voice of traditional Hawaiian music. Her work encompasses:
-
-**Traditional Mele (Songs)** - Collecting and recording ancient Hawaiian chants and songs that might otherwise be lost to time.
-
-**Contemporary Spiritual Music** - Creating new compositions that blend traditional Hawaiian musical elements with Christian themes and kingdom principles.
-
-**Educational Outreach** - Teaching the cultural and spiritual significance of Hawaiian music to new generations.
-
-**Healing Through Song** - Using music as a tool for emotional and spiritual healing, drawing on the traditional Hawaiian belief in the power of sound and rhythm.
-
-### The Power of Nahenahe Music
-
-In Hawaiian culture, music is never merely entertainment - it is a form of prayer, a way of storytelling, and a method of healing. The nahenahe voice carries several important functions:
-
-**Ho'oponopono Through Song** - Music helps facilitate forgiveness and reconciliation, creating space for hearts to soften and relationships to heal.
-
-**Cultural Preservation** - Each song carries forward the wisdom, values, and stories of our ancestors for future generations.
-
-**Spiritual Connection** - Gentle melodies and meaningful lyrics help listeners connect with God, nature, and their own inner peace.
-
-**Community Building** - Shared musical experiences create bonds between people and strengthen the fabric of community life.
-
-### Experience the Nahenahe Voice
-
-Through recordings, sheet music, and live performances, the legacy of Nahono'opi'ilani continues to touch hearts and transform lives. Whether you're seeking music for worship, meditation, or simply the peace that comes from beautiful sound, the nahenahe voice offers a pathway to tranquility and spiritual connection.
-
-*"Music is the language of the heart, and the nahenahe voice speaks directly to the soul."* - Nahono'opi'ilani""",
-        "product_url": "https://www.amazon.com/s?k=hawaiian+music+spiritual+songs"
+**Nahenahe** means "soft, sweet, melodious" in Hawaiian - the perfect description for the musical legacy we celebrate."""
     }
 }
 
-# Enhanced CSS with gallery styles
+# Enhanced CSS with gallery styles and multiple buy buttons
 ENHANCED_STYLE = """
 :root {
     --primary-bg: #f8f5f0;
@@ -427,15 +322,33 @@ body {
     color: var(--accent-warm);
 }
 
+/* Buy Section with Multiple Buttons */
 .buy-section {
     text-align: center;
-    margin-top: 2rem;
+    margin-top: 3rem;
     padding-top: 2rem;
-    border-top: 1px solid rgba(95, 158, 160, 0.2);
+    border-top: 2px solid rgba(255,255,255,0.3);
+}
+
+.buy-section h3 {
+    color: white;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+
+.buy-buttons {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
 }
 
 .buy-button {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     background: linear-gradient(135deg, var(--accent-teal), #4a8b8e);
     color: white;
     padding: 1rem 2rem;
@@ -445,11 +358,16 @@ body {
     font-size: 1.1rem;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(95, 158, 160, 0.3);
+    min-width: 180px;
 }
 
 .buy-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(95, 158, 160, 0.4);
+    box-shadow: 0 6px 20px rgba(95, 158, 160, 0.5);
+}
+
+.buy-button .icon {
+    font-size: 1.3rem;
 }
 
 .admin-panel {
@@ -551,6 +469,8 @@ textarea.form-control {
     .container { margin-top: -2rem; padding: 0 1rem 2rem; }
     .content-card { padding: 2rem 1.5rem; }
     .gallery-grid { grid-template-columns: 1fr; gap: 15px; }
+    .buy-buttons { flex-direction: column; align-items: center; }
+    .buy-button { min-width: 200px; }
 }
 """
 
@@ -614,7 +534,7 @@ def render_page(page_id, data):
         current_page=page_id
     )
 
-# HTML Template with Gallery Support
+# HTML Template with Gallery Support and Multiple Buy Buttons
 PAGE_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -660,7 +580,19 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             </div>
             {% endif %}
             
-            {% if page.product_url %}
+            {% if page.get('product_links') %}
+            <div class="buy-section">
+                <h3>🎵 Listen & Purchase</h3>
+                <div class="buy-buttons">
+                    {% for link in page.product_links %}
+                    <a href="{{ link.url }}" target="_blank" class="buy-button">
+                        <span class="icon">{{ link.icon }}</span>
+                        <span>{{ link.name }}</span>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% elif page.product_url %}
             <div class="buy-section">
                 <a href="{{ page.product_url }}" target="_blank" class="buy-button">
                     🛒 Buy Now on Amazon
@@ -671,7 +603,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     </main>
     
     <footer class="footer">
-        <p>&copy; 2025 Ke Aupuni O Ke Akua. All rights reserved. Made with aloha in Hawai?i.</p>
+        <p>&copy; 2025 Ke Aupuni O Ke Akua. All rights reserved. Made with aloha in Hawaiʻi.</p>
     </footer>
     
     <div id="imageModal" class="modal" onclick="closeModal()">
