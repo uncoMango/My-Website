@@ -391,10 +391,15 @@ body {
 
 .content-card {
     background: white;
+    background-image: 
+        linear-gradient(90deg, rgba(212,165,116,.02) 1px, transparent 1px),
+        linear-gradient(rgba(212,165,116,.02) 1px, transparent 1px);
+    background-size: 20px 20px;
     border-radius: 12px;
     padding: 2rem 1.5rem;
     box-shadow: var(--shadow-soft);
     margin-top: 2rem;
+    border: 1px solid rgba(212,165,116,.1);
 }
 
 .content-card h2 {
