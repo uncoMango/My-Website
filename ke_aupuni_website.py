@@ -1,3 +1,20 @@
+"""
+===============================================================================
+KE AUPUNI O KE AKUA - MOBILE-RESPONSIVE WEBSITE
+Complete Single-File Version
+===============================================================================
+
+INSTRUCTIONS:
+1. Copy this ENTIRE file
+2. Save it as: ke_aupuni_mobile.py
+3. Run: python ke_aupuni_mobile.py
+4. Visit: http://localhost:5000
+
+That's it! Your mobile-responsive website will be running.
+
+===============================================================================
+"""
+
 # ke_aupuni_o_ke_akua_mobile_responsive.py
 # Mobile-Responsive Hawaiian Kingdom website with working admin and beautiful content
 
@@ -226,10 +243,6 @@ body {
     overflow-x: hidden;
 }
 
-/* ==============================================
-   MOBILE-RESPONSIVE NAVIGATION
-   ============================================== */
-
 .site-nav {
     background: var(--white-transparent);
     padding: 1rem 0;
@@ -258,7 +271,6 @@ body {
     padding: 0.5rem 0;
 }
 
-/* Hamburger Menu Button (Mobile Only) */
 .nav-toggle {
     display: none;
     flex-direction: column;
@@ -293,7 +305,6 @@ body {
     transform: rotate(-45deg) translate(7px, -7px);
 }
 
-/* Navigation Menu */
 .nav-menu {
     display: flex;
     list-style: none;
@@ -316,10 +327,6 @@ body {
     background: var(--accent-teal);
     color: white;
 }
-
-/* ==============================================
-   HERO SECTION
-   ============================================== */
 
 .hero {
     height: 50vh;
@@ -358,10 +365,6 @@ body {
     border-radius: 8px;
     line-height: 1.3;
 }
-
-/* ==============================================
-   CONTENT AREA
-   ============================================== */
 
 .container {
     max-width: 1000px;
@@ -410,10 +413,6 @@ body {
     line-height: 1.8;
 }
 
-/* ==============================================
-   BUY BUTTON
-   ============================================== */
-
 .buy-section {
     text-align: center;
     margin-top: 2rem;
@@ -439,10 +438,6 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(95, 158, 160, 0.4);
 }
-
-/* ==============================================
-   ADMIN PANEL
-   ============================================== */
 
 .admin-panel {
     background: white;
@@ -500,10 +495,6 @@ textarea.form-control {
     background: #4a8b8e;
 }
 
-/* ==============================================
-   FOOTER
-   ============================================== */
-
 .footer {
     text-align: center;
     padding: 2rem 1rem;
@@ -513,12 +504,7 @@ textarea.form-control {
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
 }
 
-/* ==============================================
-   MOBILE BREAKPOINT (< 768px)
-   ============================================== */
-
 @media (max-width: 768px) {
-    /* Show hamburger, hide menu items */
     .nav-toggle {
         display: flex;
     }
@@ -584,10 +570,6 @@ textarea.form-control {
     }
 }
 
-/* ==============================================
-   TABLET BREAKPOINT (768px - 1023px)
-   ============================================== */
-
 @media (min-width: 768px) and (max-width: 1023px) {
     .nav-menu {
         gap: 0.5rem;
@@ -602,10 +584,6 @@ textarea.form-control {
         font-size: 2.2rem;
     }
 }
-
-/* ==============================================
-   DESKTOP BREAKPOINT (≥ 1024px)
-   ============================================== */
 
 @media (min-width: 1024px) {
     .nav-container {
@@ -651,10 +629,6 @@ textarea.form-control {
     }
 }
 
-/* ==============================================
-   ACCESSIBILITY
-   ============================================== */
-
 *:focus-visible {
     outline: 3px solid var(--accent-teal);
     outline-offset: 2px;
@@ -683,14 +657,12 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
         <div class="nav-container">
             <a href="/" class="nav-title">Ke Aupuni O Ke Akua</a>
             
-            <!-- Hamburger Button (Mobile) -->
             <button class="nav-toggle" aria-label="Toggle navigation">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
             
-            <!-- Navigation Menu -->
             <ul class="nav-menu">
                 {% for item in nav_items %}
                 <li><a href="{{ item.url }}">{{ item.title }}</a></li>
@@ -726,7 +698,6 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     </footer>
     
     <script>
-        // Hamburger Menu Toggle
         const navToggle = document.querySelector('.nav-toggle');
         const navMenu = document.querySelector('.nav-menu');
 
@@ -735,7 +706,6 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             navToggle.classList.toggle('active');
         });
 
-        // Close menu when clicking a link
         document.querySelectorAll('.nav-menu a').forEach(link => {
             link.addEventListener('click', () => {
                 navMenu.classList.remove('active');
@@ -743,7 +713,6 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             });
         });
 
-        // Close menu when clicking outside
         document.addEventListener('click', (e) => {
             if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
                 navMenu.classList.remove('active');
@@ -754,7 +723,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 </body>
 </html>"""
 
-# Admin Template (unchanged, already mobile-friendly with form-control styles)
+# Admin Template
 ADMIN_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -828,7 +797,6 @@ ADMIN_TEMPLATE = """<!DOCTYPE html>
             window.location.href = '/admin?page=' + pageId;
         }
         
-        // Hamburger menu for admin page too
         const navToggle = document.querySelector('.nav-toggle');
         const navMenu = document.querySelector('.nav-menu');
 
@@ -873,7 +841,6 @@ def load_content():
         data = {"order": ORDER, "pages": DEFAULT_PAGES}
         save_content(data)
     
-    # Ensure all required pages exist
     for page_id in ORDER:
         if page_id not in data["pages"]:
             data["pages"][page_id] = DEFAULT_PAGES.get(page_id, {
@@ -898,7 +865,6 @@ def render_page(page_id, data):
     
     page = data["pages"][page_id]
     
-    # Build navigation
     nav_items = []
     for slug in ORDER:
         if slug in data["pages"]:
@@ -916,7 +882,6 @@ def render_page(page_id, data):
         current_page=page_id
     )
 
-# Routes
 @app.route("/")
 def home():
     data = load_content()
@@ -959,7 +924,6 @@ def admin_save():
     return redirect(url_for("admin", page=page_id))
 
 if __name__ == "__main__":
-    # Initialize data file if it doesn't exist
     if not DATA_FILE.exists():
         initial_data = {"order": ORDER, "pages": DEFAULT_PAGES}
         save_content(initial_data)
@@ -967,4 +931,15 @@ if __name__ == "__main__":
     print("🌺 Starting Ke Aupuni O Ke Akua website...")
     print("🌊🏝️ Visit: http://localhost:5000")
     print("⚙️ Admin: http://localhost:5000/admin")
+    print("\n📱 Mobile-Responsive Features:")
+    print("  ✓ Hamburger menu on mobile")
+    print("  ✓ Touch-friendly buttons (44px)")
+    print("  ✓ Responsive text sizing")
+    print("  ✓ Smart hero heights")
+    print("  ✓ No horizontal scrolling")
+    print("\n🧪 Test on phone:")
+    print("  1. Find your IP: ifconfig (Mac/Linux) or ipconfig (Windows)")
+    print("  2. On phone: http://YOUR_IP:5000")
+    print("\nE ola mau ke Aupuni O Ke Akua! 🌺\n")
+    
     app.run(debug=True, host="0.0.0.0", port=5000)
