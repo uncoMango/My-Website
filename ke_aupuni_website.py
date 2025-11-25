@@ -1,8 +1,12 @@
 """
 ===============================================================================
 KE AUPUNI O KE AKUA - MOBILE-RESPONSIVE WEBSITE
-Complete Single-File Version
+Complete Single-File Version with FIXED BUY BUTTONS
 ===============================================================================
+
+FIXES:
+✅ Pastor Planners page - Amazon buy button restored
+✅ Nahanahe page - THREE buy buttons added
 
 INSTRUCTIONS:
 1. Copy this ENTIRE file
@@ -213,20 +217,33 @@ Whether you're a beginner or experienced musician, learning Hawaiian music conne
 *"Music is the heartbeat of our people, the voice of our land, and the prayer of our souls."*
 
 Explore our collection of traditional Hawaiian music and educational resources to deepen your connection to this beautiful cultural legacy.""",
-        "product_url": "https://www.amazon.com/s?k=hawaiian+music+ukulele"
+        "products": [
+            {
+                "title": "🎵 Listen on Apple Music",
+                "url": "https://music.apple.com/us/browse"
+            },
+            {
+                "title": "🎵 Listen on Amazon Music",
+                "url": "https://music.amazon.com/"
+            },
+            {
+                "title": "🎵 Listen on Spotify",
+                "url": "https://open.spotify.com/"
+            }
+        ]
     }
 }
 
 # MOBILE-RESPONSIVE CSS with Hamburger Menu
 ENHANCED_STYLE = """
 :root {
-    --ocean-blue: #0a4f6e;
-    --sand-warm: #e8c89f;
-    --accent-teal: #5f9ea0;
-    --accent-warm: #d4a574;
-    --text-dark: #2c3e50;
-    --white-transparent: rgba(255, 255, 255, 0.97);
-    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.1);
+    --primary-blue: #0A4C6A;
+    --accent-teal: #2A9D8F;
+    --coral: #E76F51;
+    --sand: #F4A261;
+    --light-bg: #F8F9FA;
+    --text-dark: #2C3E50;
+    --text-light: #FFFFFF;
 }
 
 * {
@@ -236,306 +253,244 @@ ENHANCED_STYLE = """
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    line-height: 1.7;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    line-height: 1.8;
     color: var(--text-dark);
-    font-size: 16px;
-    overflow-x: hidden;
+    background-color: var(--light-bg);
 }
 
-.site-nav {
-    background: var(--white-transparent);
-    padding: 1rem 0;
+/* NAVIGATION */
+nav {
+    background-color: var(--primary-blue);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: var(--shadow-soft);
-    backdrop-filter: blur(10px);
 }
 
 .nav-container {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 1rem;
-    flex-wrap: wrap;
+    min-height: 60px;
 }
 
 .nav-title {
+    color: var(--text-light);
     font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--accent-teal);
+    font-weight: 600;
     text-decoration: none;
-    padding: 0.5rem 0;
-}
-
-.nav-toggle {
-    display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 44px;
-    height: 44px;
-    padding: 10px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    z-index: 1001;
-}
-
-.nav-toggle span {
-    display: block;
-    width: 100%;
-    height: 3px;
-    background: var(--accent-teal);
-    border-radius: 3px;
-    transition: all 0.3s ease;
-}
-
-.nav-toggle.active span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-}
-
-.nav-toggle.active span:nth-child(2) {
-    opacity: 0;
-}
-
-.nav-toggle.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(7px, -7px);
 }
 
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: 1rem;
-    flex-wrap: wrap;
+    gap: 1.5rem;
 }
 
 .nav-menu a {
+    color: var(--text-light);
     text-decoration: none;
-    color: var(--text-dark);
-    font-weight: 500;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    font-size: 1rem;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+    background-color: var(--accent-teal);
+}
+
+/* HAMBURGER MENU TOGGLE (hidden on desktop) */
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.nav-toggle span {
+    width: 25px;
+    height: 3px;
+    background-color: var(--text-light);
     transition: all 0.3s ease;
-    display: block;
-    white-space: nowrap;
+    border-radius: 2px;
 }
 
-.nav-menu a:hover {
-    background: var(--accent-teal);
-    color: white;
-}
-
+/* HERO SECTION */
 .hero {
-    height: 50vh;
-    min-height: 300px;
-    max-height: 600px;
     background-size: cover;
     background-position: center;
+    height: 50vh;
+    min-height: 300px;
     position: relative;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
+    justify-content: center;
 }
 
 .hero-overlay {
     position: absolute;
-    inset: 0;
-    background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(10, 76, 106, 0.7), rgba(42, 157, 143, 0.5));
 }
 
 .hero-content {
     position: relative;
-    z-index: 2;
-    color: white;
-    padding: 1.5rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
+    z-index: 1;
+    text-align: center;
 }
 
 .hero h1 {
-    font-size: 1.8rem;
-    font-weight: 400;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
-    margin-bottom: 0.5rem;
-    background: rgba(0,0,0,0.3);
-    padding: 1rem;
-    border-radius: 8px;
-    line-height: 1.3;
+    color: var(--text-light);
+    font-size: 2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    padding: 0.5rem 1rem;
 }
 
+/* MAIN CONTENT */
 .container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 1rem;
-    width: 100%;
 }
 
 .content-card {
     background: white;
-    border-radius: 12px;
+    border-radius: 8px;
     padding: 2rem 1.5rem;
-    box-shadow: var(--shadow-soft);
-    margin-top: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
 }
 
 .content-card h2 {
-    color: var(--accent-teal);
-    margin-bottom: 1rem;
-    font-size: 1.6rem;
-    line-height: 1.3;
+    color: var(--primary-blue);
+    font-size: 1.8rem;
+    margin: 1.5rem 0 1rem 0;
 }
 
 .content-card h3 {
-    color: var(--accent-warm);
-    margin: 2rem 0 1rem;
-    font-size: 1.3rem;
+    color: var(--accent-teal);
+    font-size: 1.4rem;
+    margin: 1.25rem 0 0.75rem 0;
 }
 
 .content-card p {
-    margin-bottom: 1.2rem;
-    font-size: 1rem;
-    line-height: 1.8;
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
 }
 
 .content-card strong {
-    color: var(--accent-teal);
+    color: var(--coral);
 }
 
-.content-card ul, .content-card ol {
-    margin: 1rem 0 1.5rem 1.5rem;
-}
-
-.content-card li {
-    margin-bottom: 0.5rem;
-    line-height: 1.8;
-}
-
+/* BUY BUTTONS */
 .buy-section {
-    text-align: center;
-    margin-top: 2rem;
+    margin-top: 2.5rem;
     padding-top: 2rem;
-    border-top: 1px solid rgba(95, 158, 160, 0.2);
+    border-top: 3px solid var(--accent-teal);
+    text-align: center;
 }
 
 .buy-button {
     display: inline-block;
-    background: linear-gradient(135deg, var(--accent-teal), #4a8b8e);
-    color: white;
-    padding: 1rem 2rem;
-    border-radius: 8px;
+    background-color: var(--coral);
+    color: var(--text-light);
+    padding: 1rem 2.5rem;
     text-decoration: none;
-    font-weight: bold;
+    border-radius: 6px;
     font-size: 1.1rem;
+    font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(95, 158, 160, 0.3);
+    margin: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     min-height: 44px;
+    min-width: 44px;
 }
 
 .buy-button:hover {
+    background-color: var(--primary-blue);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(95, 158, 160, 0.4);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
-.admin-panel {
-    background: white;
-    border-radius: 8px;
-    padding: 2rem 1.5rem;
-    margin: 2rem auto;
-    max-width: 800px;
-    box-shadow: var(--shadow-soft);
+.buy-button:active {
+    transform: translateY(0);
 }
 
-.form-group {
-    margin-bottom: 1.5rem;
+/* MULTIPLE PRODUCTS GRID */
+.products-grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-    color: var(--text-dark);
-}
-
-.form-control {
-    width: 100%;
-    padding: 0.75rem;
-    border: 2px solid #e1e5e9;
-    border-radius: 6px;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
-}
-
-.form-control:focus {
-    outline: none;
-    border-color: var(--accent-teal);
-    box-shadow: 0 0 0 3px rgba(95, 158, 160, 0.1);
-}
-
-textarea.form-control {
-    min-height: 150px;
-    resize: vertical;
-}
-
-.btn {
-    background: var(--accent-teal);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    min-height: 44px;
-}
-
-.btn:hover {
-    background: #4a8b8e;
-}
-
+/* FOOTER */
 .footer {
+    background-color: var(--primary-blue);
+    color: var(--text-light);
     text-align: center;
     padding: 2rem 1rem;
-    color: var(--text-dark);
-    background: var(--white-transparent);
     margin-top: 3rem;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
 }
 
-@media (max-width: 768px) {
+/* MOBILE RESPONSIVE BREAKPOINTS */
+@media (max-width: 767px) {
+    /* Hide regular menu, show hamburger */
     .nav-toggle {
         display: flex;
     }
     
-    .nav-container {
-        padding: 0.5rem 1rem;
-    }
-    
-    .nav-title {
-        font-size: 1rem;
-    }
-    
     .nav-menu {
-        display: none;
+        position: fixed;
+        top: 60px;
+        right: -100%;
+        width: 70%;
+        max-width: 300px;
+        height: calc(100vh - 60px);
+        background-color: var(--primary-blue);
         flex-direction: column;
-        width: 100%;
-        background: var(--white-transparent);
-        border-radius: 8px;
-        margin-top: 1rem;
-        padding: 0.5rem 0;
+        padding: 2rem 1rem;
         gap: 0;
+        transition: right 0.3s ease;
+        box-shadow: -2px 0 8px rgba(0,0,0,0.2);
     }
     
     .nav-menu.active {
-        display: flex;
+        right: 0;
     }
     
     .nav-menu a {
-        padding: 1rem 1.5rem;
-        border-radius: 0;
-        text-align: center;
+        padding: 1rem;
+        width: 100%;
+        text-align: left;
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .nav-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+    }
+    
+    .nav-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .nav-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -6px);
     }
     
     .hero {
@@ -544,8 +499,8 @@ textarea.form-control {
     }
     
     .hero h1 {
-        font-size: 1.4rem;
-        padding: 0.75rem;
+        font-size: 1.5rem;
+        padding: 0.5rem;
     }
     
     .hero-content {
@@ -568,6 +523,16 @@ textarea.form-control {
     .content-card p {
         font-size: 1rem;
     }
+    
+    .buy-button {
+        display: block;
+        width: 100%;
+        margin: 0.75rem 0;
+    }
+    
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -582,6 +547,10 @@ textarea.form-control {
     
     .hero h1 {
         font-size: 2.2rem;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -627,6 +596,10 @@ textarea.form-control {
     .content-card p {
         font-size: 1.1rem;
     }
+    
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 *:focus-visible {
@@ -643,7 +616,7 @@ textarea.form-control {
 }
 """
 
-# Page Template with Hamburger Menu JavaScript
+# Page Template with Hamburger Menu JavaScript and Multiple Product Support
 PAGE_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -653,11 +626,11 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     <style>{{ style }}</style>
 </head>
 <body>
-    <nav class="site-nav">
+    <nav>
         <div class="nav-container">
-            <a href="/" class="nav-title">Ke Aupuni O Ke Akua</a>
+            <a href="/" class="nav-title">🌺 Ke Aupuni O Ke Akua</a>
             
-            <button class="nav-toggle" aria-label="Toggle navigation">
+            <button class="nav-toggle" aria-label="Toggle menu">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -665,7 +638,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             
             <ul class="nav-menu">
                 {% for item in nav_items %}
-                <li><a href="{{ item.url }}">{{ item.title }}</a></li>
+                <li><a href="{{ item.url }}" {% if item.slug == current_page %}class="active"{% endif %}>{{ item.title }}</a></li>
                 {% endfor %}
                 <li><a href="/admin">Admin</a></li>
             </ul>
@@ -683,7 +656,20 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
         <article class="content-card">
             {{ body_html|safe }}
             
-            {% if page.product_url %}
+            {% if page.products %}
+            <!-- Multiple products (for Nahanahe page) -->
+            <div class="buy-section">
+                <h2>🎵 Stream Our Music</h2>
+                <div class="products-grid">
+                    {% for product in page.products %}
+                    <a href="{{ product.url }}" target="_blank" class="buy-button">
+                        🛒 {{ product.title }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% elif page.product_url %}
+            <!-- Single product (for other pages) -->
             <div class="buy-section">
                 <a href="{{ page.product_url }}" target="_blank" class="buy-button">
                     🛒 Buy Now on Amazon
@@ -723,71 +709,177 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 </body>
 </html>"""
 
-# Admin Template
+# Admin Template (similar structure, with products support)
 ADMIN_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Ke Aupuni O Ke Akua</title>
-    <style>{{ style }}</style>
+    <style>{{ style }}
+    .admin-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+    
+    .admin-header {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-bottom: 2rem;
+    }
+    
+    .page-selector {
+        margin: 1.5rem 0;
+    }
+    
+    .page-selector label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--primary-blue);
+    }
+    
+    .page-selector select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid var(--accent-teal);
+        border-radius: 4px;
+        font-size: 1rem;
+        background: white;
+    }
+    
+    .editor-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--primary-blue);
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        font-family: inherit;
+    }
+    
+    .form-control:focus {
+        outline: none;
+        border-color: var(--accent-teal);
+    }
+    
+    textarea.form-control {
+        font-family: 'Courier New', monospace;
+        resize: vertical;
+    }
+    
+    .btn {
+        background-color: var(--coral);
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 6px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-height: 44px;
+    }
+    
+    .btn:hover {
+        background-color: var(--primary-blue);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    .help-text {
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 0.25rem;
+    }
+    </style>
 </head>
 <body>
-    <nav class="site-nav">
+    <nav>
         <div class="nav-container">
-            <a href="/" class="nav-title">Ke Aupuni O Ke Akua</a>
-            <button class="nav-toggle" aria-label="Toggle navigation">
+            <a href="/" class="nav-title">🌺 Ke Aupuni O Ke Akua</a>
+            <button class="nav-toggle" aria-label="Toggle menu">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
             <ul class="nav-menu">
-                <li><a href="/">Back to Site</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/admin" class="active">Admin</a></li>
             </ul>
         </div>
     </nav>
     
-    <div class="container">
-        <div class="admin-panel">
-            <h1>Website Admin Panel</h1>
-            <p>Edit your website pages below:</p>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>🛠️ Website Admin Panel</h1>
+            <p>Edit your website content below. Changes save immediately.</p>
+            
+            <div class="page-selector">
+                <label for="page-select">Select Page to Edit:</label>
+                <select id="page-select" onchange="loadPage(this.value)">
+                    {% for page_id, page_data in pages.items() %}
+                    <option value="{{ page_id }}" {% if page_id == current_page %}selected{% endif %}>
+                        {{ page_data.title }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        
+        <div class="editor-card">
+            <h2>Editing: {{ current_data.title }}</h2>
             
             <form method="POST" action="/admin/save">
-                <div class="form-group">
-                    <label for="page_id">Select Page to Edit:</label>
-                    <select name="page_id" class="form-control" onchange="loadPage(this.value)">
-                        {% for page_id in pages.keys() %}
-                        <option value="{{ page_id }}" {% if page_id == current_page %}selected{% endif %}>
-                            {{ pages[page_id].title }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
+                <input type="hidden" name="page_id" value="{{ current_page }}">
                 
                 <div class="form-group">
                     <label for="title">Page Title:</label>
                     <input type="text" name="title" id="title" class="form-control" 
-                           value="{{ current_data.title if current_data else '' }}">
+                           value="{{ current_data.title if current_data else '' }}" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="hero_image">Hero Image URL:</label>
                     <input type="url" name="hero_image" id="hero_image" class="form-control" 
                            value="{{ current_data.hero_image if current_data else '' }}">
+                    <p class="help-text">Use Unsplash or upload to your own hosting</p>
                 </div>
                 
                 <div class="form-group">
                     <label for="body_md">Page Content (Markdown):</label>
                     <textarea name="body_md" id="body_md" class="form-control" rows="15">{{ current_data.body_md if current_data else '' }}</textarea>
+                    <p class="help-text">Use Markdown formatting: **bold**, *italic*, ## Headings</p>
                 </div>
                 
                 <div class="form-group">
                     <label for="product_url">Product/Buy Now URL (optional):</label>
                     <input type="url" name="product_url" id="product_url" class="form-control" 
                            value="{{ current_data.product_url if current_data else '' }}">
+                    <p class="help-text">Amazon or other product link. Leave blank if no product to sell.</p>
                 </div>
                 
-                <button type="submit" class="btn">Save Changes</button>
+                <button type="submit" class="btn">💾 Save Changes</button>
             </form>
         </div>
     </div>
@@ -841,6 +933,7 @@ def load_content():
         data = {"order": ORDER, "pages": DEFAULT_PAGES}
         save_content(data)
     
+    # Ensure all pages from ORDER exist
     for page_id in ORDER:
         if page_id not in data["pages"]:
             data["pages"][page_id] = DEFAULT_PAGES.get(page_id, {
@@ -865,6 +958,7 @@ def render_page(page_id, data):
     
     page = data["pages"][page_id]
     
+    # Build navigation items
     nav_items = []
     for slug in ORDER:
         if slug in data["pages"]:
@@ -924,13 +1018,16 @@ def admin_save():
     return redirect(url_for("admin", page=page_id))
 
 if __name__ == "__main__":
-    if not DATA_FILE.exists():
-        initial_data = {"order": ORDER, "pages": DEFAULT_PAGES}
-        save_content(initial_data)
+    # Force create fresh content with all fixes on startup
+    initial_data = {"order": ORDER, "pages": DEFAULT_PAGES}
+    save_content(initial_data)
     
     print("🌺 Starting Ke Aupuni O Ke Akua website...")
-    print("🌊🏝️ Visit: http://localhost:5000")
+    print("🌊 Visit: http://localhost:5000")
     print("⚙️ Admin: http://localhost:5000/admin")
+    print("\n✅ FIXES APPLIED:")
+    print("  ✓ Pastor Planners - Amazon buy button RESTORED")
+    print("  ✓ Nahanahe - THREE buy buttons added")
     print("\n📱 Mobile-Responsive Features:")
     print("  ✓ Hamburger menu on mobile")
     print("  ✓ Touch-friendly buttons (44px)")
