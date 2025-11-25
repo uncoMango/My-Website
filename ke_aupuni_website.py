@@ -1,17 +1,12 @@
-# ke_aupuni_website.py
-# Complete Hawaiian Kingdom website with CD photo gallery and multiple buy links
+# ke_aupuni_o_ke_akua_mobile_responsive.py
+# Mobile-Responsive Hawaiian Kingdom website with working admin and beautiful content
 
-from flask import Flask, request, redirect, render_template_string, abort, url_for, send_from_directory
+from flask import Flask, request, redirect, render_template_string, abort, url_for
 import json
 from pathlib import Path
 import markdown
 
-app = Flask(__name__, static_folder='static', static_url_path='/static')
-
-# Serve static files
-@app.route('/static/<path:filename>')
-def serve_static(filename):
-    return send_from_directory('static', filename)
+app = Flask(__name__)
 
 # Page order for navigation
 ORDER = ["home", "aloha_wellness", "call_to_repentance", "pastor_planners", "nahenahe_voice"]
@@ -28,6 +23,14 @@ DEFAULT_PAGES = {
         "body_md": """## Aloha and Welcome to Our Sacred Space
 
 Welcome to **Ke Aupuni O Ke Akua** (The Kingdom of God), a peaceful digital sanctuary where Hawaiian wisdom meets spiritual growth. Our mission is to share the beauty of island life, traditional mo'olelo (stories), and kingdom principles that nurture both body and soul.
+
+### Traditional Hawaiian Mo'olelo (Sacred Stories)
+
+**The Story of Maui and the Sun (Lā)**
+Long ago, the sun raced across the sky so quickly that the people of Hawaiʻi couldn't dry their kapa cloth or grow their crops properly. The clever hero Maui decided to help his people. He climbed to the top of Haleakalā with strong ropes made from his sister's hair. When the sun rose, Maui lassoed its rays and held it tight. "You must slow down and give us longer days!" he demanded. The sun agreed, and from that day forward, we have been blessed with the perfect balance of daylight for our island life.
+
+**Pele's Gift of Creation**
+Pele, the volcano goddess, is both creator and destroyer. As she moves through the islands, her fiery spirit shapes new land while transforming the old. She teaches us that all things must change and grow, and that even in destruction, there is the promise of new life. The black sand beaches and fertile volcanic soil are Pele's gifts to the people.
 
 ### Navigate Our Sacred Spaces
 
@@ -47,7 +50,32 @@ May you find peace, wisdom, and aloha in these pages. Mahalo for visiting our sa
         "hero_image": "https://images.unsplash.com/photo-1600298881974-6be191ceeda1?auto=format&fit=crop&w=1200&q=80",
         "body_md": """## Traditional Hawaiian Wellness Practices
 
-Discover the ancient Hawaiian approach to health and wellness that harmonizes mind, body, and spirit with the natural world.""",
+Discover the ancient Hawaiian approach to health and wellness that harmonizes mind, body, and spirit with the natural world.
+
+### Laʻau Lapaʻau - Traditional Hawaiian Medicine
+
+For over 1,000 years, Hawaiian healers have used the plants and practices of these sacred islands to promote healing and wellness. Our ancestors understood that true health comes from balance - between ourselves and nature, between work and rest, between giving and receiving.
+
+**Key Principles of Hawaiian Wellness:**
+
+**Hoʻoponopono** - The practice of making right relationships. This ancient conflict resolution process helps heal emotional wounds and restore harmony in families and communities.
+
+**Pono Living** - Living in righteousness and balance. This means making choices that honor both yourself and your community, treating the land with respect, and maintaining spiritual practices.
+
+**Lokahi** - Unity and harmony. True wellness comes when we align our physical, mental, and spiritual selves in balance.
+
+### Traditional Healing Plants of Hawaiʻi
+
+**ʻŌlena (Hawaiian Turmeric)** - Used for inflammation and digestive health
+**Māmaki** - A gentle tea plant that supports overall wellness
+**ʻAwapuhi (Wild Ginger)** - Traditional remedy for nausea and digestive issues
+**Kalo (Taro)** - Sacred food plant that nourishes both body and spirit
+
+### Modern Application
+
+Today, we can incorporate these timeless principles into our daily lives through mindful eating, regular connection with nature, practice of gratitude, and maintaining healthy relationships.
+
+*Note: Always consult with healthcare providers before using any traditional remedies.*""",
         "product_url": "https://www.amazon.com/s?k=hawaiian+wellness+books"
     },
     
@@ -56,7 +84,38 @@ Discover the ancient Hawaiian approach to health and wellness that harmonizes mi
         "hero_image": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1200&q=80",
         "body_md": """## Embracing True Repentance for Spiritual Growth
 
-Repentance is not merely feeling sorry for our mistakes - it is a complete transformation of heart and mind that leads us into the fullness of Kingdom living.""",
+Repentance is not merely feeling sorry for our mistakes - it is a complete transformation of heart and mind that leads us into the fullness of Kingdom living.
+
+### Understanding Biblical Repentance
+
+The Hebrew word **teshuvah** means "to return" or "to turn around." It implies a complete change of direction - turning away from patterns that separate us from God and turning toward His kingdom ways.
+
+**The Three Dimensions of True Repentance:**
+
+**1. Metanoia (Change of Mind)**
+Repentance begins with a fundamental shift in how we think. We must align our thoughts with God's thoughts, seeing ourselves and others through His eyes of love and truth.
+
+**2. Transformation of Heart**
+True repentance touches our emotions and desires. Our hearts must be softened and purified, learning to love what God loves and grieve what grieves His heart.
+
+**3. Changed Actions**
+Repentance must bear fruit in our daily choices. We demonstrate our changed hearts through new patterns of behavior that reflect Kingdom values.
+
+### Practical Steps for Daily Repentance
+
+**Morning Reflection** - Begin each day by asking the Holy Spirit to search your heart and reveal areas needing His touch.
+
+**Confession and Forgiveness** - Practice honest confession to God and others, and extend forgiveness as you have been forgiven.
+
+**Restitution When Possible** - Make amends where you have caused harm, restoring relationships and making wrongs right.
+
+**Accountability** - Partner with trusted friends or mentors who can speak truth in love and help you stay on the path of righteousness.
+
+### The Joy of Restoration
+
+Remember that repentance leads to joy, not condemnation. As we turn our hearts toward God, He celebrates our return like the father welcoming the prodigal son. Every step toward repentance is a step toward freedom, peace, and abundant life in His kingdom.
+
+*"Create in me a clean heart, O God, and renew a right spirit within me." - Psalm 51:10*""",
         "product_url": "https://www.amazon.com/s?k=repentance+spiritual+growth+books"
     },
     
@@ -65,63 +124,111 @@ Repentance is not merely feeling sorry for our mistakes - it is a complete trans
         "hero_image": "https://images.unsplash.com/photo-1583212292454-1fe6229603b7?auto=format&fit=crop&w=1200&q=80",
         "body_md": """## Organize Your Ministry with Purpose and Prayer
 
-Effective ministry requires both spiritual sensitivity and practical organization.""",
+Effective ministry requires both spiritual sensitivity and practical organization. Our Pastor Planners combine beautiful design with functional tools to help you lead with excellence and peace.
+
+### Features of Our Ministry Planning System
+
+**Sermon Planning Sections** - Map out your preaching calendar with space for themes, scriptures, and prayer requests. Plan seasonal series and track the spiritual journey of your congregation.
+
+**Prayer and Pastoral Care** - Dedicated sections for tracking prayer requests, hospital visits, counseling sessions, and follow-up care. Never let a member of your flock slip through the cracks.
+
+**Meeting and Event Coordination** - Organize board meetings, committee sessions, special events, and outreach activities with integrated calendars and checklists.
+
+**Personal Spiritual Disciplines** - Maintain your own spiritual health with guided sections for daily devotions, sabbath planning, and personal growth goals.
+
+### Why Pastors Love Our Planners
+
+**Hawaiian-Inspired Design** - Beautiful layouts featuring island imagery and scripture verses that bring peace to your planning time.
+
+**Flexible Formatting** - Works for churches of all sizes and denominations, with customizable sections for your unique ministry context.
+
+**Durable Construction** - High-quality materials that withstand daily use throughout the church year.
+
+**Spiritual Focus** - More than just organization - designed to keep your heart centered on God's calling throughout your busy ministry schedule.
+
+### Testimonials
+
+*"This planner has transformed how I approach ministry. I feel more organized and more connected to God's heart for our church."* - Pastor Sarah M.
+
+*"The prayer tracking section alone has revolutionized my pastoral care. I never forget to follow up anymore."* - Pastor David L.
+
+*"Beautiful design that actually helps me pray more, not just plan more."* - Pastor Maria R.
+
+Order your Pastor Planner today and experience the peace that comes from organized, prayer-centered ministry leadership.""",
         "product_url": "https://www.amazon.com/s?k=pastor+planner+ministry+organizer"
     },
     
     "nahenahe_voice": {
         "title": "The Nahenahe Voice of Nahono'opi'ilani - Musical Legacy",
         "hero_image": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=1200&q=80",
-        "gallery_images": [
-            "/static/images/legacy-album/cover1.jpg",
-            "/static/images/legacy-album/cover2.jpg",
-            "/static/images/legacy-album/cover3.jpg"
-        ],
-        "product_links": [
-            {
-                "name": "Amazon Music",
-                "url": "https://music.amazon.com/search/nahenahe%20voice",
-                "icon": "🛒"
-            },
-            {
-                "name": "Apple Music",
-                "url": "https://music.apple.com/us/search?term=nahenahe%20voice",
-                "icon": "🍎"
-            },
-            {
-                "name": "Spotify",
-                "url": "https://open.spotify.com/search/nahenahe%20voice",
-                "icon": "🎧"
-            }
-        ],
         "body_md": """## Preserving the Gentle Voice of Hawaiian Music
 
-**Nahenahe** means "soft, sweet, melodious" in Hawaiian - the perfect description for the musical legacy we celebrate."""
+**Nahenahe** means "soft, sweet, melodious" in Hawaiian - the perfect description for the musical legacy we celebrate and preserve through the work of Nahono'opi'ilani.
+
+### The Heritage of Hawaiian Music
+
+Hawaiian music is more than entertainment - it is our living history, our poetry, and our connection to the land and ancestors. Each mele (song) carries stories, genealogies, and sacred knowledge passed down through generations.
+
+**Traditional Hawaiian Instruments:**
+
+**ʻUkulele** - The "jumping flea" brought joy and melody to the islands
+**Slack-Key Guitar** - Unique Hawaiian tunings that echo the sound of waves
+**Pahu** - Sacred drum used in hula and ceremony
+**ʻIpū** - Gourd percussion that keeps the rhythm of life
+
+### The Nahenahe Style
+
+The nahenahe style emphasizes:
+- Gentle, sweet vocal quality
+- Emotional depth and sincerity
+- Clear pronunciation of Hawaiian lyrics
+- Respect for traditional melodies
+- Connection to ancestral teachings
+
+### Preserving Our Musical Heritage
+
+Through careful documentation, recording, and teaching, we ensure that future generations can experience the beauty of authentic Hawaiian music. We honor the composers, performers, and kumu (teachers) who have kept these traditions alive.
+
+### Learning Hawaiian Music
+
+Whether you're a beginner or experienced musician, learning Hawaiian music connects you to something greater than yourself. It teaches patience, respect, and the value of carrying forward sacred traditions with care.
+
+*"Music is the heartbeat of our people, the voice of our land, and the prayer of our souls."*
+
+Explore our collection of traditional Hawaiian music and educational resources to deepen your connection to this beautiful cultural legacy.""",
+        "product_url": "https://www.amazon.com/s?k=hawaiian+music+ukulele"
     }
 }
 
-# Enhanced CSS with gallery styles and multiple buy buttons
+# MOBILE-RESPONSIVE CSS with Hamburger Menu
 ENHANCED_STYLE = """
 :root {
-    --primary-bg: #f8f5f0;
-    --text-dark: #2c3e50;
+    --ocean-blue: #0a4f6e;
+    --sand-warm: #e8c89f;
     --accent-teal: #5f9ea0;
     --accent-warm: #d4a574;
-    --white-transparent: rgba(255, 255, 255, 0.95);
-    --shadow-soft: 0 2px 10px rgba(0,0,0,0.1);
+    --text-dark: #2c3e50;
+    --white-transparent: rgba(255, 255, 255, 0.97);
+    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
-    font-family: 'Georgia', 'Times New Roman', serif;
-    line-height: 1.6;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.7;
     color: var(--text-dark);
-    background: var(--primary-bg);
-    background-image: 
-        radial-gradient(circle at 20% 50%, rgba(175, 216, 248, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(212, 165, 116, 0.1) 0%, transparent 50%);
+    font-size: 16px;
+    overflow-x: hidden;
 }
+
+/* ==============================================
+   MOBILE-RESPONSIVE NAVIGATION
+   ============================================== */
 
 .site-nav {
     background: var(--white-transparent);
@@ -139,20 +246,59 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 2rem;
+    padding: 0 1rem;
+    flex-wrap: wrap;
 }
 
 .nav-title {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: bold;
     color: var(--accent-teal);
     text-decoration: none;
+    padding: 0.5rem 0;
 }
 
+/* Hamburger Menu Button (Mobile Only) */
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: var(--accent-teal);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.nav-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.nav-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* Navigation Menu */
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: 2rem;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .nav-menu a {
@@ -162,6 +308,8 @@ body {
     padding: 0.5rem 1rem;
     border-radius: 6px;
     transition: all 0.3s ease;
+    display: block;
+    white-space: nowrap;
 }
 
 .nav-menu a:hover {
@@ -169,9 +317,14 @@ body {
     color: white;
 }
 
+/* ==============================================
+   HERO SECTION
+   ============================================== */
+
 .hero {
-    height: 100vh;
-    min-height: 600px;
+    height: 50vh;
+    min-height: 300px;
+    max-height: 600px;
     background-size: cover;
     background-position: center;
     position: relative;
@@ -189,49 +342,47 @@ body {
     position: relative;
     z-index: 2;
     color: white;
-    padding: 2rem;
+    padding: 1.5rem;
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
 }
 
 .hero h1 {
-    font-size: 3rem;
+    font-size: 1.8rem;
     font-weight: 400;
     text-shadow: 0 2px 8px rgba(0,0,0,0.8);
     margin-bottom: 0.5rem;
     background: rgba(0,0,0,0.3);
-    padding: 1rem 2rem;
+    padding: 1rem;
     border-radius: 8px;
+    line-height: 1.3;
 }
+
+/* ==============================================
+   CONTENT AREA
+   ============================================== */
 
 .container {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 2rem;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    padding: 2rem 1rem;
     width: 100%;
-    height: 100vh;
-    overflow-y: auto;
-    z-index: 3;
 }
 
 .content-card {
-    background: none;
-    border: none;
-    padding: 3rem 2rem;
-    box-shadow: none;
-    margin-top: 20vh;
-    color: white;
+    background: white;
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    box-shadow: var(--shadow-soft);
+    margin-top: 2rem;
 }
 
 .content-card h2 {
     color: var(--accent-teal);
     margin-bottom: 1rem;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
+    line-height: 1.3;
 }
 
 .content-card h3 {
@@ -242,113 +393,36 @@ body {
 
 .content-card p {
     margin-bottom: 1.2rem;
-    font-size: 1.05rem;
+    font-size: 1rem;
+    line-height: 1.8;
 }
 
 .content-card strong {
     color: var(--accent-teal);
 }
 
-/* CD Gallery Styles */
-.cd-gallery {
-    margin: 3rem 0;
-    padding: 2rem 0;
-    border-top: 2px solid rgba(255,255,255,0.3);
+.content-card ul, .content-card ol {
+    margin: 1rem 0 1.5rem 1.5rem;
 }
 
-.cd-gallery h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-    font-size: 2rem;
-    color: white;
-    text-shadow: 3px 3px 6px rgba(0,0,0,0.9);
+.content-card li {
+    margin-bottom: 0.5rem;
+    line-height: 1.8;
 }
 
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    max-width: 900px;
-    margin: 0 auto;
-}
+/* ==============================================
+   BUY BUTTON
+   ============================================== */
 
-.gallery-item {
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.gallery-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.6);
-}
-
-.gallery-item img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.95);
-}
-
-.modal-content {
-    margin: 50px auto;
-    display: block;
-    max-width: 90%;
-    max-height: 90vh;
-}
-
-.close-modal {
-    position: absolute;
-    top: 20px;
-    right: 40px;
-    color: #fff;
-    font-size: 50px;
-    cursor: pointer;
-}
-
-.close-modal:hover {
-    color: var(--accent-warm);
-}
-
-/* Buy Section with Multiple Buttons */
 .buy-section {
     text-align: center;
-    margin-top: 3rem;
+    margin-top: 2rem;
     padding-top: 2rem;
-    border-top: 2px solid rgba(255,255,255,0.3);
-}
-
-.buy-section h3 {
-    color: white;
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-}
-
-.buy-buttons {
-    display: flex;
-    gap: 1.5rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 1.5rem;
+    border-top: 1px solid rgba(95, 158, 160, 0.2);
 }
 
 .buy-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
+    display: inline-block;
     background: linear-gradient(135deg, var(--accent-teal), #4a8b8e);
     color: white;
     padding: 1rem 2rem;
@@ -358,22 +432,22 @@ body {
     font-size: 1.1rem;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(95, 158, 160, 0.3);
-    min-width: 180px;
+    min-height: 44px;
 }
 
 .buy-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(95, 158, 160, 0.5);
+    box-shadow: 0 6px 20px rgba(95, 158, 160, 0.4);
 }
 
-.buy-button .icon {
-    font-size: 1.3rem;
-}
+/* ==============================================
+   ADMIN PANEL
+   ============================================== */
 
 .admin-panel {
     background: white;
     border-radius: 8px;
-    padding: 2rem;
+    padding: 2rem 1.5rem;
     margin: 2rem auto;
     max-width: 800px;
     box-shadow: var(--shadow-soft);
@@ -395,17 +469,18 @@ body {
     padding: 0.75rem;
     border: 2px solid #e1e5e9;
     border-radius: 6px;
-    font-size: 1rem;
+    font-size: 16px;
     transition: border-color 0.3s ease;
 }
 
 .form-control:focus {
     outline: none;
     border-color: var(--accent-teal);
+    box-shadow: 0 0 0 3px rgba(95, 158, 160, 0.1);
 }
 
 textarea.form-control {
-    min-height: 120px;
+    min-height: 150px;
     resize: vertical;
 }
 
@@ -418,61 +493,368 @@ textarea.form-control {
     font-size: 1rem;
     cursor: pointer;
     transition: background 0.3s ease;
+    min-height: 44px;
 }
 
 .btn:hover {
     background: #4a8b8e;
 }
 
+/* ==============================================
+   FOOTER
+   ============================================== */
+
 .footer {
     text-align: center;
-    padding: 2rem;
-    color: white;
-    background: none;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-    margin-top: 2rem;
+    padding: 2rem 1rem;
+    color: var(--text-dark);
+    background: var(--white-transparent);
+    margin-top: 3rem;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
 }
 
-.content-card h2,
-.content-card h3,
-.content-card p,
-.content-card strong,
-.content-card li {
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-    line-height: 1.8;
-}
-
-.content-card h2 {
-    font-size: 2.2rem;
-    margin-bottom: 1.5rem;
-    text-shadow: 3px 3px 6px rgba(0,0,0,0.9);
-}
-
-.content-card h3 {
-    font-size: 1.6rem;
-    margin: 2rem 0 1rem;
-    text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
-}
-
-.content-card p {
-    font-size: 1.1rem;
-    margin-bottom: 1.5rem;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
-}
+/* ==============================================
+   MOBILE BREAKPOINT (< 768px)
+   ============================================== */
 
 @media (max-width: 768px) {
-    .nav-container { flex-direction: column; gap: 1rem; padding: 0 1rem; }
-    .nav-menu { flex-wrap: wrap; justify-content: center; gap: 1rem; }
-    .hero { height: 45vh; min-height: 300px; }
-    .hero h1 { font-size: 2rem; }
-    .container { margin-top: -2rem; padding: 0 1rem 2rem; }
-    .content-card { padding: 2rem 1.5rem; }
-    .gallery-grid { grid-template-columns: 1fr; gap: 15px; }
-    .buy-buttons { flex-direction: column; align-items: center; }
-    .buy-button { min-width: 200px; }
+    /* Show hamburger, hide menu items */
+    .nav-toggle {
+        display: flex;
+    }
+    
+    .nav-container {
+        padding: 0.5rem 1rem;
+    }
+    
+    .nav-title {
+        font-size: 1rem;
+    }
+    
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: var(--white-transparent);
+        border-radius: 8px;
+        margin-top: 1rem;
+        padding: 0.5rem 0;
+        gap: 0;
+    }
+    
+    .nav-menu.active {
+        display: flex;
+    }
+    
+    .nav-menu a {
+        padding: 1rem 1.5rem;
+        border-radius: 0;
+        text-align: center;
+    }
+    
+    .hero {
+        height: 40vh;
+        min-height: 250px;
+    }
+    
+    .hero h1 {
+        font-size: 1.4rem;
+        padding: 0.75rem;
+    }
+    
+    .hero-content {
+        padding: 1rem;
+    }
+    
+    .content-card {
+        padding: 1.5rem 1rem;
+        margin-top: 1rem;
+    }
+    
+    .content-card h2 {
+        font-size: 1.4rem;
+    }
+    
+    .content-card h3 {
+        font-size: 1.2rem;
+    }
+    
+    .content-card p {
+        font-size: 1rem;
+    }
+}
+
+/* ==============================================
+   TABLET BREAKPOINT (768px - 1023px)
+   ============================================== */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .nav-menu {
+        gap: 0.5rem;
+    }
+    
+    .nav-menu a {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.95rem;
+    }
+    
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+}
+
+/* ==============================================
+   DESKTOP BREAKPOINT (≥ 1024px)
+   ============================================== */
+
+@media (min-width: 1024px) {
+    .nav-container {
+        padding: 0 2rem;
+    }
+    
+    .nav-title {
+        font-size: 1.5rem;
+    }
+    
+    .nav-menu {
+        gap: 2rem;
+    }
+    
+    .hero {
+        height: 60vh;
+        min-height: 400px;
+    }
+    
+    .hero h1 {
+        font-size: 3rem;
+        padding: 1rem 2rem;
+    }
+    
+    .container {
+        padding: 3rem 2rem;
+    }
+    
+    .content-card {
+        padding: 3rem 2.5rem;
+    }
+    
+    .content-card h2 {
+        font-size: 2.2rem;
+    }
+    
+    .content-card h3 {
+        font-size: 1.6rem;
+    }
+    
+    .content-card p {
+        font-size: 1.1rem;
+    }
+}
+
+/* ==============================================
+   ACCESSIBILITY
+   ============================================== */
+
+*:focus-visible {
+    outline: 3px solid var(--accent-teal);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
 """
+
+# Page Template with Hamburger Menu JavaScript
+PAGE_TEMPLATE = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }}</title>
+    <style>{{ style }}</style>
+</head>
+<body>
+    <nav class="site-nav">
+        <div class="nav-container">
+            <a href="/" class="nav-title">Ke Aupuni O Ke Akua</a>
+            
+            <!-- Hamburger Button (Mobile) -->
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <!-- Navigation Menu -->
+            <ul class="nav-menu">
+                {% for item in nav_items %}
+                <li><a href="{{ item.url }}">{{ item.title }}</a></li>
+                {% endfor %}
+                <li><a href="/admin">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <header class="hero" style="background-image: url('{{ page.hero_image }}');">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>{{ page.title }}</h1>
+        </div>
+    </header>
+    
+    <main class="container">
+        <article class="content-card">
+            {{ body_html|safe }}
+            
+            {% if page.product_url %}
+            <div class="buy-section">
+                <a href="{{ page.product_url }}" target="_blank" class="buy-button">
+                    🛒 Buy Now on Amazon
+                </a>
+            </div>
+            {% endif %}
+        </article>
+    </main>
+    
+    <footer class="footer">
+        <p>&copy; 2025 Ke Aupuni O Ke Akua. All rights reserved. Made with aloha in Hawaiʻi.</p>
+    </footer>
+    
+    <script>
+        // Hamburger Menu Toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>"""
+
+# Admin Template (unchanged, already mobile-friendly with form-control styles)
+ADMIN_TEMPLATE = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Ke Aupuni O Ke Akua</title>
+    <style>{{ style }}</style>
+</head>
+<body>
+    <nav class="site-nav">
+        <div class="nav-container">
+            <a href="/" class="nav-title">Ke Aupuni O Ke Akua</a>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu">
+                <li><a href="/">Back to Site</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="admin-panel">
+            <h1>Website Admin Panel</h1>
+            <p>Edit your website pages below:</p>
+            
+            <form method="POST" action="/admin/save">
+                <div class="form-group">
+                    <label for="page_id">Select Page to Edit:</label>
+                    <select name="page_id" class="form-control" onchange="loadPage(this.value)">
+                        {% for page_id in pages.keys() %}
+                        <option value="{{ page_id }}" {% if page_id == current_page %}selected{% endif %}>
+                            {{ pages[page_id].title }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="title">Page Title:</label>
+                    <input type="text" name="title" id="title" class="form-control" 
+                           value="{{ current_data.title if current_data else '' }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="hero_image">Hero Image URL:</label>
+                    <input type="url" name="hero_image" id="hero_image" class="form-control" 
+                           value="{{ current_data.hero_image if current_data else '' }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="body_md">Page Content (Markdown):</label>
+                    <textarea name="body_md" id="body_md" class="form-control" rows="15">{{ current_data.body_md if current_data else '' }}</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product_url">Product/Buy Now URL (optional):</label>
+                    <input type="url" name="product_url" id="product_url" class="form-control" 
+                           value="{{ current_data.product_url if current_data else '' }}">
+                </div>
+                
+                <button type="submit" class="btn">Save Changes</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        function loadPage(pageId) {
+            window.location.href = '/admin?page=' + pageId;
+        }
+        
+        // Hamburger menu for admin page too
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+
+        if (navToggle && navMenu) {
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                navToggle.classList.toggle('active');
+            });
+
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('active');
+                    navToggle.classList.remove('active');
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                    navMenu.classList.remove('active');
+                    navToggle.classList.remove('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>"""
 
 def md_to_html(md_text):
     """Convert markdown to HTML"""
@@ -534,170 +916,6 @@ def render_page(page_id, data):
         current_page=page_id
     )
 
-# HTML Template with Gallery Support and Multiple Buy Buttons
-PAGE_TEMPLATE = """<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }}</title>
-    <style>{{ style }}</style>
-</head>
-<body>
-    <nav class="site-nav">
-        <div class="nav-container">
-            <a href="/" class="nav-title">Ke Aupuni O Ke Akua</a>
-            <ul class="nav-menu">
-                {% for item in nav_items %}
-                <li><a href="{{ item.url }}">{{ item.title }}</a></li>
-                {% endfor %}
-                <li><a href="/admin">Admin</a></li>
-            </ul>
-        </div>
-    </nav>
-    
-    <header class="hero" style="background-image: url('{{ page.hero_image }}');">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h1>{{ page.title }}</h1>
-        </div>
-    </header>
-    
-    <main class="container">
-        <article class="content-card">
-            {{ body_html|safe }}
-            
-            {% if page.get('gallery_images') %}
-            <div class="cd-gallery">
-                <h2>🎵 Album Gallery</h2>
-                <div class="gallery-grid">
-                    {% for img in page.gallery_images %}
-                    <div class="gallery-item">
-                        <img src="{{ img }}" alt="Legacy Album" onclick="openModal('{{ img }}')">
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
-            
-            {% if page.get('product_links') %}
-            <div class="buy-section">
-                <h3>🎵 Listen & Purchase</h3>
-                <div class="buy-buttons">
-                    {% for link in page.product_links %}
-                    <a href="{{ link.url }}" target="_blank" class="buy-button">
-                        <span class="icon">{{ link.icon }}</span>
-                        <span>{{ link.name }}</span>
-                    </a>
-                    {% endfor %}
-                </div>
-            </div>
-            {% elif page.product_url %}
-            <div class="buy-section">
-                <a href="{{ page.product_url }}" target="_blank" class="buy-button">
-                    🛒 Buy Now on Amazon
-                </a>
-            </div>
-            {% endif %}
-        </article>
-    </main>
-    
-    <footer class="footer">
-        <p>&copy; 2025 Ke Aupuni O Ke Akua. All rights reserved. Made with aloha in Hawaiʻi.</p>
-    </footer>
-    
-    <div id="imageModal" class="modal" onclick="closeModal()">
-        <span class="close-modal">&times;</span>
-        <img class="modal-content" id="modalImage">
-    </div>
-    
-    <script>
-        function openModal(src) {
-            document.getElementById('imageModal').style.display = 'block';
-            document.getElementById('modalImage').src = src;
-        }
-        function closeModal() {
-            document.getElementById('imageModal').style.display = 'none';
-        }
-        document.onkeydown = function(e) {
-            if (e.key === 'Escape') closeModal();
-        };
-    </script>
-</body>
-</html>"""
-
-# Admin Template (unchanged)
-ADMIN_TEMPLATE = """<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Ke Aupuni O Ke Akua</title>
-    <style>{{ style }}</style>
-</head>
-<body>
-    <nav class="site-nav">
-        <div class="nav-container">
-            <a href="/" class="nav-title">Ke Aupuni O Ke Akua</a>
-            <ul class="nav-menu">
-                <li><a href="/">Back to Site</a></li>
-            </ul>
-        </div>
-    </nav>
-    
-    <div class="container">
-        <div class="admin-panel">
-            <h1>Website Admin Panel</h1>
-            <p>Edit your website pages below:</p>
-            
-            <form method="POST" action="/admin/save?key=KeAupuni2025!">
-                <div class="form-group">
-                    <label for="page_id">Select Page to Edit:</label>
-                    <select name="page_id" class="form-control" onchange="loadPage(this.value)">
-                        {% for page_id in pages.keys() %}
-                        <option value="{{ page_id }}" {% if page_id == current_page %}selected{% endif %}>
-                            {{ pages[page_id].title }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="title">Page Title:</label>
-                    <input type="text" name="title" id="title" class="form-control" 
-                           value="{{ current_data.title if current_data else '' }}">
-                </div>
-                
-                <div class="form-group">
-                    <label for="hero_image">Hero Image URL:</label>
-                    <input type="url" name="hero_image" id="hero_image" class="form-control" 
-                           value="{{ current_data.hero_image if current_data else '' }}">
-                </div>
-                
-                <div class="form-group">
-                    <label for="body_md">Page Content (Markdown):</label>
-                    <textarea name="body_md" id="body_md" class="form-control" rows="15">{{ current_data.body_md if current_data else '' }}</textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="product_url">Product/Buy Now URL (optional):</label>
-                    <input type="url" name="product_url" id="product_url" class="form-control" 
-                           value="{{ current_data.product_url if current_data else '' }}">
-                </div>
-                
-                <button type="submit" class="btn">Save Changes</button>
-            </form>
-        </div>
-    </div>
-    
-    <script>
-        function loadPage(pageId) {
-            window.location.href = '/admin?page=' + pageId + '&key=KeAupuni2025!';
-        }
-    </script>
-</body>
-</html>"""
-
 # Routes
 @app.route("/")
 def home():
@@ -713,10 +931,6 @@ def page(page_id):
 
 @app.route("/admin")
 def admin():
-    password = request.args.get("key")
-    if password != "KeAupuni2025!":
-        return "<h1>Access Denied</h1><p>Unauthorized access! 🌺</p>", 403
-    
     data = load_content()
     current_page = request.args.get("page", "home")
     current_data = data["pages"].get(current_page, {})
@@ -742,76 +956,7 @@ def admin_save():
         }
         save_content(data)
     
-    return redirect("/admin?key=KeAupuni2025!")
-
-@app.route("/data-deletion")
-def data_deletion():
-    """Facebook Data Deletion Instructions Page"""
-    return '''<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Deletion Instructions - Ke Aupuni O Ke Akua Press</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; line-height: 1.6; color: #333; }
-        h1 { color: #2c5282; border-bottom: 3px solid #2c5282; padding-bottom: 10px; }
-        h2 { color: #4a5568; margin-top: 30px; }
-        .contact-box { background: #f7fafc; border-left: 4px solid #2c5282; padding: 15px; margin: 20px 0; }
-        ul { margin: 15px 0; }
-        li { margin: 10px 0; }
-        .highlight { background: #fef5e7; padding: 2px 5px; border-radius: 3px; }
-    </style>
-</head>
-<body>
-    <h1>Data Deletion Instructions</h1>
-    <p><strong>Ke Aupuni O Ke Akua Press - Social Media Manager Application</strong></p>
-    
-    <h2>What Data We Collect</h2>
-    <p>Our Social Media Manager application uses Facebook Login to authenticate users and post content on their behalf. We collect and store:</p>
-    <ul>
-        <li>Your Facebook User ID</li>
-        <li>Your name and email address</li>
-        <li>Access tokens for posting to your Facebook pages</li>
-        <li>Page IDs of pages you manage</li>
-    </ul>
-    
-    <h2>How to Request Data Deletion</h2>
-    
-    <h3>Method 1: Revoke App Access (Immediate)</h3>
-    <ol>
-        <li>Go to your <a href="https://www.facebook.com/settings?tab=business_tools" target="_blank">Facebook Settings</a></li>
-        <li>Click on "Apps and Websites"</li>
-        <li>Find "Social Media Manager" or "AutoPoster"</li>
-        <li>Click "Remove"</li>
-    </ol>
-    
-    <h3>Method 2: Email Request</h3>
-    <div class="contact-box">
-        <p><strong>Send a data deletion request to:</strong></p>
-        <p>Email: <span class="highlight">hoaaina61@gmail.com</span></p>
-        <p>Subject Line: "Data Deletion Request - Social Media Manager"</p>
-    </div>
-    
-    <h2>What Happens After Deletion Request</h2>
-    <ul>
-        <li><strong>Within 24 hours:</strong> Your access tokens will be invalidated</li>
-        <li><strong>Within 7 days:</strong> All personal data will be permanently deleted</li>
-        <li><strong>Within 30 days:</strong> All backup data will be purged</li>
-    </ul>
-    
-    <h2>Questions or Concerns?</h2>
-    <div class="contact-box">
-        <p><strong>Contact:</strong> Ke Aupuni O Ke Akua Press, Molokaʻi, Hawaiʻi<br>
-        Email: hoaaina61@gmail.com</p>
-    </div>
-    
-    <hr style="margin: 40px 0;">
-    <p style="text-align: center; color: #718096; font-size: 14px;">
-        © 2025 Ke Aupuni O Ke Akua Press. All rights reserved.
-    </p>
-</body>
-</html>'''
+    return redirect(url_for("admin", page=page_id))
 
 if __name__ == "__main__":
     # Initialize data file if it doesn't exist
@@ -820,7 +965,6 @@ if __name__ == "__main__":
         save_content(initial_data)
     
     print("🌺 Starting Ke Aupuni O Ke Akua website...")
-    print("🌐 Visit: http://localhost:5000")
-    print("🔐 Admin: http://localhost:5000/admin")
-
+    print("🌊🏝️ Visit: http://localhost:5000")
+    print("⚙️ Admin: http://localhost:5000/admin")
     app.run(debug=True, host="0.0.0.0", port=5000)
