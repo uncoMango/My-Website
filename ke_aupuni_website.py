@@ -178,6 +178,11 @@ Order your Pastor Planner today and experience the peace that comes from organiz
     "nahenahe_voice": {
         "title": "The Nahenahe Voice of Nahono'opi'ilani - Musical Legacy",
         "hero_image": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=1200&q=80",
+        "gallery_images": [
+            "https://i.imgur.com/placeholder1.jpg",
+            "https://i.imgur.com/placeholder2.jpg",
+            "https://i.imgur.com/placeholder3.jpg"
+        ],
         "body_md": """## Preserving the Gentle Voice of Hawaiian Music
 
 **Nahenahe** means "soft, sweet, melodious" in Hawaiian - the perfect description for the musical legacy we celebrate and preserve through the work of Nahono'opi'ilani.
@@ -460,6 +465,52 @@ body {
     box-shadow: 0 6px 20px rgba(95, 158, 160, 0.4);
 }
 
+
+/* CD Cover Gallery Styles */
+.gallery-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--accent-teal);
+}
+
+.gallery-section h2 {
+    color: var(--primary-blue);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.gallery-item {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+@media (max-width: 767px) {
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
 .admin-panel {
     background: white;
     border-radius: 8px;
@@ -635,8 +686,8 @@ textarea.form-control {
     }
     
     .hero {
-        height: 60vh;
-        min-height: 400px;
+        height: 85vh;
+        min-height: 500px;
     }
     
     .hero h1 {
@@ -722,6 +773,20 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     <main class="container">
         <article class="content-card">
             {{ body_html|safe }}
+            
+            {% if page.gallery_images %}
+            <!-- CD Cover Gallery -->
+            <div class="gallery-section">
+                <h2>🎵 Album Covers</h2>
+                <div class="gallery-grid">
+                    {% for image in page.gallery_images %}
+                    <div class="gallery-item">
+                        <img src="{{ image }}" alt="Album Cover" loading="lazy">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
             
             {% if page.product_links %}
             <!-- Multiple product links (Nahanahe page) -->
@@ -838,7 +903,43 @@ ADMIN_TEMPLATE = """<!DOCTYPE html>
                     <label for="product_url">Product/Buy Now URL (optional):</label>
                     <input type="url" name="product_url" id="product_url" class="form-control" 
                            value="{{ current_data.product_url if current_data else '' }}">
+                    <p class="help-text">For single buy button (most pages)</p>
                 </div>
+                
+                {% if current_page == 'nahenahe_voice' %}
+                <div class="form-group" style="background: #f0f8ff; padding: 1.5rem; border-radius: 8px; border: 2px solid var(--accent-teal);">
+                    <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">🎵 Nahenahe Music Platforms</h3>
+                    
+                    <label>Amazon Music URL:</label>
+                    <input type="url" name="music_url_1" id="music_url_1" class="form-control" 
+                           value="{{ current_data.product_links[0].url if current_data.product_links else 'https://music.amazon.com/search/nahenahe%20voice' }}" style="margin-bottom: 1rem;">
+                    
+                    <label>Apple Music URL:</label>
+                    <input type="url" name="music_url_2" id="music_url_2" class="form-control" 
+                           value="{{ current_data.product_links[1].url if current_data.product_links and current_data.product_links|length > 1 else 'https://music.apple.com/us/search?term=nahenahe%20voice' }}" style="margin-bottom: 1rem;">
+                    
+                    <label>Spotify URL:</label>
+                    <input type="url" name="music_url_3" id="music_url_3" class="form-control" 
+                           value="{{ current_data.product_links[2].url if current_data.product_links and current_data.product_links|length > 2 else 'https://open.spotify.com/search/nahenahe%20voice' }}">
+                </div>
+                
+                <div class="form-group" style="background: #fff4e6; padding: 1.5rem; border-radius: 8px; border: 2px solid var(--sand); margin-top: 1rem;">
+                    <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">📸 CD Cover Gallery</h3>
+                    <p class="help-text">Enter image URLs (one per line, up to 3 images)</p>
+                    
+                    <label>Gallery Image 1:</label>
+                    <input type="url" name="gallery_1" id="gallery_1" class="form-control" 
+                           value="{{ current_data.gallery_images[0] if current_data.gallery_images else '' }}" style="margin-bottom: 1rem;">
+                    
+                    <label>Gallery Image 2:</label>
+                    <input type="url" name="gallery_2" id="gallery_2" class="form-control" 
+                           value="{{ current_data.gallery_images[1] if current_data.gallery_images and current_data.gallery_images|length > 1 else '' }}" style="margin-bottom: 1rem;">
+                    
+                    <label>Gallery Image 3:</label>
+                    <input type="url" name="gallery_3" id="gallery_3" class="form-control" 
+                           value="{{ current_data.gallery_images[2] if current_data.gallery_images and current_data.gallery_images|length > 2 else '' }}">
+                </div>
+                {% endif %}
                 
                 <button type="submit" class="btn">Save Changes</button>
             </form>
@@ -966,12 +1067,55 @@ def admin_save():
     
     page_id = request.form.get("page_id")
     if page_id in data["pages"]:
-        data["pages"][page_id] = {
+        page_data = {
             "title": request.form.get("title", ""),
             "hero_image": request.form.get("hero_image", ""),
             "body_md": request.form.get("body_md", ""),
             "product_url": request.form.get("product_url", "")
         }
+        
+        # Special handling for Nahenahe page
+        if page_id == "nahenahe_voice":
+            # Handle music platform URLs
+            music_url_1 = request.form.get("music_url_1", "")
+            music_url_2 = request.form.get("music_url_2", "")
+            music_url_3 = request.form.get("music_url_3", "")
+            
+            if music_url_1 or music_url_2 or music_url_3:
+                page_data["product_links"] = []
+                if music_url_1:
+                    page_data["product_links"].append({
+                        "name": "Amazon Music",
+                        "url": music_url_1,
+                        "icon": "🛒"
+                    })
+                if music_url_2:
+                    page_data["product_links"].append({
+                        "name": "Apple Music",
+                        "url": music_url_2,
+                        "icon": "🍎"
+                    })
+                if music_url_3:
+                    page_data["product_links"].append({
+                        "name": "Spotify",
+                        "url": music_url_3,
+                        "icon": "🎧"
+                    })
+            
+            # Handle gallery images
+            gallery_1 = request.form.get("gallery_1", "")
+            gallery_2 = request.form.get("gallery_2", "")
+            gallery_3 = request.form.get("gallery_3", "")
+            
+            gallery_images = []
+            if gallery_1: gallery_images.append(gallery_1)
+            if gallery_2: gallery_images.append(gallery_2)
+            if gallery_3: gallery_images.append(gallery_3)
+            
+            if gallery_images:
+                page_data["gallery_images"] = gallery_images
+        
+        data["pages"][page_id] = page_data
         save_content(data)
     
     return redirect(url_for("admin", page=page_id))
