@@ -753,23 +753,17 @@ def admin_panel():
 """
         
         if product_url != "N/A":
-            admin_html += f'                    <div><strong>Product URL:</strong> <a href="{product_url}" target="_blank">View</a></div>
-'
+            admin_html += f'                    <div><strong>Product URL:</strong> <a href="{product_url}" target="_blank">View</a></div>\n'
         
         if product_links:
-            admin_html += f'                    <div><strong>Music Links:</strong> {len(product_links)} platforms</div>
-'
+            admin_html += f'                    <div><strong>Music Links:</strong> {len(product_links)} platforms</div>\n'
         
         if gallery_images:
-            admin_html += f'                    <div><strong>Gallery:</strong> {len(gallery_images)} images</div>
-'
-            admin_html += '                    <div class="gallery-preview">
-'
+            admin_html += f'                    <div><strong>Gallery:</strong> {len(gallery_images)} images</div>\n'
+            admin_html += '                    <div class="gallery-preview">\n'
             for img in gallery_images[:3]:
-                admin_html += f'                        <img src="{img}" alt="Gallery">
-'
-            admin_html += '                    </div>
-'
+                admin_html += f'                        <img src="{img}" alt="Gallery">\n'
+            admin_html += '                    </div>\n'
         
         admin_html += f"""
                 </div>
