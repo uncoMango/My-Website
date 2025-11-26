@@ -1,4 +1,3 @@
-
 # ke_aupuni_perfect_mobile.py
 # Kahu Phil's CORRECT content + Mobile Responsive + Working Admin
 
@@ -582,6 +581,439 @@ def serve_cover(filename):
     if cover_path.exists():
         return send_file(cover_path, mimetype='image/jpeg')
     abort(404)
+
+
+# ============================================
+# ADMIN PANEL
+# ============================================
+
+ADMIN_PASSWORD = "Kingdom2024"  # Change this in production!
+
+@app.route("/admin")
+def admin_panel():
+    """Admin panel for managing content"""
+    data = load_content()
+    pages = data.get("pages", data)
+    
+    admin_html = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Ke Aupuni O Ke Akua</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+        
+        .page-list {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .page-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .page-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+        
+        .page-title {
+            font-size: 1.25rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .page-info {
+            display: grid;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #495057;
+        }
+        
+        .page-info strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .edit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .edit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 2rem;
+        }
+        
+        .back-btn:hover {
+            background: #5a6268;
+        }
+        
+        .gallery-preview {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .gallery-preview img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 2px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌺 Admin Panel</h1>
+        <p class="subtitle">Manage your website content</p>
+        
+        <div class="page-list">
+"""
+    
+    for page_id, page_data in pages.items():
+        page_title = page_data.get("title", page_id)
+        hero_image = page_data.get("hero_image", "")
+        product_url = page_data.get("product_url", "N/A")
+        gallery_images = page_data.get("gallery_images", [])
+        product_links = page_data.get("product_links", [])
+        
+        admin_html += f"""
+            <div class="page-card">
+                <div class="page-title">{page_title}</div>
+                <div class="page-info">
+                    <div><strong>Page ID:</strong> {page_id}</div>
+                    <div><strong>Hero Image:</strong> {hero_image[:60]}...</div>
+"""
+        
+        if product_url != "N/A":
+            admin_html += f'                    <div><strong>Product URL:</strong> <a href="{product_url}" target="_blank">View</a></div>
+'
+        
+        if product_links:
+            admin_html += f'                    <div><strong>Music Links:</strong> {len(product_links)} platforms</div>
+'
+        
+        if gallery_images:
+            admin_html += f'                    <div><strong>Gallery:</strong> {len(gallery_images)} images</div>
+'
+            admin_html += '                    <div class="gallery-preview">
+'
+            for img in gallery_images[:3]:
+                admin_html += f'                        <img src="{img}" alt="Gallery">
+'
+            admin_html += '                    </div>
+'
+        
+        admin_html += f"""
+                </div>
+                <a href="/admin/edit/{page_id}" class="edit-btn">✏️ Edit Page</a>
+            </div>
+"""
+    
+    admin_html += """
+        </div>
+        
+        <a href="/" class="back-btn">← Back to Website</a>
+    </div>
+</body>
+</html>"""
+    
+    return admin_html
+
+@app.route("/admin/edit/<page_id>", methods=["GET", "POST"])
+def edit_page(page_id):
+    """Edit a specific page"""
+    data = load_content()
+    pages = data.get("pages", data)
+    
+    if page_id not in pages:
+        abort(404)
+    
+    if request.method == "POST":
+        # Update page data
+        pages[page_id]["title"] = request.form.get("title", "")
+        pages[page_id]["hero_image"] = request.form.get("hero_image", "")
+        pages[page_id]["body_md"] = request.form.get("body_md", "")
+        
+        # Handle product URL
+        product_url = request.form.get("product_url", "").strip()
+        if product_url:
+            pages[page_id]["product_url"] = product_url
+        elif "product_url" in pages[page_id]:
+            del pages[page_id]["product_url"]
+        
+        # Handle gallery images
+        gallery_str = request.form.get("gallery_images", "").strip()
+        if gallery_str:
+            gallery_images = [img.strip() for img in gallery_str.split("\n") if img.strip()]
+            pages[page_id]["gallery_images"] = gallery_images
+        elif "gallery_images" in pages[page_id]:
+            del pages[page_id]["gallery_images"]
+        
+        # Handle product links (for music page)
+        links_str = request.form.get("product_links", "").strip()
+        if links_str:
+            links = []
+            for line in links_str.split("\n"):
+                if "|" in line:
+                    parts = line.split("|")
+                    if len(parts) >= 3:
+                        links.append({
+                            "name": parts[0].strip(),
+                            "url": parts[1].strip(),
+                            "icon": parts[2].strip()
+                        })
+            if links:
+                pages[page_id]["product_links"] = links
+        elif "product_links" in pages[page_id]:
+            del pages[page_id]["product_links"]
+        
+        save_content({"pages": pages, "order": data.get("order", ORDER)})
+        return redirect("/admin")
+    
+    page = pages[page_id]
+    
+    # Format gallery images
+    gallery_str = "\n".join(page.get("gallery_images", []))
+    
+    # Format product links
+    links_str = ""
+    if "product_links" in page:
+        links_str = "\n".join([
+            f"{link['name']}|{link['url']}|{link['icon']}"
+            for link in page["product_links"]
+        ])
+    
+    edit_html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit {page['title']}</title>
+    <style>
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+        
+        body {{
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }}
+        
+        .container {{
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }}
+        
+        h1 {{
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }}
+        
+        .subtitle {{
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+        }}
+        
+        .form-group {{
+            margin-bottom: 1.5rem;
+        }}
+        
+        label {{
+            display: block;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }}
+        
+        input[type="text"],
+        textarea {{
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }}
+        
+        input[type="text"]:focus,
+        textarea:focus {{
+            outline: none;
+            border-color: #667eea;
+        }}
+        
+        textarea {{
+            min-height: 200px;
+            resize: vertical;
+        }}
+        
+        .help-text {{
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }}
+        
+        .btn-group {{
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }}
+        
+        .btn {{
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }}
+        
+        .btn-primary {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }}
+        
+        .btn-primary:hover {{
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }}
+        
+        .btn-secondary {{
+            background: #6c757d;
+            color: white;
+        }}
+        
+        .btn-secondary:hover {{
+            background: #5a6268;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✏️ Edit Page</h1>
+        <p class="subtitle">{page['title']}</p>
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="title">Page Title</label>
+                <input type="text" id="title" name="title" value="{page.get('title', '')}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="hero_image">Hero Image URL</label>
+                <input type="text" id="hero_image" name="hero_image" value="{page.get('hero_image', '')}" required>
+                <div class="help-text">Use imgur.com URLs (e.g., https://i.imgur.com/ABC123.jpg)</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="body_md">Content (Markdown)</label>
+                <textarea id="body_md" name="body_md" required>{page.get('body_md', '')}</textarea>
+                <div class="help-text">Use Markdown formatting (## for headings, ** for bold, etc.)</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="product_url">Product/Buy Button URL (Optional)</label>
+                <input type="text" id="product_url" name="product_url" value="{page.get('product_url', '')}">
+                <div class="help-text">Amazon or other product link</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="gallery_images">Gallery Images (Optional - One URL per line)</label>
+                <textarea id="gallery_images" name="gallery_images" style="min-height: 100px;">{gallery_str}</textarea>
+                <div class="help-text">For CD covers: /static/covers/cover1.jpg (one per line)</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="product_links">Music Platform Links (Optional - Format: Name|URL|Icon)</label>
+                <textarea id="product_links" name="product_links" style="min-height: 100px;">{links_str}</textarea>
+                <div class="help-text">Example: Amazon Music|https://music.amazon.com/...|🛒</div>
+            </div>
+            
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+                <a href="/admin" class="btn btn-secondary">← Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>"""
+    
+    return edit_html
 
 if __name__ == "__main__":
     if not DATA_FILE.exists():
