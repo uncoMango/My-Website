@@ -1,7 +1,8 @@
+
 # ke_aupuni_perfect_mobile.py
 # Kahu Phil's CORRECT content + Mobile Responsive + Working Admin
 
-from flask import Flask, request, redirect, render_template_string, abort, url_for
+from flask import Flask, request, redirect, render_template_string, abort, url_for, send_file
 import json
 from pathlib import Path
 import markdown
@@ -573,9 +574,6 @@ def page(page_id):
         abort(404)
     return render_page(page_id, data)
 
-
-# Serve CD cover images
-from flask import send_file
 
 @app.route("/static/covers/<filename>")
 def serve_cover(filename):
