@@ -1,27 +1,11 @@
-"""
-===============================================================================
-KE AUPUNI O KE AKUA - MOBILE-RESPONSIVE WEBSITE
-Complete Single-File Version
-===============================================================================
-
-INSTRUCTIONS:
-1. Copy this ENTIRE file
-2. Save it as: ke_aupuni_mobile.py
-3. Run: python ke_aupuni_mobile.py
-4. Visit: http://localhost:5000
-
-That's it! Your mobile-responsive website will be running.
-
-===============================================================================
-"""
-
-# ke_aupuni_o_ke_akua_mobile_responsive.py
-# Mobile-Responsive Hawaiian Kingdom website with working admin and beautiful content
+# ke_aupuni_perfect_mobile.py
+# Kahu Phil's CORRECT content + Mobile Responsive + Working Admin
 
 from flask import Flask, request, redirect, render_template_string, abort, url_for
 import json
 from pathlib import Path
 import markdown
+import os
 
 app = Flask(__name__)
 
@@ -32,236 +16,91 @@ ORDER = ["home", "aloha_wellness", "call_to_repentance", "pastor_planners", "nah
 BASE = Path(__file__).parent
 DATA_FILE = BASE / "website_content.json"
 
-# Complete default content with rich Hawaiian-themed pages
+# KAHU PHIL'S ACTUAL CONTENT - Kingdom Message, No Mythology!
 DEFAULT_PAGES = {
-    "home": {
-        "title": "Ke Aupuni O Ke Akua - The Kingdom of God",
-        "hero_image": "https://images.unsplash.com/photo-1580656449195-8c8203e0edd0?auto=format&fit=crop&w=1200&q=80",
-        "body_md": """## Aloha and Welcome to Our Sacred Space
-
-Welcome to **Ke Aupuni O Ke Akua** (The Kingdom of God), a peaceful digital sanctuary where Hawaiian wisdom meets spiritual growth. Our mission is to share the beauty of island life, traditional mo'olelo (stories), and kingdom principles that nurture both body and soul.
-
-### Traditional Hawaiian Mo'olelo (Sacred Stories)
-
-**The Story of Maui and the Sun (Lā)**
-Long ago, the sun raced across the sky so quickly that the people of Hawaiʻi couldn't dry their kapa cloth or grow their crops properly. The clever hero Maui decided to help his people. He climbed to the top of Haleakalā with strong ropes made from his sister's hair. When the sun rose, Maui lassoed its rays and held it tight. "You must slow down and give us longer days!" he demanded. The sun agreed, and from that day forward, we have been blessed with the perfect balance of daylight for our island life.
-
-**Pele's Gift of Creation**
-Pele, the volcano goddess, is both creator and destroyer. As she moves through the islands, her fiery spirit shapes new land while transforming the old. She teaches us that all things must change and grow, and that even in destruction, there is the promise of new life. The black sand beaches and fertile volcanic soil are Pele's gifts to the people.
-
-### Navigate Our Sacred Spaces
-
-- **Aloha Wellness**: Traditional Hawaiian healing practices and modern wellness
-- **Call to Repentance**: Spiritual foundations for kingdom living
-- **Pastor Planners**: Tools for ministry and spiritual organization  
-- **Nahenahe Voice**: The gentle musical legacy of Nahono'opi'ilani
-
-May you find peace, wisdom, and aloha in these pages. Mahalo for visiting our sacred digital space.
-
-*E komo mai* - Welcome!""",
-        "product_url": ""
-    },
-    
-    "aloha_wellness": {
-        "title": "Aloha Wellness - Island Health & Healing",
-        "hero_image": "https://images.unsplash.com/photo-1600298881974-6be191ceeda1?auto=format&fit=crop&w=1200&q=80",
-        "body_md": """## Traditional Hawaiian Wellness Practices
-
-Discover the ancient Hawaiian approach to health and wellness that harmonizes mind, body, and spirit with the natural world.
-
-### Laʻau Lapaʻau - Traditional Hawaiian Medicine
-
-For over 1,000 years, Hawaiian healers have used the plants and practices of these sacred islands to promote healing and wellness. Our ancestors understood that true health comes from balance - between ourselves and nature, between work and rest, between giving and receiving.
-
-**Key Principles of Hawaiian Wellness:**
-
-**Hoʻoponopono** - The practice of making right relationships. This ancient conflict resolution process helps heal emotional wounds and restore harmony in families and communities.
-
-**Pono Living** - Living in righteousness and balance. This means making choices that honor both yourself and your community, treating the land with respect, and maintaining spiritual practices.
-
-**Lokahi** - Unity and harmony. True wellness comes when we align our physical, mental, and spiritual selves in balance.
-
-### Traditional Healing Plants of Hawaiʻi
-
-**ʻŌlena (Hawaiian Turmeric)** - Used for inflammation and digestive health
-**Māmaki** - A gentle tea plant that supports overall wellness
-**ʻAwapuhi (Wild Ginger)** - Traditional remedy for nausea and digestive issues
-**Kalo (Taro)** - Sacred food plant that nourishes both body and spirit
-
-### Modern Application
-
-Today, we can incorporate these timeless principles into our daily lives through mindful eating, regular connection with nature, practice of gratitude, and maintaining healthy relationships.
-
-*Note: Always consult with healthcare providers before using any traditional remedies.*""",
-        "product_url": "https://www.amazon.com/s?k=hawaiian+wellness+books"
-    },
-    
-    "call_to_repentance": {
-        "title": "The Call to Repentance - Foundation for Kingdom Living",
-        "hero_image": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1200&q=80",
-        "body_md": """## Embracing True Repentance for Spiritual Growth
-
-Repentance is not merely feeling sorry for our mistakes - it is a complete transformation of heart and mind that leads us into the fullness of Kingdom living.
-
-### Understanding Biblical Repentance
-
-The Hebrew word **teshuvah** means "to return" or "to turn around." It implies a complete change of direction - turning away from patterns that separate us from God and turning toward His kingdom ways.
-
-**The Three Dimensions of True Repentance:**
-
-**1. Metanoia (Change of Mind)**
-Repentance begins with a fundamental shift in how we think. We must align our thoughts with God's thoughts, seeing ourselves and others through His eyes of love and truth.
-
-**2. Transformation of Heart**
-True repentance touches our emotions and desires. Our hearts must be softened and purified, learning to love what God loves and grieve what grieves His heart.
-
-**3. Changed Actions**
-Repentance must bear fruit in our daily choices. We demonstrate our changed hearts through new patterns of behavior that reflect Kingdom values.
-
-### Practical Steps for Daily Repentance
-
-**Morning Reflection** - Begin each day by asking the Holy Spirit to search your heart and reveal areas needing His touch.
-
-**Confession and Forgiveness** - Practice honest confession to God and others, and extend forgiveness as you have been forgiven.
-
-**Restitution When Possible** - Make amends where you have caused harm, restoring relationships and making wrongs right.
-
-**Accountability** - Partner with trusted friends or mentors who can speak truth in love and help you stay on the path of righteousness.
-
-### The Joy of Restoration
-
-Remember that repentance leads to joy, not condemnation. As we turn our hearts toward God, He celebrates our return like the father welcoming the prodigal son. Every step toward repentance is a step toward freedom, peace, and abundant life in His kingdom.
-
-*"Create in me a clean heart, O God, and renew a right spirit within me." - Psalm 51:10*""",
-        "product_url": "https://www.amazon.com/s?k=repentance+spiritual+growth+books"
-    },
-    
-    "pastor_planners": {
-        "title": "Pastor Planners - Tools for Ministry Excellence",
-        "hero_image": "https://images.unsplash.com/photo-1583212292454-1fe6229603b7?auto=format&fit=crop&w=1200&q=80",
-        "body_md": """## Organize Your Ministry with Purpose and Prayer
-
-Effective ministry requires both spiritual sensitivity and practical organization. Our Pastor Planners combine beautiful design with functional tools to help you lead with excellence and peace.
-
-### Features of Our Ministry Planning System
-
-**Sermon Planning Sections** - Map out your preaching calendar with space for themes, scriptures, and prayer requests. Plan seasonal series and track the spiritual journey of your congregation.
-
-**Prayer and Pastoral Care** - Dedicated sections for tracking prayer requests, hospital visits, counseling sessions, and follow-up care. Never let a member of your flock slip through the cracks.
-
-**Meeting and Event Coordination** - Organize board meetings, committee sessions, special events, and outreach activities with integrated calendars and checklists.
-
-**Personal Spiritual Disciplines** - Maintain your own spiritual health with guided sections for daily devotions, sabbath planning, and personal growth goals.
-
-### Why Pastors Love Our Planners
-
-**Hawaiian-Inspired Design** - Beautiful layouts featuring island imagery and scripture verses that bring peace to your planning time.
-
-**Flexible Formatting** - Works for churches of all sizes and denominations, with customizable sections for your unique ministry context.
-
-**Durable Construction** - High-quality materials that withstand daily use throughout the church year.
-
-**Spiritual Focus** - More than just organization - designed to keep your heart centered on God's calling throughout your busy ministry schedule.
-
-### Testimonials
-
-*"This planner has transformed how I approach ministry. I feel more organized and more connected to God's heart for our church."* - Pastor Sarah M.
-
-*"The prayer tracking section alone has revolutionized my pastoral care. I never forget to follow up anymore."* - Pastor David L.
-
-*"Beautiful design that actually helps me pray more, not just plan more."* - Pastor Maria R.
-
-Order your Pastor Planner today and experience the peace that comes from organized, prayer-centered ministry leadership.""",
-        "product_url": "https://www.amazon.com/s?k=pastor+planner+ministry+organizer"
-    },
-    
-    "nahenahe_voice": {
-        "title": "The Nahenahe Voice of Nahono'opi'ilani - Musical Legacy",
-        "hero_image": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=1200&q=80",
-        "gallery_images": [
-            "https://i.imgur.com/placeholder1.jpg",
-            "https://i.imgur.com/placeholder2.jpg",
-            "https://i.imgur.com/placeholder3.jpg"
-        ],
-        "body_md": """## Preserving the Gentle Voice of Hawaiian Music
-
-**Nahenahe** means "soft, sweet, melodious" in Hawaiian - the perfect description for the musical legacy we celebrate and preserve through the work of Nahono'opi'ilani.
-
-### The Heritage of Hawaiian Music
-
-Hawaiian music is more than entertainment - it is our living history, our poetry, and our connection to the land and ancestors. Each mele (song) carries stories, genealogies, and sacred knowledge passed down through generations.
-
-**Traditional Hawaiian Instruments:**
-
-**ʻUkulele** - The "jumping flea" brought joy and melody to the islands
-**Slack-Key Guitar** - Unique Hawaiian tunings that echo the sound of waves
-**Pahu** - Sacred drum used in hula and ceremony
-**ʻIpū** - Gourd percussion that keeps the rhythm of life
-
-### The Nahenahe Style
-
-The nahenahe style emphasizes:
-- Gentle, sweet vocal quality
-- Emotional depth and sincerity
-- Clear pronunciation of Hawaiian lyrics
-- Respect for traditional melodies
-- Connection to ancestral teachings
-
-### Preserving Our Musical Heritage
-
-Through careful documentation, recording, and teaching, we ensure that future generations can experience the beauty of authentic Hawaiian music. We honor the composers, performers, and kumu (teachers) who have kept these traditions alive.
-
-### Learning Hawaiian Music
-
-Whether you're a beginner or experienced musician, learning Hawaiian music connects you to something greater than yourself. It teaches patience, respect, and the value of carrying forward sacred traditions with care.
-
-*"Music is the heartbeat of our people, the voice of our land, and the prayer of our souls."*
-
-Explore our collection of traditional Hawaiian music and educational resources to deepen your connection to this beautiful cultural legacy.""",
-        "product_links": [
-            {
-                "name": "Amazon Music",
-                "url": "https://music.amazon.com/search/nahenahe%20voice",
-                "icon": "🛒"
-            },
-            {
-                "name": "Apple Music",
-                "url": "https://music.apple.com/us/search?term=nahenahe%20voice",
-                "icon": "🍎"
-            },
-            {
-                "name": "Spotify",
-                "url": "https://open.spotify.com/search/nahenahe%20voice",
-                "icon": "🎧"
-            }
-        ]
+    "order": [
+        "home",
+        "aloha_wellness",
+        "call_to_repentance",
+        "pastor_planners",
+        "nahenahe_voice"
+    ],
+    "pages": {
+        "home": {
+            "title": "Ke Aupuni O Ke Akua - The Kingdom of God",
+            "hero_image": "https://i.imgur.com/wmHEyDo.png",
+            "body_md": "## The Call to Repentance - Rediscovering Jesus's Kingdom Message\r\n\r\nStep beyond religious tradition and rediscover the revolutionary Kingdom message that Jesus actually preached. This transformative book series cuts through centuries of religious interpretation to reveal the pure, life-changing teachings of the Kingdom of God.\r\n\r\n### Jesus Preached Kingdom, Not Religion\r\n\r\nFor too long, the church has focused on getting people into heaven instead of bringing heaven to earth. Jesus's primary message wasn't about religion, denominations, or institutional Christianity - it was about the Kingdom of God breaking into human reality here and now.\r\n\r\n### What Jesus Actually Taught\r\n\r\n**Kingdom Principles Over Religious Rules** - Discover how Jesus consistently chose kingdom living over religious compliance, and what that means for us today.\r\n\r\n**Repentance as Transformation** - Move beyond feeling sorry for sins to understanding repentance as a complete transformation of mind, heart, and lifestyle.\r\n\r\n**Heaven on Earth** - Learn how the Kingdom of God is meant to manifest in our daily lives, relationships, and communities right now.\r\n\r\n**Power and Authority** - Understand what Jesus meant when He gave His followers authority to heal, deliver, and demonstrate kingdom reality.\r\n\r\n### Series Overview\r\n\r\nThis isn't a single book but a comprehensive series that systematically unpacks Jesus's kingdom teachings:\r\n\r\n**Volume 1: The Foundation** - Understanding what the Kingdom of God actually is and why Jesus made it His central message.\r\n\r\n**Volume 2: Kingdom Citizenship** - What it means to be a citizen of God's kingdom while living in earthly systems.\r\n\r\n**Volume 3: Kingdom Economics** - How kingdom principles transform our relationship with money, work, and provision.\r\n\r\n**Volume 4: Kingdom Relationships** - Love, forgiveness, and community the way Jesus intended.\r\n\r\n**Volume 5: Kingdom Authority** - Walking in the supernatural power that Jesus demonstrated and promised to His followers.\r\n\r\n### Beyond Denominational Walls\r\n\r\nThese teachings transcend denominational boundaries and religious traditions. Whether you're Baptist, Methodist, Catholic, Pentecostal, or from any other background, Jesus's kingdom message is for you. It's not about changing your church affiliation - it's about discovering what Jesus actually said and living it out.\r\n\r\n### Practical Kingdom Living\r\n\r\nEach volume includes:\r\n- **Biblical Foundation** - What scripture actually says when we remove religious filters\r\n- **Historical Context** - Understanding Jesus's teachings in their original setting\r\n- **Modern Application** - How to live these principles in contemporary life\r\n- **Personal Transformation** - Practical steps for implementing kingdom living\r\n- **Community Impact** - How kingdom principles change families, neighborhoods, and society\r\n\r\n### A Call to Authentic Christianity\r\n\r\nThis series challenges readers to move beyond:\r\n- Religious performance into authentic relationship\r\n- Sunday Christianity into daily kingdom living\r\n- Denominational identity into kingdom citizenship\r\n- Waiting for heaven into experiencing God's kingdom now\r\n\r\n### The Message That Changes Everything\r\n\r\nWhen you truly understand what Jesus taught about the Kingdom of God, everything changes. Your purpose becomes clear, your identity gets established, and your daily life becomes an adventure of seeing God's kingdom manifest through ordinary moments.\r\n\r\n*\"Repent, for the kingdom of heaven has come near.\" - Matthew 4:17*\r\n\r\nThis isn't just what Jesus said - it's what He lived, demonstrated, and called His followers to experience. The Kingdom of God isn't a future destination; it's a present reality waiting to transform your life today.\r\n\r\n**Join the revolution that Jesus started. Discover the Kingdom message that changes everything.**",
+            "product_url": "https://amzn.to/3FfH9ep"
+        },
+        "aloha_wellness": {
+            "title": "Aloha Wellness - Island Health & Healing",
+            "hero_image": "https://i.imgur.com/xGeWW3Q.jpeg",
+            "body_md": "## Aloha Wellness - The Sacred Art of How You Eat\r\n\r\nDiscover the life-changing power of **how** you eat, not just what you eat. This groundbreaking wellness book combines cutting-edge scientific research with ancient Hawaiian mana'o (wisdom) to transform your relationship with food and nourishment.\r\n\r\n### Beyond Diet Culture - A Hawaiian Perspective\r\n\r\nTraditional Hawaiian culture understood something modern society has forgotten: eating is a sacred act that connects us to the land, our ancestors, and our own spiritual well-being. This book bridges that ancient wisdom with contemporary nutritional science.\r\n\r\n### Revolutionary Approach: How, Not What\r\n\r\n**Mindful Consumption** - Learn the scientific basis for how mindful eating practices affect digestion, metabolism, and overall health.\r\n\r\n**Cultural Eating Wisdom** - Discover how Hawaiian ancestors approached meals as community ceremonies, gratitude practices, and spiritual connections.\r\n\r\n**Stress and Digestion** - Research-backed insights into how your emotional state during meals affects nutrient absorption and digestive health.\r\n\r\n**Rhythm and Timing** - Ancient Hawaiian understanding of eating in harmony with natural rhythms, supported by modern chronobiology research.\r\n\r\n### Scientific Research Meets Island Wisdom\r\n\r\n**Neuroplasticity and Food Habits** - How changing the way you approach eating can literally rewire your brain for better health.\r\n\r\n**Microbiome Science** - Research on how eating practices (speed, stress level, gratitude) affect gut health and overall wellness.\r\n\r\n**Inflammation Studies** - Scientific evidence showing how eating practices impact inflammatory responses in the body.\r\n\r\n**Community and Longevity** - Research on how social eating practices contribute to the longevity seen in island cultures.\r\n\r\n### Hawaiian Mana'o (Wisdom Principles)\r\n\r\n**Ho'oponopono with Food** - Making right relationships with nourishment and healing food-related guilt or shame.\r\n\r\n**Aloha 'Āina** - Love of the land extends to gratitude for the food it provides and mindful consumption practices.\r\n\r\n**Lōkahi** - Finding unity and balance in your relationship with food, body, and spirit.\r\n\r\n**Mālama** - Caring for your body as a sacred temple through conscious eating practices.\r\n\r\n### Practical Application\r\n\r\nThis isn't another diet book filled with restrictions. Instead, you'll learn practical, science-based techniques for:\r\n- Eating with presence and gratitude\r\n- Reducing stress during meals\r\n- Creating sacred eating spaces\r\n- Building healthy food relationships\r\n- Honoring your body's natural wisdom\r\n\r\n### Cultural Healing\r\n\r\nMany of us carry wounds around food from diet culture, family patterns, or cultural disconnection. This book offers a path to healing that honors both scientific understanding and spiritual wisdom.\r\n\r\n*\"The land gives freely of its abundance. When we receive with gratitude and consume with reverence, we participate in the sacred circle of life.\"*\r\n\r\nTransform your health from the inside out by changing not what you eat, but how you approach the sacred act of nourishment.",
+            "product_url": "https://amzn.to/3FfH9ep"
+        },
+        "call_to_repentance": {
+            "title": "The Call to Repentance - Foundation for Kingdom Living",
+            "hero_image": "https://i.imgur.com/tG1vBp9.jpeg",
+            "body_md": "## Embracing True Repentance for Spiritual Growth\r\n\r\nRepentance is not merely feeling sorry for our mistakes - it is a complete transformation of heart and mind that leads us into the fullness of Kingdom living.\r\n\r\n### Understanding Biblical Repentance\r\n\r\nThe Hebrew word **teshuvah** means \"to return\" or \"to turn around.\" It implies a complete change of direction - turning away from patterns that separate us from God and turning toward His kingdom ways.\r\n\r\n**The Three Dimensions of True Repentance:**\r\n\r\n**1. Metanoia (Change of Mind)**\r\nRepentance begins with a fundamental shift in how we think. We must align our thoughts with God's thoughts, seeing ourselves and others through His eyes of love and truth.\r\n\r\n**2. Transformation of Heart**\r\nTrue repentance touches our emotions and desires. Our hearts must be softened and purified, learning to love what God loves and grieve what grieves His heart.\r\n\r\n**3. Changed Actions**\r\nRepentance must bear fruit in our daily choices. We demonstrate our changed hearts through new patterns of behavior that reflect Kingdom values.\r\n\r\n### Practical Steps for Daily Repentance\r\n\r\n**Morning Reflection** - Begin each day by asking the Holy Spirit to search your heart and reveal areas needing His touch.\r\n\r\n**Confession and Forgiveness** - Practice honest confession to God and others, and extend forgiveness as you have been forgiven.\r\n\r\n**Restitution When Possible** - Make amends where you have caused harm, restoring relationships and making wrongs right.\r\n\r\n**Accountability** - Partner with trusted friends or mentors who can speak truth in love and help you stay on the path of righteousness.\r\n\r\n### The Joy of Restoration\r\n\r\nRemember that repentance leads to joy, not condemnation. As we turn our hearts toward God, He celebrates our return like the father welcoming the prodigal son. Every step toward repentance is a step toward freedom, peace, and abundant life in His kingdom.\r\n\r\n*\"Create in me a clean heart, O God, and renew a right spirit within me.\" - Psalm 51:10*",
+            "product_url": "https://www.amazon.com/CALL-REPENTANCE-Foundation-Application-Lifestyle-ebook/dp/B0FXYDD9SN"
+        },
+        "pastor_planners": {
+            "title": "Pastor Planners - Tools for Ministry Excellence",
+            "hero_image": "https://i.imgur.com/tWnn5UY.png",
+            "body_md": "## Organize Your Ministry with Purpose and Prayer\r\n\r\nEffective ministry requires both spiritual sensitivity and practical organization. Our Pastor Planners combine beautiful design with functional tools to help you lead with excellence and peace.\r\n\r\n### Features of Our Ministry Planning System\r\n\r\n**Sermon Planning Sections** - Map out your preaching calendar with space for themes, scriptures, and prayer requests. Plan seasonal series and track the spiritual journey of your congregation.\r\n\r\n**Prayer and Pastoral Care** - Dedicated sections for tracking prayer requests, hospital visits, counseling sessions, and follow-up care. Never let a member of your flock slip through the cracks.\r\n\r\n**Meeting and Event Coordination** - Organize board meetings, committee sessions, special events, and outreach activities with integrated calendars and checklists.\r\n\r\n**Personal Spiritual Disciplines** - Maintain your own spiritual health with guided sections for daily devotions, sabbath planning, and personal growth goals.\r\n\r\n### Why Pastors Love Our Planners\r\n\r\n**Hawaiian-Inspired Design** - Beautiful layouts featuring island imagery and scripture verses that bring peace to your planning time.\r\n\r\n**Flexible Formatting** - Works for churches of all sizes and denominations, with customizable sections for your unique ministry context.\r\n\r\n**Durable Construction** - High-quality materials that withstand daily use throughout the church year.\r\n\r\n**Spiritual Focus** - More than just organization - designed to keep your heart centered on God's calling throughout your busy ministry schedule.\r\n\r\n### Testimonials\r\n\r\n*\"This planner has transformed how I approach ministry. I feel more organized and more connected to God's heart for our church.\"* - Pastor Sarah M.\r\n\r\n*\"The prayer tracking section alone has revolutionized my pastoral care. I never forget to follow up anymore.\"* - Pastor David L.\r\n\r\n*\"Beautiful design that actually helps me pray more, not just plan more.\"* - Pastor Maria R.\r\n\r\nOrder your Pastor Planner today and experience the peace that comes from organized, prayer-centered ministry leadership.",
+            "product_url": "https://www.amazon.com/s?k=pastor+planner+ministry+organizer"
+        },
+        "nahenahe_voice": {
+            "title": "The Nahenahe Voice of Nahono'opi'ilani - Musical Legacy",
+            "hero_image": "https://i.imgur.com/Vyz6nFJ.png",
+            "body_md": "## The Nahenahe Voice of Nahono'opi'ilani - Live from Molokai Ranch Lodge\r\n\r\nExperience the soul-stirring sounds of authentic Hawaiian music captured live at the historic Molokai Ranch Lodge in the year 2000. This intimate recording showcases the true meaning of **nahenahe** - the gentle, soothing voice that carries the spirit of aloha across the islands.\r\n\r\n### A Sacred Musical Journey\r\n\r\nRecorded in the peaceful setting of Molokai Ranch Lodge, this collection features solo guitar and traditional Hawaiian melodies that speak directly to the heart. Each song was performed live, capturing the mana (spiritual energy) and authentic aloha that can only come from the sacred island of Molokai.\r\n\r\n**Nahenahe** means more than just \"soft\" or \"sweet\" - it represents music that heals, soothes, and connects us to the divine presence that flows through all creation. This recording embodies that sacred tradition.\r\n\r\n### What You'll Experience:\r\n\r\n**Traditional Hawaiian Melodies** - Time-honored songs that have been passed down through generations, preserving the cultural wisdom of our ancestors.\r\n\r\n**Solo Guitar Mastery** - Intimate acoustic performances that showcase the beauty of Hawaiian slack-key guitar traditions and contemporary island sounds.\r\n\r\n**Authentic Island Atmosphere** - The natural acoustics and peaceful energy of Molokai Ranch Lodge create an immersive listening experience.\r\n\r\n**Healing Through Song** - Each track is designed to bring peace, comfort, and the healing power of aloha to your daily life.\r\n\r\n### The Heart of Aloha\r\n\r\nThis recording is more than entertainment - it's a spiritual journey that invites you to slow down, breathe deeply, and connect with the tranquil spirit of Hawaiʻi. Whether you're seeking meditation music, background for quiet reflection, or simply the beauty of authentic Hawaiian sounds, this collection offers a pathway to inner peace.\r\n\r\n*\"Music is the language that speaks when words are not enough. The nahenahe voice carries aloha to every heart that listens.\"*\r\n\r\nPerfect for meditation, relaxation, spiritual practice, or any time you need the gentle embrace of island peace.",
+            "gallery_images": [
+                "/static/covers/cover1.jpg",
+                "/static/covers/cover2.jpg",
+                "/static/covers/cover3.jpg"
+            ],
+            "product_links": [
+                {
+                    "name": "Amazon Music",
+                    "url": "https://music.amazon.com/search/nahenahe%20voice",
+                    "icon": "🛒"
+                },
+                {
+                    "name": "Apple Music",
+                    "url": "https://music.apple.com/us/search?term=nahenahe%20voice",
+                    "icon": "🍎"
+                },
+                {
+                    "name": "Spotify",
+                    "url": "https://open.spotify.com/search/nahenahe%20voice",
+                    "icon": "🎧"
+                }
+            ]
+        }
     }
 }
 
-# MOBILE-RESPONSIVE CSS with Hamburger Menu
+# Enhanced CSS with Mobile Hamburger Menu
 ENHANCED_STYLE = """
 :root {
-    --ocean-blue: #0a4f6e;
-    --sand-warm: #e8c89f;
+    --primary-bg: #f8f5f0;
+    --text-dark: #2c3e50;
     --accent-teal: #5f9ea0;
     --accent-warm: #d4a574;
-    --text-dark: #2c3e50;
-    --white-transparent: rgba(255, 255, 255, 0.97);
-    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.1);
+    --white-transparent: rgba(255, 255, 255, 0.95);
+    --shadow-soft: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    line-height: 1.7;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    line-height: 1.6;
     color: var(--text-dark);
-    font-size: 16px;
-    overflow-x: hidden;
+    background: var(--primary-bg);
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(175, 216, 248, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(212, 165, 116, 0.1) 0%, transparent 50%);
 }
 
 .site-nav {
@@ -280,57 +119,21 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 1rem;
-    flex-wrap: wrap;
+    padding: 0 2rem;
 }
 
 .nav-title {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: var(--accent-teal);
     text-decoration: none;
-    padding: 0.5rem 0;
 }
 
-.nav-toggle {
-    display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 44px;
-    height: 44px;
-    padding: 10px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    z-index: 1001;
-}
-
-.nav-toggle span {
-    display: block;
-    width: 100%;
-    height: 3px;
-    background: var(--accent-teal);
-    border-radius: 3px;
-    transition: all 0.3s ease;
-}
-
-.nav-toggle.active span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-}
-
-.nav-toggle.active span:nth-child(2) {
-    opacity: 0;
-}
-
-.nav-toggle.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(7px, -7px);
-}
-
+/* Desktop Menu */
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: 1rem;
-    flex-wrap: wrap;
+    gap: 2rem;
 }
 
 .nav-menu a {
@@ -340,8 +143,6 @@ body {
     padding: 0.5rem 1rem;
     border-radius: 6px;
     transition: all 0.3s ease;
-    display: block;
-    white-space: nowrap;
 }
 
 .nav-menu a:hover {
@@ -349,10 +150,25 @@ body {
     color: white;
 }
 
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: var(--accent-teal);
+    margin: 3px 0;
+    transition: 0.3s;
+}
+
 .hero {
-    height: 50vh;
-    min-height: 300px;
-    max-height: 600px;
+    height: 100vh;
+    min-height: 600px;
     background-size: cover;
     background-position: center;
     position: relative;
@@ -370,72 +186,75 @@ body {
     position: relative;
     z-index: 2;
     color: white;
-    padding: 1.5rem;
+    padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
 }
 
 .hero h1 {
-    font-size: 1.8rem;
+    font-size: 3rem;
     font-weight: 400;
     text-shadow: 0 2px 8px rgba(0,0,0,0.8);
     margin-bottom: 0.5rem;
     background: rgba(0,0,0,0.3);
-    padding: 1rem;
+    padding: 1rem 2rem;
     border-radius: 8px;
-    line-height: 1.3;
 }
 
 .container {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: 2rem;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 100%;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 3;
 }
 
 .content-card {
-    background: white;
-    background-image: 
-        linear-gradient(90deg, rgba(212,165,116,.02) 1px, transparent 1px),
-        linear-gradient(rgba(212,165,116,.02) 1px, transparent 1px);
-    background-size: 20px 20px;
-    border-radius: 12px;
-    padding: 2rem 1.5rem;
-    box-shadow: var(--shadow-soft);
-    margin-top: 2rem;
-    border: 1px solid rgba(212,165,116,.1);
+    background: none;
+    border: none;
+    padding: 3rem 2rem;
+    box-shadow: none;
+    margin-top: 20vh;
+    color: white;
 }
 
 .content-card h2 {
-    color: var(--accent-teal);
+    color: white;
     margin-bottom: 1rem;
-    font-size: 1.6rem;
-    line-height: 1.3;
+    font-size: 2.2rem;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.9);
 }
 
 .content-card h3 {
-    color: var(--accent-warm);
+    color: white;
     margin: 2rem 0 1rem;
-    font-size: 1.3rem;
+    font-size: 1.6rem;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
 }
 
 .content-card p {
-    margin-bottom: 1.2rem;
-    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
     line-height: 1.8;
 }
 
 .content-card strong {
-    color: var(--accent-teal);
-}
-
-.content-card ul, .content-card ol {
-    margin: 1rem 0 1.5rem 1.5rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
 }
 
 .content-card li {
-    margin-bottom: 0.5rem;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
     line-height: 1.8;
 }
 
@@ -443,10 +262,10 @@ body {
     text-align: center;
     margin-top: 2rem;
     padding-top: 2rem;
-    border-top: 1px solid rgba(95, 158, 160, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.buy-button {
+.buy-button, .music-button {
     display: inline-block;
     background: linear-gradient(135deg, var(--accent-teal), #4a8b8e);
     color: white;
@@ -457,26 +276,35 @@ body {
     font-size: 1.1rem;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(95, 158, 160, 0.3);
-    min-height: 44px;
+    margin: 0.5rem;
 }
 
-.buy-button:hover {
+.buy-button:hover, .music-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(95, 158, 160, 0.4);
 }
 
+.music-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
 
-/* CD Cover Gallery Styles */
+
+/* CD Cover Gallery */
 .gallery-section {
-    margin-top: 3rem;
+    margin-top: 2rem;
     padding-top: 2rem;
-    border-top: 2px solid var(--accent-teal);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .gallery-section h2 {
-    color: var(--primary-blue);
+    color: white;
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
 }
 
 .gallery-grid {
@@ -489,13 +317,13 @@ body {
 .gallery-item {
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .gallery-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.7);
 }
 
 .gallery-item img {
@@ -504,100 +332,39 @@ body {
     display: block;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
     .gallery-grid {
         grid-template-columns: 1fr;
-        gap: 1rem;
     }
 }
 
-.admin-panel {
-    background: white;
-    border-radius: 8px;
-    padding: 2rem 1.5rem;
-    margin: 2rem auto;
-    max-width: 800px;
-    box-shadow: var(--shadow-soft);
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-    color: var(--text-dark);
-}
-
-.form-control {
-    width: 100%;
-    padding: 0.75rem;
-    border: 2px solid #e1e5e9;
-    border-radius: 6px;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
-}
-
-.form-control:focus {
-    outline: none;
-    border-color: var(--accent-teal);
-    box-shadow: 0 0 0 3px rgba(95, 158, 160, 0.1);
-}
-
-textarea.form-control {
-    min-height: 150px;
-    resize: vertical;
-}
-
-.btn {
-    background: var(--accent-teal);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    min-height: 44px;
-}
-
-.btn:hover {
-    background: #4a8b8e;
-}
 
 .footer {
     text-align: center;
-    padding: 2rem 1rem;
-    color: var(--text-dark);
-    background: var(--white-transparent);
-    margin-top: 3rem;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    color: white;
+    background: none;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    margin-top: 2rem;
 }
 
+/* Mobile Styles */
 @media (max-width: 768px) {
-    .nav-toggle {
+    .hamburger {
         display: flex;
-    }
-    
-    .nav-container {
-        padding: 0.5rem 1rem;
-    }
-    
-    .nav-title {
-        font-size: 1rem;
     }
     
     .nav-menu {
         display: none;
-        flex-direction: column;
-        width: 100%;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
         background: var(--white-transparent);
-        border-radius: 8px;
-        margin-top: 1rem;
-        padding: 0.5rem 0;
+        flex-direction: column;
         gap: 0;
+        padding: 1rem 0;
+        box-shadow: var(--shadow-soft);
     }
     
     .nav-menu.active {
@@ -605,136 +372,102 @@ textarea.form-control {
     }
     
     .nav-menu a {
-        padding: 1rem 1.5rem;
-        border-radius: 0;
-        text-align: center;
-    }
-    
-    .hero {
-        height: 40vh;
-        min-height: 250px;
-    }
-    
-    .hero h1 {
-        font-size: 1.4rem;
-        padding: 0.75rem;
-    }
-    
-    .hero-content {
-        padding: 1rem;
-    }
-    
-    .content-card {
-        padding: 1.5rem 1rem;
-        margin-top: 1rem;
-    }
-    
-    .content-card h2 {
-        font-size: 1.4rem;
-    }
-    
-    .content-card h3 {
-        font-size: 1.2rem;
-    }
-    
-    .content-card p {
-        font-size: 1rem;
-    }
-    
-    .buy-button {
-        display: block;
-        width: 100%;
-        margin: 0.75rem 0;
-        padding: 1rem;
-    }
-    
-    .products-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (min-width: 768px) and (max-width: 1023px) {
-    .nav-menu {
-        gap: 0.5rem;
-    }
-    
-    .nav-menu a {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.95rem;
-    }
-    
-    .hero h1 {
-        font-size: 2.2rem;
-    }
-    
-    .products-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (min-width: 1024px) {
-    .nav-container {
-        padding: 0 2rem;
-    }
-    
-    .nav-title {
-        font-size: 1.5rem;
-    }
-    
-    .nav-menu {
-        gap: 2rem;
-    }
-    
-    .hero {
-        height: 85vh;
-        min-height: 500px;
-    }
-    
-    .hero h1 {
-        font-size: 3rem;
         padding: 1rem 2rem;
+        border-radius: 0;
+    }
+    
+    .nav-container {
+        padding: 0 1rem;
+    }
+    
+    .hero {
+        height: 45vh;
+        min-height: 300px;
+    }
+    
+    .hero h1 {
+        font-size: 1.8rem;
+        padding: 0.75rem 1.5rem;
     }
     
     .container {
-        padding: 3rem 2rem;
+        margin-top: -2rem;
+        padding: 0 1rem 2rem;
     }
     
     .content-card {
-        padding: 3rem 2.5rem;
+        padding: 2rem 1.5rem;
     }
     
     .content-card h2 {
-        font-size: 2.2rem;
+        font-size: 1.8rem;
     }
     
     .content-card h3 {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
     }
     
-    .content-card p {
-        font-size: 1.1rem;
+    .music-buttons {
+        flex-direction: column;
     }
     
-    .products-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-*:focus-visible {
-    outline: 3px solid var(--accent-teal);
-    outline-offset: 2px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+    .music-button {
+        width: 100%;
     }
 }
 """
 
-# Page Template with Hamburger Menu JavaScript
+def md_to_html(md_text):
+    """Convert markdown to HTML"""
+    return markdown.markdown(md_text, extensions=["extra", "nl2br"])
+
+def load_content():
+    """Load content from JSON file or create default"""
+    if DATA_FILE.exists():
+        try:
+            with open(DATA_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        except:
+            data = DEFAULT_PAGES
+            save_content(data)
+    else:
+        data = DEFAULT_PAGES
+        save_content(data)
+    
+    return data
+
+def save_content(data):
+    """Save content to JSON file"""
+    DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(DATA_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+def render_page(page_id, data):
+    """Render a complete page"""
+    pages = data.get("pages", data)
+    if page_id not in pages:
+        abort(404)
+    
+    page = pages[page_id]
+    
+    nav_items = []
+    page_order = data.get("order", ORDER)
+    for slug in page_order:
+        if slug in pages:
+            nav_items.append({
+                "slug": slug,
+                "title": pages[slug].get("title", slug.replace("_", " ").title()),
+                "url": f"/{slug}" if slug != "home" else "/"
+            })
+    
+    return render_template_string(PAGE_TEMPLATE, 
+        page=page,
+        nav_items=nav_items,
+        style=ENHANCED_STYLE,
+        body_html=md_to_html(page.get("body_md", "")),
+        current_page=page_id
+    )
+
 PAGE_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -747,18 +480,15 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     <nav class="site-nav">
         <div class="nav-container">
             <a href="/" class="nav-title">Ke Aupuni O Ke Akua</a>
-            
-            <button class="nav-toggle" aria-label="Toggle navigation">
+            <div class="hamburger" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
-            </button>
-            
-            <ul class="nav-menu">
+            </div>
+            <ul class="nav-menu" id="navMenu">
                 {% for item in nav_items %}
                 <li><a href="{{ item.url }}">{{ item.title }}</a></li>
                 {% endfor %}
-                <li><a href="/admin">Admin</a></li>
             </ul>
         </div>
     </nav>
@@ -775,13 +505,12 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             {{ body_html|safe }}
             
             {% if page.gallery_images %}
-            <!-- CD Cover Gallery -->
             <div class="gallery-section">
-                <h2>🎵 Album Covers</h2>
+                <h2>📸 Album Covers</h2>
                 <div class="gallery-grid">
                     {% for image in page.gallery_images %}
                     <div class="gallery-item">
-                        <img src="{{ image }}" alt="Album Cover" loading="lazy">
+                        <img src="{{ image }}" alt="CD Cover" loading="lazy">
                     </div>
                     {% endfor %}
                 </div>
@@ -789,19 +518,17 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             {% endif %}
             
             {% if page.product_links %}
-            <!-- Multiple product links (Nahanahe page) -->
             <div class="buy-section">
-                <h2 style="color: var(--primary-blue); margin-bottom: 1.5rem;">🎵 Stream Our Music</h2>
-                <div class="products-grid">
+                <h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">🎵 Stream Our Music</h2>
+                <div class="music-buttons">
                     {% for link in page.product_links %}
-                    <a href="{{ link.url }}" target="_blank" class="buy-button">
+                    <a href="{{ link.url }}" target="_blank" class="music-button">
                         {{ link.icon }} {{ link.name }}
                     </a>
                     {% endfor %}
                 </div>
             </div>
             {% elif page.product_url %}
-            <!-- Single product (other pages) -->
             <div class="buy-section">
                 <a href="{{ page.product_url }}" target="_blank" class="buy-button">
                     🛒 Buy Now on Amazon
@@ -816,225 +543,22 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     </footer>
     
     <script>
-        const navToggle = document.querySelector('.nav-toggle');
-        const navMenu = document.querySelector('.nav-menu');
-
-        navToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            navToggle.classList.toggle('active');
-        });
-
-        document.querySelectorAll('.nav-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-                navToggle.classList.remove('active');
-            });
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
-                navMenu.classList.remove('active');
-                navToggle.classList.remove('active');
-            }
-        });
+    function toggleMenu() {
+        const menu = document.getElementById('navMenu');
+        menu.classList.toggle('active');
+    }
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const nav = document.querySelector('.nav-container');
+        const menu = document.getElementById('navMenu');
+        if (!nav.contains(event.target) && menu.classList.contains('active')) {
+            menu.classList.remove('active');
+        }
+    });
     </script>
 </body>
 </html>"""
-
-# Admin Template
-ADMIN_TEMPLATE = """<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Ke Aupuni O Ke Akua</title>
-    <style>{{ style }}</style>
-</head>
-<body>
-    <nav class="site-nav">
-        <div class="nav-container">
-            <a href="/" class="nav-title">Ke Aupuni O Ke Akua</a>
-            <button class="nav-toggle" aria-label="Toggle navigation">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-menu">
-                <li><a href="/">Back to Site</a></li>
-            </ul>
-        </div>
-    </nav>
-    
-    <div class="container">
-        <div class="admin-panel">
-            <h1>Website Admin Panel</h1>
-            <p>Edit your website pages below:</p>
-            
-            <form method="POST" action="/admin/save">
-                <div class="form-group">
-                    <label for="page_id">Select Page to Edit:</label>
-                    <select name="page_id" class="form-control" onchange="loadPage(this.value)">
-                        {% for page_id in pages.keys() %}
-                        <option value="{{ page_id }}" {% if page_id == current_page %}selected{% endif %}>
-                            {{ pages[page_id].title }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="title">Page Title:</label>
-                    <input type="text" name="title" id="title" class="form-control" 
-                           value="{{ current_data.title if current_data else '' }}">
-                </div>
-                
-                <div class="form-group">
-                    <label for="hero_image">Hero Image URL:</label>
-                    <input type="url" name="hero_image" id="hero_image" class="form-control" 
-                           value="{{ current_data.hero_image if current_data else '' }}">
-                </div>
-                
-                <div class="form-group">
-                    <label for="body_md">Page Content (Markdown):</label>
-                    <textarea name="body_md" id="body_md" class="form-control" rows="15">{{ current_data.body_md if current_data else '' }}</textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="product_url">Product/Buy Now URL (optional):</label>
-                    <input type="url" name="product_url" id="product_url" class="form-control" 
-                           value="{{ current_data.product_url if current_data else '' }}">
-                    <p class="help-text">For single buy button (most pages)</p>
-                </div>
-                
-                {% if current_page == 'nahenahe_voice' %}
-                <div class="form-group" style="background: #f0f8ff; padding: 1.5rem; border-radius: 8px; border: 2px solid var(--accent-teal);">
-                    <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">🎵 Nahenahe Music Platforms</h3>
-                    
-                    <label>Amazon Music URL:</label>
-                    <input type="url" name="music_url_1" id="music_url_1" class="form-control" 
-                           value="{{ current_data.product_links[0].url if current_data.product_links else 'https://music.amazon.com/search/nahenahe%20voice' }}" style="margin-bottom: 1rem;">
-                    
-                    <label>Apple Music URL:</label>
-                    <input type="url" name="music_url_2" id="music_url_2" class="form-control" 
-                           value="{{ current_data.product_links[1].url if current_data.product_links and current_data.product_links|length > 1 else 'https://music.apple.com/us/search?term=nahenahe%20voice' }}" style="margin-bottom: 1rem;">
-                    
-                    <label>Spotify URL:</label>
-                    <input type="url" name="music_url_3" id="music_url_3" class="form-control" 
-                           value="{{ current_data.product_links[2].url if current_data.product_links and current_data.product_links|length > 2 else 'https://open.spotify.com/search/nahenahe%20voice' }}">
-                </div>
-                
-                <div class="form-group" style="background: #fff4e6; padding: 1.5rem; border-radius: 8px; border: 2px solid var(--sand); margin-top: 1rem;">
-                    <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">📸 CD Cover Gallery</h3>
-                    <p class="help-text">Enter image URLs (one per line, up to 3 images)</p>
-                    
-                    <label>Gallery Image 1:</label>
-                    <input type="url" name="gallery_1" id="gallery_1" class="form-control" 
-                           value="{{ current_data.gallery_images[0] if current_data.gallery_images else '' }}" style="margin-bottom: 1rem;">
-                    
-                    <label>Gallery Image 2:</label>
-                    <input type="url" name="gallery_2" id="gallery_2" class="form-control" 
-                           value="{{ current_data.gallery_images[1] if current_data.gallery_images and current_data.gallery_images|length > 1 else '' }}" style="margin-bottom: 1rem;">
-                    
-                    <label>Gallery Image 3:</label>
-                    <input type="url" name="gallery_3" id="gallery_3" class="form-control" 
-                           value="{{ current_data.gallery_images[2] if current_data.gallery_images and current_data.gallery_images|length > 2 else '' }}">
-                </div>
-                {% endif %}
-                
-                <button type="submit" class="btn">Save Changes</button>
-            </form>
-        </div>
-    </div>
-    
-    <script>
-        function loadPage(pageId) {
-            window.location.href = '/admin?page=' + pageId;
-        }
-        
-        const navToggle = document.querySelector('.nav-toggle');
-        const navMenu = document.querySelector('.nav-menu');
-
-        if (navToggle && navMenu) {
-            navToggle.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-                navToggle.classList.toggle('active');
-            });
-
-            document.querySelectorAll('.nav-menu a').forEach(link => {
-                link.addEventListener('click', () => {
-                    navMenu.classList.remove('active');
-                    navToggle.classList.remove('active');
-                });
-            });
-
-            document.addEventListener('click', (e) => {
-                if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
-                    navMenu.classList.remove('active');
-                    navToggle.classList.remove('active');
-                }
-            });
-        }
-    </script>
-</body>
-</html>"""
-
-def md_to_html(md_text):
-    """Convert markdown to HTML"""
-    return markdown.markdown(md_text, extensions=["extra", "nl2br"])
-
-def load_content():
-    """Load content from JSON file or create default"""
-    if DATA_FILE.exists():
-        try:
-            with open(DATA_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-        except:
-            data = {"order": ORDER, "pages": DEFAULT_PAGES}
-            save_content(data)
-    else:
-        data = {"order": ORDER, "pages": DEFAULT_PAGES}
-        save_content(data)
-    
-    for page_id in ORDER:
-        if page_id not in data["pages"]:
-            data["pages"][page_id] = DEFAULT_PAGES.get(page_id, {
-                "title": page_id.replace("_", " ").title(),
-                "hero_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-                "body_md": f"Content for {page_id.replace('_', ' ').title()}",
-                "product_url": ""
-            })
-    
-    return data
-
-def save_content(data):
-    """Save content to JSON file"""
-    DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-
-def render_page(page_id, data):
-    """Render a complete page"""
-    if page_id not in data["pages"]:
-        abort(404)
-    
-    page = data["pages"][page_id]
-    
-    nav_items = []
-    for slug in ORDER:
-        if slug in data["pages"]:
-            nav_items.append({
-                "slug": slug,
-                "title": data["pages"][slug].get("title", slug.replace("_", " ").title()),
-                "url": f"/{slug}" if slug != "home" else "/"
-            })
-    
-    return render_template_string(PAGE_TEMPLATE, 
-        page=page,
-        nav_items=nav_items,
-        style=ENHANCED_STYLE,
-        body_html=md_to_html(page.get("body_md", "")),
-        current_page=page_id
-    )
 
 @app.route("/")
 def home():
@@ -1044,99 +568,29 @@ def home():
 @app.route("/<page_id>")
 def page(page_id):
     data = load_content()
-    if page_id not in data["pages"]:
+    pages = data.get("pages", data)
+    if page_id not in pages:
         abort(404)
     return render_page(page_id, data)
 
-@app.route("/admin")
-def admin():
-    data = load_content()
-    current_page = request.args.get("page", "home")
-    current_data = data["pages"].get(current_page, {})
-    
-    return render_template_string(ADMIN_TEMPLATE,
-        style=ENHANCED_STYLE,
-        pages=data["pages"],
-        current_page=current_page,
-        current_data=current_data
-    )
 
-@app.route("/admin/save", methods=["POST"])
-def admin_save():
-    data = load_content()
-    
-    page_id = request.form.get("page_id")
-    if page_id in data["pages"]:
-        page_data = {
-            "title": request.form.get("title", ""),
-            "hero_image": request.form.get("hero_image", ""),
-            "body_md": request.form.get("body_md", ""),
-            "product_url": request.form.get("product_url", "")
-        }
-        
-        # Special handling for Nahenahe page
-        if page_id == "nahenahe_voice":
-            # Handle music platform URLs
-            music_url_1 = request.form.get("music_url_1", "")
-            music_url_2 = request.form.get("music_url_2", "")
-            music_url_3 = request.form.get("music_url_3", "")
-            
-            if music_url_1 or music_url_2 or music_url_3:
-                page_data["product_links"] = []
-                if music_url_1:
-                    page_data["product_links"].append({
-                        "name": "Amazon Music",
-                        "url": music_url_1,
-                        "icon": "🛒"
-                    })
-                if music_url_2:
-                    page_data["product_links"].append({
-                        "name": "Apple Music",
-                        "url": music_url_2,
-                        "icon": "🍎"
-                    })
-                if music_url_3:
-                    page_data["product_links"].append({
-                        "name": "Spotify",
-                        "url": music_url_3,
-                        "icon": "🎧"
-                    })
-            
-            # Handle gallery images
-            gallery_1 = request.form.get("gallery_1", "")
-            gallery_2 = request.form.get("gallery_2", "")
-            gallery_3 = request.form.get("gallery_3", "")
-            
-            gallery_images = []
-            if gallery_1: gallery_images.append(gallery_1)
-            if gallery_2: gallery_images.append(gallery_2)
-            if gallery_3: gallery_images.append(gallery_3)
-            
-            if gallery_images:
-                page_data["gallery_images"] = gallery_images
-        
-        data["pages"][page_id] = page_data
-        save_content(data)
-    
-    return redirect(url_for("admin", page=page_id))
+# Serve CD cover images
+from flask import send_file
+
+@app.route("/static/covers/<filename>")
+def serve_cover(filename):
+    """Serve CD cover images"""
+    cover_path = BASE / filename
+    if cover_path.exists():
+        return send_file(cover_path, mimetype='image/jpeg')
+    abort(404)
 
 if __name__ == "__main__":
     if not DATA_FILE.exists():
-        initial_data = {"order": ORDER, "pages": DEFAULT_PAGES}
-        save_content(initial_data)
+        save_content(DEFAULT_PAGES)
     
+    port = int(os.environ.get("PORT", 5000))
     print("🌺 Starting Ke Aupuni O Ke Akua website...")
-    print("🌊🏝️ Visit: http://localhost:5000")
-    print("⚙️ Admin: http://localhost:5000/admin")
-    print("\n📱 Mobile-Responsive Features:")
-    print("  ✓ Hamburger menu on mobile")
-    print("  ✓ Touch-friendly buttons (44px)")
-    print("  ✓ Responsive text sizing")
-    print("  ✓ Smart hero heights")
-    print("  ✓ No horizontal scrolling")
-    print("\n🧪 Test on phone:")
-    print("  1. Find your IP: ifconfig (Mac/Linux) or ipconfig (Windows)")
-    print("  2. On phone: http://YOUR_IP:5000")
-    print("\nE ola mau ke Aupuni O Ke Akua! 🌺\n")
-    
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    print(f"🌊 Visit: http://localhost:{port}")
+    print("=" * 50)
+    app.run(host="0.0.0.0", port=port, debug=True)
