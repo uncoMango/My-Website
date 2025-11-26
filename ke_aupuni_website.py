@@ -391,8 +391,12 @@ body {
     }
     
     .container {
-        margin-top: -2rem;
+        position: relative;
+        height: auto;
+        margin-top: 0;
         padding: 0 1rem 2rem;
+        transform: none;
+        left: 0;
     }
     
     .content-card {
