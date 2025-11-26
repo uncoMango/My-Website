@@ -217,7 +217,12 @@ body {
 }
 
 .content-card {
-    background: none;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                repeating-linear-gradient(90deg, 
+                    rgba(210, 180, 140, 0.3) 0px,
+                    rgba(210, 180, 140, 0.3) 2px,
+                    rgba(139, 90, 43, 0.2) 2px,
+                    rgba(139, 90, 43, 0.2) 4px);
     border: none;
     padding: 3rem 2rem;
     box-shadow: none;
