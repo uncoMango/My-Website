@@ -566,6 +566,9 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
         }
     });
     </script>
+    
+    <!-- Gumroad Embedded Checkout Script -->
+    <script src="https://gumroad.com/js/gumroad.js"></script>
 </body>
 </html>"""
 
