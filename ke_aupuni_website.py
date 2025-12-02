@@ -80,7 +80,7 @@ DEFAULT_PAGES = {
     }
 }
 
-# Enhanced CSS with Mobile Hamburger Menu
+# Enhanced CSS with Mobile Hamburger Menu - UPDATED WITH LAUHALA NAV
 ENHANCED_STYLE = """
 :root {
     --primary-bg: #f8f5f0;
@@ -103,14 +103,21 @@ body {
         radial-gradient(circle at 80% 20%, rgba(212, 165, 116, 0.1) 0%, transparent 50%);
 }
 
+/* UPDATED: Lauhala mat woven pattern navigation */
 .site-nav {
-    background: var(--white-transparent);
+    background-color: #d4b896;
+    background-image: 
+        linear-gradient(45deg, #c9a876 25%, transparent 25%),
+        linear-gradient(-45deg, #c9a876 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #bfa068 75%),
+        linear-gradient(-45deg, transparent 75%, #bfa068 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
     padding: 1rem 0;
     position: sticky;
     top: 0;
     z-index: 1000;
     box-shadow: var(--shadow-soft);
-    backdrop-filter: blur(10px);
 }
 
 .nav-container {
@@ -122,11 +129,13 @@ body {
     padding: 0 2rem;
 }
 
+/* UPDATED: Darker title for visibility on lauhala */
 .nav-title {
     font-size: 1.5rem;
     font-weight: bold;
-    color: var(--accent-teal);
+    color: #2c3e50;
     text-decoration: none;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
 }
 
 /* Desktop Menu */
@@ -158,10 +167,11 @@ body {
     padding: 0.5rem;
 }
 
+/* UPDATED: Darker hamburger lines for visibility on lauhala */
 .hamburger span {
     width: 25px;
     height: 3px;
-    background: var(--accent-teal);
+    background: #2c3e50;
     margin: 3px 0;
     transition: 0.3s;
 }
@@ -359,13 +369,21 @@ body {
         display: flex;
     }
     
+    /* UPDATED: Lauhala pattern for mobile dropdown menu */
     .nav-menu {
         display: none;
         position: absolute;
         top: 100%;
         left: 0;
         right: 0;
-        background: var(--white-transparent);
+        background-color: #d4b896;
+        background-image: 
+            linear-gradient(45deg, #c9a876 25%, transparent 25%),
+            linear-gradient(-45deg, #c9a876 25%, transparent 25%),
+            linear-gradient(45deg, transparent 75%, #bfa068 75%),
+            linear-gradient(-45deg, transparent 75%, #bfa068 75%);
+        background-size: 16px 16px;
+        background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
         flex-direction: column;
         gap: 0;
         padding: 1rem 0;
@@ -566,9 +584,6 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
         }
     });
     </script>
-    
-    <!-- Gumroad Embedded Checkout Script -->
-    <script src="https://gumroad.com/js/gumroad.js"></script>
 </body>
 </html>"""
 
