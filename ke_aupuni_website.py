@@ -1,4 +1,4 @@
-# ke_aupuni_website.py - MODIFIED TO ALLOW ADDING NEW PAGES AND INTRO TEXT
+# ke_aupuni_website.py - FIXED FOR DEPLOYMENT AND NEW FEATURES
 # Kahu Phil's CORRECT content + Mobile Responsive + Working Admin
 
 from flask import Flask, request, redirect, render_template_string, abort, url_for, send_file
@@ -450,6 +450,154 @@ body {
 }
 """
 
+# The CSS for the Admin Panel is kept separate and will be correctly embedded.
+ADMIN_CSS = """
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+        
+        .page-list {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .page-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .page-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+        
+        .page-title {
+            font-size: 1.25rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .page-info {
+            display: grid;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #495057;
+        }
+        
+        .page-info strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .edit-btn, .add-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 1rem;
+        }
+        
+        .add-btn {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            margin-bottom: 2rem;
+        }
+        
+        .edit-btn:hover, .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 2rem;
+        }
+        
+        .back-btn:hover {
+            background: #5a6268;
+        }
+        
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            transition: background 0.2s;
+        }
+        .delete-btn:hover {
+            background: #c82333;
+        }
+        
+        .gallery-preview {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .gallery-preview img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 2px solid #dee2e6;
+        }
+"""
+
 def md_to_html(md_text):
     """Convert markdown to HTML"""
     return markdown.markdown(md_text, extensions=["extra", "nl2br"])
@@ -648,158 +796,13 @@ def admin_panel():
     data = load_content()
     pages = data.get("pages", data)
     
-    admin_html = """<!DOCTYPE html>
+    admin_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Ke Aupuni O Ke Akua</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 2rem;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 0.5rem;
-            font-size: 2rem;
-        }
-        
-        .subtitle {
-            color: #7f8c8d;
-            margin-bottom: 2rem;
-            font-size: 1rem;
-        }
-        
-        .page-list {
-            display: grid;
-            gap: 1.5rem;
-        }
-        
-        .page-card {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 2px solid #e9ecef;
-            transition: all 0.3s ease;
-            position: relative; /* For the delete button */
-        }
-        
-        .page-card:hover {
-            border-color: #667eea;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-        }
-        
-        .page-title {
-            font-size: 1.25rem;
-            color: #2c3e50;
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-        
-        .page-info {
-            display: grid;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            color: #495057;
-        }
-        
-        .page-info strong {
-            color: #2c3e50;
-            font-weight: 600;
-        }
-        
-        .edit-btn, .add-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            text-decoration: none;
-            display: inline-block;
-            margin-right: 1rem;
-        }
-        
-        .add-btn {
-            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
-            margin-bottom: 2rem;
-        }
-        
-        .edit-btn:hover, .add-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        }
-        
-        .back-btn {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 2rem;
-        }
-        
-        .back-btn:hover {
-            background: #5a6268;
-        }
-        
-        .delete-btn {
-            background: #dc3545;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            transition: background 0.2s;
-        }
-        .delete-btn:hover {
-            background: #c82333;
-        }
-        
-        .gallery-preview {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-        
-        .gallery-preview img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 4px;
-            border: 2px solid #dee2e6;
-        }
-    </style>
+    <style>{ADMIN_CSS}</style>
 </head>
 <body>
     <div class="container">
@@ -878,7 +881,6 @@ def add_new_page():
         new_title = request.form.get("title", "").strip()
         
         if not new_title:
-            # Simple check to prevent empty pages
             return redirect("/admin")
             
         new_slug = slugify(new_title)
@@ -908,14 +910,269 @@ def add_new_page():
         return redirect(f"/admin/edit/{new_slug}")
     
     # GET request: show the add new page form
-    add_html = """<!DOCTYPE html>"""
+    
+    # NOTE: I am redefining the minimal CSS here to ensure it works, 
+    # as the main ADMIN_CSS is too heavy for this small form.
+    
+    add_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Page</title>
     <style>
-        /* Styles copied from edit_page for consistency */
+        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+        body {{ font-family: system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 2rem; }}
+        .container {{ max-width: 800px; margin: 0 auto; background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }}
+        h1 {{ color: #2c3e50; margin-bottom: 0.5rem; }}
+        .subtitle {{ color: #7f8c8d; margin-bottom: 2rem; }}
+        .form-group {{ margin-bottom: 1.5rem; }}
+        label {{ display: block; color: #2c3e50; font-weight: 600; margin-bottom: 0.5rem; }}
+        input[type="text"], textarea {{ width: 100%; padding: 0.75rem; border: 2px solid #e9ecef; border-radius: 8px; font-size: 1rem; font-family: inherit; transition: border-color 0.3s ease; }}
+        input[type="text"]:focus, textarea:focus {{ outline: none; border-color: #667eea; }}
+        textarea {{ min-height: 200px; resize: vertical; }}
+        .help-text {{ font-size: 0.85rem; color: #6c757d; margin-top: 0.25rem; }}
+        .btn-group {{ display: flex; gap: 1rem; margin-top: 2rem; }}
+        .btn {{ padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; text-decoration: none; display: inline-block; }}
+        .btn-primary {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }}
+        .btn-primary:hover {{ transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); }}
+        .btn-secondary {{ background: #6c757d; color: white; }}
+        .btn-secondary:hover {{ background: #5a6268; }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>➕ Add New Book/Series</h1>
+        <p class="subtitle">Enter the details for your new page. A unique URL will be generated automatically.</p>
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="title">Page Title (e.g., New Book Series Title)</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="hero_image">Hero Image URL</label>
+                <input type="text" id="hero_image" name="hero_image" value="https://i.imgur.com/placeholder.png" required>
+                <div class="help-text">Use an Imgur or similar URL for the banner image.</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="intro_text">Book Intro/Excerpt (Markdown)</label>
+                <textarea id="intro_text" name="intro_text" style="min-height: 100px;">## The brief introduction or first few paragraphs goes here.</textarea>
+                <div class="help-text">This will be prominently displayed near the top.</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="body_md">Full Content (Markdown)</label>
+                <textarea id="body_md" name="body_md" required>The full chapter summary, testimonials, and detailed information about the new book or series goes here in **Markdown** format.</textarea>
+                <div class="help-text">Use Markdown formatting (## for headings, ** for bold, etc.)</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="product_url">Product/Buy Button URL (Optional)</label>
+                <input type="text" id="product_url" name="product_url">
+                <div class="help-text">Amazon or other product link for the main 'Buy Now' button.</div>
+            </div>
+            
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary">✅ Create Page</button>
+                <a href="/admin" class="btn btn-secondary">← Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>"""
+    
+    return add_html
+
+@app.route("/admin/delete/<page_id>")
+def delete_page(page_id):
+    """Delete a page"""
+    data = load_content()
+    
+    if page_id in data["pages"] and page_id not in data.get("order", []):
+        # We only allow deleting pages NOT in the hardcoded ORDER list for safety
+        del data["pages"][page_id]
+        if page_id in data.get("order", []):
+            data["order"].remove(page_id)
+        
+        save_content(data)
+        return redirect("/admin")
+    
+    # If the page is one of the original hardcoded ones, abort to prevent site breakage
+    if page_id in DEFAULT_PAGES["pages"]:
+        abort(403, description="Cannot delete default system pages.")
+        
+    abort(404)
+
+
+@app.route("/admin/edit/<page_id>", methods=["GET", "POST"])
+def edit_page(page_id):
+    """Edit a specific page"""
+    data = load_content()
+    pages = data.get("pages", data)
+    
+    if page_id not in pages:
+        abort(404)
+    
+    if request.method == "POST":
+        # Update page data
+        pages[page_id]["title"] = request.form.get("title", "")
+        pages[page_id]["hero_image"] = request.form.get("hero_image", "")
+        
+        # === NEW: Handling Intro Text ===
+        pages[page_id]["intro_text"] = request.form.get("intro_text", "")
+        # ================================
+        
+        pages[page_id]["body_md"] = request.form.get("body_md", "")
+        
+        # Handle product URL
+        product_url = request.form.get("product_url", "").strip()
+        if product_url:
+            pages[page_id]["product_url"] = product_url
+        elif "product_url" in pages[page_id]:
+            del pages[page_id]["product_url"]
+        
+        # Handle gallery images (book covers/CD images)
+        gallery_str = request.form.get("gallery_images", "").strip()
+        if gallery_str:
+            gallery_images = [img.strip() for img in gallery_str.split("\n") if img.strip()]
+            # Ensure static path for your uploaded images
+            pages[page_id]["gallery_images"] = [
+                img if img.startswith('http') else url_for('static', filename='covers/' + img.lstrip('/static/covers/')) 
+                for img in gallery_images
+            ]
+        elif "gallery_images" in pages[page_id]:
+            del pages[page_id]["gallery_images"]
+        
+        # Handle product links (for music page)
+        links_str = request.form.get("product_links", "").strip()
+        if links_str:
+            links = []
+            for line in links_str.split("\n"):
+                if "|" in line:
+                    parts = line.split("|")
+                    if len(parts) >= 3:
+                        links.append({
+                            "name": parts[0].strip(),
+                            "url": parts[1].strip(),
+                            "icon": parts[2].strip()
+                        })
+            if links:
+                pages[page_id]["product_links"] = links
+        elif "product_links" in pages[page_id]:
+            del pages[page_id]["product_links"]
+        
+        save_content({"pages": pages, "order": data.get("order", ORDER)})
+        return redirect("/admin")
+    
+    page = pages[page_id]
+    
+    # Format gallery images for display in the form
+    gallery_str = "\n".join(page.get("gallery_images", []))
+    
+    # Format product links for display in the form
+    links_str = ""
+    if "product_links" in page:
+        links_str = "\n".join([
+            f"{link['name']}|{link['url']}|{link['icon']}"
+            for link in page["product_links"]
+        ])
+    
+    # CSS for the edit form
+    EDIT_FORM_CSS = """
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 2rem; }
+        .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        h1 { color: #2c3e50; margin-bottom: 0.5rem; }
+        .subtitle { color: #7f8c8d; margin-bottom: 2rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; color: #2c3e50; font-weight: 600; margin-bottom: 0.5rem; }
+        input[type="text"], textarea { width: 100%; padding: 0.75rem; border: 2px solid #e9ecef; border-radius: 8px; font-size: 1rem; font-family: inherit; transition: border-color 0.3s ease; }
+        input[type="text"]:focus, textarea:focus { outline: none; border-color: #667eea; }
+        textarea { min-height: 200px; resize: vertical; }
+        .help-text { font-size: 0.85rem; color: #6c757d; margin-top: 0.25rem; }
+        .btn-group { display: flex; gap: 1rem; margin-top: 2rem; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; text-decoration: none; display: inline-block; }
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-secondary:hover { background: #5a6268; }
+    """
+    
+    edit_html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit {page['title']}</title>
+    <style>{EDIT_FORM_CSS}</style>
+</head>
+<body>
+    <div class="container">
+        <h1>✏️ Edit Page</h1>
+        <p class="subtitle">{page['title']} (URL: /{page_id})</p>
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="title">Page Title</label>
+                <input type="text" id="title" name="title" value="{page.get('title', '')}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="hero_image">Hero Image URL</label>
+                <input type="text" id="hero_image" name="hero_image" value="{page.get('hero_image', '')}" required>
+                <div class="help-text">Use imgur.com URLs (e.g., https://i.imgur.com/ABC123.jpg)</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="intro_text">Book/Series Introduction (Markdown)</label>
+                <textarea id="intro_text" name="intro_text" style="min-height: 100px;">{page.get('intro_text', '')}</textarea>
+                <div class="help-text">A short excerpt or introduction that appears prominently. Use Markdown formatting.</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="body_md">Full Content (Markdown)</label>
+                <textarea id="body_md" name="body_md" required>{page.get('body_md', '')}</textarea>
+                <div class="help-text">Use Markdown formatting (## for headings, ** for bold, etc.)</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="product_url">Product/Buy Button URL (Optional)</label>
+                <input type="text" id="product_url" name="product_url" value="{page.get('product_url', '')}">
+                <div class="help-text">Amazon or other product link</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="gallery_images">Gallery Images (Optional - One URL per line)</label>
+                <textarea id="gallery_images" name="gallery_images" style="min-height: 100px;">{gallery_str}</textarea>
+                <div class="help-text">For your covers: **start with /static/covers/** (e.g., /static/covers/my-new-book.jpg). One per line.</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="product_links">Music Platform Links (Optional - Format: Name|URL|Icon)</label>
+                <textarea id="product_links" name="product_links" style="min-height: 100px;">{links_str}</textarea>
+                <div class="help-text">Example: Amazon Music|https://music.amazon.com/...|🛒</div>
+            </div>
+            
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+                <a href="/admin" class="btn btn-secondary">← Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>"""
+    
+    return edit_html
 
+if __name__ == "__main__":
+    if not DATA_FILE.exists():
+        save_content(DEFAULT_PAGES)
+    
+    port = int(os.environ.get("PORT", 5000))
+    print("🌺 Starting Ke Aupuni O Ke Akua website...")
+    print(f"🌊 Visit: http://localhost:{port}")
+    print("=" * 50)
+    app.run(host="0.0.0.0", port=port, debug=True)
