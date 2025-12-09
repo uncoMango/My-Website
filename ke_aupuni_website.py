@@ -908,7 +908,7 @@ def add_new_page():
         return redirect(f"/admin/edit/{new_slug}")
     
     # GET request: show the add new page form
-    add_html = """<!DOCTYPE html>
+    add_html = """<!DOCTYPE html>"""
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -918,3 +918,4 @@ def add_new_page():
         /* Styles copied from edit_page for consistency */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 2rem; }
+
