@@ -1,4 +1,4 @@
-# ke_aupuni_perfect_mobile.py
+# ke_aupuni_website.py - MODIFIED TO ALLOW ADDING NEW PAGES AND INTRO TEXT
 # Kahu Phil's CORRECT content + Mobile Responsive + Working Admin
 
 from flask import Flask, request, redirect, render_template_string, abort, url_for, send_file
@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import markdown
 import os
+import re
 
 app = Flask(__name__)
 
@@ -29,31 +30,36 @@ DEFAULT_PAGES = {
         "home": {
             "title": "Ke Aupuni O Ke Akua - The Kingdom of God",
             "hero_image": "https://i.imgur.com/wmHEyDo.png",
-            "body_md": "## The Call to Repentance - Rediscovering Jesus's Kingdom Message\r\n\r\nStep beyond religious tradition and rediscover the revolutionary Kingdom message that Jesus actually preached. This transformative book series cuts through centuries of religious interpretation to reveal the pure, life-changing teachings of the Kingdom of God.\r\n\r\n### Jesus Preached Kingdom, Not Religion\r\n\r\nFor too long, the church has focused on getting people into heaven instead of bringing heaven to earth. Jesus's primary message wasn't about religion, denominations, or institutional Christianity - it was about the Kingdom of God breaking into human reality here and now.\r\n\r\n### What Jesus Actually Taught\r\n\r\n**Kingdom Principles Over Religious Rules** - Discover how Jesus consistently chose kingdom living over religious compliance, and what that means for us today.\r\n\r\n**Repentance as Transformation** - Move beyond feeling sorry for sins to understanding repentance as a complete transformation of mind, heart, and lifestyle.\r\n\r\n**Heaven on Earth** - Learn how the Kingdom of God is meant to manifest in our daily lives, relationships, and communities right now.\r\n\r\n**Power and Authority** - Understand what Jesus meant when He gave His followers authority to heal, deliver, and demonstrate kingdom reality.\r\n\r\n### Series Overview\r\n\r\nThis isn't a single book but a comprehensive series that systematically unpacks Jesus's kingdom teachings:\r\n\r\n**Volume 1: The Foundation** - Understanding what the Kingdom of God actually is and why Jesus made it His central message.\r\n\r\n**Volume 2: Kingdom Citizenship** - What it means to be a citizen of God's kingdom while living in earthly systems.\r\n\r\n**Volume 3: Kingdom Economics** - How kingdom principles transform our relationship with money, work, and provision.\r\n\r\n**Volume 4: Kingdom Relationships** - Love, forgiveness, and community the way Jesus intended.\r\n\r\n**Volume 5: Kingdom Authority** - Walking in the supernatural power that Jesus demonstrated and promised to His followers.\r\n\r\n### Beyond Denominational Walls\r\n\r\nThese teachings transcend denominational boundaries and religious traditions. Whether you're Baptist, Methodist, Catholic, Pentecostal, or from any other background, Jesus's kingdom message is for you. It's not about changing your church affiliation - it's about discovering what Jesus actually said and living it out.\r\n\r\n### Practical Kingdom Living\r\n\r\nEach volume includes:\r\n- **Biblical Foundation** - What scripture actually says when we remove religious filters\r\n- **Historical Context** - Understanding Jesus's teachings in their original setting\r\n- **Modern Application** - How to live these principles in contemporary life\r\n- **Personal Transformation** - Practical steps for implementing kingdom living\r\n- **Community Impact** - How kingdom principles change families, neighborhoods, and society\r\n\r\n### A Call to Authentic Christianity\r\n\r\nThis series challenges readers to move beyond:\r\n- Religious performance into authentic relationship\r\n- Sunday Christianity into daily kingdom living\r\n- Denominational identity into kingdom citizenship\r\n- Waiting for heaven into experiencing God's kingdom now\r\n\r\n### The Message That Changes Everything\r\n\r\nWhen you truly understand what Jesus taught about the Kingdom of God, everything changes. Your purpose becomes clear, your identity gets established, and your daily life becomes an adventure of seeing God's kingdom manifest through ordinary moments.\r\n\r\n*\"Repent, for the kingdom of heaven has come near.\" - Matthew 4:17*\r\n\r\nThis isn't just what Jesus said - it's what He lived, demonstrated, and called His followers to experience. The Kingdom of God isn't a future destination; it's a present reality waiting to transform your life today.\r\n\r\n**Join the revolution that Jesus started. Discover the Kingdom message that changes everything.**",
+            "intro_text": "## The Call to Repentance - Rediscovering Jesus's Kingdom Message",
+            "body_md": "Step beyond religious tradition and rediscover the revolutionary Kingdom message that Jesus actually preached. This transformative book series cuts through centuries of religious interpretation to reveal the pure, life-changing teachings of the Kingdom of God.\r\n\r\n### Jesus Preached Kingdom, Not Religion\r\n\r\nFor too long, the church has focused on getting people into heaven instead of bringing heaven to earth. Jesus's primary message wasn't about religion, denominations, or institutional Christianity - it was about the Kingdom of God breaking into human reality here and now.\r\n\r\n### What Jesus Actually Taught\r\n\r\n**Kingdom Principles Over Religious Rules** - Discover how Jesus consistently chose kingdom living over religious compliance, and what that means for us today.\r\n\r\n**Repentance as Transformation** - Move beyond feeling sorry for sins to understanding repentance as a complete transformation of mind, heart, and lifestyle.\r\n\r\n**Heaven on Earth** - Learn how the Kingdom of God is meant to manifest in our daily lives, relationships, and communities right now.\r\n\r\n**Power and Authority** - Understand what Jesus meant when He gave His followers authority to heal, deliver, and demonstrate kingdom reality.\r\n\r\n### Series Overview\r\n\r\nThis isn't a single book but a comprehensive series that systematically unpacks Jesus's kingdom teachings:\r\n\r\n**Volume 1: The Foundation** - Understanding what the Kingdom of God actually is and why Jesus made it His central message.\r\n\r\n**Volume 2: Kingdom Citizenship** - What it means to be a citizen of God's kingdom while living in earthly systems.\r\n\r\n**Volume 3: Kingdom Economics** - How kingdom principles transform our relationship with money, work, and provision.\r\n\r\n**Volume 4: Kingdom Relationships** - Love, forgiveness, and community the way Jesus intended.\r\n\r\n**Volume 5: Kingdom Authority** - Walking in the supernatural power that Jesus demonstrated and promised to His followers.\r\n\r\n### Beyond Denominational Walls\r\n\r\nThese teachings transcend denominational boundaries and religious traditions. Whether you're Baptist, Methodist, Catholic, Pentecostal, or from any other background, Jesus's kingdom message is for you. It's not about changing your church affiliation - it's about discovering what Jesus actually said and living it out.\r\n\r\n### Practical Kingdom Living\r\n\r\nEach volume includes:\r\n- **Biblical Foundation** - What scripture actually says when we remove religious filters\r\n- **Historical Context** - Understanding Jesus's teachings in their original setting\r\n- **Modern Application** - How to live these principles in contemporary life\r\n- **Personal Transformation** - Practical steps for implementing kingdom living\r\n- **Community Impact** - How kingdom principles change families, neighborhoods, and society\r\n\r\n### A Call to Authentic Christianity\r\n\r\nThis series challenges readers to move beyond:\r\n- Religious performance into authentic relationship\r\n- Sunday Christianity into daily kingdom living\r\n- Denominational identity into kingdom citizenship\r\n- Waiting for heaven into experiencing God's kingdom now\r\n\r\n### The Message That Changes Everything\r\n\r\nWhen you truly understand what Jesus taught about the Kingdom of God, everything changes. Your purpose becomes clear, your identity gets established, and your daily life becomes an adventure of seeing God's kingdom manifest through ordinary moments.\r\n\r\n*\"Repent, for the kingdom of heaven has come near.\" - Matthew 4:17*\r\n\r\nThis isn't just what Jesus said - it's what He lived, demonstrated, and called His followers to experience. The Kingdom of God isn't a future destination; it's a present reality waiting to transform your life today.\r\n\r\n**Join the revolution that Jesus started. Discover the Kingdom message that changes everything.**",
             "product_url": "https://amzn.to/3FfH9ep"
         },
         "aloha_wellness": {
             "title": "Aloha Wellness - Island Health & Healing",
             "hero_image": "https://i.imgur.com/xGeWW3Q.jpeg",
-            "body_md": "## Aloha Wellness - The Sacred Art of How You Eat\r\n\r\nDiscover the life-changing power of **how** you eat, not just what you eat. This groundbreaking wellness book combines cutting-edge scientific research with ancient Hawaiian mana'o (wisdom) to transform your relationship with food and nourishment.\r\n\r\n### Beyond Diet Culture - A Hawaiian Perspective\r\n\r\nTraditional Hawaiian culture understood something modern society has forgotten: eating is a sacred act that connects us to the land, our ancestors, and our own spiritual well-being. This book bridges that ancient wisdom with contemporary nutritional science.\r\n\r\n### Revolutionary Approach: How, Not What\r\n\r\n**Mindful Consumption** - Learn the scientific basis for how mindful eating practices affect digestion, metabolism, and overall health.\r\n\r\n**Cultural Eating Wisdom** - Discover how Hawaiian ancestors approached meals as community ceremonies, gratitude practices, and spiritual connections.\r\n\r\n**Stress and Digestion** - Research-backed insights into how your emotional state during meals affects nutrient absorption and digestive health.\r\n\r\n**Rhythm and Timing** - Ancient Hawaiian understanding of eating in harmony with natural rhythms, supported by modern chronobiology research.\r\n\r\n### Scientific Research Meets Island Wisdom\r\n\r\n**Neuroplasticity and Food Habits** - How changing the way you approach eating can literally rewire your brain for better health.\r\n\r\n**Microbiome Science** - Research on how eating practices (speed, stress level, gratitude) affect gut health and overall wellness.\r\n\r\n**Inflammation Studies** - Scientific evidence showing how eating practices impact inflammatory responses in the body.\r\n\r\n**Community and Longevity** - Research on how social eating practices contribute to the longevity seen in island cultures.\r\n\r\n### Hawaiian Mana'o (Wisdom Principles)\r\n\r\n**Ho'oponopono with Food** - Making right relationships with nourishment and healing food-related guilt or shame.\r\n\r\n**Aloha 'Āina** - Love of the land extends to gratitude for the food it provides and mindful consumption practices.\r\n\r\n**Lōkahi** - Finding unity and balance in your relationship with food, body, and spirit.\r\n\r\n**Mālama** - Caring for your body as a sacred temple through conscious eating practices.\r\n\r\n### Practical Application\r\n\r\nThis isn't another diet book filled with restrictions. Instead, you'll learn practical, science-based techniques for:\r\n- Eating with presence and gratitude\r\n- Reducing stress during meals\r\n- Creating sacred eating spaces\r\n- Building healthy food relationships\r\n- Honoring your body's natural wisdom\r\n\r\n### Cultural Healing\r\n\r\nMany of us carry wounds around food from diet culture, family patterns, or cultural disconnection. This book offers a path to healing that honors both scientific understanding and spiritual wisdom.\r\n\r\n*\"The land gives freely of its abundance. When we receive with gratitude and consume with reverence, we participate in the sacred circle of life.\"*\r\n\r\nTransform your health from the inside out by changing not what you eat, but how you approach the sacred act of nourishment.",
+            "intro_text": "## Aloha Wellness - The Sacred Art of How You Eat",
+            "body_md": "Discover the life-changing power of **how** you eat, not just what you eat. This groundbreaking wellness book combines cutting-edge scientific research with ancient Hawaiian mana'o (wisdom) to transform your relationship with food and nourishment.\r\n\r\n### Beyond Diet Culture - A Hawaiian Perspective\r\n\r\nTraditional Hawaiian culture understood something modern society has forgotten: eating is a sacred act that connects us to the land, our ancestors, and our own spiritual well-being. This book bridges that ancient wisdom with contemporary nutritional science.\r\n\r\n### Revolutionary Approach: How, Not What\r\n\r\n**Mindful Consumption** - Learn the scientific basis for how mindful eating practices affect digestion, metabolism, and overall health.\r\n\r\n**Cultural Eating Wisdom** - Discover how Hawaiian ancestors approached meals as community ceremonies, gratitude practices, and spiritual connections.\r\n\r\n**Stress and Digestion** - Research-backed insights into how your emotional state during meals affects nutrient absorption and digestive health.\r\n\r\n**Rhythm and Timing** - Ancient Hawaiian understanding of eating in harmony with natural rhythms, supported by modern chronobiology research.\r\n\r\n### Scientific Research Meets Island Wisdom\r\n\r\n**Neuroplasticity and Food Habits** - How changing the way you approach eating can literally rewire your brain for better health.\r\n\r\n**Microbiome Science** - Research on how eating practices (speed, stress level, gratitude) affect gut health and overall wellness.\r\n\r\n**Inflammation Studies** - Scientific evidence showing how eating practices impact inflammatory responses in the body.\r\n\r\n**Community and Longevity** - Research on how social eating practices contribute to the longevity seen in island cultures.\r\n\r\n### Hawaiian Mana'o (Wisdom Principles)\r\n\r\n**Ho'oponopono with Food** - Making right relationships with nourishment and healing food-related guilt or shame.\r\n\r\n**Aloha 'Āina** - Love of the land extends to gratitude for the food it provides and mindful consumption practices.\r\n\r\n**Lōkahi** - Finding unity and balance in your relationship with food, body, and spirit.\r\n\r\n**Mālama** - Caring for your body as a sacred temple through conscious eating practices.\r\n\r\n### Practical Application\r\n\r\nThis isn't another diet book filled with restrictions. Instead, you'll learn practical, science-based techniques for:\r\n- Eating with presence and gratitude\r\n- Reducing stress during meals\r\n- Creating sacred eating spaces\r\n- Building healthy food relationships\r\n- Honoring your body's natural wisdom\r\n\r\n### Cultural Healing\r\n\r\nMany of us carry wounds around food from diet culture, family patterns, or cultural disconnection. This book offers a path to healing that honors both scientific understanding and spiritual wisdom.\r\n\r\n*\"The land gives freely of its abundance. When we receive with gratitude and consume with reverence, we participate in the sacred circle of life.\"*\r\n\r\nTransform your health from the inside out by changing not what you eat, but how you approach the sacred act of nourishment.",
             "product_url": "https://amzn.to/3FfH9ep"
         },
         "call_to_repentance": {
             "title": "The Call to Repentance - Foundation for Kingdom Living",
             "hero_image": "https://i.imgur.com/tG1vBp9.jpeg",
-            "body_md": "## Embracing True Repentance for Spiritual Growth\r\n\r\nRepentance is not merely feeling sorry for our mistakes - it is a complete transformation of heart and mind that leads us into the fullness of Kingdom living.\r\n\r\n### Understanding Biblical Repentance\r\n\r\nThe Hebrew word **teshuvah** means \"to return\" or \"to turn around.\" It implies a complete change of direction - turning away from patterns that separate us from God and turning toward His kingdom ways.\r\n\r\n**The Three Dimensions of True Repentance:**\r\n\r\n**1. Metanoia (Change of Mind)**\r\nRepentance begins with a fundamental shift in how we think. We must align our thoughts with God's thoughts, seeing ourselves and others through His eyes of love and truth.\r\n\r\n**2. Transformation of Heart**\r\nTrue repentance touches our emotions and desires. Our hearts must be softened and purified, learning to love what God loves and grieve what grieves His heart.\r\n\r\n**3. Changed Actions**\r\nRepentance must bear fruit in our daily choices. We demonstrate our changed hearts through new patterns of behavior that reflect Kingdom values.\r\n\r\n### Practical Steps for Daily Repentance\r\n\r\n**Morning Reflection** - Begin each day by asking the Holy Spirit to search your heart and reveal areas needing His touch.\r\n\r\n**Confession and Forgiveness** - Practice honest confession to God and others, and extend forgiveness as you have been forgiven.\r\n\r\n**Restitution When Possible** - Make amends where you have caused harm, restoring relationships and making wrongs right.\r\n\r\n**Accountability** - Partner with trusted friends or mentors who can speak truth in love and help you stay on the path of righteousness.\r\n\r\n### The Joy of Restoration\r\n\r\nRemember that repentance leads to joy, not condemnation. As we turn our hearts toward God, He celebrates our return like the father welcoming the prodigal son. Every step toward repentance is a step toward freedom, peace, and abundant life in His kingdom.\r\n\r\n*\"Create in me a clean heart, O God, and renew a right spirit within me.\" - Psalm 51:10*",
+            "intro_text": "## Embracing True Repentance for Spiritual Growth",
+            "body_md": "Repentance is not merely feeling sorry for our mistakes - it is a complete transformation of heart and mind that leads us into the fullness of Kingdom living.\r\n\r\n### Understanding Biblical Repentance\r\n\r\nThe Hebrew word **teshuvah** means \"to return\" or \"to turn around.\" It implies a complete change of direction - turning away from patterns that separate us from God and turning toward His kingdom ways.\r\n\r\n**The Three Dimensions of True Repentance:**\r\n\r\n**1. Metanoia (Change of Mind)**\r\nRepentance begins with a fundamental shift in how we think. We must align our thoughts with God's thoughts, seeing ourselves and others through His eyes of love and truth.\r\n\r\n**2. Transformation of Heart**\r\nTrue repentance touches our emotions and desires. Our hearts must be softened and purified, learning to love what God loves and grieve what grieves His heart.\r\n\r\n**3. Changed Actions**\r\nRepentance must bear fruit in our daily choices. We demonstrate our changed hearts through new patterns of behavior that reflect Kingdom values.\r\n\r\n### Practical Steps for Daily Repentance\r\n\r\n**Morning Reflection** - Begin each day by asking the Holy Spirit to search your heart and reveal areas needing His touch.\r\n\r\n**Confession and Forgiveness** - Practice honest confession to God and others, and extend forgiveness as you have been forgiven.\r\n\r\n**Restitution When Possible** - Make amends where you have caused harm, restoring relationships and making wrongs right.\r\n\r\n**Accountability** - Partner with trusted friends or mentors who can speak truth in love and help you stay on the path of righteousness.\r\n\r\n### The Joy of Restoration\r\n\r\nRemember that repentance leads to joy, not condemnation. As we turn our hearts toward God, He celebrates our return like the father welcoming the prodigal son. Every step toward repentance is a step toward freedom, peace, and abundant life in His kingdom.\r\n\r\n*\"Create in me a clean heart, O God, and renew a right spirit within me.\" - Psalm 51:10*",
             "product_url": "https://www.amazon.com/CALL-REPENTANCE-Foundation-Application-Lifestyle-ebook/dp/B0FXYDD9SN"
         },
         "pastor_planners": {
             "title": "Pastor Planners - Tools for Ministry Excellence",
             "hero_image": "https://i.imgur.com/tWnn5UY.png",
-            "body_md": "## Organize Your Ministry with Purpose and Prayer\r\n\r\nEffective ministry requires both spiritual sensitivity and practical organization. Our Pastor Planners combine beautiful design with functional tools to help you lead with excellence and peace.\r\n\r\n### Features of Our Ministry Planning System\r\n\r\n**Sermon Planning Sections** - Map out your preaching calendar with space for themes, scriptures, and prayer requests. Plan seasonal series and track the spiritual journey of your congregation.\r\n\r\n**Prayer and Pastoral Care** - Dedicated sections for tracking prayer requests, hospital visits, counseling sessions, and follow-up care. Never let a member of your flock slip through the cracks.\r\n\r\n**Meeting and Event Coordination** - Organize board meetings, committee sessions, special events, and outreach activities with integrated calendars and checklists.\r\n\r\n**Personal Spiritual Disciplines** - Maintain your own spiritual health with guided sections for daily devotions, sabbath planning, and personal growth goals.\r\n\r\n### Why Pastors Love Our Planners\r\n\r\n**Hawaiian-Inspired Design** - Beautiful layouts featuring island imagery and scripture verses that bring peace to your planning time.\r\n\r\n**Flexible Formatting** - Works for churches of all sizes and denominations, with customizable sections for your unique ministry context.\r\n\r\n**Durable Construction** - High-quality materials that withstand daily use throughout the church year.\r\n\r\n**Spiritual Focus** - More than just organization - designed to keep your heart centered on God's calling throughout your busy ministry schedule.\r\n\r\n### Testimonials\r\n\r\n*\"This planner has transformed how I approach ministry. I feel more organized and more connected to God's heart for our church.\"* - Pastor Sarah M.\r\n\r\n*\"The prayer tracking section alone has revolutionized my pastoral care. I never forget to follow up anymore.\"* - Pastor David L.\r\n\r\n*\"Beautiful design that actually helps me pray more, not just plan more.\"* - Pastor Maria R.\r\n\r\nOrder your Pastor Planner today and experience the peace that comes from organized, prayer-centered ministry leadership.",
+            "intro_text": "## Organize Your Ministry with Purpose and Prayer",
+            "body_md": "Effective ministry requires both spiritual sensitivity and practical organization. Our Pastor Planners combine beautiful design with functional tools to help you lead with excellence and peace.\r\n\r\n### Features of Our Ministry Planning System\r\n\r\n**Sermon Planning Sections** - Map out your preaching calendar with space for themes, scriptures, and prayer requests. Plan seasonal series and track the spiritual journey of your congregation.\r\n\r\n**Prayer and Pastoral Care** - Dedicated sections for tracking prayer requests, hospital visits, counseling sessions, and follow-up care. Never let a member of your flock slip through the cracks.\r\n\r\n**Meeting and Event Coordination** - Organize board meetings, committee sessions, special events, and outreach activities with integrated calendars and checklists.\r\n\r\n**Personal Spiritual Disciplines** - Maintain your own spiritual health with guided sections for daily devotions, sabbath planning, and personal growth goals.\r\n\r\n### Why Pastors Love Our Planners\r\n\r\n**Hawaiian-Inspired Design** - Beautiful layouts featuring island imagery and scripture verses that bring peace to your planning time.\r\n\r\n**Flexible Formatting** - Works for churches of all sizes and denominations, with customizable sections for your unique ministry context.\r\n\r\n**Durable Construction** - High-quality materials that withstand daily use throughout the church year.\r\n\r\n**Spiritual Focus** - More than just organization - designed to keep your heart centered on God's calling throughout your busy ministry schedule.\r\n\r\n### Testimonials\r\n\r\n*\"This planner has transformed how I approach ministry. I feel more organized and more connected to God's heart for our church.\"* - Pastor Sarah M.\r\n\r\n*\"The prayer tracking section alone has revolutionized my pastoral care. I never forget to follow up anymore.\"* - Pastor David L.\r\n\r\n*\"Beautiful design that actually helps me pray more, not just plan more.\"* - Pastor Maria R.\r\n\r\nOrder your Pastor Planner today and experience the peace that comes from organized, prayer-centered ministry leadership.",
             "product_url": "https://www.amazon.com/s?k=pastor+planner+ministry+organizer"
         },
         "nahenahe_voice": {
             "title": "The Nahenahe Voice of Nahono'opi'ilani - Musical Legacy",
             "hero_image": "https://i.imgur.com/Vyz6nFJ.png",
-            "body_md": "## The Nahenahe Voice of Nahono'opi'ilani - Live from Molokai Ranch Lodge\r\n\r\nExperience the soul-stirring sounds of authentic Hawaiian music captured live at the historic Molokai Ranch Lodge in the year 2000. This intimate recording showcases the true meaning of **nahenahe** - the gentle, soothing voice that carries the spirit of aloha across the islands.\r\n\r\n### A Sacred Musical Journey\r\n\r\nRecorded in the peaceful setting of Molokai Ranch Lodge, this collection features solo guitar and traditional Hawaiian melodies that speak directly to the heart. Each song was performed live, capturing the mana (spiritual energy) and authentic aloha that can only come from the sacred island of Molokai.\r\n\r\n**Nahenahe** means more than just \"soft\" or \"sweet\" - it represents music that heals, soothes, and connects us to the divine presence that flows through all creation. This recording embodies that sacred tradition.\r\n\r\n### What You'll Experience:\r\n\r\n**Traditional Hawaiian Melodies** - Time-honored songs that have been passed down through generations, preserving the cultural wisdom of our ancestors.\r\n\r\n**Solo Guitar Mastery** - Intimate acoustic performances that showcase the beauty of Hawaiian slack-key guitar traditions and contemporary island sounds.\r\n\r\n**Authentic Island Atmosphere** - The natural acoustics and peaceful energy of Molokai Ranch Lodge create an immersive listening experience.\r\n\r\n**Healing Through Song** - Each track is designed to bring peace, comfort, and the healing power of aloha to your daily life.\r\n\r\n### The Heart of Aloha\r\n\r\nThis recording is more than entertainment - it's a spiritual journey that invites you to slow down, breathe deeply, and connect with the tranquil spirit of Hawaiʻi. Whether you're seeking meditation music, background for quiet reflection, or simply the beauty of authentic Hawaiian sounds, this collection offers a pathway to inner peace.\r\n\r\n*\"Music is the language that speaks when words are not enough. The nahenahe voice carries aloha to every heart that listens.\"*\r\n\r\nPerfect for meditation, relaxation, spiritual practice, or any time you need the gentle embrace of island peace.",
+            "intro_text": "## The Nahenahe Voice of Nahono'opi'ilani - Live from Molokai Ranch Lodge",
+            "body_md": "Experience the soul-stirring sounds of authentic Hawaiian music captured live at the historic Molokai Ranch Lodge in the year 2000. This intimate recording showcases the true meaning of **nahenahe** - the gentle, soothing voice that carries the spirit of aloha across the islands.\r\n\r\n### A Sacred Musical Journey\r\n\r\nRecorded in the peaceful setting of Molokai Ranch Lodge, this collection features solo guitar and traditional Hawaiian melodies that speak directly to the heart. Each song was performed live, capturing the mana (spiritual energy) and authentic aloha that can only come from the sacred island of Molokai.\r\n\r\n**Nahenahe** means more than just \"soft\" or \"sweet\" - it represents music that heals, soothes, and connects us to the divine presence that flows through all creation. This recording embodies that sacred tradition.\r\n\r\n### What You'll Experience:\r\n\r\n**Traditional Hawaiian Melodies** - Time-honored songs that have been passed down through generations, preserving the cultural wisdom of our ancestors.\r\n\r\n**Solo Guitar Mastery** - Intimate acoustic performances that showcase the beauty of Hawaiian slack-key guitar traditions and contemporary island sounds.\r\n\r\n**Authentic Island Atmosphere** - The natural acoustics and peaceful energy of Molokai Ranch Lodge create an immersive listening experience.\r\n\r\n**Healing Through Song** - Each track is designed to bring peace, comfort, and the healing power of aloha to your daily life.\r\n\r\n### The Heart of Aloha\r\n\r\nThis recording is more than entertainment - it's a spiritual journey that invites you to slow down, breathe deeply, and connect with the tranquil spirit of Hawaiʻi. Whether you're seeking meditation music, background for quiet reflection, or simply the beauty of authentic Hawaiian sounds, this collection offers a pathway to inner peace.\r\n\r\n*\"Music is the language that speaks when words are not enough. The nahenahe voice carries aloha to every heart that listens.\"*\r\n\r\nPerfect for meditation, relaxation, spiritual practice, or any time you need the gentle embrace of island peace.",
             "gallery_images": [
                 "/static/covers/cover1.jpg",
                 "/static/covers/cover2.jpg",
@@ -455,11 +461,18 @@ def load_content():
             with open(DATA_FILE, "r", encoding="utf-8") as f:
                 data = json.load(f)
         except:
+            # If JSON is corrupt, fall back to default
             data = DEFAULT_PAGES
             save_content(data)
     else:
+        # If file doesn't exist, create it with default content
         data = DEFAULT_PAGES
         save_content(data)
+    
+    # Ensure 'intro_text' is present for all pages for template rendering safety
+    for page_id in data.get("pages", {}):
+        if "intro_text" not in data["pages"][page_id]:
+            data["pages"][page_id]["intro_text"] = ""
     
     return data
 
@@ -491,6 +504,8 @@ def render_page(page_id, data):
         page=page,
         nav_items=nav_items,
         style=ENHANCED_STYLE,
+        # Render both intro and body_md
+        intro_html=md_to_html(page.get("intro_text", "")),
         body_html=md_to_html(page.get("body_md", "")),
         current_page=page_id
     )
@@ -529,15 +544,24 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     
     <main class="container">
         <article class="content-card">
+            
+            {# === NEW: DISPLAY INTRO TEXT HERE (e.g. above the full content) === #}
+            {% if intro_html %}
+            <div class="intro-text">
+                {{ intro_html|safe }}
+                <hr style="border-top: 1px solid rgba(255, 255, 255, 0.3); margin: 2rem 0;">
+            </div>
+            {% endif %}
+            
             {{ body_html|safe }}
             
             {% if page.gallery_images %}
             <div class="gallery-section">
-                <h2>📸 Album Covers</h2>
+                <h2>📸 Album Covers / Book Images</h2>
                 <div class="gallery-grid">
                     {% for image in page.gallery_images %}
                     <div class="gallery-item">
-                        <img src="{{ image }}" alt="CD Cover" loading="lazy">
+                        <img src="{{ image }}" alt="Cover Image" loading="lazy">
                     </div>
                     {% endfor %}
                 </div>
@@ -566,7 +590,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     </main>
     
     <footer class="footer">
-        <p>&copy; 2025 Ke Aupuni O Ke Akua. All rights reserved. Made with aloha in Hawaiʻi.</p>
+        <p>© 2025 Ke Aupuni O Ke Akua. All rights reserved. Made with aloha in Hawaiʻi.</p>
     </footer>
     
     <script>
@@ -604,7 +628,9 @@ def page(page_id):
 @app.route("/static/covers/<filename>")
 def serve_cover(filename):
     """Serve CD cover images"""
-    cover_path = BASE / filename
+    # NOTE: This route should point to your actual static folder path
+    # We assume 'covers' is inside 'static' which is next to this script
+    cover_path = BASE / "static" / "covers" / filename
     if cover_path.exists():
         return send_file(cover_path, mimetype='image/jpeg')
     abort(404)
@@ -674,6 +700,7 @@ def admin_panel():
             border-radius: 12px;
             border: 2px solid #e9ecef;
             transition: all 0.3s ease;
+            position: relative; /* For the delete button */
         }
         
         .page-card:hover {
@@ -701,7 +728,7 @@ def admin_panel():
             font-weight: 600;
         }
         
-        .edit-btn {
+        .edit-btn, .add-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
@@ -713,9 +740,15 @@ def admin_panel():
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             text-decoration: none;
             display: inline-block;
+            margin-right: 1rem;
         }
         
-        .edit-btn:hover {
+        .add-btn {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            margin-bottom: 2rem;
+        }
+        
+        .edit-btn:hover, .add-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }
@@ -735,6 +768,22 @@ def admin_panel():
         
         .back-btn:hover {
             background: #5a6268;
+        }
+        
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            transition: background 0.2s;
+        }
+        .delete-btn:hover {
+            background: #c82333;
         }
         
         .gallery-preview {
@@ -757,10 +806,19 @@ def admin_panel():
         <h1>🌺 Admin Panel</h1>
         <p class="subtitle">Manage your website content</p>
         
+        <a href="/admin/add_new" class="add-btn">➕ Add New Book / Series Page</a>
+        
         <div class="page-list">
 """
     
-    for page_id, page_data in pages.items():
+    # Sort pages according to the 'order' list, putting new ones last
+    page_ids = data.get("order", []) + [pid for pid in pages if pid not in data.get("order", [])]
+    
+    for page_id in page_ids:
+        if page_id not in pages:
+            continue
+            
+        page_data = pages[page_id]
         page_title = page_data.get("title", page_id)
         hero_image = page_data.get("hero_image", "")
         product_url = page_data.get("product_url", "N/A")
@@ -769,9 +827,10 @@ def admin_panel():
         
         admin_html += f"""
             <div class="page-card">
+                <a href="/admin/delete/{page_id}" class="delete-btn" onclick="return confirm('Are you sure you want to delete the page: {page_title}? This cannot be undone.');">🗑️ Delete</a>
                 <div class="page-title">{page_title}</div>
                 <div class="page-info">
-                    <div><strong>Page ID:</strong> {page_id}</div>
+                    <div><strong>URL Slug:</strong> /{page_id}</div>
                     <div><strong>Hero Image:</strong> {hero_image[:60]}...</div>
 """
         
@@ -782,7 +841,7 @@ def admin_panel():
             admin_html += f'                    <div><strong>Music Links:</strong> {len(product_links)} platforms</div>\n'
         
         if gallery_images:
-            admin_html += f'                    <div><strong>Gallery:</strong> {len(gallery_images)} images</div>\n'
+            admin_html += f'                    <div><strong>Gallery Images:</strong> {len(gallery_images)} images</div>\n'
             admin_html += '                    <div class="gallery-preview">\n'
             for img in gallery_images[:3]:
                 admin_html += f'                        <img src="{img}" alt="Gallery">\n'
@@ -804,244 +863,58 @@ def admin_panel():
     
     return admin_html
 
-@app.route("/admin/edit/<page_id>", methods=["GET", "POST"])
-def edit_page(page_id):
-    """Edit a specific page"""
-    data = load_content()
-    pages = data.get("pages", data)
-    
-    if page_id not in pages:
-        abort(404)
-    
+# Helper to create a clean slug from a title
+def slugify(text):
+    text = text.lower()
+    text = re.sub(r'[^a-z0-9\s-]', '', text)
+    text = re.sub(r'[\s_]+', '-', text)
+    return text.strip('-')
+
+@app.route("/admin/add_new", methods=["GET", "POST"])
+def add_new_page():
+    """Add a new book/series page"""
     if request.method == "POST":
-        # Update page data
-        pages[page_id]["title"] = request.form.get("title", "")
-        pages[page_id]["hero_image"] = request.form.get("hero_image", "")
-        pages[page_id]["body_md"] = request.form.get("body_md", "")
+        data = load_content()
+        new_title = request.form.get("title", "").strip()
         
-        # Handle product URL
-        product_url = request.form.get("product_url", "").strip()
-        if product_url:
-            pages[page_id]["product_url"] = product_url
-        elif "product_url" in pages[page_id]:
-            del pages[page_id]["product_url"]
+        if not new_title:
+            # Simple check to prevent empty pages
+            return redirect("/admin")
+            
+        new_slug = slugify(new_title)
         
-        # Handle gallery images
-        gallery_str = request.form.get("gallery_images", "").strip()
-        if gallery_str:
-            gallery_images = [img.strip() for img in gallery_str.split("\n") if img.strip()]
-            pages[page_id]["gallery_images"] = gallery_images
-        elif "gallery_images" in pages[page_id]:
-            del pages[page_id]["gallery_images"]
+        # Ensure slug is unique
+        i = 1
+        original_slug = new_slug
+        while new_slug in data["pages"]:
+            new_slug = f"{original_slug}-{i}"
+            i += 1
+            
+        new_page_data = {
+            "title": new_title,
+            "hero_image": request.form.get("hero_image", "https://i.imgur.com/placeholder.png"),
+            "intro_text": request.form.get("intro_text", "## New Book Introduction Here"),
+            "body_md": request.form.get("body_md", "Full content of the new book/series page goes here."),
+            "product_url": request.form.get("product_url", "")
+        }
         
-        # Handle product links (for music page)
-        links_str = request.form.get("product_links", "").strip()
-        if links_str:
-            links = []
-            for line in links_str.split("\n"):
-                if "|" in line:
-                    parts = line.split("|")
-                    if len(parts) >= 3:
-                        links.append({
-                            "name": parts[0].strip(),
-                            "url": parts[1].strip(),
-                            "icon": parts[2].strip()
-                        })
-            if links:
-                pages[page_id]["product_links"] = links
-        elif "product_links" in pages[page_id]:
-            del pages[page_id]["product_links"]
+        data["pages"][new_slug] = new_page_data
         
-        save_content({"pages": pages, "order": data.get("order", ORDER)})
-        return redirect("/admin")
+        # Add the new page to the end of the navigation order
+        if new_slug not in data.get("order", []):
+            data.setdefault("order", []).append(new_slug)
+
+        save_content(data)
+        return redirect(f"/admin/edit/{new_slug}")
     
-    page = pages[page_id]
-    
-    # Format gallery images
-    gallery_str = "\n".join(page.get("gallery_images", []))
-    
-    # Format product links
-    links_str = ""
-    if "product_links" in page:
-        links_str = "\n".join([
-            f"{link['name']}|{link['url']}|{link['icon']}"
-            for link in page["product_links"]
-        ])
-    
-    edit_html = f"""<!DOCTYPE html>
+    # GET request: show the add new page form
+    add_html = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit {page['title']}</title>
+    <title>Add New Page</title>
     <style>
-        * {{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }}
-        
-        body {{
-            font-family: system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 2rem;
-        }}
-        
-        .container {{
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }}
-        
-        h1 {{
-            color: #2c3e50;
-            margin-bottom: 0.5rem;
-        }}
-        
-        .subtitle {{
-            color: #7f8c8d;
-            margin-bottom: 2rem;
-        }}
-        
-        .form-group {{
-            margin-bottom: 1.5rem;
-        }}
-        
-        label {{
-            display: block;
-            color: #2c3e50;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }}
-        
-        input[type="text"],
-        textarea {{
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-family: inherit;
-            transition: border-color 0.3s ease;
-        }}
-        
-        input[type="text"]:focus,
-        textarea:focus {{
-            outline: none;
-            border-color: #667eea;
-        }}
-        
-        textarea {{
-            min-height: 200px;
-            resize: vertical;
-        }}
-        
-        .help-text {{
-            font-size: 0.85rem;
-            color: #6c757d;
-            margin-top: 0.25rem;
-        }}
-        
-        .btn-group {{
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        }}
-        
-        .btn {{
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            display: inline-block;
-        }}
-        
-        .btn-primary {{
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }}
-        
-        .btn-primary:hover {{
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        }}
-        
-        .btn-secondary {{
-            background: #6c757d;
-            color: white;
-        }}
-        
-        .btn-secondary:hover {{
-            background: #5a6268;
-        }}
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>✏️ Edit Page</h1>
-        <p class="subtitle">{page['title']}</p>
-        
-        <form method="POST">
-            <div class="form-group">
-                <label for="title">Page Title</label>
-                <input type="text" id="title" name="title" value="{page.get('title', '')}" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="hero_image">Hero Image URL</label>
-                <input type="text" id="hero_image" name="hero_image" value="{page.get('hero_image', '')}" required>
-                <div class="help-text">Use imgur.com URLs (e.g., https://i.imgur.com/ABC123.jpg)</div>
-            </div>
-            
-            <div class="form-group">
-                <label for="body_md">Content (Markdown)</label>
-                <textarea id="body_md" name="body_md" required>{page.get('body_md', '')}</textarea>
-                <div class="help-text">Use Markdown formatting (## for headings, ** for bold, etc.)</div>
-            </div>
-            
-            <div class="form-group">
-                <label for="product_url">Product/Buy Button URL (Optional)</label>
-                <input type="text" id="product_url" name="product_url" value="{page.get('product_url', '')}">
-                <div class="help-text">Amazon or other product link</div>
-            </div>
-            
-            <div class="form-group">
-                <label for="gallery_images">Gallery Images (Optional - One URL per line)</label>
-                <textarea id="gallery_images" name="gallery_images" style="min-height: 100px;">{gallery_str}</textarea>
-                <div class="help-text">For CD covers: /static/covers/cover1.jpg (one per line)</div>
-            </div>
-            
-            <div class="form-group">
-                <label for="product_links">Music Platform Links (Optional - Format: Name|URL|Icon)</label>
-                <textarea id="product_links" name="product_links" style="min-height: 100px;">{links_str}</textarea>
-                <div class="help-text">Example: Amazon Music|https://music.amazon.com/...|🛒</div>
-            </div>
-            
-            <div class="btn-group">
-                <button type="submit" class="btn btn-primary">💾 Save Changes</button>
-                <a href="/admin" class="btn btn-secondary">← Cancel</a>
-            </div>
-        </form>
-    </div>
-</body>
-</html>"""
-    
-    return edit_html
-
-if __name__ == "__main__":
-    if not DATA_FILE.exists():
-        save_content(DEFAULT_PAGES)
-    
-    port = int(os.environ.get("PORT", 5000))
-    print("🌺 Starting Ke Aupuni O Ke Akua website...")
-    print(f"🌊 Visit: http://localhost:{port}")
-    print("=" * 50)
-    app.run(host="0.0.0.0", port=port, debug=True)
+        /* Styles copied from edit_page for consistency */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 2rem; }
