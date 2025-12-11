@@ -997,6 +997,11 @@ def edit_page(page_id):
     # Format gallery images
     gallery_str = "\n".join(page.get("gallery_images", []))
     
+    # Format product images
+    product_images_str = ""
+    if page.get("product_images"):
+        product_images_str = "\n".join(page["product_images"])
+    
     # Format product links
     links_str = ""
     if "product_links" in page:
