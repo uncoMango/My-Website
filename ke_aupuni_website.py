@@ -567,6 +567,20 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             
             {% if page.product_links %}
             
+
+            {% if page.product_images %}
+            <div class="product-gallery" style="margin: 3rem 0;">
+                <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">📚 Available Products</h2>
+                <div class="gallery-grid">
+                    {% for img in page.product_images %}
+                    <div class="gallery-item">
+                        <img src="{{ img }}" alt="Product Cover" loading="lazy">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            
             {% if page.podcast_embed %}
             <div class="podcast-section" style="margin: 2rem 0; padding: 2rem; background: rgba(0,0,0,0.3); border-radius: 8px;">
                 <h2 style="color: white; text-align: center; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">🎙️ Listen to Our Podcast</h2>
@@ -941,6 +955,13 @@ def edit_page(page_id):
         elif "product_url" in pages[page_id]:
             del pages[page_id]["product_url"]
         
+        # Handle product images (book covers, planner covers, etc)
+        product_images_raw = request.form.get("product_images", "")
+        if product_images_raw:
+            page["product_images"] = [line.strip() for line in product_images_raw.split("\n") if line.strip()]
+        else:
+            page["product_images"] = []
+        
         # Handle gallery images
         gallery_str = request.form.get("gallery_images", "").strip()
         if gallery_str:
@@ -1141,7 +1162,14 @@ def edit_page(page_id):
                 <textarea id="podcast_embed" name="podcast_embed" style="min-height: 100px;">{page.get('podcast_embed', '')}</textarea>
                 <div class="help-text">Paste your podcast embed code (Spotify, Apple, etc.)</div>
             </div>
+            
             <div class="form-group">
+                <label for="product_images">Product Images - Book Covers, Planner Covers, etc. (One URL per line)</label>
+                <textarea id="product_images" name="product_images" style="min-height: 120px;">{product_images_str}</textarea>
+                <div class="help-text">Direct image URLs only (https://i.imgur.com/ABC123.jpg) - one per line. These will display in a grid on your page.</div>
+            </div>
+            
+                        <div class="form-group">
                 <label for="gallery_images">Gallery Images (Optional - One URL per line)</label>
                 <textarea id="gallery_images" name="gallery_images" style="min-height: 100px;">{gallery_str}</textarea>
                 <div class="help-text">For CD covers: /static/covers/cover1.jpg (one per line)</div>
