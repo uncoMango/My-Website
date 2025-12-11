@@ -501,7 +501,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     <title>{{ page.title }}</title>
     <style>{{ style }}
     /* Image Styling */
-    .content img {
+    .content-card img {
         max-width: 100%;
         height: auto;
         border-radius: 8px;
@@ -510,15 +510,15 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
         display: block;
     }
     
-    .content img[alt*="Cover"],
-    .content img[alt*="Volume"] {
+    .content-card img[alt*="Cover"],
+    .content-card img[alt*="Volume"] {
         max-width: 300px;
         margin: 20px auto;
     }
     
     @media (max-width: 768px) {
-        .content img[alt*="Cover"],
-        .content img[alt*="Volume"] {
+        .content-card img[alt*="Cover"],
+        .content-card img[alt*="Volume"] {
             max-width: 100%;
         }
     }
