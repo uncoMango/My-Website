@@ -500,20 +500,29 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title }}</title>
     <style>{{ style }}
+    /* Image Styling */
     .content img {
         max-width: 100%;
         height: auto;
         border-radius: 8px;
         margin: 20px 0;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .content img[alt*="Cover"] {
-        max-width: 300px;
-        margin: 20px auto;
         display: block;
     }
-
-    </style>
+    
+    .content img[alt*="Cover"],
+    .content img[alt*="Volume"] {
+        max-width: 300px;
+        margin: 20px auto;
+    }
+    
+    @media (max-width: 768px) {
+        .content img[alt*="Cover"],
+        .content img[alt*="Volume"] {
+            max-width: 100%;
+        }
+    }
+</style>
 </head>
 <body>
     <nav class="site-nav">
@@ -762,20 +771,6 @@ def admin_panel():
             border-radius: 4px;
             border: 2px solid #dee2e6;
         }
-    
-    .content img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 8px;
-        margin: 20px 0;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .content img[alt*="Cover"] {
-        max-width: 300px;
-        margin: 20px auto;
-        display: block;
-    }
-
     </style>
 </head>
 <body>
@@ -1009,20 +1004,6 @@ def edit_page(page_id):
         .btn-secondary:hover {{
             background: #5a6268;
         }}
-    
-    .content img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 8px;
-        margin: 20px 0;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .content img[alt*="Cover"] {
-        max-width: 300px;
-        margin: 20px auto;
-        display: block;
-    }
-
     </style>
 </head>
 <body>
