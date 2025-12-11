@@ -566,14 +566,26 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             {% endif %}
             
             {% if page.product_links %}
+            
+            {% if page.podcast_embed %}
+            <div class="podcast-section" style="margin: 2rem 0; padding: 2rem; background: rgba(0,0,0,0.3); border-radius: 8px;">
+                <h2 style="color: white; text-align: center; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">🎙️ Listen to Our Podcast</h2>
+                {{ page.podcast_embed|safe }}
+            </div>
+            {% endif %}
+            
             <div class="buy-section">
-                <h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">🎵 Stream Our Music</h2>
-                <div class="music-buttons">
-                    {% for link in page.product_links %}
-                    <a href="{{ link.url }}" target="_blank" class="music-button">
-                        {{ link.icon }} {{ link.name }}
-                    </a>
-                    {% endfor %}
+                {% if page.product_url %}
+                <a href="{{ page.product_url }}" target="_blank" class="buy-button">
+                    🛒 Buy on Amazon
+                </a>
+                {% endif %}
+                
+                {% if page.gumroad_url %}
+                <a href="{{ page.gumroad_url }}" target="_blank" class="buy-button" style="background: linear-gradient(135deg, #FF90E8, #FFA500);">
+                    💳 Buy on Gumroad
+                </a>
+                {% endif %}
                 </div>
             </div>
             {% elif page.product_url and page.product_url != '#' %}
@@ -825,6 +837,88 @@ def admin_panel():
     
     return admin_html
 
+
+@app.route("/admin/new", methods=["GET", "POST"])
+def admin_new_page():
+    """Create a new page"""
+    if request.method == "POST":
+        data = load_content()
+        
+        # Generate slug from title
+        title = request.form.get("title", "")
+        slug = title.lower().replace(" ", "_").replace("-", "_")
+        slug = "".join(c for c in slug if c.isalnum() or c == "_")
+        
+        # Create new page
+        new_page = {
+            "title": title,
+            "hero_image": request.form.get("hero_image", ""),
+            "body_md": request.form.get("body_md", ""),
+            "product_url": request.form.get("product_url", ""),
+            "gumroad_url": request.form.get("gumroad_url", ""),
+            "podcast_embed": request.form.get("podcast_embed", "")
+        }
+        
+        data["pages"][slug] = new_page
+        data["order"].append(slug)
+        save_content(data)
+        
+        return redirect("/admin")
+    
+    # GET request - show form
+    new_page_html = f"""<!DOCTYPE html>
+<html>
+<head>
+    <title>Create New Page</title>
+    <style>
+        {ADMIN_STYLE}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📄 Create New Page</h1>
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="title">Page Title</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="hero_image">Hero Image URL</label>
+                <input type="text" id="hero_image" name="hero_image" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="body_md">Content (Markdown)</label>
+                <textarea id="body_md" name="body_md" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="product_url">Amazon/Product URL (Optional)</label>
+                <input type="text" id="product_url" name="product_url">
+            </div>
+            
+            <div class="form-group">
+                <label for="gumroad_url">Gumroad URL (Optional)</label>
+                <input type="text" id="gumroad_url" name="gumroad_url">
+            </div>
+            
+            <div class="form-group">
+                <label for="podcast_embed">Podcast Embed (Optional)</label>
+                <textarea id="podcast_embed" name="podcast_embed"></textarea>
+            </div>
+            
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary">💾 Create Page</button>
+                <a href="/admin" class="btn btn-secondary">← Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>"""
+    return new_page_html
+
 @app.route("/admin/edit/<page_id>", methods=["GET", "POST"])
 def edit_page(page_id):
     """Edit a specific page"""
@@ -1035,6 +1129,18 @@ def edit_page(page_id):
                 <div class="help-text">Amazon or other product link.</div>
             </div>
             
+            
+            <div class="form-group">
+                <label for="gumroad_url">Gumroad Product URL (Optional)</label>
+                <input type="text" id="gumroad_url" name="gumroad_url" value="{page.get('gumroad_url', '')}">
+                <div class="help-text">Your Gumroad product link (e.g., https://yourusername.gumroad.com/l/product)</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="podcast_embed">Podcast Embed Code (Optional)</label>
+                <textarea id="podcast_embed" name="podcast_embed" style="min-height: 100px;">{page.get('podcast_embed', '')}</textarea>
+                <div class="help-text">Paste your podcast embed code (Spotify, Apple, etc.)</div>
+            </div>
             <div class="form-group">
                 <label for="gallery_images">Gallery Images (Optional - One URL per line)</label>
                 <textarea id="gallery_images" name="gallery_images" style="min-height: 100px;">{gallery_str}</textarea>
