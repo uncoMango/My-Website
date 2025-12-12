@@ -566,8 +566,18 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             {% endif %}
             
             {% if page.product_links %}
+            <div class="buy-section">
+                <h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">🎵 Stream Our Music</h2>
+                <div class="music-buttons">
+                    {% for link in page.product_links %}
+                    <a href="{{ link.url }}" target="_blank" class="music-button">
+                        {{ link.icon }} {{ link.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
             
-
             {% if page.product_images %}
             <div class="product-gallery" style="margin: 3rem 0;">
                 <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">📚 Available Products</h2>
@@ -600,9 +610,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
                     💳 Buy on Gumroad
                 </a>
                 {% endif %}
-                </div>
             </div>
-            {% endif %}
         </article>
     </main>
     
