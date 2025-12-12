@@ -602,12 +602,6 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
                 {% endif %}
                 </div>
             </div>
-            {% elif page.product_url and page.product_url != '#' %}
-            <div class="buy-section">
-                <a href="{{ page.product_url }}" target="_blank" class="buy-button">
-                    🛒 Buy Now on Amazon
-                </a>
-            </div>
             {% endif %}
         </article>
     </main>
