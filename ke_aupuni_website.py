@@ -955,12 +955,26 @@ def edit_page(page_id):
         elif "product_url" in pages[page_id]:
             del pages[page_id]["product_url"]
         
+        # Handle Gumroad URL
+        gumroad_url = request.form.get("gumroad_url", "").strip()
+        if gumroad_url:
+            pages[page_id]["gumroad_url"] = gumroad_url
+        elif "gumroad_url" in pages[page_id]:
+            del pages[page_id]["gumroad_url"]
+        
+        # Handle Podcast Embed
+        podcast_embed = request.form.get("podcast_embed", "").strip()
+        if podcast_embed:
+            pages[page_id]["podcast_embed"] = podcast_embed
+        elif "podcast_embed" in pages[page_id]:
+            del pages[page_id]["podcast_embed"]
+        
         # Handle product images (book covers, planner covers, etc)
         product_images_raw = request.form.get("product_images", "")
         if product_images_raw:
-            page["product_images"] = [line.strip() for line in product_images_raw.split("\n") if line.strip()]
+            pages[page_id]["product_images"] = [line.strip() for line in product_images_raw.split("\n") if line.strip()]
         else:
-            page["product_images"] = []
+            pages[page_id]["product_images"] = []
         
         # Handle gallery images
         gallery_str = request.form.get("gallery_images", "").strip()
