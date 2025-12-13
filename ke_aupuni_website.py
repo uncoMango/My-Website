@@ -1080,7 +1080,7 @@ def edit_page(page_id):
     # Load products
     products_json = json.dumps(page.get("products", []), indent=2)
 
-        # Format product images
+    # Format product images
     product_images_str = ""
     if page.get("product_images"):
         product_images_str = "\n".join(page["product_images"])
