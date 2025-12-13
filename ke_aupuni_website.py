@@ -970,7 +970,7 @@ def admin_new_page():
 
             <div class="form-group">
                 <label for="products_data">Products (JSON Format)</label>
-                <textarea id="products_data" name="products_data" style="min-height: 200px; font-family: monospace;">{products_json}</textarea>
+                <textarea id="products_data" name="products_data" style="min-height: 200px; font-family: monospace;">[]</textarea>
                 <div class="help-text">Format: [{"name":"Book 1 Hawaiian","image":"https://i.imgur.com/...","amazon_url":"https://...","gumroad_url":"https://..."}]</div>
                 <div class="help-text">Tip: Copy/paste and edit. Each product in curly braces, separated by commas.</div>
             </div>
