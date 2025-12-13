@@ -565,32 +565,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             </div>
             {% endif %}
             
-
-            {% if page.products %}
-            <div style="margin: 3rem 0;">
-                <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">📚 Available Products</h2>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem;">
-                    {% for product in page.products %}
-                    <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-                        {% if product.image %}
-                        <img src="{{ product.image }}" alt="{{ product.name }}" style="width: 100%; height: auto; border-radius: 8px; margin-bottom: 1rem;">
-                        {% endif %}
-                        <h3 style="color: white; font-size: 1.1rem; margin-bottom: 1rem;">{{ product.name }}</h3>
-                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            {% if product.amazon_url %}
-                            <a href="{{ product.amazon_url }}" target="_blank" class="buy-button" style="width: 100%; text-align: center; padding: 0.75rem;">🛒 Amazon</a>
-                            {% endif %}
-                            {% if product.gumroad_url %}
-                            <a href="{{ product.gumroad_url }}" target="_blank" class="buy-button" style="width: 100%; text-align: center; padding: 0.75rem; background: linear-gradient(135deg, #FF90E8, #FFA500);">💳 Gumroad</a>
-                            {% endif %}
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
-
-                        {% if page.product_links %}
+            {% if page.product_links %}
             <div class="buy-section">
                 <h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">🎵 Stream Our Music</h2>
                 <div class="music-buttons">
@@ -950,14 +925,7 @@ def admin_new_page():
                 <textarea id="podcast_embed" name="podcast_embed"></textarea>
             </div>
             
-
-            <div class="form-group">
-                <label for="products_json">Products (JSON)</label>
-                <textarea id="products_json" name="products_json" style="min-height: 150px; font-family: monospace;">{products_json}</textarea>
-                <div class="help-text">Format: [{"name":"Book 1","image":"https://...","amazon_url":"https://...","gumroad_url":"https://..."}]</div>
-            </div>
-
-                        <div class="btn-group">
+            <div class="btn-group">
                 <button type="submit" class="btn btn-primary">💾 Create Page</button>
                 <a href="/admin" class="btn btn-secondary">← Cancel</a>
             </div>
@@ -1002,18 +970,6 @@ def edit_page(page_id):
             pages[page_id]["podcast_embed"] = podcast_embed
         elif "podcast_embed" in pages[page_id]:
             del pages[page_id]["podcast_embed"]
-
-        # Save products
-        products_json_str = request.form.get("products_json", "").strip()
-        if products_json_str:
-            try:
-                products = json.loads(products_json_str)
-                pages[page_id]["products"] = [p for p in products if p.get("name")]
-            except:
-                pass
-        elif "products" in pages[page_id]:
-            del pages[page_id]["products"]
-        
         
         # Handle product images (book covers, planner covers, etc)
         product_images_raw = request.form.get("product_images", "")
@@ -1056,9 +1012,6 @@ def edit_page(page_id):
     
     # Format gallery images
     gallery_str = "\n".join(page.get("gallery_images", []))
-
-    products_json = json.dumps(page.get("products", []), indent=2)
-    
     
     # Format product images
     product_images_str = ""
@@ -1249,14 +1202,7 @@ def edit_page(page_id):
                 <div class="help-text">Example: Amazon Music|https://music.amazon.com/...|🛒</div>
             </div>
             
-
-            <div class="form-group">
-                <label for="products_json">Products (JSON)</label>
-                <textarea id="products_json" name="products_json" style="min-height: 150px; font-family: monospace;">{products_json}</textarea>
-                <div class="help-text">Format: [{"name":"Book 1","image":"https://...","amazon_url":"https://...","gumroad_url":"https://..."}]</div>
-            </div>
-
-                        <div class="btn-group">
+            <div class="btn-group">
                 <button type="submit" class="btn btn-primary">💾 Save Changes</button>
                 <a href="/admin" class="btn btn-secondary">← Cancel</a>
             </div>
