@@ -522,6 +522,13 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             max-width: 100%;
         }
     }
+
+    
+    /* Product card hover effect */
+    .content-card div[style*="background: rgba(255,255,255,0.1)"]:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.5) !important;
+    }
 </style>
 </head>
 <body>
@@ -565,7 +572,32 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             </div>
             {% endif %}
             
-            {% if page.product_links %}
+
+            {% if page.products %}
+            <div style="margin: 3rem 0; padding: 2rem 0; border-top: 2px solid rgba(255,255,255,0.2);">
+                <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">📚 Available Products</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto;">
+                    {% for product in page.products %}
+                    <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.3s ease;">
+                        {% if product.cover %}
+                        <img src="{{ product.cover }}" alt="{{ product.title }}" style="width: 100%; height: auto; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+                        {% endif %}
+                        <h3 style="color: white; font-size: 1rem; margin-bottom: 1rem; min-height: 2.5rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">{{ product.title }}</h3>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                            {% if product.amazon %}
+                            <a href="{{ product.amazon }}" target="_blank" style="display: block; background: linear-gradient(135deg, var(--accent-teal), #4a8b8e); color: white; padding: 0.6rem; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.9rem; text-align: center; transition: transform 0.2s;">🛒 Amazon</a>
+                            {% endif %}
+                            {% if product.gumroad %}
+                            <a href="{{ product.gumroad }}" target="_blank" style="display: block; background: linear-gradient(135deg, #FF90E8, #FFA500); color: white; padding: 0.6rem; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.9rem; text-align: center; transition: transform 0.2s;">💳 Gumroad</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+                        {% if page.product_links %}
             <div class="buy-section">
                 <h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">🎵 Stream Our Music</h2>
                 <div class="music-buttons">
@@ -970,6 +1002,32 @@ def edit_page(page_id):
             pages[page_id]["podcast_embed"] = podcast_embed
         elif "podcast_embed" in pages[page_id]:
             del pages[page_id]["podcast_embed"]
+
+        # Handle products
+        products_text = request.form.get("products_json", "").strip()
+        if products_text:
+            products = []
+            for line in products_text.split("\n"):
+                line = line.strip()
+                if not line or "|" not in line:
+                    continue
+                parts = [p.strip() for p in line.split("|")]
+                if len(parts) >= 3 and parts[0]:  # Must have at least title, cover, amazon
+                    product = {
+                        "title": parts[0],
+                        "cover": parts[1] if len(parts) > 1 else "",
+                        "amazon": parts[2] if len(parts) > 2 else "",
+                        "gumroad": parts[3] if len(parts) > 3 else ""
+                    }
+                    products.append(product)
+            if products:
+                pages[page_id]["products"] = products
+            elif "products" in pages[page_id]:
+                del pages[page_id]["products"]
+        elif "products" in pages[page_id]:
+            del pages[page_id]["products"]
+        
+
         
         # Handle product images (book covers, planner covers, etc)
         product_images_raw = request.form.get("product_images", "")
@@ -1012,6 +1070,16 @@ def edit_page(page_id):
     
     # Format gallery images
     gallery_str = "\n".join(page.get("gallery_images", []))
+
+    # Load products for editing
+    products_text_lines = []
+    if page.get("products"):
+        for p in page["products"]:
+            line = f"{p.get('title', '')} | {p.get('cover', '')} | {p.get('amazon', '')} | {p.get('gumroad', '')}"
+            products_text_lines.append(line)
+    products_json = "\n".join(products_text_lines)
+    
+
     
     # Format product images
     product_images_str = ""
@@ -1190,6 +1258,17 @@ def edit_page(page_id):
                 <div class="help-text">Direct image URLs only (https://i.imgur.com/ABC123.jpg) - one per line. These will display in a grid on your page.</div>
             </div>
             
+            
+            <div class="form-group">
+                <label for="products_json">📦 Products (Books/Planners/etc)</label>
+                <textarea id="products_json" name="products_json" style="min-height: 180px; font-family: 'Courier New', monospace; font-size: 0.9rem;">{products_json}</textarea>
+                <div class="help-text" style="background: #f0f7ff; padding: 0.75rem; border-radius: 4px; margin-top: 0.5rem;">
+                    <strong>Format:</strong> One product per line: Title | Cover URL | Amazon URL | Gumroad URL<br>
+                    <strong>Example:</strong> Book 1 Hawaiian/English | https://i.imgur.com/ABC.jpg | https://amazon.com/... | https://gumroad.com/...<br>
+                    <em>Leave Gumroad blank if not needed</em>
+                </div>
+            </div>
+
                         <div class="form-group">
                 <label for="gallery_images">Gallery Images (Optional - One URL per line)</label>
                 <textarea id="gallery_images" name="gallery_images" style="min-height: 100px;">{gallery_str}</textarea>
