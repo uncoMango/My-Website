@@ -1012,14 +1012,17 @@ def edit_page(page_id):
                 if not line or "|" not in line:
                     continue
                 parts = [p.strip() for p in line.split("|")]
-                if len(parts) >= 3 and parts[0]:  # Must have at least title, cover, amazon
+                # Only require title (first field)
+                if parts[0]:
                     product = {
                         "title": parts[0],
-                        "cover": parts[1] if len(parts) > 1 else "",
-                        "amazon": parts[2] if len(parts) > 2 else "",
-                        "gumroad": parts[3] if len(parts) > 3 else ""
+                        "cover": parts[1] if len(parts) > 1 and parts[1] else "",
+                        "amazon": parts[2] if len(parts) > 2 and parts[2] else "",
+                        "gumroad": parts[3] if len(parts) > 3 and parts[3] else ""
                     }
-                    products.append(product)
+                    # Only add if at least one URL provided
+                    if product["amazon"] or product["gumroad"]:
+                        products.append(product)
             if products:
                 pages[page_id]["products"] = products
             elif "products" in pages[page_id]:
