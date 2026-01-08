@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop – Kingdom Inspired Planners & Books</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fefcf8 url('images/pattern.png') repeat;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    header {
+      background: linear-gradient(90deg, #008080, #20c997);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    .shop-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .product-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 1rem;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+    .product-card img {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+    .product-card h3 {
+      margin: 0.8rem 0 0.5rem;
+      color: #008080;
+    }
+    .product-card p {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    .btn {
+      display: inline-block;
+      background: #ff7f50;
+      color: white;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .btn:hover {
+      background: #e5673e;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #f4f4f4;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Kingdom Inspired Shop</h1>
+    <p>Books & Planners with Aloha</p>
+  </header>
+
+  <div class="shop-container">
+    <!-- Product 1 -->
+    <div class="product-card">
+      <img src="images/book-cover.jpg" alt="Healthy Eating Book">
+      <h3>Healthy Eating Book</h3>
+      <p>Simple, biblical approach to eating well and caring for God’s temple.</p>
+      <a href="https://www.amazon.com/your-kdp-link" class="btn" target="_blank">Buy on Amazon</a>
+    </div>
+
+    <!-- Product 2 -->
+    <div class="product-card">
+      <img src="images/planner-cover.jpg" alt="Pastor’s Day Planner">
+      <h3>Pastor’s Monthly Planner</h3>
+      <p>Organize your ministry schedule with clarity and peace of mind.</p>
+      <a href="https://www.etsy.com/your-etsy-link" class="btn" target="_blank">Get on Etsy</a>
+    </div>
+
+    <!-- Product 3 -->
+    <div class="product-card">
+      <img src="images/devotional-cover.jpg" alt="Pastor’s Devotional">
+      <h3>Pastor’s Devotional</h3>
+      <p>Daily encouragement rooted in God’s Word with Hawaiian heart.</p>
+      <a href="https://www.amazon.com/your-kdp-link" class="btn" target="_blank">Buy on Amazon</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Kingdom Inspired Resources | Made with Aloha 🌺</p>
+  </footer>
+</body>
+</html>
