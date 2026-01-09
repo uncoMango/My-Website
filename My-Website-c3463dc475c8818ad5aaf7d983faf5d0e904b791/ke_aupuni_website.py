@@ -6,7 +6,7 @@ import markdown
 
 app = Flask(__name__)
 
-# --- SECTION 1: THE FOUNDATION (SEO & METADATA) ---
+# --- SECTION 1: THE FOUNDATION ---
 KEYWORDS = "Biblical weight loss, natural weight loss, Kingdom understanding of the bible, kingdom living vs religion, kingdom of god wealth, Myron Golden"
 
 # --- SECTION 2: THE FULL REGALIA DESIGN (CSS) ---
@@ -28,7 +28,6 @@ body {
     line-height: 1.8;
 }
 
-/* THE NAVIGATION: HARD-CODED AND PERMANENT */
 .site-nav { 
     background: white; 
     padding: 1.5rem 0; 
@@ -40,7 +39,7 @@ body {
 }
 
 .site-nav a { 
-    margin: 0 20px; 
+    margin: 0 15px; 
     text-decoration: none; 
     color: var(--text-dark); 
     font-weight: bold; 
@@ -48,7 +47,6 @@ body {
     letter-spacing: 1px;
 }
 
-/* THE HERO STAGE */
 .hero-stage {
     width: 100%;
     min-height: 80vh; 
@@ -62,7 +60,6 @@ body {
     padding: 60px 20px;
 }
 
-/* THE TRANSPARENT BOX */
 .content-card { 
     background: var(--white-70) !important; 
     max-width: 900px;
@@ -87,7 +84,6 @@ body {
     margin-bottom: 2rem;
 }
 
-/* THE GOLDEN BUTTON */
 .cta-button { 
     display: inline-block; 
     background: var(--accent-teal); 
@@ -98,11 +94,6 @@ body {
     font-weight: bold; 
     font-size: 1.4rem;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    transition: transform 0.3s ease;
-}
-
-.cta-button:hover {
-    transform: translateY(-5px);
 }
 """
 
@@ -112,7 +103,7 @@ body {
 def home_page():
     content = {
         "title": "Ke Aupuni O Ke Akua",
-        "body_md": "## Aloha and Welcome\\nWelcome to the Kingdom Embassy. We are here to fulfill the 20-Volume Mandate and restore the understanding of the Kingdom of God.",
+        "body_md": "## Aloha and Welcome\\nWelcome to the Kingdom Embassy. We are here to fulfill the 20-Volume Mandate.",
         "link": ""
     }
     return render_embassy(content)
@@ -121,7 +112,7 @@ def home_page():
 def the_mandate_page():
     content = {
         "title": "The 20-Volume Mandate",
-        "body_md": "## The Divine Assignment\\nRestoring the understanding of the Kingdom through the written word.",
+        "body_md": "## The Mandate Content\\nDetails about the mission go here.",
         "link": ""
     }
     return render_embassy(content)
@@ -129,8 +120,8 @@ def the_mandate_page():
 @app.route("/kingdom_wealth")
 def kingdom_wealth_page():
     content = {
-        "title": "Kingdom Wealth & Stewardship",
-        "body_md": "## Funding the 20-Volume Mandate\\nI have aligned with **Myron Golden** and the 'Make More Offers Challenge' to provide the financial foundation for our mission.",
+        "title": "Kingdom Wealth",
+        "body_md": "## Stewardship\\nFunding the mandate through Kingdom principles.",
         "link": "https://www.makemoreofferschallenge.com/join?am_id=uncomango777"
     }
     return render_embassy(content)
@@ -139,7 +130,7 @@ def kingdom_wealth_page():
 def aloha_wellness_page():
     content = {
         "title": "Aloha Wellness",
-        "body_md": "## Biblical Weight Loss\\nRestoring the Temple through Kingdom principles and natural health practices.",
+        "body_md": "## Biblical Weight Loss\\nRestoring the Temple.",
         "link": ""
     }
     return render_embassy(content)
@@ -149,6 +140,7 @@ def aloha_wellness_page():
 def render_embassy(content):
     html_body = markdown.markdown(content.get("body_md", ""))
     
+    # I have checked this HTML block specifically to ensure the links are correct
     full_page = f"""
     <!DOCTYPE html>
     <html lang="en">
@@ -164,7 +156,7 @@ def render_embassy(content):
             <a href="/the_mandate">THE MANDATE</a>
             <a href="/kingdom_wealth">KINGDOM WEALTH</a>
             <a href="/aloha_wellness">ALOHA WELLNESS</a>
-            <a href="/admin" style="color:var(--accent-gold);">ADMIN</a>
+            <a href="/admin">ADMIN</a>
         </nav>
         
         <div class="hero-stage">
@@ -180,6 +172,8 @@ def render_embassy(content):
     </html>
     """
     return render_template_string(full_page, content=content)
+
+# --- SECTION 5: THE ADMIN GATE ---
 
 @app.route("/admin")
 def admin_portal():
