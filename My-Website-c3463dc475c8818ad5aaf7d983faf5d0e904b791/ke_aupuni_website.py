@@ -6,15 +6,11 @@ import markdown
 
 app = Flask(__name__)
 
-# --- THE ARCHITECTURE (THE FULL 200+ LINE FEEL) ---
+# --- SECTION 1: THE FOUNDATION (SEO & METADATA) ---
+KEYWORDS = "Biblical weight loss, natural weight loss, Kingdom understanding of the bible, kingdom living vs religion, kingdom of god wealth, Myron Golden"
 
-BASE = Path(__file__).parent
-DATA_FILE = BASE / "website_content.json"
-
-# FULL SEO AND HEADERS
-KEYWORDS = "Biblical weight loss, natural weight loss, Kingdom understanding, Myron Golden, Kingdom Wealth"
-
-# THE COMPLETE CSS (LOCKED AT 70% TRANSPARENCY)
+# --- SECTION 2: THE FULL REGALIA DESIGN (CSS) ---
+# This block is restored to its full length to ensure the layout is locked.
 STYLE_BLOCK = """
 :root {
     --primary-bg: #f8f5f0;
@@ -23,16 +19,40 @@ STYLE_BLOCK = """
     --accent-gold: #d4a574;
     --white-70: rgba(255, 255, 255, 0.7); 
 }
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
     font-family: 'Georgia', serif;
     background-color: var(--primary-bg);
     color: var(--text-dark);
     line-height: 1.8;
 }
-.hero-container {
+
+/* THE NAVIGATION: HARD-CODED AND PERMANENT */
+.site-nav { 
+    background: white; 
+    padding: 1.5rem 0; 
+    position: sticky; 
+    top: 0; 
+    z-index: 9999;
+    border-bottom: 3px solid var(--accent-gold);
+    text-align: center;
+}
+
+.site-nav a { 
+    margin: 0 20px; 
+    text-decoration: none; 
+    color: var(--text-dark); 
+    font-weight: bold; 
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* THE HERO STAGE: 80% OF THE VIEWPORT HEIGHT */
+.hero-stage {
     width: 100%;
-    min-height: 80vh; /* 80% OF THE VIEWPORT AS REQUESTED */
+    min-height: 80vh; 
     background-image: url('https://i.imgur.com/wmHEyDo.png');
     background-size: cover;
     background-position: center;
@@ -40,83 +60,92 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 50px 20px;
+    padding: 60px 20px;
 }
+
+/* THE TRANSPARENT BOX: THE CENTERED SANCTUM */
 .content-card { 
-    background: var(--white-70) !important; /* THE 70% TRANSPARENT BOX */
-    max-width: 850px;
+    background: var(--white-70) !important; 
+    max-width: 900px;
     width: 100%;
-    padding: 4rem; 
-    border-radius: 30px; 
-    border: 4px solid var(--accent-gold); 
-    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-    backdrop-filter: blur(10px);
+    padding: 5rem 4rem; 
+    border-radius: 40px; 
+    border: 5px solid var(--accent-gold); 
+    box-shadow: 0 30px 70px rgba(0,0,0,0.4);
+    backdrop-filter: blur(12px);
     text-align: center;
 }
-.site-navigation { 
-    background: white; 
-    padding: 1.5rem 0; 
-    position: sticky; 
-    top: 0; 
-    z-index: 9999;
-    border-bottom: 3px solid var(--accent-gold);
+
+.hero-title {
+    font-size: 3.2rem;
+    margin-bottom: 2rem;
+    color: var(--text-dark);
 }
-.nav-link { 
-    margin: 0 15px; 
-    text-decoration: none; 
-    color: var(--text-dark); 
-    font-weight: bold; 
-    text-transform: uppercase;
-    font-size: 0.95rem;
+
+.content-body {
+    font-size: 1.3rem;
+    text-align: left;
+    margin-bottom: 2rem;
 }
+
+/* THE GOLDEN BUTTON */
 .cta-button { 
     display: inline-block; 
     background: var(--accent-teal); 
     color: white !important; 
-    padding: 1.2rem 2.8rem; 
-    border-radius: 15px; 
+    padding: 1.5rem 3.5rem; 
+    border-radius: 20px; 
     text-decoration: none; 
     font-weight: bold; 
-    font-size: 1.2rem;
-    margin-top: 30px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    font-size: 1.4rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-5px);
 }
 """
 
-# --- THE PAGES (THE CHAPTERS) ---
+# --- SECTION 3: THE PERMANENT PAGES (HARD-CODED CHAPTERS) ---
 
 @app.route("/")
-def index():
-    page_data = {
+def home_page():
+    content = {
         "title": "Ke Aupuni O Ke Akua",
-        "body": "## Welcome to the Kingdom Embassy\nRestoring the 20-Volume Mandate."
+        "body_md": "## Aloha and Welcome\\nWelcome to the Kingdom Embassy. We are here to fulfill the 20-Volume Mandate and restore the understanding of the Kingdom of God.",
+        "link": ""
     }
-    return render_embassy(page_data)
+    return render_embassy(content)
 
 @app.route("/kingdom_wealth")
-def kingdom_wealth():
-    # NEW PAGE ADDED HERE
-    page_data = {
+def kingdom_wealth_page():
+    # THIS IS THE ADDED CHAPTER IN FULL REGALIA
+    content = {
         "title": "Kingdom Wealth & Stewardship",
-        "body": "## Funding the 20-Volume Mandate\nI have aligned with **Myron Golden** and the 'Make More Offers Challenge' to provide the financial foundation for our mission.",
+        "body_md": "## Funding the 20-Volume Mandate\\nI have aligned with **Myron Golden** and the 'Make More Offers Challenge' to provide the financial foundation for our mission to release the Kingdom series. Stewardship is the fuel for the mandate.",
         "link": "https://www.makemoreofferschallenge.com/join?am_id=uncomango777"
     }
-    return render_embassy(page_data)
+    return render_embassy(content)
 
 @app.route("/aloha_wellness")
-def aloha_wellness():
-    page_data = {
+def aloha_wellness_page():
+    content = {
         "title": "Aloha Wellness",
-        "body": "## Biblical Weight Loss\nRestoring the temple of the Holy Spirit."
+        "body_md": "## Biblical Weight Loss\\nRestoring the Temple through Kingdom principles and natural health practices.",
+        "link": ""
     }
-    return render_embassy(page_data)
+    return render_embassy(content)
 
-# --- THE ENGINE (THE PRINTING PRESS) ---
+# Add more explicit routes here as you expand the book...
+
+# --- SECTION 4: THE MASTER RENDERER ---
 
 def render_embassy(content):
-    html_content = markdown.markdown(content.get("body", ""))
+    html_body = markdown.markdown(content.get("body_md", ""))
     
-    full_html = f"""
+    # THE MASTER HTML TEMPLATE
+    full_page = f"""
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -126,32 +155,34 @@ def render_embassy(content):
         <style>{STYLE_BLOCK}</style>
     </head>
     <body>
-        <nav class="site-navigation">
-            <a href="/" class="nav-link">HOME</a>
-            <a href="/kingdom_wealth" class="nav-link">KINGDOM WEALTH</a>
-            <a href="/aloha_wellness" class="nav-link">ALOHA WELLNESS</a>
-            <a href="/admin" class="nav-link" style="color:var(--accent-gold);">ADMIN</a>
+        <nav class="site-nav">
+            <a href="/">HOME</a>
+            <a href="/kingdom_wealth">KINGDOM WEALTH</a>
+            <a href="/aloha_wellness">ALOHA WELLNESS</a>
+            <a href="/admin" style="color:var(--accent-gold);">ADMIN</a>
         </nav>
         
-        <div class="hero-container">
+        <div class="hero-stage">
             <article class="content-card">
-                <h1 style="font-size: 2.8rem; margin-bottom: 1.5rem;">{{{{ content.title }}}}</h1>
-                <div style="text-align: left; font-size: 1.2rem;">{html_content}</div>
+                <h1 class="hero-title">{{{{ content.title }}}}</h1>
+                <div class="content-body">{html_body}</div>
                 {{% if content.link %}}
-                <a href="{{{{ content.link }}}}" class="cta-button">JOIN THE CHALLENGE</a>
+                <center><a href="{{{{ content.link }}}}" class="cta-button">JOIN THE CHALLENGE NOW</a></center>
                 {{% endif %}}
             </article>
         </div>
     </body>
     </html>
     """
-    return render_template_string(full_html, content=content)
+    return render_template_string(full_page, content=content)
 
-# --- THE ADMIN ACCESS ---
+# --- SECTION 5: THE ADMIN GATE ---
 
 @app.route("/admin")
-def admin():
-    return "<h1>Palace Admin Access Active</h1>"
+def admin_portal():
+    return "<h1>Admin Portal Active</h1><p>You can add more hard-coded routes to the script to expand your Tabernacle.</p>"
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+    # RAILWAY PORT BINDING
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port)
