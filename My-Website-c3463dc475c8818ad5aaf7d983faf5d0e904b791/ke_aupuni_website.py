@@ -1,6 +1,3 @@
-# ke_aupuni_finalized_with_image_placeholders.py
-# FIXED VERSION - CSS working, products restored, New Pages Added
-
 from flask import Flask, request, redirect, render_template_string, abort, url_for, send_file
 import json
 from pathlib import Path
@@ -8,6 +5,9 @@ import markdown
 import os
 
 app = Flask(__name__)
+app.secret_key = "ke_aupuni_secret_key" # Added for stability
+
+# (Continue with your DATA_FILE and other code below this...)
 
 # I have added your two new pages to this order list so the buttons appear
 ORDER = ["home", "the_mandate", "kingdom_wealth", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice"]
