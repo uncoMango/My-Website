@@ -13,8 +13,7 @@ app = Flask(__name__)
 ORDER = ["home", "the_mandate", "kingdom_wealth", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice"]
 
 BASE = Path(__file__).parent
-DATA_FILE = BASE / "website_content.json"
-
+DATA_FILE = BASE / "website_content_v2.json"
 DEFAULT_PAGES = {
     "order": ORDER,
     "pages": {
