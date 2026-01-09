@@ -28,6 +28,7 @@ body {
     line-height: 1.8;
 }
 
+/* THE NAVIGATION: HARD-CODED AND PERMANENT */
 .site-nav { 
     background: white; 
     padding: 1.5rem 0; 
@@ -39,15 +40,15 @@ body {
 }
 
 .site-nav a { 
-    margin: 0 15px; 
+    margin: 0 20px; 
     text-decoration: none; 
     color: var(--text-dark); 
     font-weight: bold; 
     text-transform: uppercase;
     letter-spacing: 1px;
-    font-size: 0.9rem;
 }
 
+/* THE HERO STAGE */
 .hero-stage {
     width: 100%;
     min-height: 80vh; 
@@ -61,6 +62,7 @@ body {
     padding: 60px 20px;
 }
 
+/* THE TRANSPARENT BOX */
 .content-card { 
     background: var(--white-70) !important; 
     max-width: 900px;
@@ -85,6 +87,7 @@ body {
     margin-bottom: 2rem;
 }
 
+/* THE GOLDEN BUTTON */
 .cta-button { 
     display: inline-block; 
     background: var(--accent-teal); 
@@ -103,13 +106,22 @@ body {
 }
 """
 
-# --- SECTION 3: THE PERMANENT PAGES (HARD-CODED CHAPTERS) ---
+# --- SECTION 3: THE PERMANENT PAGES ---
 
 @app.route("/")
 def home_page():
     content = {
         "title": "Ke Aupuni O Ke Akua",
-        "body_md": "## Aloha and Welcome\nWelcome to the Kingdom Embassy. We are here to fulfill the 20-Volume Mandate and restore the understanding of the Kingdom of God.",
+        "body_md": "## Aloha and Welcome\\nWelcome to the Kingdom Embassy. We are here to fulfill the 20-Volume Mandate and restore the understanding of the Kingdom of God.",
+        "link": ""
+    }
+    return render_embassy(content)
+
+@app.route("/the_mandate")
+def the_mandate_page():
+    content = {
+        "title": "The 20-Volume Mandate",
+        "body_md": "## The Divine Assignment\\nRestoring the understanding of the Kingdom through the written word.",
         "link": ""
     }
     return render_embassy(content)
@@ -118,7 +130,7 @@ def home_page():
 def kingdom_wealth_page():
     content = {
         "title": "Kingdom Wealth & Stewardship",
-        "body_md": "## Funding the 20-Volume Mandate\nI have aligned with **Myron Golden** and the 'Make More Offers Challenge' to provide the financial foundation for our mission to release the Kingdom series.",
+        "body_md": "## Funding the 20-Volume Mandate\\nI have aligned with **Myron Golden** and the 'Make More Offers Challenge' to provide the financial foundation for our mission.",
         "link": "https://www.makemoreofferschallenge.com/join?am_id=uncomango777"
     }
     return render_embassy(content)
@@ -127,17 +139,7 @@ def kingdom_wealth_page():
 def aloha_wellness_page():
     content = {
         "title": "Aloha Wellness",
-        "body_md": "## Biblical Weight Loss\nRestoring the Temple through Kingdom principles and natural health practices.",
-        "link": ""
-    }
-    return render_embassy(content)
-
-# --- NEW PAGE ADDED HERE ---
-@app.route("/the_mandate")
-def the_mandate_page():
-    content = {
-        "title": "The 20-Volume Mandate",
-        "body_md": "## Our Divine Assignment\nThis mandate serves as the cornerstone of our mission to restore Kingdom light to the world. Each volume is a step toward complete spiritual and physical restoration.",
+        "body_md": "## Biblical Weight Loss\\nRestoring the Temple through Kingdom principles and natural health practices.",
         "link": ""
     }
     return render_embassy(content)
