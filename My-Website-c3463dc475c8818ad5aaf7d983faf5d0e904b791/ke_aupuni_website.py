@@ -482,16 +482,9 @@ def md_to_html(md_text):
     return markdown.markdown(md_text, extensions=["extra", "nl2br"])
 
 def load_content():
-    if False: # DATA_FILE.exists():
-        try:
-            with open(DATA_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-        except:
-            data = DEFAULT_PAGES
-            save_content(data)
-    else:
-        data = DEFAULT_PAGES
-        save_content(data)
+    # This DELETES the old memory and forces the new pages to appear
+    data = DEFAULT_PAGES
+    save_content(data)
     return data
 
 def save_content(data):
