@@ -483,7 +483,7 @@ def md_to_html(md_text):
     return markdown.markdown(md_text, extensions=["extra", "nl2br"])
 
 def load_content():
-    if DATA_FILE.exists():
+    if False: # DATA_FILE.exists():
         try:
             with open(DATA_FILE, "r", encoding="utf-8") as f:
                 data = json.load(f)
