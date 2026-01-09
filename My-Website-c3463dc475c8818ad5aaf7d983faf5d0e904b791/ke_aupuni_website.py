@@ -10,7 +10,6 @@ app = Flask(__name__)
 KEYWORDS = "Biblical weight loss, natural weight loss, Kingdom understanding of the bible, kingdom living vs religion, kingdom of god wealth, Myron Golden"
 
 # --- SECTION 2: THE FULL REGALIA DESIGN (CSS) ---
-# This block is restored to its full length to ensure the layout is locked.
 STYLE_BLOCK = """
 :root {
     --primary-bg: #f8f5f0;
@@ -29,7 +28,6 @@ body {
     line-height: 1.8;
 }
 
-/* THE NAVIGATION: HARD-CODED AND PERMANENT */
 .site-nav { 
     background: white; 
     padding: 1.5rem 0; 
@@ -41,15 +39,15 @@ body {
 }
 
 .site-nav a { 
-    margin: 0 20px; 
+    margin: 0 15px; 
     text-decoration: none; 
     color: var(--text-dark); 
     font-weight: bold; 
     text-transform: uppercase;
     letter-spacing: 1px;
+    font-size: 0.9rem;
 }
 
-/* THE HERO STAGE: 80% OF THE VIEWPORT HEIGHT */
 .hero-stage {
     width: 100%;
     min-height: 80vh; 
@@ -63,7 +61,6 @@ body {
     padding: 60px 20px;
 }
 
-/* THE TRANSPARENT BOX: THE CENTERED SANCTUM */
 .content-card { 
     background: var(--white-70) !important; 
     max-width: 900px;
@@ -88,7 +85,6 @@ body {
     margin-bottom: 2rem;
 }
 
-/* THE GOLDEN BUTTON */
 .cta-button { 
     display: inline-block; 
     background: var(--accent-teal); 
@@ -113,17 +109,16 @@ body {
 def home_page():
     content = {
         "title": "Ke Aupuni O Ke Akua",
-        "body_md": "## Aloha and Welcome\\nWelcome to the Kingdom Embassy. We are here to fulfill the 20-Volume Mandate and restore the understanding of the Kingdom of God.",
+        "body_md": "## Aloha and Welcome\nWelcome to the Kingdom Embassy. We are here to fulfill the 20-Volume Mandate and restore the understanding of the Kingdom of God.",
         "link": ""
     }
     return render_embassy(content)
 
 @app.route("/kingdom_wealth")
 def kingdom_wealth_page():
-    # THIS IS THE ADDED CHAPTER IN FULL REGALIA
     content = {
         "title": "Kingdom Wealth & Stewardship",
-        "body_md": "## Funding the 20-Volume Mandate\\nI have aligned with **Myron Golden** and the 'Make More Offers Challenge' to provide the financial foundation for our mission to release the Kingdom series. Stewardship is the fuel for the mandate.",
+        "body_md": "## Funding the 20-Volume Mandate\nI have aligned with **Myron Golden** and the 'Make More Offers Challenge' to provide the financial foundation for our mission to release the Kingdom series.",
         "link": "https://www.makemoreofferschallenge.com/join?am_id=uncomango777"
     }
     return render_embassy(content)
@@ -132,19 +127,26 @@ def kingdom_wealth_page():
 def aloha_wellness_page():
     content = {
         "title": "Aloha Wellness",
-        "body_md": "## Biblical Weight Loss\\nRestoring the Temple through Kingdom principles and natural health practices.",
+        "body_md": "## Biblical Weight Loss\nRestoring the Temple through Kingdom principles and natural health practices.",
         "link": ""
     }
     return render_embassy(content)
 
-# Add more explicit routes here as you expand the book...
+# --- NEW PAGE ADDED HERE ---
+@app.route("/the_mandate")
+def the_mandate_page():
+    content = {
+        "title": "The 20-Volume Mandate",
+        "body_md": "## Our Divine Assignment\nThis mandate serves as the cornerstone of our mission to restore Kingdom light to the world. Each volume is a step toward complete spiritual and physical restoration.",
+        "link": ""
+    }
+    return render_embassy(content)
 
 # --- SECTION 4: THE MASTER RENDERER ---
 
 def render_embassy(content):
     html_body = markdown.markdown(content.get("body_md", ""))
     
-    # THE MASTER HTML TEMPLATE
     full_page = f"""
     <!DOCTYPE html>
     <html lang="en">
@@ -157,6 +159,7 @@ def render_embassy(content):
     <body>
         <nav class="site-nav">
             <a href="/">HOME</a>
+            <a href="/the_mandate">THE MANDATE</a>
             <a href="/kingdom_wealth">KINGDOM WEALTH</a>
             <a href="/aloha_wellness">ALOHA WELLNESS</a>
             <a href="/admin" style="color:var(--accent-gold);">ADMIN</a>
@@ -176,13 +179,10 @@ def render_embassy(content):
     """
     return render_template_string(full_page, content=content)
 
-# --- SECTION 5: THE ADMIN GATE ---
-
 @app.route("/admin")
 def admin_portal():
     return "<h1>Admin Portal Active</h1><p>You can add more hard-coded routes to the script to expand your Tabernacle.</p>"
 
 if __name__ == "__main__":
-    # RAILWAY PORT BINDING
     port = int(os.environ.get("PORT", 8080))
     app.run(host="0.0.0.0", port=port)
