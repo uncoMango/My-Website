@@ -6,143 +6,167 @@ import markdown
 
 app = Flask(__name__)
 
-# --- 1. THE MANDATE (FORCED SEO & NAVIGATION) ---
-# 'kingdom_wealth' is now hard-coded at index 1
-ORDER = ["home", "kingdom_wealth", "aloha_wellness", "call_to_repentance", "pastor_planners", "nahenahe_voice"]
+# --- 1. THE FOUNDATION ---
 BASE = Path(__file__).parent
 DATA_FILE = BASE / "website_content.json"
+KEYWORDS = "Biblical weight loss, natural weight loss, Kingdom understanding of the bible, kingdom living vs religion, kingdom of god wealth, Myron Golden"
 
-# --- 2. THE DESIGN DNA (70% ALPHA LOCK) ---
-ENHANCED_STYLE = """
+# --- 2. THE DESIGN (80% HERO + 70% CENTERED BOX) ---
+STYLE = """
 :root {
-    --primary-bg: #f8f5f0;
-    --text-dark: #2c3e50;
-    --accent-teal: #5f9ea0;
-    --accent-warm: #d4a574;
-    --white-70: rgba(255, 255, 255, 0.7); /* THE TRANSPARENCY KEY */
+    --white-70: rgba(255, 255, 255, 0.7);
+    --teal: #5f9ea0;
+    --gold: #d4a574;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
     font-family: 'Georgia', serif;
+    background-color: #f8f5f0;
+    color: #2c3e50;
+    margin: 0;
+}
+.site-nav { 
+    background: white; 
+    padding: 1.2rem; 
+    text-align: center; 
+    border-bottom: 2px solid var(--gold);
+}
+.site-nav a { 
+    margin: 0 15px; 
+    text-decoration: none; 
+    color: #2c3e50; 
+    font-weight: bold; 
+    text-transform: uppercase;
+}
+.hero-viewport {
+    width: 100%;
+    min-height: 80vh; /* 80% OF THE PAGE */
     background-image: url('https://i.imgur.com/wmHEyDo.png');
-    background-attachment: fixed;
     background-size: cover;
-    color: var(--text-dark);
+    background-position: center;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.site-nav { background: rgba(255, 255, 255, 0.85); padding: 1.5rem 0; position: sticky; top: 0; z-index: 1000; }
-.nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; padding: 0 2rem; }
-.nav-menu { display: flex; list-style: none; gap: 1.5rem; }
-.nav-menu a { text-decoration: none; color: var(--text-dark); font-weight: 600; padding: 0.5rem 1rem; }
-
-.container { max-width: 900px; margin: 50px auto; padding: 0 20px; }
-.content-card { 
-    background: var(--white-70) !important; /* FORCED TRANSPARENCY */
-    padding: 3rem; 
-    border-radius: 20px; 
-    border: 2px solid var(--accent-warm); 
-    backdrop-filter: blur(5px);
+.content-box {
+    background: var(--white-70) !important; /* 70% TRANSPARENT */
+    width: 90%;
+    max-width: 800px;
+    padding: 3rem;
+    border-radius: 20px;
+    border: 3px solid var(--gold);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px);
 }
-.buy-button { 
-    display: inline-block; background: var(--accent-teal); color: white !important; 
-    padding: 1.2rem 2.5rem; border-radius: 10px; text-decoration: none; font-weight: bold;
+.buy-button {
+    display: inline-block;
+    background: var(--teal);
+    color: white !important;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 20px;
 }
 """
 
-# --- 3. THE HARD-CODED CONTENT (SEE THE WEALTH PAGE HERE) ---
-DEFAULT_PAGES = {
-    "home": {
-        "title": "Ke Aupuni O Ke Akua",
-        "body_md": "## Aloha\nWelcome to your Kingdom Embassy.",
-        "product_url": ""
-    },
-    "kingdom_wealth": {
-        "title": "Kingdom Wealth & Stewardship",
-        "body_md": "## Funding the 20-Volume Mandate\nI have aligned with **Myron Golden** and the 'Make More Offers Challenge' to provide the financial foundation for our mission to release the Kingdom series. Stewardship is the key to Kingdom expansion.",
-        "product_url": "https://www.makemoreofferschallenge.com/join?am_id=uncomango777"
-    },
-    "aloha_wellness": {
-        "title": "Aloha Wellness: Biblical Weight Loss",
-        "body_md": "## Natural Healing\nRestoring the temple through Biblical principles.",
-        "product_url": ""
-    }
-}
-
-def load_content():
-    data = {"order": ORDER, "pages": DEFAULT_PAGES}
+# --- 3. DATABASE LOGIC ---
+def get_data():
     if DATA_FILE.exists():
-        try:
-            with open(DATA_FILE, "r") as f:
-                saved = json.load(f)
-                data["pages"].update(saved.get("pages", {}))
-        except: pass
-    
-    # THE REASON IT ADDS THE PAGE: We force the dictionary to include these keys
-    data["pages"]["kingdom_wealth"] = DEFAULT_PAGES["kingdom_wealth"]
-    data["order"] = ORDER
-    return data
+        with open(DATA_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {"pages": {}}
 
-# --- 4. THE ROUTES & LOGIC ---
+def save_data(data):
+    with open(DATA_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4)
+
+# --- 4. THE EXPLICIT ROUTES ---
+
 @app.route("/")
-@app.route("/<page_id>")
-def serve_site(page_id="home"):
-    data = load_content()
-    
-    if page_id == "admin":
-        curr = request.args.get("page", "home")
-        return render_template_string(ADMIN_TEMPLATE, pages=data["pages"], current_page=curr, current_data=data["pages"].get(curr), style=ENHANCED_STYLE)
-    
-    page = data["pages"].get(page_id, data["pages"]["home"])
-    nav = [{"slug": s, "title": s.replace("_", " ").upper(), "url": f"/{s}" if s != "home" else "/"} for s in ORDER]
-    
-    return render_template_string(PAGE_TEMPLATE, page=page, nav_items=nav, style=ENHANCED_STYLE, body_html=markdown.markdown(page.get("body_md", "")))
+def home():
+    data = get_data()
+    content = data["pages"].get("home", {"title": "Ke Aupuni O Ke Akua", "body": "# Aloha\nWelcome to the Kingdom Embassy."})
+    return render_page(content)
 
-@app.route("/admin/save", methods=["POST"])
-def admin_save():
-    data = load_content()
-    pid = request.form.get("page_id")
-    if pid:
-        if pid not in data["pages"]: data["pages"][pid] = {}
-        data["pages"][pid]["title"] = request.form.get("title")
-        data["pages"][pid]["body_md"] = request.form.get("body_md")
-        data["pages"][pid]["product_url"] = request.form.get("product_url", "")
-        with open(DATA_FILE, "w") as f:
-            json.dump(data, f)
-    return redirect(f"/admin?page={pid}")
+@app.route("/kingdom_wealth")
+def kingdom_wealth():
+    # WE HARD-CODE THIS PAGE DATA SO IT CANNOT BE MISSING
+    content = {
+        "title": "Kingdom Wealth & Stewardship",
+        "body": "## Funding the 20-Volume Mandate\nI have aligned with **Myron Golden** and the 'Make More Offers Challenge' to provide the financial foundation for our mission.",
+        "product_url": "https://www.makemoreofferschallenge.com/join?am_id=uncomango777"
+    }
+    return render_page(content)
 
-# --- 5. THE TEMPLATES ---
-PAGE_TEMPLATE = """
-<!DOCTYPE html><html><head><title>{{ page.title }}</title><style>{{ style|safe }}</style></head>
+@app.route("/aloha_wellness")
+def aloha_wellness():
+    data = get_data()
+    content = data["pages"].get("aloha_wellness", {"title": "Aloha Wellness", "body": "Biblical Weight Loss..."})
+    return render_page(content)
+
+# --- 5. RENDER ENGINE ---
+def render_page(content):
+    body_html = markdown.markdown(content.get("body", ""))
+    return render_template_string(HTML_TEMPLATE, content=content, body_html=body_html)
+
+HTML_TEMPLATE = """
+<!DOCTYPE html><html><head><style>{{ style|safe }}</style></head>
 <body>
-    <nav class="site-nav"><div class="nav-container">
-        <a href="/" style="text-decoration:none; color:var(--accent-teal); font-weight:bold;">KE AUPUNI</a>
-        <ul class="nav-menu">
-            {% for item in nav_items %}<li><a href="{{ item.url }}">{{ item.title }}</a></li>{% endfor %}
-            <li><a href="/admin">ADMIN</a></li>
-        </ul>
-    </div></nav>
-    <div class="container"><article class="content-card">
-        <h1>{{ page.title }}</h1>
-        <div>{{ body_html|safe }}</div>
-        {% if page.product_url %}<center><a href="{{ page.product_url }}" class="buy-button">JOIN THE CHALLENGE</a></center>{% endif %}
-    </article></div>
+    <nav class="site-nav">
+        <a href="/">HOME</a>
+        <a href="/kingdom_wealth">KINGDOM WEALTH</a>
+        <a href="/aloha_wellness">ALOHA WELLNESS</a>
+        <a href="/admin" style="color:var(--gold);">ADMIN</a>
+    </nav>
+    <div class="hero-viewport">
+        <div class="content-box">
+            <h1>{{ content.title }}</h1>
+            <div>{{ body_html|safe }}</div>
+            {% if content.product_url %}
+            <center><a href="{{ content.product_url }}" class="buy-button">JOIN THE CHALLENGE</a></center>
+            {% endif %}
+        </div>
+    </div>
 </body></html>
 """
 
+# --- 6. ADMIN SYSTEM ---
+@app.route("/admin")
+def admin():
+    data = get_data()
+    return render_template_string(ADMIN_TEMPLATE, pages=data["pages"])
+
+@app.route("/admin/save", methods=["POST"])
+def admin_save():
+    data = get_data()
+    pid = request.form.get("page_id")
+    data["pages"][pid] = {
+        "title": request.form.get("title"),
+        "body": request.form.get("body"),
+        "product_url": request.form.get("product_url", "")
+    }
+    save_data(data)
+    return redirect("/admin")
+
 ADMIN_TEMPLATE = """
-<!DOCTYPE html><html><head><style>{{ style|safe }}</style></head>
-<body><div class="container"><div class="content-card">
-    <h1>Palace Management</h1>
-    <form method="POST" action="/admin/save">
-        <select name="page_id" onchange="window.location.href='/admin?page='+this.value">
-            {% for pid in pages.keys() %}<option value="{{ pid }}" {% if pid == current_page %}selected{% endif %}>{{ pid.upper() }}</option>{% endfor %}
-        </select>
-        <input type="text" name="title" value="{{ current_data.title }}" style="width:100%; margin:10px 0;">
-        <input type="text" name="product_url" value="{{ current_data.product_url }}" placeholder="Affiliate Link" style="width:100%; margin:10px 0;">
-        <textarea name="body_md" style="width:100%; height:300px;">{{ current_data.body_md }}</textarea>
-        <button type="submit" class="buy-button">SAVE CHANGES</button>
-    </form>
-</div></div></body></html>
+<!DOCTYPE html><html><body><h1>Admin Panel</h1>
+<form method="POST" action="/admin/save">
+    <input type="text" name="page_id" placeholder="page_id (e.g. home)">
+    <input type="text" name="title" placeholder="Title">
+    <input type="text" name="product_url" placeholder="Link">
+    <textarea name="body" placeholder="Markdown body"></textarea>
+    <button type="submit">SAVE PAGE</button>
+</form>
+</body></html>
 """
+
+style_context = STYLE # Passing to template
+
+@app.context_processor
+def inject_style():
+    return dict(style=STYLE)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
