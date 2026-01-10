@@ -998,53 +998,38 @@ def edit_page(page_id):
             for link in page["product_links"]
         ])
     
+    # This is the end of your edit_page function
     edit_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit {page['title']}</title>
+    <title>Edit {page.get('title', 'Page')}</title>
     <style>
-        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-        body {{ font-family: system-ui, sans-serif; background: #667eea; padding: 2rem; }}
-        .container {{ max-width: 800px; margin: 0 auto; background: white; border-radius: 16px; padding: 2rem; }}
-        .form-group {{ margin-bottom: 1.5rem; }}
-        label {{ display: block; font-weight: 600; margin-bottom: 0.5rem; }}
-        input[type="text"], textarea {{ width: 100%; padding: 0.75rem; border: 2px solid #e9ecef; border-radius: 8px; }}
-        textarea {{ min-height: 150px; }}
-        .btn-group {{ display: flex; gap: 1rem; margin-top: 2rem; }}
-        .btn {{ padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; text-decoration: none; }}
-        .btn-primary {{ background: #667eea; color: white; border: none; }}
-        .btn-secondary {{ background: #6c757d; color: white; text-align: center; }}
+        body {{ font-family: sans-serif; background: #667eea; padding: 20px; }}
+        .container {{ max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; }}
+        input, textarea {{ width: 100%; margin-bottom: 10px; padding: 8px; }}
+        textarea {{ height: 200px; }}
+        .btn {{ padding: 10px; background: #667eea; color: white; border: none; cursor: pointer; }}
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>✏️ Edit Page</h1>
-        <p>{page['title']}</p>
+        <h1>Edit {page.get('title', '') or 'Page'}</h1>
         <form method="POST">
-            <div class="form-group"><label>Page Title</label><input type="text" name="title" value="{page.get('title', '')}" required></div>
-            <div class="form-group"><label>Hero Image URL</label><input type="text" name="hero_image" value="{page.get('hero_image', '')}" required></div>
-            <div class="form-group"><label>Content (Markdown)</label><textarea name="body_md" required>{page.get('body_md', '')}</textarea></div>
-            <div class="form-group"><label>Product URL</label><input type="text" name="product_url" value="{page.get('product_url', '')}"></div>
-            <div class="form-group"><label>Gumroad URL</label><input type="text" name="gumroad_url" value="{page.get('gumroad_url', '')}"></div>
-            <div class="form-group"><label>Podcast Embed</label><textarea name="podcast_embed">{page.get('podcast_embed', '')}</textarea></div>
-            <div class="form-group"><label>Product Images</label><textarea name="product_images">{product_images_str}</textarea></div>
-            <div class="form-group"><label>Products List</label><textarea name="products_json">{products_json}</textarea></div>
-            <div class="form-group"><label>Gallery Images</label><textarea name="gallery_images">{gallery_str}</textarea></div>
-            <div class="form-group"><label>Music Links</label><textarea name="product_links">{links_str}</textarea></div>
-            <div class="btn-group">
-                <button type="submit" class="btn btn-primary">💾 Save</button>
-                <a href="/kahu" class="btn btn-secondary">Cancel</a>
-            </div>
+            <label>Title</label><input type="text" name="title" value="{page.get('title', '')}">
+            <label>Hero Image</label><input type="text" name="hero_image" value="{page.get('hero_image', '')}">
+            <label>Content (Markdown)</label><textarea name="body_md">{page.get('body_md', '')}</textarea>
+            <button type="submit" class="btn">Save Changes</button>
+            <a href="/kahu">Cancel</a>
         </form>
     </div>
 </body>
 </html>"""
-    
     return render_template_string(edit_html)
 
+# --- THE ACTUAL START COMMAND ---
 if __name__ == "__main__":
+    # This checks for the JSON file you mentioned was missing
     if not DATA_FILE.exists():
         save_content(DEFAULT_PAGES)
     
