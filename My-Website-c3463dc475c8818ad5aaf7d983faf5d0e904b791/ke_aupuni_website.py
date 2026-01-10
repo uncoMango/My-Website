@@ -4,16 +4,15 @@ from flask import Flask, request, redirect, render_template_string, abort, url_f
 from pathlib import Path
 import markdown
 
-# --- THE ENGINE ---
 app = Flask(__name__)
 app.secret_key = "ke_aupuni_secret_key"
 
-# Make 'app' available globally for Gunicorn
-application = app 
-
-# --- FILE PATHS ---
+# This matches the setup you had when it was still running
 BASE = Path(__file__).parent
 DATA_FILE = BASE / "website_content_v2.json"
+
+# We keep the ORDER simple. 
+ORDER = ["home", "the_mandate", "kingdom_wealth", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice"]
 # ... and the rest of your code continues ...
 DEFAULT_PAGES = {
     "order": ORDER,
