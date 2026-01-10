@@ -1125,11 +1125,8 @@ def edit_page(page_id):
     return edit_html
 
 if __name__ == "__main__":
-    if not DATA_FILE.exists():
-        save_content(DEFAULT_PAGES)
-    
-    port = int(os.environ.get("PORT", 5000))
-    print("🌺 Starting...")
-    print(f"🌊 Visit: http://localhost:{port}")
-    print(f"⚙️  Admin: http://localhost:{port}/kahu")
-    app.run(host="0.0.0.0", port=port, debug=True)
+    # Railway provides the port; 8080 is the standard fallback
+    port = int(os.environ.get("PORT", 8080))
+    print(f"🌺 Starting Ke Aupuni on port {port}...")
+    # We turn debug OFF for the live server
+    app.run(host="0.0.0.0", port=port, debug=False)
