@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/ke_aupuni_o_ke_akua_complete.py"
+    }
+  ]
+}
