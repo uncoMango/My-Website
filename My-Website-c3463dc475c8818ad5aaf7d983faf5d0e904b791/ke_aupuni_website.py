@@ -483,23 +483,31 @@ def md_to_html(md_text):
     return markdown.markdown(md_text, extensions=["extra", "nl2br"])
 
 def load_content():
-    if DATA_FILE.exists():
-        try:
-            with open(DATA_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-        except:
-            data = DEFAULT_PAGES
-            save_content(data)
-    else:
-        data = DEFAULT_PAGES
-        save_content(data)
-    return data
+    # 1. If the file is missing, CREATE IT from your DEFAULT_PAGES immediately
+    if not DATA_FILE.exists():
+        save_content(DEFAULT_PAGES)
+        return DEFAULT_PAGES
+    
+    # 2. Try to read the file
+    try:
+        with open(DATA_FILE, "r", encoding="utf-8") as f:
+            content = json.load(f)
+            # Ensure "pages" key exists so it doesn't crash later
+            if "pages" not in content:
+                return DEFAULT_PAGES
+            return content
+    except Exception as e:
+        # 3. If the file is corrupted or unreadable, fall back to defaults
+        print(f"Error loading JSON, falling back to defaults: {e}")
+        return DEFAULT_PAGES
 
 def save_content(data):
-    DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-
+    try:
+        with open(DATA_FILE, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"CRITICAL ERROR SAVING: {e}")
+        
 def render_page(page_id, data):
     pages = data.get("pages", data)
     if page_id not in pages:
