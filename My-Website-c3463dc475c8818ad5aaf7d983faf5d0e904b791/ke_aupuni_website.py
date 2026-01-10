@@ -1,19 +1,20 @@
-import os
-import json
+# ke_aupuni_finalized_with_image_placeholders.py
+# FIXED VERSION - CSS working, products restored, New Pages Added
+
 from flask import Flask, request, redirect, render_template_string, abort, url_for, send_file
+import json
 from pathlib import Path
 import markdown
+import os
 
 app = Flask(__name__)
-app.secret_key = "ke_aupuni_secret_key"
 
-# This matches the setup you had when it was still running
-BASE = Path(__file__).parent
-DATA_FILE = BASE / "website_content_v2.json"
-
-# We keep the ORDER simple. 
+# I have added your two new pages to this order list so the buttons appear
 ORDER = ["home", "the_mandate", "kingdom_wealth", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice"]
-# ... and the rest of your code continues ...
+
+BASE = Path(__file__).parent
+DATA_FILE = BASE / "website_content.json"
+
 DEFAULT_PAGES = {
     "order": ORDER,
     "pages": {
@@ -482,9 +483,16 @@ def md_to_html(md_text):
     return markdown.markdown(md_text, extensions=["extra", "nl2br"])
 
 def load_content():
-    # This DELETES the old memory and forces the new pages to appear
-    data = DEFAULT_PAGES
-    save_content(data)
+    if DATA_FILE.exists():
+        try:
+            with open(DATA_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        except:
+            data = DEFAULT_PAGES
+            save_content(data)
+    else:
+        data = DEFAULT_PAGES
+        save_content(data)
     return data
 
 def save_content(data):
@@ -971,9 +979,7 @@ def edit_page(page_id):
             products_text_lines.append(line)
     products_json = "\n".join(products_text_lines)
     
-    product_images_str = ""
-    if page.get("product_images"):
-        product_images_str = "\n".join(page["product_images"])
+    product_images_str = "\n".join(page.get("product_images", []))
     
     links_str = ""
     if "product_links" in page:
@@ -987,7 +993,7 @@ def edit_page(page_id):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit {page['title']}</title>
+    <title>Edit {page.get('title', 'Page')}</title>
     <style>
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
         body {{
@@ -1007,111 +1013,70 @@ def edit_page(page_id):
         h1 {{ color: #2c3e50; margin-bottom: 0.5rem; }}
         .subtitle {{ color: #7f8c8d; margin-bottom: 2rem; }}
         .form-group {{ margin-bottom: 1.5rem; }}
-        label {{
-            display: block;
-            color: #2c3e50;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }}
-        input[type="text"],
-        textarea {{
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-family: inherit;
-            transition: border-color 0.3s ease;
-        }}
-        input[type="text"]:focus,
-        textarea:focus {{
-            outline: none;
-            border-color: #667eea;
+        label {{ display: block; color: #2c3e50; font-weight: 600; margin-bottom: 0.5rem; }}
+        input[type="text"], textarea {{
+            width: 100%; padding: 0.75rem; border: 2px solid #e9ecef;
+            border-radius: 8px; font-size: 1rem; font-family: inherit;
         }}
         textarea {{ min-height: 200px; resize: vertical; }}
         .help-text {{ font-size: 0.85rem; color: #6c757d; margin-top: 0.25rem; }}
         .btn-group {{ display: flex; gap: 1rem; margin-top: 2rem; }}
         .btn {{
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            display: inline-block;
+            padding: 0.75rem 1.5rem; border: none; border-radius: 8px;
+            font-size: 1rem; font-weight: 600; cursor: pointer;
+            text-decoration: none; display: inline-block;
         }}
-        .btn-primary {{
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }}
-        .btn-primary:hover {{
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        }}
+        .btn-primary {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }}
         .btn-secondary {{ background: #6c757d; color: white; }}
-        .btn-secondary:hover {{ background: #5a6268; }}
     </style>
 </head>
 <body>
     <div class="container">
         <h1>✏️ Edit Page</h1>
-        <p class="subtitle">{page['title']}</p>
-        
+        <p class="subtitle">{page.get('title', '')}</p>
         <form method="POST">
             <div class="form-group">
                 <label for="title">Page Title</label>
                 <input type="text" id="title" name="title" value="{page.get('title', '')}" required>
             </div>
-            
             <div class="form-group">
                 <label for="hero_image">Hero Image URL</label>
                 <input type="text" id="hero_image" name="hero_image" value="{page.get('hero_image', '')}" required>
             </div>
-            
             <div class="form-group">
                 <label for="body_md">Content (Markdown)</label>
                 <textarea id="body_md" name="body_md" required>{page.get('body_md', '')}</textarea>
             </div>
-            
             <div class="form-group">
                 <label for="product_url">Product URL</label>
                 <input type="text" id="product_url" name="product_url" value="{page.get('product_url', '')}">
             </div>
-            
             <div class="form-group">
                 <label for="gumroad_url">Gumroad URL</label>
                 <input type="text" id="gumroad_url" name="gumroad_url" value="{page.get('gumroad_url', '')}">
             </div>
-            
             <div class="form-group">
                 <label for="podcast_embed">Podcast Embed</label>
                 <textarea id="podcast_embed" name="podcast_embed" style="min-height: 100px;">{page.get('podcast_embed', '')}</textarea>
             </div>
-            
             <div class="form-group">
                 <label for="product_images">Product Images (One URL per line)</label>
                 <textarea id="product_images" name="product_images" style="min-height: 120px;">{product_images_str}</textarea>
             </div>
-            
             <div class="form-group">
                 <label for="products_json">Products</label>
-                <textarea id="products_json" name="products_json" style="min-height: 180px; font-family: 'Courier New', monospace;">{products_json}</textarea>
+                <textarea id="products_json" name="products_json" style="min-height: 180px;">{products_json}</textarea>
                 <div class="help-text">Format: Title | Cover URL | Amazon URL | Gumroad URL</div>
             </div>
-
             <div class="form-group">
                 <label for="gallery_images">Gallery Images</label>
                 <textarea id="gallery_images" name="gallery_images" style="min-height: 100px;">{gallery_str}</textarea>
             </div>
-            
             <div class="form-group">
                 <label for="product_links">Music Links</label>
                 <textarea id="product_links" name="product_links" style="min-height: 100px;">{links_str}</textarea>
                 <div class="help-text">Format: Name|URL|Icon</div>
             </div>
-            
             <div class="btn-group">
                 <button type="submit" class="btn btn-primary">💾 Save</button>
                 <a href="/kahu" class="btn btn-secondary">← Cancel</a>
@@ -1121,11 +1086,11 @@ def edit_page(page_id):
 </body>
 </html>"""
     
-    return edit_html
+    return render_template_string(edit_html)
 
 if __name__ == "__main__":
-    # Railway provides the port; 8080 is the standard fallback
+    if not DATA_FILE.exists():
+        save_content(DEFAULT_PAGES)
+    
     port = int(os.environ.get("PORT", 8080))
-    print(f"🌺 Starting Ke Aupuni on port {port}...")
-    # We turn debug OFF for the live server
     app.run(host="0.0.0.0", port=port, debug=False)
