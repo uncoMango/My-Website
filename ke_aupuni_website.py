@@ -486,18 +486,9 @@ def md_to_html(md_text):
     return markdown.markdown(md_text, extensions=["extra", "nl2br"])
 
 def load_content():
-    if DATA_FILE.exists():
-        try:
-            with open(DATA_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-        except:
-            data = DEFAULT_PAGES
-            save_content(data)
-    else:
-        data = DEFAULT_PAGES
-        save_content(data)
-    return data
-
+    # We are temporarily ignoring the old file to force the new pages in
+    return DEFAULT_PAGES
+    
 def save_content(data):
     DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(DATA_FILE, "w", encoding="utf-8") as f:
@@ -1143,4 +1134,5 @@ if __name__ == "__main__":
     print(f"🌊 Visit: http://localhost:{port}")
     print(f"⚙️  Admin: http://localhost:{port}/kahu")
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
