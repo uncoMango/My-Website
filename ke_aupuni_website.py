@@ -1,5 +1,6 @@
 # ke_aupuni_finalized_with_image_placeholders.py
 # FIXED VERSION - CSS working, products restored
+# NOW WITH KINGDOM KEYS FREE BOOKLETS PAGE
 
 from flask import Flask, request, redirect, render_template_string, abort, url_for, send_file
 import json
@@ -20,29 +21,19 @@ DEFAULT_PAGES = {
         "home": {
             "title": "Ke Aupuni O Ke Akua - The Kingdom of God",
             "hero_image": "https://i.imgur.com/wmHEyDo.png",
-            "body_md": "## Welcome to Ke Aupuni O Ke Akua - The Kingdom of God\r\n\r\nMahalo for visiting. This site is dedicated to rediscovering the revolutionary Kingdom message that Jesus actually preached, which is often missed in modern religious traditions.\r\n\r\n### Our Mission: Kingdom, Not Religion\r\nJesus's central focus was the Kingdom of God—the reign and rule of God breaking into the human experience here and now. Our resources aim to guide you into a deeper understanding of Kingdom principles, citizenship, and authority, moving you from religious performance into authentic, transformative living.\r\n\r\n**Start your journey today by exploring 'The Call to Repentance' series in the navigation.**\r\n\r\n### What Jesus Actually Taught\r\n\r\n**Kingdom Principles Over Religious Rules** - Discover how Jesus consistently chose kingdom living over religious compliance.\r\n\r\n**Repentance as Transformation** - Move beyond feeling sorry for sins to understanding a complete transformation of mind, heart, and lifestyle.\r\n\r\n**Heaven on Earth** - Learn how the Kingdom of God is meant to manifest in our daily lives, relationships, and communities right now.",
+            "body_md": "## Welcome to Ke Aupuni O Ke Akua - The Kingdom of God\r\n\r\nMahalo for visiting. This site is dedicated to rediscovering the revolutionary Kingdom message that Jesus actually preached, which is often missed in modern religious traditions.\r\n\r\n### Our Mission: Kingdom, Not Religion\r\nJesus's central focus was the Kingdom of God—the reign and rule of God breaking into the human experience here and now. Our resources aim to guide you into a deeper understanding of Kingdom principles, citizenship, and authority, moving you from religious performance into authentic, transformative living.\r\n\r\n**Start your journey today by exploring 'The Call to Repentance' series in the navigation.**\r\n\r\n### What Jesus Actually Taught\r\n\r\n**Kingdom Principles Over Religious Rules** - Discover how Jesus consistently chose kingdom living over religious compliance.\r\n\r\n**Repentance as Transformation** - Move beyond feeling sorry for sins to understanding a complete transformation of mind, heart, and lifestyle.\r\n\r\n**Heaven on Earth** - Learn how the Kingdom of God is meant to manifest in our daily lives, relationships, and communities right now.\r\n\r\n---\r\n\r\n### 🎁 FREE Kingdom Resources\r\n\r\nNew to Kingdom theology? Start with our **FREE Kingdom Keys booklets** - bite-sized teachings that will transform your understanding of what Jesus really taught.\r\n\r\n**[Download Free Kingdom Keys →](/kingdom_keys)**\r\n\r\n---\r\n\r\n### 💰 Kingdom Wealth & Biblical Prosperity\r\n\r\nDiscover God's economic system and how the Kingdom operates on principles of stewardship, multiplication, and generosity.\r\n\r\n**[Explore Kingdom Wealth Principles →](/kingdom_wealth)**",
             "product_url": "https://amzn.to/3FfH9ep"
         },
         "kingdom_wealth": {
             "title": "Kingdom Wealth",
             "hero_image": "https://i.imgur.com/G2YmSka.jpeg",
-            "body_md": """## Biblical Stewardship & Economic Increase
-            
-The Kingdom of God operates on a system of stewardship, not ownership. Understanding Kingdom Wealth means shifting from a "poverty mindset" to a "provision mindset."
-
-### Core Principles of Kingdom Wealth
-* **Source vs. Resource:** Recognizing that God is the Source, and everything else is just a resource.
-* **Seed Time and Harvest:** The spiritual law of multiplication through giving and wisdom.
-* **Economic Mandate:** We are blessed to be a blessing, establishing God's covenant on the earth.
-
-### Practical Application
-True wealth in the Kingdom is measured by your capacity to influence your community for good and provide for the needs of the ministry and the poor.""",
+            "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom of God operates on a system of stewardship, not ownership. Understanding Kingdom Wealth means shifting from a \"poverty mindset\" to a \"provision mindset.\"\r\n\r\n### Core Principles of Kingdom Wealth\r\n\r\n**Source vs. Resource** - Recognizing that God is the Source, and everything else is just a resource.\r\n\r\n**Seed Time and Harvest** - The spiritual law of multiplication through giving and wisdom.\r\n\r\n**Economic Mandate** - We are blessed to be a blessing, establishing God's covenant on the earth.\r\n\r\n### Practical Application\r\n\r\nTrue wealth in the Kingdom is measured by your capacity to influence your community for good and provide for the needs of the ministry and the poor.\r\n\r\n---\r\n\r\n### 📚 Recommended Kingdom Wealth Resources\r\n\r\n**The Call to Repentance Series** - Includes comprehensive teaching on Kingdom economics and biblical stewardship principles.\r\n\r\n**[Get the Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n---\r\n\r\n### 💡 Transform Your Financial Mindset\r\n\r\nMove from religious poverty thinking into Kingdom abundance. Learn how Jesus taught about money, provision, and the Father's desire to bless His children.\r\n\r\n**Scripture Foundation:** \"Seek first the kingdom of God and His righteousness, and all these things shall be added to you.\" - Matthew 6:33",
             "product_url": ""
         },
         "aloha_wellness": {
             "title": "Aloha Wellness - Island Health & Healing",
             "hero_image": "https://i.imgur.com/xGeWW3Q.jpeg",
-            "body_md": "## Aloha Wellness - The Sacred Art of How You Eat\r\n\r\nDiscover the life-changing power of **how** you eat, not just what you eat. This groundbreaking wellness book combines cutting-edge scientific research with ancient Hawaiian mana'o (wisdom) to transform your relationship with food and nourishment.\r\n\r\n### Beyond Diet Culture - A Hawaiian Perspective\r\n\r\nTraditional Hawaiian culture understood something modern society has forgotten: eating is a sacred act that connects us to the land, our ancestors, and our own spiritual well-being. This book bridges that ancient wisdom with contemporary nutritional science.\r\n\r\n### Revolutionary Approach: How, Not What\r\n\r\n**Mindful Consumption** - Learn the scientific basis for how mindful eating practices affect digestion, metabolism, and overall health.\r\n\r\n**Cultural Eating Wisdom** - Discover how Hawaiian ancestors approached meals as community ceremonies, gratitude practices, and spiritual connections.\r\n\r\n**Stress and Digestion** - Research-backed insights into how your emotional state during meals affects nutrient absorption and digestive health.\r\n\r\n**Rhythm and Timing** - Ancient Hawaiian understanding of eating in harmony with natural rhythms, supported by modern chronobiology research.\r\n\r\n**Scientific Research Meets Island Wisdom** - This book offers a comprehensive look at the intersection of modern science and ancient practice.\r\n\r\n### Hawaiian Mana'o (Wisdom Principles)\r\n\r\n**Ho'oponopono with Food** - Making right relationships with nourishment and healing food-related guilt or shame.\r\n\r\n**Aloha 'Āina** - Love of the land extends to gratitude for the food it provides and mindful consumption practices.\r\n\r\n**Lōkahi** - Finding unity and balance in your relationship with food, body, and spirit.\r\n\r\n**Mālama** - Caring for your body as a sacred temple through conscious eating practices.\r\n\r\nTransform your health from the inside out by changing not what you eat, but how you approach the sacred act of nourishment.",
+            "body_md": "## Aloha Wellness - The Sacred Art of How You Eat\r\n\r\nDiscover the life-changing power of **how** you eat, not just what you eat. This groundbreaking wellness book combines cutting-edge scientific research with ancient Hawaiian mana'o (wisdom) to transform your relationship with food and nourishment.\r\n\r\n### Beyond Diet Culture - A Hawaiian Perspective\r\n\r\nTraditional Hawaiian culture understood something modern society has forgotten: eating is a sacred act that connects us to the land, our ancestors, and our own spiritual well-being. This book bridges that ancient wisdom with contemporary nutritional science.\r\n\r\n### Revolutionary Approach: How, Not What\r\n\r\n**Mindful Consumption** - Learn the scientific basis for how mindful eating practices affect digestion, metabolism, and overall health.\r\n\r\n**Cultural Eating Wisdom** - Discover how Hawaiian ancestors approached meals as community ceremonies, gratitude practices, and spiritual connections.\r\n\r\n**Stress and Digestion** - Research-backed insights into how your emotional state during meals affects nutrient absorption and digestive health.\r\n\r\n**Rhythm and Timing** - Ancient Hawaiian understanding of eating in harmony with natural rhythms, supported by modern chronobiology research.\r\n\r\n**Scientific Research Meets Island Wisdom** - This book offers a comprehensive look at the intersection of modern science and ancient practice.\r\n\r\n### Hawaiian Mana'o (Wisdom Principles)\r\n\r\n**Ho'oponopono with Food** - Making right relationships with nourishment and healing food-related guilt or shame.\r\n\r\n**Aloha 'Āina** - Love of the land extends to gratitude for the food it provides and mindful consumption practices.\r\n\r\n**Lōkahi** - Finding unity and balance in your relationship with food, body, and spirit.\r\n\r\n**Mālama** - Caring for your body as a sacred temple through conscious eating practices.\r\n\r\nTransform your health from the inside out by changing not what you eat, but how you approach the sacred act of nourishment.\r\n\r\n---\r\n\r\n### 🌺 Body, Soul & Spirit Wellness\r\n\r\nTrue wellness integrates physical health with spiritual vitality. Explore how Kingdom principles apply to caring for the temple God gave you.\r\n\r\n**[Discover Kingdom Living Principles →](/kingdom_wealth)**",
             "product_url": "https://amzn.to/3FfH9ep",
             "products": [
                 {
@@ -56,7 +47,7 @@ True wealth in the Kingdom is measured by your capacity to influence your commun
         "call_to_repentance": {
             "title": "The Call to Repentance - The Kingdom Series",
             "hero_image": "https://i.imgur.com/tG1vBp9.jpeg",
-            "body_md": "## The Call to Repentance - Rediscovering Jesus's Kingdom Message\r\n\r\nStep beyond religious tradition and rediscover the revolutionary Kingdom message that Jesus actually preached. This transformative book series cuts through centuries of religious interpretation to reveal the pure, life-changing teachings of the Kingdom of God.\r\n\r\n### Series Overview (Volumes 1-5)\r\n\r\nThis isn't a single book but a comprehensive series that systematically unpacks Jesus's kingdom teachings.\r\n\r\n### A Call to Authentic Christianity\r\n\r\nThis series challenges readers to move beyond:\r\n- Religious performance into authentic relationship\r\n- Sunday Christianity into daily kingdom living\r\n- Denominational identity into kingdom citizenship\r\n- Waiting for heaven into experiencing God's kingdom now\r\n\r\n**Join the revolution that Jesus started. Discover the Kingdom message that changes everything.**",
+            "body_md": "## The Call to Repentance - Rediscovering Jesus's Kingdom Message\r\n\r\nStep beyond religious tradition and rediscover the revolutionary Kingdom message that Jesus actually preached. This transformative book series cuts through centuries of religious interpretation to reveal the pure, life-changing teachings of the Kingdom of God.\r\n\r\n### Series Overview (Volumes 1-5)\r\n\r\nThis isn't a single book but a comprehensive series that systematically unpacks Jesus's kingdom teachings.\r\n\r\n### A Call to Authentic Christianity\r\n\r\nThis series challenges readers to move beyond:\r\n- Religious performance into authentic relationship\r\n- Sunday Christianity into daily kingdom living\r\n- Denominational identity into kingdom citizenship\r\n- Waiting for heaven into experiencing God's kingdom now\r\n\r\n**Join the revolution that Jesus started. Discover the Kingdom message that changes everything.**\r\n\r\n---\r\n\r\n### 💰 Kingdom Wealth Principles\r\n\r\nBook 3 in the series covers biblical prosperity, stewardship, and God's economic system. Learn how Jesus taught about money, provision, and Kingdom increase.\r\n\r\n**[Explore Kingdom Wealth Teaching →](/kingdom_wealth)**\r\n\r\n---\r\n\r\n### 🎁 New to Kingdom Theology?\r\n\r\nStart with our FREE Kingdom Keys booklets - perfect introduction to the core concepts before diving into the full series.\r\n\r\n**[Get Free Kingdom Keys →](/kingdom_keys)**",
             "product_url": "https://www.amazon.com/CALL-REPENTANCE-Foundation-Application-Lifestyle-ebook/dp/B0FXYDD9SN",
             "products": [
                 {
@@ -70,7 +61,7 @@ True wealth in the Kingdom is measured by your capacity to influence your commun
         "pastor_planners": {
             "title": "Pastor Planners - Tools for Ministry Excellence",
             "hero_image": "https://i.imgur.com/tWnn5UY.png",
-            "body_md": "## Organize Your Ministry with Purpose and Prayer\r\n\r\nEffective ministry requires both spiritual sensitivity and practical organization. Our Pastor Planners combine beautiful design with functional tools to help you lead with excellence and peace.\r\n\r\n### Features of Our Ministry Planning System\r\n\r\n**Sermon Planning Sections** - Map out your preaching calendar with space for themes, scriptures, and prayer requests.\r\n\r\n**Prayer and Pastoral Care** - Dedicated sections for tracking prayer requests, hospital visits, counseling sessions, and follow-up care.\r\n\r\n**Meeting and Event Coordination** - Organize board meetings, committee sessions, special events, and outreach activities.\r\n\r\n**Personal Spiritual Disciplines** - Maintain your own spiritual health with guided sections for daily devotions.\r\n\r\n### Why Pastors Love Our Planners\r\n\r\n**Hawaiian-Inspired Design** - Beautiful layouts featuring island imagery and scripture verses.\r\n\r\n**Flexible Formatting** - Works for churches of all sizes and denominations.\r\n\r\n**Durable Construction** - High-quality materials that withstand daily use.\r\n\r\n**Spiritual Focus** - More than just organization - designed to keep your heart centered on God's calling.",
+            "body_md": "## Organize Your Ministry with Purpose and Prayer\r\n\r\nEffective ministry requires both spiritual sensitivity and practical organization. Our Pastor Planners combine beautiful design with functional tools to help you lead with excellence and peace.\r\n\r\n### Features of Our Ministry Planning System\r\n\r\n**Sermon Planning Sections** - Map out your preaching calendar with space for themes, scriptures, and prayer requests.\r\n\r\n**Prayer and Pastoral Care** - Dedicated sections for tracking prayer requests, hospital visits, counseling sessions, and follow-up care.\r\n\r\n**Meeting and Event Coordination** - Organize board meetings, committee sessions, special events, and outreach activities.\r\n\r\n**Personal Spiritual Disciplines** - Maintain your own spiritual health with guided sections for daily devotions.\r\n\r\n### Why Pastors Love Our Planners\r\n\r\n**Hawaiian-Inspired Design** - Beautiful layouts featuring island imagery and scripture verses.\r\n\r\n**Flexible Formatting** - Works for churches of all sizes and denominations.\r\n\r\n**Durable Construction** - High-quality materials that withstand daily use.\r\n\r\n**Spiritual Focus** - More than just organization - designed to keep your heart centered on God's calling.\r\n\r\n---\r\n\r\n### 📚 Pastor Resources\r\n\r\n**Complete Kingdom Theology Series** - Equip yourself with solid biblical teaching to share with your congregation.\r\n\r\n**[Browse Kingdom Teaching Resources →](/call_to_repentance)**\r\n\r\n---\r\n\r\n### 🎁 FREE Ministry Tools\r\n\r\nDownload our FREE Kingdom Keys booklets - perfect for small groups, new believers, or sermon prep inspiration.\r\n\r\n**[Get Free Kingdom Keys →](/kingdom_keys)**",
             "product_url": "https://www.amazon.com/s?k=pastor+planner+ministry+organizer",
             "products": [
                 {
@@ -123,6 +114,37 @@ True wealth in the Kingdom is measured by your capacity to influence your commun
                     "name": "Spotify",
                     "url": "https://open.spotify.com/search/nahenahe%20voice",
                     "icon": "🎧"
+                }
+            ]
+        },
+        "kingdom_keys": {
+            "title": "FREE Kingdom Keys Booklets",
+            "hero_image": "https://i.imgur.com/wmHEyDo.png",
+            "body_md": "## 🌺 FREE Kingdom Keys Booklets 🌺\r\n\r\n**Hoʻomau i ke Aupuni o ke Akua** (Continue in the Kingdom of God)\r\n\r\n**Aloha!** I'm Pastor Phil Stephens from Molokaʻi. After 30 years of biblical study, I've discovered the Kingdom truths the church forgot. Download these FREE mini-devotionals.\r\n\r\n---\r\n\r\n## 📧 Get Weekly Kingdom Teaching\r\n\r\nJoin believers discovering Kingdom truth at **YOUR-EMAIL-SERVICE.com**\r\n\r\n---\r\n\r\n## 💝 Was This Helpful?\r\n\r\nIf these booklets blessed you, sow back into this ministry:\r\n\r\n**PayPal:** paypal.me/YOUR-PAYPAL\r\n\r\n**Gumroad:** YOUR-GUMROAD.gumroad.com/l/donation",
+            "products": [
+                {
+                    "title": "7 Scriptures That Prove the Kingdom Is Inside You Now",
+                    "cover": "",
+                    "amazon": "",
+                    "gumroad": ""
+                },
+                {
+                    "title": "How to Release Kingdom Healing in 10 Minutes a Day",
+                    "cover": "",
+                    "amazon": "",
+                    "gumroad": ""
+                },
+                {
+                    "title": "The 5 Kingdom Prayers My Hawaiian Grandma Taught Me",
+                    "cover": "",
+                    "amazon": "",
+                    "gumroad": ""
+                },
+                {
+                    "title": "Kingdom Wealth: 7 Bible Verses the Prosperity Preachers Won't Tell You",
+                    "cover": "",
+                    "amazon": "",
+                    "gumroad": ""
                 }
             ]
         }
@@ -486,9 +508,18 @@ def md_to_html(md_text):
     return markdown.markdown(md_text, extensions=["extra", "nl2br"])
 
 def load_content():
-    # We are temporarily ignoring the old file to force the new pages in
-    return DEFAULT_PAGES
-    
+    if DATA_FILE.exists():
+        try:
+            with open(DATA_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        except:
+            data = DEFAULT_PAGES
+            save_content(data)
+    else:
+        data = DEFAULT_PAGES
+        save_content(data)
+    return data
+
 def save_content(data):
     DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(DATA_FILE, "w", encoding="utf-8") as f:
@@ -567,6 +598,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
                 {% for item in nav_items %}
                 <li><a href="{{ item.url }}">{{ item.title }}</a></li>
                 {% endfor %}
+                <li><a href="/kingdom_keys" style="background:#d4af37;color:#fff;padding:0.5rem 1rem;border-radius:6px;">🎁 FREE Booklets</a></li>
             </ul>
         </div>
     </nav>
@@ -709,6 +741,7 @@ def serve_cover(filename):
         return send_file(cover_path, mimetype='image/jpeg')
     abort(404)
 
+# NEW KINGDOM KEYS FREE BOOKLETS LANDING PAGE
 @app.route("/kahu")
 def admin_panel():
     data = load_content()
@@ -1133,8 +1166,5 @@ if __name__ == "__main__":
     print("🌺 Starting...")
     print(f"🌊 Visit: http://localhost:{port}")
     print(f"⚙️  Admin: http://localhost:{port}/kahu")
-    app.run(host="0.0.0.0", port=port, debug=True)
-
-
-
-
+    print(f"🎁  Kingdom Keys: http://localhost:{port}/kingdom-keys")
+    app.run(host="0.0.0.0", port=port, debug=False)
