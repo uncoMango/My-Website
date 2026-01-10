@@ -9,7 +9,7 @@ import os
 
 app = Flask(__name__)
 
-ORDER = ["home", "Kingdom Wealth", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice"]
+ORDER = ["home", "Kingdom_Wealth", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice"]
 
 BASE = Path(__file__).parent
 DATA_FILE = BASE / "website_content.json"
@@ -1134,5 +1134,6 @@ if __name__ == "__main__":
     print(f"🌊 Visit: http://localhost:{port}")
     print(f"⚙️  Admin: http://localhost:{port}/kahu")
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
