@@ -9,7 +9,7 @@ import os
 
 app = Flask(__name__)
 
-ORDER = ["home", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice"]
+ORDER = ["home", "Kingdom Wealth", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice"]
 
 BASE = Path(__file__).parent
 DATA_FILE = BASE / "website_content.json"
@@ -22,6 +22,22 @@ DEFAULT_PAGES = {
             "hero_image": "https://i.imgur.com/wmHEyDo.png",
             "body_md": "## Welcome to Ke Aupuni O Ke Akua - The Kingdom of God\r\n\r\nMahalo for visiting. This site is dedicated to rediscovering the revolutionary Kingdom message that Jesus actually preached, which is often missed in modern religious traditions.\r\n\r\n### Our Mission: Kingdom, Not Religion\r\nJesus's central focus was the Kingdom of God—the reign and rule of God breaking into the human experience here and now. Our resources aim to guide you into a deeper understanding of Kingdom principles, citizenship, and authority, moving you from religious performance into authentic, transformative living.\r\n\r\n**Start your journey today by exploring 'The Call to Repentance' series in the navigation.**\r\n\r\n### What Jesus Actually Taught\r\n\r\n**Kingdom Principles Over Religious Rules** - Discover how Jesus consistently chose kingdom living over religious compliance.\r\n\r\n**Repentance as Transformation** - Move beyond feeling sorry for sins to understanding a complete transformation of mind, heart, and lifestyle.\r\n\r\n**Heaven on Earth** - Learn how the Kingdom of God is meant to manifest in our daily lives, relationships, and communities right now.",
             "product_url": "https://amzn.to/3FfH9ep"
+        },
+        "kingdom_wealth": {
+            "title": "Kingdom Wealth",
+            "hero_image": "https://i.imgur.com/G2YmSka.jpeg",
+            "body_md": """## Biblical Stewardship & Economic Increase
+            
+The Kingdom of God operates on a system of stewardship, not ownership. Understanding Kingdom Wealth means shifting from a "poverty mindset" to a "provision mindset."
+
+### Core Principles of Kingdom Wealth
+* **Source vs. Resource:** Recognizing that God is the Source, and everything else is just a resource.
+* **Seed Time and Harvest:** The spiritual law of multiplication through giving and wisdom.
+* **Economic Mandate:** We are blessed to be a blessing, establishing God's covenant on the earth.
+
+### Practical Application
+True wealth in the Kingdom is measured by your capacity to influence your community for good and provide for the needs of the ministry and the poor.""",
+            "product_url": ""
         },
         "aloha_wellness": {
             "title": "Aloha Wellness - Island Health & Healing",
@@ -1127,3 +1143,4 @@ if __name__ == "__main__":
     print(f"🌊 Visit: http://localhost:{port}")
     print(f"⚙️  Admin: http://localhost:{port}/kahu")
     app.run(host="0.0.0.0", port=port, debug=True)
+
