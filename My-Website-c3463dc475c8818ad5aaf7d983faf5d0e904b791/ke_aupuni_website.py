@@ -4,14 +4,14 @@ from flask import Flask, request, redirect, render_template_string, abort, url_f
 from pathlib import Path
 import markdown
 
+# --- THE ENGINE ---
 app = Flask(__name__)
 app.secret_key = "ke_aupuni_secret_key"
 
-# --- STOP REPLACING HERE. KEEP YOUR ORDER LIST BELOW ---
+# Make 'app' available globally for Gunicorn
+application = app 
 
-# I have added your two new pages to this order list so the buttons appear
-ORDER = ["home", "the_mandate", "kingdom_wealth", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice"]
-
+# --- FILE PATHS ---
 BASE = Path(__file__).parent
 DATA_FILE = BASE / "website_content_v2.json"
 # ... and the rest of your code continues ...
