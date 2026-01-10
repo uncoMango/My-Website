@@ -1,19 +1,20 @@
-from flask import Flask, request, redirect, render_template_string, abort, url_for, send_file
+import os
 import json
+from flask import Flask, request, redirect, render_template_string, abort, url_for, send_file
 from pathlib import Path
 import markdown
-import os
 
 app = Flask(__name__)
-app.secret_key = "ke_aupuni_secret_key" # Added for stability
+app.secret_key = "ke_aupuni_secret_key"
 
-# (Continue with your DATA_FILE and other code below this...)
+# --- STOP REPLACING HERE. KEEP YOUR ORDER LIST BELOW ---
 
 # I have added your two new pages to this order list so the buttons appear
 ORDER = ["home", "the_mandate", "kingdom_wealth", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice"]
 
 BASE = Path(__file__).parent
 DATA_FILE = BASE / "website_content_v2.json"
+# ... and the rest of your code continues ...
 DEFAULT_PAGES = {
     "order": ORDER,
     "pages": {
