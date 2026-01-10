@@ -9,21 +9,68 @@ import os
 
 app = Flask(__name__)
 
-# I have added your two new pages to this order list so the buttons appear
+# This matches the names you want in your navigation
 ORDER = ["home", "the_mandate", "kingdom_wealth", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice"]
 
+# 1. Setup File Paths
 BASE = Path(__file__).parent
 DATA_FILE = BASE / "website_content.json"
 
+# 2. Data Management Functions
+def save_content(data):
+    try:
+        with open(DATA_FILE, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+    except Exception as e:
+        print(f"Error saving file: {e}")
+
+def load_content():
+    if not DATA_FILE.exists():
+        save_content(DEFAULT_PAGES)
+        return DEFAULT_PAGES
+    try:
+        with open(DATA_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"Error loading JSON: {e}")
+        return DEFAULT_PAGES
+
+# 3. Default Content (The "Seed" for your website)
 DEFAULT_PAGES = {
     "order": ORDER,
     "pages": {
         "home": {
             "title": "Ke Aupuni O Ke Akua - The Kingdom of God",
             "hero_image": "https://i.imgur.com/wmHEyDo.png",
-            "body_md": "## Welcome to Ke Aupuni O Ke Akua - The Kingdom of God\r\n\r\nMahalo for visiting. This site is dedicated to rediscovering the revolutionary Kingdom message that Jesus actually preached, which is often missed in modern religious traditions.\r\n\r\n### Our Mission: Kingdom, Not Religion\r\nJesus's central focus was the Kingdom of God—the reign and rule of God breaking into the human experience here and now. Our resources aim to guide you into a deeper understanding of Kingdom principles, citizenship, and authority, moving you from religious performance into authentic, transformative living.\r\n\r\n**Start your journey today by exploring 'The Call to Repentance' series in the navigation.**\r\n\r\n### What Jesus Actually Taught\r\n\r\n**Kingdom Principles Over Religious Rules** - Discover how Jesus consistently chose kingdom living over religious compliance.\r\n\r\n**Repentance as Transformation** - Move beyond feeling sorry for sins to understanding a complete transformation of mind, heart, and lifestyle.\r\n\r\n**Heaven on Earth** - Learn how the Kingdom of God is meant to manifest in our daily lives, relationships, and communities right now.",
+            "body_md": "## Welcome to Ke Aupuni O Ke Akua\nThis site is dedicated to rediscovering the revolutionary Kingdom message.",
             "product_url": "https://amzn.to/3FfH9ep"
         },
+        "aloha_wellness": {
+            "title": "Aloha Wellness - Island Health & Healing",
+            "hero_image": "https://i.imgur.com/xGeWW3Q.jpeg",
+            "body_md": "## Aloha Wellness - The Sacred Art of How You Eat",
+            "product_url": "https://amzn.to/3FfH9ep"
+        },
+        "call_to_repentance": {
+            "title": "The Call to Repentance",
+            "hero_image": "https://i.imgur.com/tG1vBp9.jpeg",
+            "body_md": "## Embracing True Repentance for Spiritual Growth",
+            "product_url": "https://amzn.to/3FfH9ep"
+        },
+        "pastor_planners": {
+            "title": "Pastor Planners",
+            "hero_image": "https://i.imgur.com/tWnn5UY.png",
+            "body_md": "## Organize Your Ministry with Purpose and Prayer",
+            "product_url": ""
+        },
+        "nahenahe_voice": {
+            "title": "The Nahenahe Voice of Nahono'opi'ilani",
+            "hero_image": "https://i.imgur.com/Vyz6nFJ.png",
+            "body_md": "## The Nahenahe Voice - Live from Molokai Ranch Lodge",
+            "product_url": ""
+        }
+    }
+}
         "the_mandate": {
             "title": "The 20-Volume Mandate",
             "hero_image": "https://i.imgur.com/wmHEyDo.png",
