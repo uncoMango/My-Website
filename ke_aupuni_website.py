@@ -1,3 +1,4 @@
+
 # ke_aupuni_finalized_with_image_placeholders.py
 # FIXED VERSION - CSS working, products restored
 # NOW WITH KINGDOM KEYS FREE BOOKLETS PAGE
@@ -10,7 +11,7 @@ import os
 
 app = Flask(__name__)
 
-ORDER = ["home", "kingdom_wealth", "kingdom_keys", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice"]
+ORDER = ["home", "kingdom_wealth", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice"]
 
 BASE = Path(__file__).parent
 DATA_FILE = BASE / "website_content.json"
@@ -198,12 +199,21 @@ body {
     padding: 0 2rem;
 }
 
+.nav-logo {
+    height: 50px;
+    width: auto;
+    margin-right: 1rem;
+    vertical-align: middle;
+}
+
 .nav-title {
     font-size: 1.5rem;
     font-weight: bold;
     color: #2c3e50;
     text-decoration: none;
     text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+    display: flex;
+    align-items: center;
 }
 
 .nav-menu {
@@ -430,6 +440,14 @@ body {
         display: flex;
     }
     
+    .nav-logo {
+        height: 35px;
+    }
+    
+    .nav-title {
+        font-size: 1.1rem;
+    }
+    
     .nav-menu {
         display: none;
         position: absolute;
@@ -588,7 +606,10 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 <body>
     <nav class="site-nav">
         <div class="nav-container">
-            <a href="/" class="nav-title">Ke Aupuni O Ke Akua</a>
+            <a href="/" class="nav-title">
+                <img src="https://keaupuniakeakua.faith/output-onlinepngtools.png" alt="Ke Aupuni Logo" class="nav-logo">
+                Ke Aupuni O Ke Akua
+            </a>
             <div class="hamburger" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
