@@ -28,7 +28,7 @@ DEFAULT_PAGES = {
         "kingdom_wealth": {
             "title": "Kingdom Wealth",
             "hero_image": "https://i.imgur.com/G2YmSka.jpeg",
-            "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom of God operates on a system of stewardship, not ownership. Understanding Kingdom Wealth means shifting from a \"poverty mindset\" to a \"provision mindset.\"\r\n\r\n### Core Principles of Kingdom Wealth\r\n\r\n**Source vs. Resource** - Recognizing that God is the Source, and everything else is just a resource.\r\n\r\n**Seed Time and Harvest** - The spiritual law of multiplication through giving and wisdom.\r\n\r\n**Economic Mandate** - We are blessed to be a blessing, establishing God's covenant on the earth.\r\n\r\n### Practical Application\r\n\r\nTrue wealth in the Kingdom is measured by your capacity to influence your community for good and provide for the needs of the ministry and the poor.\r\n\r\n---\r\n\r\n### 📚 Recommended Kingdom Wealth Resources\r\n\r\n**The Call to Repentance Series** - Includes comprehensive teaching on Kingdom economics and biblical stewardship principles.\r\n\r\n**[Get the Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n---\r\n\r\n### 💡 Transform Your Financial Mindset\r\n\r\nMove from religious poverty thinking into Kingdom abundance. Learn how Jesus taught about money, provision, and the Father's desire to bless His children.\r\n\r\n**Scripture Foundation:** \"Seek first the kingdom of God and His righteousness, and all these things shall be added to you.\" - Matthew 6:33",
+            "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom of God operates on a system of stewardship, not ownership. Understanding Kingdom Wealth means shifting from a \"poverty mindset\" to a \"provision mindset.\"\r\n\r\n### Core Principles of Kingdom Wealth\r\n\r\n**Source vs. Resource** - Recognizing that God is the Source, and everything else is just a resource.\r\n\r\n**Seed Time and Harvest** - The spiritual law of multiplication through giving and wisdom.\r\n\r\n**Economic Mandate** - We are blessed to be a blessing, establishing God's covenant on the earth.\r\n\r\n### Practical Application\r\n\r\nTrue wealth in the Kingdom is measured by your capacity to influence your community for good and provide for the needs of the ministry and the poor.\r\n\r\n---\r\n\r\n### 📚 Recommended Kingdom Wealth Resources\r\n\r\n**The Call to Repentance Series** - Includes comprehensive teaching on Kingdom economics and biblical stewardship principles.\r\n\r\n**[Get the Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n---\r\n\r\n### 💡 Transform Your Financial Mindset\r\n\r\nMove from religious poverty thinking into Kingdom abundance. Learn how Jesus taught about money, provision, and the Father's desire to bless His children.\r\n\r\n**Scripture Foundation:** \"Seek first the kingdom of God and His righteousness, and all these things shall be added to you.\" - Matthew 6:33\r\n\r\n---\r\n\r\n### 📖 Learning Biblical Business Principles\r\n\r\nAfter 30 years of biblical study and 8 years in pastoral ministry on Molokaʻi, I'm applying Myron Golden's Kingdom approach to business. His teaching on biblical wealth creation aligns with the Kingdom economics I've been teaching.\r\n\r\nI'm building my ministry using these ethical, scripture-based principles - because God's Kingdom deserves to be funded with integrity, not manipulation.\r\n\r\nIf you're called to ministry or Christian business, these resources can help you build on a solid biblical foundation.\r\n\r\n**[Explore Myron Golden's Biblical Business Training →](/myron-golden)**",
             "product_url": ""
         },
         "aloha_wellness": {
@@ -815,7 +815,7 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
                 <p style="margin-bottom: 20px; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">Learn the 3 biggest mistakes keeping Christians broke (and how to fix them using biblical principles)</p>
                 
                 <div class="email-form">
-                    <form action="https://app.convertkit.com/forms/8979853/subscriptions" method="post">
+                    <form action="https://app.convertkit.com/forms/YOUR_FORM_ID/subscriptions" method="post">
                         <input type="text" name="fields[first_name]" placeholder="First Name" required>
                         <input type="email" name="email_address" placeholder="Email Address" required>
                         <button type="submit">GET FREE GUIDE →</button>
@@ -843,8 +843,8 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
                         <li>The lowest-cost entry point to Myron Golden's teachings ($27-47 total)</li>
                     </ul>
                     <div class="btn-container">
-                        <a href="https://www.trashmantocashman.com/tmcm-book?affiliate_id=4319525" class="btn">GET TRASH MAN TO CASH MAN →</a>
-                        <a href="https://www.bossmovesbook.com/bossmoves?affiliate_id=4319525" class="btn">GET BOSS MOVES BOOK →</a>
+                        <a href="YOUR_TRASH_MAN_AFFILIATE_LINK" class="btn">GET TRASH MAN TO CASH MAN →</a>
+                        <a href="YOUR_BOSS_MOVES_AFFILIATE_LINK" class="btn">GET BOSS MOVES BOOK →</a>
                     </div>
                 </div>
             </div>
@@ -869,7 +869,7 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
                         <li>Tools to overcome fear, doubt, and scarcity mindset forever</li>
                     </ul>
                     <div class="btn-container">
-                        <a href="https://www.mindovermoneymastery.com/momm?affiliate_id=4319525" class="btn">TRANSFORM YOUR MINDSET →</a>
+                        <a href="YOUR_MIND_OVER_MONEY_AFFILIATE_LINK" class="btn">TRANSFORM YOUR MINDSET →</a>
                     </div>
                 </div>
             </div>
@@ -880,14 +880,14 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
                     <h3>Make More Offers Challenge ($97)</h3>
                     <p>This intensive 5-day challenge teaches you the exact framework for creating irresistible offers that sell themselves. Myron Golden reveals why most businesses struggle (they don't make enough offers) and shows you how to create multiple income streams by making better, more frequent offers. You'll learn the psychology of buying decisions, how to stack value that makes price irrelevant, and the specific language patterns that compel people to say "yes." Perfect for entrepreneurs, coaches, consultants, and anyone who needs to sell their products or services. The challenge includes daily training videos, live Q&A sessions, worksheets, and a supportive community of fellow offer-makers.</p>
                     <div class="btn-container">
-                        <a href="https://www.makemoreofferschallenge.com/mmoc?affiliate_id=4319525" class="btn">JOIN THE CHALLENGE →</a>
+                        <a href="YOUR_MAKE_MORE_OFFERS_AFFILIATE_LINK" class="btn">JOIN THE CHALLENGE →</a>
                     </div>
                 </div>
                 <div class="product-box">
                     <h3>Offer Mastery Live ($297)</h3>
                     <p>This is Myron Golden's signature event where he spends three full days teaching you the complete system for creating high-ticket offers that transform your business. You'll discover the four core offer types that generate predictable revenue, learn how to structure offers that sell at $2,000, $5,000, $10,000 or higher, and master the art of presenting offers that create instant buying decisions. Myron breaks down the psychology, strategy, and implementation of world-class offer creation. This event includes access to recordings, workbooks, and ongoing support. If you're serious about scaling your business through premium offers, this is where you level up from making offers to mastering them.</p>
                     <div class="btn-container">
-                        <a href="https://www.offermasterylive.com/offer-mastery-livevetfk4nn?affiliate_id=4319525" class="btn">MASTER YOUR OFFERS →</a>
+                        <a href="YOUR_OFFER_MASTERY_AFFILIATE_LINK" class="btn">MASTER YOUR OFFERS →</a>
                     </div>
                 </div>
             </div>
@@ -898,7 +898,7 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
                     <h3>Golden OPS ($997)</h3>
                     <p>This is Myron Golden's most comprehensive program for building a complete business operating system that generates consistent six and seven-figure revenue. Golden OPS (Operational Procedures and Systems) teaches you how to construct the four foundational pillars every million-dollar business requires: lead generation systems, lead nurture systems, sales conversion systems, and product delivery systems. You'll learn how to create automated funnels, build email sequences that convert, develop premium programs and masterminds, and structure your business for scalability. The program includes video training modules, implementation templates, funnel blueprints, marketing scripts, and access to a private community of serious entrepreneurs. Myron also reveals his personal business systems and shows you exactly how he structures his multi-million dollar empire. If you're ready to stop trading time for money and build a business that runs systematically, Golden OPS is your blueprint.</p>
                     <div class="btn-container">
-                        <a href="https://www.mygoldenops.com/golden-opsm1y8y7bx?affiliate_id=4319525" class="btn">BUILD YOUR SYSTEM →</a>
+                        <a href="YOUR_GOLDEN_OPS_AFFILIATE_LINK" class="btn">BUILD YOUR SYSTEM →</a>
                     </div>
                 </div>
             </div>
