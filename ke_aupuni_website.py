@@ -154,55 +154,46 @@ DEFAULT_PAGES = {
 
 ENHANCED_STYLE = """
 :root {
-    --primary-bg: #f8f5f0;
+    --primary-bg: #fdfbf7;
     --text-dark: #2c3e50;
     --accent-teal: #5f9ea0;
-    --accent-warm: #d4a574;
-    --white-transparent: rgba(255, 255, 255, 0.95);
-    --shadow-soft: 0 2px 10px rgba(0,0,0,0.1);
+    --accent-gold: #d4af37; 
+    --accent-gold-hover: #f5d76e;
+    --shadow-soft: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: 'Georgia', 'Times New Roman', serif;
+    font-family: 'Georgia', serif;
     line-height: 1.6;
     color: var(--text-dark);
     background: var(--primary-bg);
-    background-image: 
-        radial-gradient(circle at 20% 50%, rgba(175, 216, 248, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(212, 165, 116, 0.1) 0%, transparent 50%);
+    background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), 
+                      url('https://www.transparenttextures.com/patterns/cream-paper.png');
 }
 
+/* FIX: Forces links to be Gold (visible on dark/hero sections) */
 a {
-    color: #d4af37;
+    color: var(--accent-gold) !important;
     text-decoration: none;
-    transition: color 0.3s ease;
+    font-weight: bold;
+    transition: 0.3s ease;
 }
 
 a:hover {
-    color: #f5d76e;
-    text-decoration: underline;
+    color: var(--accent-gold-hover) !important;
+    text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
 }
 
-a:visited {
-    color: #b8962e;
-}
-
+/* Nav Bar with Logo Support */
 .site-nav {
-    background-color: #d4b896;
-    background-image: 
-        linear-gradient(45deg, #c9a876 25%, transparent 25%),
-        linear-gradient(-45deg, #c9a876 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, #bfa068 75%),
-        linear-gradient(-45deg, transparent 75%, #bfa068 75%);
-    background-size: 16px 16px;
-    background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
-    padding: 1rem 0;
+    background-color: white;
+    padding: 0.7rem 0;
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: var(--shadow-soft);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 .nav-container {
@@ -217,238 +208,100 @@ a:visited {
 .nav-logo {
     height: 50px;
     width: auto;
-    margin-right: 1rem;
-    vertical-align: middle;
+    margin-right: 12px;
 }
 
 .nav-title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: bold;
-    color: #2c3e50;
-    text-decoration: none;
-    text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+    color: var(--text-dark);
     display: flex;
     align-items: center;
+    text-decoration: none;
 }
 
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: 2rem;
+    gap: 1.5rem;
+    align-items: center;
 }
 
 .nav-menu a {
-    text-decoration: none;
-    color: var(--text-dark);
+    color: var(--text-dark) !important;
     font-weight: 500;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    transition: all 0.3s ease;
+    font-size: 0.95rem;
 }
 
-.nav-menu a:hover {
-    background: var(--accent-teal);
-    color: white;
-}
-
-.hamburger {
-    display: none;
-    flex-direction: column;
-    cursor: pointer;
-    padding: 0.5rem;
-}
-
-.hamburger span {
-    width: 25px;
-    height: 3px;
-    background: #2c3e50;
-    margin: 3px 0;
-    transition: 0.3s;
-}
-
+/* Improved Hero Section */
 .hero {
-    height: 100vh;
-    min-height: 600px;
+    height: 55vh;
     background-size: cover;
     background-position: center;
     position: relative;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
+    justify-content: center;
 }
 
 .hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
+    background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.6));
 }
 
 .hero-content {
     position: relative;
     z-index: 2;
+    text-align: center;
     color: white;
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
 }
 
-.hero h1 {
-    font-size: 3rem;
-    font-weight: 400;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
-    margin-bottom: 0.5rem;
-    background: rgba(0,0,0,0.3);
-    padding: 1rem 2rem;
-    border-radius: 8px;
+.hero-content h1 {
+    font-size: 3.2rem;
+    text-shadow: 2px 4px 12px rgba(0,0,0,0.8);
+    max-width: 800px;
 }
 
+/* The Content Card - No longer "Broken" */
 .container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 2rem;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    height: 100vh;
-    overflow-y: auto;
-    z-index: 3;
+    max-width: 960px;
+    margin: -60px auto 60px; /* Pulls content up onto the hero image */
+    padding: 0 20px;
+    position: relative;
+    z-index: 10;
 }
 
 .content-card {
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                repeating-linear-gradient(90deg, 
-                    rgba(210, 180, 140, 0.3) 0px,
-                    rgba(210, 180, 140, 0.3) 2px,
-                    rgba(139, 90, 43, 0.2) 2px,
-                    rgba(139, 90, 43, 0.2) 4px);
-    border: none;
-    padding: 3rem 2rem;
-    box-shadow: none;
-    margin-top: 20vh;
-    color: white;
+    background: white;
+    padding: 3.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+    border: 1px solid #eee;
 }
 
-.content-card h2 {
-    color: white;
-    margin-bottom: 1rem;
-    font-size: 2.2rem;
-    text-shadow: 3px 3px 6px rgba(0,0,0,0.9);
-}
-
-.content-card h3 {
-    color: white;
-    margin: 2rem 0 1rem;
-    font-size: 1.6rem;
-    text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
-}
-
-.content-card p {
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
-    color: white;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
-    line-height: 1.8;
-}
-
-.content-card strong {
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-}
-
-.content-card li {
-    color: white;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
-    line-height: 1.8;
-}
-
-.buy-section {
-    text-align: center;
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.buy-button, .music-button {
-    display: inline-block;
-    background: linear-gradient(135deg, var(--accent-teal), #4a8b8e);
-    color: white;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(95, 158, 160, 0.3);
-    margin: 0.5rem;
-}
-
-.buy-button:hover, .music-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(95, 158, 160, 0.4);
-}
-
-.music-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 1.5rem;
-}
-
-.gallery-section {
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.gallery-section h2 {
-    color: white;
-    text-align: center;
-    margin-bottom: 1.5rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
-}
-
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin: 2rem 0;
-}
-
-.gallery-item {
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.gallery-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.7);
-}
-
-.gallery-item img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-@media (max-width: 768px) {
-    .gallery-grid {
-        grid-template-columns: 1fr;
-    }
-}
+.content-card h2 { color: #2c3e50; margin-bottom: 1.5rem; font-size: 2.2rem; }
+.content-card h3 { color: var(--accent-teal); margin: 2rem 0 1rem; font-size: 1.6rem; }
+.content-card p { margin-bottom: 1.5rem; font-size: 1.15rem; color: #444; }
 
 .footer {
     text-align: center;
-    padding: 2rem;
-    color: white;
-    background: none;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-    margin-top: 2rem;
+    padding: 4rem 2rem;
+    color: #95a5a6;
+    font-size: 0.9rem;
+    background: #fdfbf7;
 }
+
+@media (max-width: 768px) {
+    .hero { height: 40vh; }
+    .hero-content h1 { font-size: 1.8rem; }
+    .content-card { padding: 1.8rem; }
+    .nav-menu { display: none; }
+}
+"""
+
+def md_to_html(md_text):
+    return markdown.markdown(md_text, extensions=["extra", "nl2br"])
 
 @media (max-width: 768px) {
     .hamburger {
@@ -1392,4 +1245,5 @@ if __name__ == "__main__":
     print(f"🎁  Kingdom Keys: http://localhost:{port}/kingdom_keys")
     print(f"💰  Myron Golden: http://localhost:{port}/myron-golden")
     app.run(host="0.0.0.0", port=port, debug=False)
+
 
