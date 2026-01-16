@@ -174,6 +174,21 @@ body {
         radial-gradient(circle at 80% 20%, rgba(212, 165, 116, 0.1) 0%, transparent 50%);
 }
 
+a {
+    color: #d4af37;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #f5d76e;
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #b8962e;
+}
+
 .site-nav {
     background-color: #d4b896;
     background-image: 
@@ -815,7 +830,7 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
                 <p style="margin-bottom: 20px; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">Learn the 3 biggest mistakes keeping Christians broke (and how to fix them using biblical principles)</p>
                 
                 <div class="email-form">
-                    <form action="https://app.convertkit.com/forms/8979853/subscriptions" method="post">
+                    <form action="https://app.kit.com/forms/8979853/subscriptions" method="post">
                         <input type="text" name="fields[first_name]" placeholder="First Name" required>
                         <input type="email" name="email_address" placeholder="Email Address" required>
                         <button type="submit">GET FREE GUIDE →</button>
@@ -1377,3 +1392,4 @@ if __name__ == "__main__":
     print(f"🎁  Kingdom Keys: http://localhost:{port}/kingdom_keys")
     print(f"💰  Myron Golden: http://localhost:{port}/myron-golden")
     app.run(host="0.0.0.0", port=port, debug=False)
+
