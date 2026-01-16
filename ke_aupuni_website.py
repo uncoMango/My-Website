@@ -1,1395 +1,1238 @@
-import os
+# ke_aupuni_finalized_with_image_placeholders.py
+# FIXED VERSION - CSS working, products restored
+# NOW WITH KINGDOM KEYS FREE BOOKLETS PAGE
+# ADDED: MYRON GOLDEN AFFILIATE PAGE
+# FIXES: Kit form URL + Link colors + Duplicate body_md removed
+
+from flask import Flask, request, redirect, render_template_string, abort, url_for, send_file
 import json
-import markdown
 from pathlib import Path
-from flask import Flask, render_template_string, request, redirect, abort, send_file
+import markdown
+import os
 
 app = Flask(__name__)
 
-# --- CONFIGURATION ---
-BASE = Path(__file__).parent
-DATA_FILE = BASE / "data.json"
+ORDER = ["home", "kingdom_wealth", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice"]
 
-ORDER = ["home", "kingdom_wealth", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice", "kingdom_keys"]
+BASE = Path(__file__).parent
+DATA_FILE = BASE / "website_content.json"
 
 DEFAULT_PAGES = {
-    "home": {
-        "title": "Welcome to Ke Aupuni O Ke Akua",
-        "hero_image": "https://images.unsplash.com/photo-1505852679233-d9fd70aff56d",
-        "body_md": "# Sharing the Word with Aloha\nWelcome to our digital home.",
-        "gallery_images": [],
-        "product_links": []
+    "order": ORDER,
+    "pages": {
+        "home": {
+            "title": "Ke Aupuni O Ke Akua - The Kingdom of God",
+            "hero_image": "https://i.imgur.com/wmHEyDo.png",
+            "body_md": "## Welcome to Ke Aupuni O Ke Akua - The Kingdom of God\r\n\r\nMahalo for visiting. This site is dedicated to rediscovering the revolutionary Kingdom message that Jesus actually preached, which is often missed in modern religious traditions.\r\n\r\n### Our Mission: Kingdom, Not Religion\r\nJesus's central focus was the Kingdom of God—the reign and rule of God breaking into the human experience here and now. Our resources aim to guide you into a deeper understanding of Kingdom principles, citizenship, and authority, moving you from religious performance into authentic, transformative living.\r\n\r\n**Start your journey today by exploring 'The Call to Repentance' series in the navigation.**\r\n\r\n### What Jesus Actually Taught\r\n\r\n**Kingdom Principles Over Religious Rules** - Discover how Jesus consistently chose kingdom living over religious compliance.\r\n\r\n**Repentance as Transformation** - Move beyond feeling sorry for sins to understanding a complete transformation of mind, heart, and lifestyle.\r\n\r\n**Heaven on Earth** - Learn how the Kingdom of God is meant to manifest in our daily lives, relationships, and communities right now.\r\n\r\n---\r\n\r\n### 🎁 NEW TO KINGDOM THEOLOGY? START HERE!\r\n\r\n**FREE Kingdom Keys Booklets** - Bite-sized teachings that will transform your understanding of what Jesus really taught. Perfect introduction before diving into the full series.\r\n\r\n**[Download FREE Kingdom Keys →](/kingdom_keys)**\r\n\r\n---\r\n\r\n### 💰 Kingdom Wealth & Biblical Prosperity\r\n\r\nDiscover God's economic system and how the Kingdom operates on principles of stewardship, multiplication, and generosity.\r\n\r\n**[Explore Kingdom Wealth Principles →](/kingdom_wealth)**",
+            "product_url": "https://amzn.to/3FfH9ep"
+        },
+        "kingdom_wealth": {
+            "title": "Kingdom Wealth",
+            "hero_image": "https://i.imgur.com/G2YmSka.jpeg",
+            "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom of God operates on a system of stewardship, not ownership. Understanding Kingdom Wealth means shifting from a \"poverty mindset\" to a \"provision mindset.\"\r\n\r\n### Core Principles of Kingdom Wealth\r\n\r\n**Source vs. Resource** - Recognizing that God is the Source, and everything else is just a resource.\r\n\r\n**Seed Time and Harvest** - The spiritual law of multiplication through giving and wisdom.\r\n\r\n**Economic Mandate** - We are blessed to be a blessing, establishing God's covenant on the earth.\r\n\r\n### Practical Application\r\n\r\nTrue wealth in the Kingdom is measured by your capacity to influence your community for good and provide for the needs of the ministry and the poor.\r\n\r\n---\r\n\r\n### 📚 Recommended Kingdom Wealth Resources\r\n\r\n**The Call to Repentance Series** - Includes comprehensive teaching on Kingdom economics and biblical stewardship principles.\r\n\r\n**[Get the Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n---\r\n\r\n### 💡 Transform Your Financial Mindset\r\n\r\nMove from religious poverty thinking into Kingdom abundance. Learn how Jesus taught about money, provision, and the Father's desire to bless His children.\r\n\r\n**Scripture Foundation:** \"Seek first the kingdom of God and His righteousness, and all these things shall be added to you.\" - Matthew 6:33\r\n\r\n---\r\n\r\n### 📖 Learning Biblical Business Principles\r\n\r\nAfter 30 years of biblical study and 8 years in pastoral ministry on Molokaʻi, I'm applying Myron Golden's Kingdom approach to business. His teaching on biblical wealth creation aligns with the Kingdom economics I've been teaching.\r\n\r\nI'm building my ministry using these ethical, scripture-based principles - because God's Kingdom deserves to be funded with integrity, not manipulation.\r\n\r\nIf you're called to ministry or Christian business, these resources can help you build on a solid biblical foundation.\r\n\r\n**[Explore Myron Golden's Biblical Business Training →](/myron-golden)**",
+            "product_url": ""
+        },
+        "aloha_wellness": {
+            "title": "Aloha Wellness - Island Health & Healing",
+            "hero_image": "https://i.imgur.com/xGeWW3Q.jpeg",
+            "body_md": "## Aloha Wellness - The Sacred Art of How You Eat\r\n\r\nDiscover the life-changing power of **how** you eat, not just what you eat. This groundbreaking wellness book combines cutting-edge scientific research with ancient Hawaiian mana'o (wisdom) to transform your relationship with food and nourishment.\r\n\r\n### Beyond Diet Culture - A Hawaiian Perspective\r\n\r\nTraditional Hawaiian culture understood something modern society has forgotten: eating is a sacred act that connects us to the land, our ancestors, and our own spiritual well-being. This book bridges that ancient wisdom with contemporary nutritional science.\r\n\r\n### Revolutionary Approach: How, Not What\r\n\r\n**Mindful Consumption** - Learn the scientific basis for how mindful eating practices affect digestion, metabolism, and overall health.\r\n\r\n**Cultural Eating Wisdom** - Discover how Hawaiian ancestors approached meals as community ceremonies, gratitude practices, and spiritual connections.\r\n\r\n**Stress and Digestion** - Research-backed insights into how your emotional state during meals affects nutrient absorption and digestive health.\r\n\r\n**Rhythm and Timing** - Ancient Hawaiian understanding of eating in harmony with natural rhythms, supported by modern chronobiology research.\r\n\r\n**Scientific Research Meets Island Wisdom** - This book offers a comprehensive look at the intersection of modern science and ancient practice.\r\n\r\n### Hawaiian Mana'o (Wisdom Principles)\r\n\r\n**Ho'oponopono with Food** - Making right relationships with nourishment and healing food-related guilt or shame.\r\n\r\n**Aloha 'Āina** - Love of the land extends to gratitude for the food it provides and mindful consumption practices.\r\n\r\n**Lōkahi** - Finding unity and balance in your relationship with food, body, and spirit.\r\n\r\n**Mālama** - Caring for your body as a sacred temple through conscious eating practices.\r\n\r\nTransform your health from the inside out by changing not what you eat, but how you approach the sacred act of nourishment.\r\n\r\n---\r\n\r\n### 🌺 Body, Soul & Spirit Wellness\r\n\r\nTrue wellness integrates physical health with spiritual vitality. Explore how Kingdom principles apply to caring for the temple God gave you.\r\n\r\n**[Discover Kingdom Living Principles →](/kingdom_wealth)**",
+            "product_url": "https://amzn.to/3FfH9ep",
+            "products": [
+                {
+                    "title": "Aloha Wellness Book",
+                    "cover": "https://m.media-amazon.com/images/I/712tO3wmGEL._SL1499_.jpg",
+                    "amazon": "",
+                    "gumroad": ""
+                }
+            ]
+        },
+        "call_to_repentance": {
+            "title": "The Call to Repentance - The Kingdom Series",
+            "hero_image": "https://i.imgur.com/tG1vBp9.jpeg",
+            "body_md": "## The Call to Repentance - Rediscovering Jesus's Kingdom Message\r\n\r\nStep beyond religious tradition and rediscover the revolutionary Kingdom message that Jesus actually preached. This transformative book series cuts through centuries of religious interpretation to reveal the pure, life-changing teachings of the Kingdom of God.\r\n\r\n### Series Overview (Volumes 1-5)\r\n\r\nThis isn't a single book but a comprehensive series that systematically unpacks Jesus's kingdom teachings.\r\n\r\n### A Call to Authentic Christianity\r\n\r\nThis series challenges readers to move beyond:\r\n- Religious performance into authentic relationship\r\n- Sunday Christianity into daily kingdom living\r\n- Denominational identity into kingdom citizenship\r\n- Waiting for heaven into experiencing God's kingdom now\r\n\r\n**Join the revolution that Jesus started. Discover the Kingdom message that changes everything.**\r\n\r\n---\r\n\r\n### 🎁 New to Kingdom Theology?\r\n\r\nStart with our **FREE Kingdom Keys booklets** - perfect introduction to the core concepts before diving into the full series.\r\n\r\n**[Get Free Kingdom Keys →](/kingdom_keys)**\r\n\r\n---\r\n\r\n### 💰 Kingdom Wealth Principles\r\n\r\nBook 3 in the series covers biblical prosperity, stewardship, and God's economic system. Learn how Jesus taught about money, provision, and Kingdom increase.\r\n\r\n**[Explore Kingdom Wealth Teaching →](/kingdom_wealth)**",
+            "product_url": "https://www.amazon.com/CALL-REPENTANCE-Foundation-Application-Lifestyle-ebook/dp/B0FXYDD9SN",
+            "products": [
+                {
+                    "title": "The Call to Repentance - Kingdom Book",
+                    "cover": "",
+                    "amazon": "",
+                    "gumroad": "https://uncomango.gumroad.com/l/myold"
+                }
+            ]
+        },
+        "pastor_planners": {
+            "title": "Pastor Planners - Tools for Ministry Excellence",
+            "hero_image": "https://i.imgur.com/tWnn5UY.png",
+            "body_md": "## Organize Your Ministry with Purpose and Prayer\r\n\r\nEffective ministry requires both spiritual sensitivity and practical organization. Our Pastor Planners combine beautiful design with functional tools to help you lead with excellence and peace.\r\n\r\n### Features of Our Ministry Planning System\r\n\r\n**Sermon Planning Sections** - Map out your preaching calendar with space for themes, scriptures, and prayer requests.\r\n\r\n**Prayer and Pastoral Care** - Dedicated sections for tracking prayer requests, hospital visits, counseling sessions, and follow-up care.\r\n\r\n**Meeting and Event Coordination** - Organize board meetings, committee sessions, special events, and outreach activities.\r\n\r\n**Personal Spiritual Disciplines** - Maintain your own spiritual health with guided sections for daily devotions.\r\n\r\n### Why Pastors Love Our Planners\r\n\r\n**Hawaiian-Inspired Design** - Beautiful layouts featuring island imagery and scripture verses.\r\n\r\n**Flexible Formatting** - Works for churches of all sizes and denominations.\r\n\r\n**Durable Construction** - High-quality materials that withstand daily use.\r\n\r\n**Spiritual Focus** - More than just organization - designed to keep your heart centered on God's calling.\r\n\r\n---\r\n\r\n### 📚 Pastor Resources\r\n\r\n**Complete Kingdom Theology Series** - Equip yourself with solid biblical teaching to share with your congregation.\r\n\r\n**[Browse Kingdom Teaching Resources →](/call_to_repentance)**\r\n\r\n---\r\n\r\n### 🎁 FREE Ministry Tools\r\n\r\nDownload our **FREE Kingdom Keys booklets** - perfect for small groups, new believers, or sermon prep inspiration.\r\n\r\n**[Get Free Kingdom Keys →](/kingdom_keys)**",
+            "product_url": "https://www.amazon.com/s?k=pastor+planner+ministry+organizer",
+            "products": [
+                {
+                    "title": "Hawaiian Pastor Planner - Yearly",
+                    "cover": "https://public-files.gumroad.com/p4346cgzkcd4iivhsgkf7pjtypr2",
+                    "amazon": "",
+                    "gumroad": ""
+                },
+                {
+                    "title": "Hawaiian Pastor Planner - Monthly",
+                    "cover": "https://public-files.gumroad.com/ccssij259a3729na9xx5s12skasm",
+                    "amazon": "",
+                    "gumroad": ""
+                },
+                {
+                    "title": "Samoan Pastor Planner - Yearly",
+                    "cover": "https://public-files.gumroad.com/worm4zkkn4hm5k0f81icc4e4pofp",
+                    "amazon": "",
+                    "gumroad": ""
+                },
+                {
+                    "title": "Samoan Pastor Planner - Monthly",
+                    "cover": "https://public-files.gumroad.com/ztbnhmb1azeotsvxga3979n6dw4g",
+                    "amazon": "",
+                    "gumroad": ""
+                }
+            ]
+        },
+        "nahenahe_voice": {
+            "title": "The Nahenahe Voice of Nahono'opi'ilani - Musical Legacy",
+            "hero_image": "https://i.imgur.com/Vyz6nFJ.png",
+            "body_md": "## The Nahenahe Voice of Nahono'opi'ilani - Live from Molokai Ranch Lodge\r\n\r\nExperience the soul-stirring sounds of authentic Hawaiian music captured live at the historic Molokai Ranch Lodge in the year 2000. This intimate recording showcases the true meaning of **nahenahe** - the gentle, soothing voice that carries the spirit of aloha across the islands.\r\n\r\n### A Sacred Musical Journey\r\n\r\nRecorded in the peaceful setting of Molokai Ranch Lodge, this collection features solo guitar and traditional Hawaiian melodies that speak directly to the heart.\r\n\r\n**Nahenahe** means more than just \"soft\" or \"sweet\" - it represents music that heals, soothes, and connects us to the divine presence that flows through all creation.\r\n\r\n### What You'll Experience:\r\n\r\n**Traditional Hawaiian Melodies** - Time-honored songs passed down through generations.\r\n\r\n**Solo Guitar Mastery** - Intimate acoustic performances showcasing Hawaiian slack-key guitar traditions.\r\n\r\n**Authentic Island Atmosphere** - The natural acoustics and peaceful energy of Molokai Ranch Lodge.\r\n\r\n**Healing Through Song** - Each track brings peace, comfort, and the healing power of aloha.\r\n\r\n*\"Music is the language that speaks when words are not enough. The nahenahe voice carries aloha to every heart that listens.\"*\r\n\r\nPerfect for meditation, relaxation, spiritual practice, or any time you need the gentle embrace of island peace.",
+            "gallery_images": [
+                "/static/covers/cover1.jpg",
+                "/static/covers/cover2.jpg",
+                "/static/covers/cover3.jpg"
+            ],
+            "product_links": [
+                {
+                    "name": "Amazon Music",
+                    "url": "https://music.amazon.com/search/nahenahe%20voice",
+                    "icon": "🛒"
+                },
+                {
+                    "name": "Apple Music",
+                    "url": "https://music.apple.com/us/search?term=nahenahe%20voice",
+                    "icon": "🍎"
+                },
+                {
+                    "name": "Spotify",
+                    "url": "https://open.spotify.com/search/nahenahe%20voice",
+                    "icon": "🎧"
+                }
+            ]
+        },
+        "kingdom_keys": {
+            "title": "FREE Kingdom Keys Booklets",
+            "hero_image": "https://i.imgur.com/wmHEyDo.png",
+            "body_md": "## 🌺 FREE Kingdom Keys Booklets 🌺\r\n\r\n**Hoʻomau i ke Aupuni o ke Akua** (Continue in the Kingdom of God)\r\n\r\n**Aloha!** I'm Pastor Phil Stephens from Molokaʻi. After 30 years of biblical study, I've discovered the Kingdom truths the church forgot. Download these FREE mini-devotionals that will transform how you see Jesus's message.\r\n\r\n---\r\n\r\n## 📧 Get Weekly Kingdom Teaching\r\n\r\nJoin believers worldwide discovering Kingdom truth. Sign up at **[YOUR-EMAIL-SERVICE]**\r\n\r\n---\r\n\r\n## 📚 Ready for Deeper Teaching?\r\n\r\nThese free booklets are just the beginning. Explore the complete **54-book Kingdom Series** for comprehensive biblical teaching.\r\n\r\n**[Browse Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n---\r\n\r\n## 💝 Was This Helpful?\r\n\r\nIf these booklets blessed you, consider sowing back into this Kingdom ministry:\r\n\r\n**PayPal:** paypal.me/YOUR-PAYPAL  \r\n**Gumroad:** YOUR-GUMROAD.gumroad.com/l/donation\r\n\r\n*Every seed sown helps us reach more people with the Kingdom message.*",
+            "products": [
+                {
+                    "title": "7 Scriptures That Prove the Kingdom Is Inside You Now",
+                    "cover": "",
+                    "amazon": "",
+                    "gumroad": ""
+                },
+                {
+                    "title": "How to Release Kingdom Healing in 10 Minutes a Day",
+                    "cover": "",
+                    "amazon": "",
+                    "gumroad": ""
+                },
+                {
+                    "title": "The 5 Kingdom Prayers My Hawaiian Grandma Taught Me",
+                    "cover": "",
+                    "amazon": "",
+                    "gumroad": ""
+                },
+                {
+                    "title": "Kingdom Wealth: 7 Bible Verses the Prosperity Preachers Won't Tell You",
+                    "cover": "",
+                    "amazon": "",
+                    "gumroad": ""
+                }
+            ]
+        }
     }
 }
 
 ENHANCED_STYLE = """
 :root {
+    --primary-bg: #f8f5f0;
+    --text-dark: #2c3e50;
     --accent-teal: #5f9ea0;
-    --dark-bg: #1a1a1a;
-    --text-light: #f4f4f4;
+    --accent-warm: #d4a574;
+    --white-transparent: rgba(255, 255, 255, 0.95);
+    --shadow-soft: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Georgia', 'Times New Roman', serif;
     line-height: 1.6;
-    color: var(--text-light);
-    background: var(--dark-bg);
-    overflow-x: hidden;
+    color: var(--text-dark);
+    background: var(--primary-bg);
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(175, 216, 248, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(212, 165, 116, 0.1) 0%, transparent 50%);
 }
 
-.container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 20px;
+a {
+    color: #d4af37;
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
-/* Navigation */
+a:hover {
+    color: #f5d76e;
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #b8962e;
+}
+
 .site-nav {
-    background: rgba(0,0,0,0.9);
+    background-color: #d4b896;
+    background-image: 
+        linear-gradient(45deg, #c9a876 25%, transparent 25%),
+        linear-gradient(-45deg, #c9a876 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #bfa068 75%),
+        linear-gradient(-45deg, transparent 75%, #bfa068 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
     padding: 1rem 0;
     position: sticky;
     top: 0;
     z-index: 1000;
-    border-bottom: 2px solid var(--accent-teal);
+    box-shadow: var(--shadow-soft);
 }
 
 .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 2rem;
 }
 
 .nav-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+    text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 12px;
-    color: white;
-    text-decoration: none;
-    font-size: 1.4rem;
-    font-weight: bold;
+    gap: 0.75rem;
 }
 
 .nav-logo {
-    height: 50px;
+    height: 40px;
     width: auto;
 }
 
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: 20px;
+    gap: 2rem;
     align-items: center;
 }
 
-.nav-menu a {
-    color: white;
+.nav-menu li a {
+    color: #2c3e50;
     text-decoration: none;
-    transition: color 0.3s;
     font-weight: 500;
+    transition: color 0.3s ease;
 }
 
-.nav-menu a:hover {
+.nav-menu li a:hover {
     color: var(--accent-teal);
 }
 
 .hamburger {
     display: none;
-    cursor: pointer;
     flex-direction: column;
-    gap: 5px;
+    cursor: pointer;
+    gap: 4px;
 }
 
 .hamburger span {
     width: 25px;
     height: 3px;
-    background: white;
-    border-radius: 2px;
+    background-color: #2c3e50;
+    transition: 0.3s;
 }
 
-/* Hero Section */
+@media (max-width: 768px) {
+    .nav-menu {
+        position: fixed;
+        left: -100%;
+        top: 70px;
+        flex-direction: column;
+        background-color: #d4b896;
+        width: 100%;
+        text-align: center;
+        transition: 0.3s;
+        box-shadow: 0 10px 27px rgba(0,0,0,0.05);
+        padding: 2rem 0;
+        gap: 1rem;
+    }
+
+    .nav-menu.active {
+        left: 0;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+    
+    .nav-title {
+        font-size: 1.2rem;
+    }
+    
+    .nav-logo {
+        height: 30px;
+    }
+}
+
 .hero {
     height: 60vh;
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    text-align: center;
+    margin-bottom: 3rem;
 }
 
 .hero-overlay {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(44, 62, 80, 0.7) 0%, rgba(95, 158, 160, 0.7) 100%);
 }
 
 .hero-content {
     position: relative;
     z-index: 1;
-    padding: 20px;
+    text-align: center;
+    color: white;
+    padding: 2rem;
+    max-width: 900px;
 }
 
-.hero-content h1 {
+.hero h1 {
     font-size: 3.5rem;
     margin-bottom: 1rem;
-    text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    line-height: 1.2;
 }
 
-/* Content Card */
+@media (max-width: 768px) {
+    .hero {
+        height: 40vh;
+    }
+    .hero h1 {
+        font-size: 2rem;
+    }
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+}
+
 .content-card {
-    background: rgba(255,255,255,0.05);
-    margin-top: -50px;
-    position: relative;
-    z-index: 10;
+    background: var(--white-transparent);
+    border-radius: 12px;
     padding: 3rem;
-    border-radius: 15px;
+    box-shadow: var(--shadow-soft);
     backdrop-filter: blur(10px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    margin-bottom: 50px;
-    border: 1px solid rgba(255,255,255,0.1);
 }
 
 .content-card h2 {
-    color: var(--accent-teal);
+    color: var(--text-dark);
+    font-size: 2rem;
     margin: 2rem 0 1rem;
+    border-bottom: 3px solid var(--accent-warm);
+    padding-bottom: 0.5rem;
+}
+
+.content-card h3 {
+    color: var(--accent-teal);
+    font-size: 1.5rem;
+    margin: 1.5rem 0 0.75rem;
 }
 
 .content-card p {
-    margin-bottom: 1.2rem;
-    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    line-height: 1.8;
 }
 
-/* Music/Product Buttons */
-.music-buttons {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin: 2rem 0;
+.content-card strong {
+    color: var(--accent-teal);
+    font-weight: 600;
 }
 
-.music-button {
-    background: var(--accent-teal);
-    color: white;
-    padding: 0.8rem 1.5rem;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: transform 0.2s, background 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.content-card ul {
+    margin: 1rem 0 1rem 2rem;
+    line-height: 1.8;
 }
 
-.music-button:hover {
-    background: #4a8b8e;
-    transform: translateY(-2px);
+.content-card li {
+    margin-bottom: 0.5rem;
+}
+
+.buy-section {
+    text-align: center;
+    margin: 3rem 0;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(95, 158, 160, 0.1) 0%, rgba(212, 165, 116, 0.1) 100%);
+    border-radius: 12px;
 }
 
 .buy-button {
-    display: block;
-    width: 100%;
-    max-width: 300px;
-    margin: 2rem auto;
-    text-align: center;
-    background: #d4af37;
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    background: linear-gradient(135deg, var(--accent-teal), #4a8b8e);
     color: white;
-    padding: 1rem;
-    border-radius: 8px;
     text-decoration: none;
+    border-radius: 50px;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(95, 158, 160, 0.3);
+    margin: 0.5rem;
 }
 
-/* Gallery */
+.buy-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(95, 158, 160, 0.4);
+}
+
+.gallery-section {
+    margin: 3rem 0;
+}
+
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1.5rem;
-    margin: 2rem 0;
+    margin-top: 1.5rem;
+}
+
+.gallery-item {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
 }
 
 .gallery-item img {
     width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 8px;
-    transition: transform 0.3s;
+    height: auto;
+    display: block;
 }
 
-.gallery-item img:hover {
-    transform: scale(1.05);
+.music-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
 }
 
-/* Footer */
+.music-button {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    background: linear-gradient(135deg, var(--accent-teal), #4a8b8e);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(95, 158, 160, 0.3);
+}
+
+.music-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(95, 158, 160, 0.4);
+}
+
 .footer {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
     text-align: center;
-    padding: 3rem 0;
-    background: rgba(0,0,0,0.8);
-    margin-top: 50px;
-    color: #888;
+    padding: 2rem;
+    margin-top: 4rem;
 }
 
 @media (max-width: 768px) {
-    .nav-menu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: rgba(0,0,0,0.95);
-        flex-direction: column;
-        padding: 20px;
-        text-align: center;
-    }
-
-    .nav-menu.active {
-        display: flex;
-    }
-
-    .hamburger {
-        display: flex;
-    }
-
-    .hero-content h1 {
-        font-size: 2.2rem;
-    }
-
     .content-card {
-        padding: 2rem 1.5rem;
+        padding: 1.5rem;
     }
     
-    .content-card h2 {
-        font-size: 1.8rem;
-    }
-    
-    .content-card h3 {
-        font-size: 1.4rem;
+    .gallery-grid {
+        grid-template-columns: 1fr;
     }
     
     .music-buttons {
         flex-direction: column;
     }
-    
-    .music-button {
-        width: 100%;
-    }
 }
 """
-# --- TEMPLATES ---
-PAGE_TEMPLATE = """
-<!DOCTYPE html>
+
+PAGE_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }} | Ke Aupuni O Ke Akua</title>
-    <style>
-        {{ style|safe }}
-        /* Specific content formatting */
-        .content-card img {
+    <title>{{ page.title }}</title>
+    <style>{{ style|safe }}
+    .content-card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 20px 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        display: block;
+    }
+    
+    .content-card img[alt*="Cover"],
+    .content-card img[alt*="Volume"] {
+        max-width: 300px;
+        margin: 20px auto;
+    }
+    
+    @media (max-width: 768px) {
+        .content-card img[alt*="Cover"],
+        .content-card img[alt*="Volume"] {
             max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            margin: 20px 0;
-            display: block;
         }
-        /* Product cover styling */
-        .content-card img[alt*="Cover"] {
-            max-width: 300px;
-            margin: 20px auto;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-    </style>
+    }
+
+    .content-card div[style*="background: rgba(255,255,255,0.1)"]:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.5) !important;
+    }
+</style>
 </head>
 <body>
     <nav class="site-nav">
         <div class="nav-container">
             <a href="/" class="nav-title">
-                <img src="https://keaupuniakeakua.faith/output-onlinepngtools.png" alt="Logo" class="nav-logo">
+                <img src="https://keaupuniakeakua.faith/output-onlinepngtools.png" alt="Ke Aupuni Logo" class="nav-logo">
                 Ke Aupuni O Ke Akua
             </a>
-            
-            <div class="hamburger" onclick="document.querySelector('.nav-menu').classList.toggle('active')">
-                <span></span><span></span><span></span>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
-
-            <ul class="nav-menu">
+            <ul class="nav-menu" id="navMenu">
                 {% for item in nav_items %}
-                <li><a href="{{ item.url }}" {% if current_page == item.slug %}style="color: var(--accent-teal);"{% endif %}>{{ item.title }}</a></li>
+                <li><a href="{{ item.url }}">{{ item.title }}</a></li>
                 {% endfor %}
+                <li><a href="/kingdom_keys" style="background:#d4af37;color:#fff;padding:0.5rem 1rem;border-radius:6px;">🎁 FREE Booklets</a></li>
             </ul>
         </div>
     </nav>
-
+    
     <header class="hero" style="background-image: url('{{ page.hero_image }}');">
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1>{{ page.title }}</h1>
         </div>
     </header>
-
+    
     <main class="container">
         <article class="content-card">
             {{ body_html|safe }}
-
-            {% if page.gumroad_url %}
-            <a href="{{ page.gumroad_url }}" class="buy-button">Get it on Gumroad</a>
+            
+            {% if page.gallery_images %}
+            <div class="gallery-section">
+                <h2>📸 Album Covers</h2>
+                <div class="gallery-grid">
+                    {% for image in page.gallery_images %}
+                    <div class="gallery-item">
+                        <img src="{{ image }}" alt="CD Cover" loading="lazy">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
             {% endif %}
-
-            {% if page.product_links %}
-            <div class="music-buttons">
-                {% for link in page.product_links %}
-                <a href="{{ link.url }}" class="music-button" target="_blank">
-                    <span>{{ link.icon }}</span> {{ link.name }}
-                </a>
-                {% endfor %}
+            
+            {% if page.products %}
+            <div style="margin: 3rem 0; padding: 2rem 0; border-top: 2px solid rgba(255,255,255,0.2);">
+                <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">📚 Available Products</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto;">
+                    {% for product in page.products %}
+                    <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.3s ease;">
+                        {% if product.cover %}
+                        <img src="{{ product.cover }}" alt="{{ product.title }}" style="width: 100%; height: auto; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+                        {% endif %}
+                        <h3 style="color: white; font-size: 1rem; margin-bottom: 1rem; min-height: 2.5rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">{{ product.title }}</h3>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                            {% if product.amazon %}
+                            <a href="{{ product.amazon }}" target="_blank" style="display: block; background: linear-gradient(135deg, var(--accent-teal), #4a8b8e); color: white; padding: 0.6rem; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.9rem; text-align: center; transition: transform 0.2s;">🛒 Amazon</a>
+                            {% endif %}
+                            {% if product.gumroad %}
+                            <a href="{{ product.gumroad }}" target="_blank" style="display: block; background: linear-gradient(135deg, #FF90E8, #FFA500); color: white; padding: 0.6rem; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.9rem; text-align: center; transition: transform 0.2s;">💳 Gumroad</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
             {% endif %}
 
-            {% if page.gallery_images %}
-            <div class="gallery-grid">
-                {% for img_url in page.gallery_images %}
-                <div class="gallery-item">
-                    <img src="{{ img_url }}" alt="Gallery Image">
+            {% if page.product_links %}
+            <div class="buy-section">
+                <h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">🎵 Stream Our Music</h2>
+                <div class="music-buttons">
+                    {% for link in page.product_links %}
+                    <a href="{{ link.url }}" target="_blank" class="music-button">
+                        {{ link.icon }} {{ link.name }}
+                    </a>
+                    {% endfor %}
                 </div>
-                {% endfor %}
+            </div>
+            {% endif %}
+            
+            {% if page.product_images %}
+            <div class="product-gallery" style="margin: 3rem 0;">
+                <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">📚 Available Products</h2>
+                <div class="gallery-grid">
+                    {% for img in page.product_images %}
+                    <div class="gallery-item">
+                        <img src="{{ img }}" alt="Product Cover" loading="lazy">
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
             {% endif %}
             
             {% if page.podcast_embed %}
-            <div style="margin-top: 2rem;">
+            <div class="podcast-section" style="margin: 2rem 0; padding: 2rem; background: rgba(0,0,0,0.3); border-radius: 8px;">
+                <h2 style="color: white; text-align: center; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">🎙️ Listen to Our Podcast</h2>
                 {{ page.podcast_embed|safe }}
             </div>
             {% endif %}
+            
+            <div class="buy-section">
+                {% if page.product_url %}
+                <a href="{{ page.product_url }}" target="_blank" class="buy-button">
+                    🛒 Buy on Amazon
+                </a>
+                {% endif %}
+                
+                {% if page.gumroad_url %}
+                <a href="{{ page.gumroad_url }}" target="_blank" class="buy-button" style="background: linear-gradient(135deg, #FF90E8, #FFA500);">
+                    💳 Buy on Gumroad
+                </a>
+                {% endif %}
+            </div>
         </article>
     </main>
-
+    
     <footer class="footer">
-        <p>&copy; 2024 Ke Aupuni O Ke Akua. All Rights Reserved.</p>
+        <p>© 2025 Ke Aupuni O Ke Akua. All rights reserved. Made with aloha in Hawaiʻi.</p>
     </footer>
-
+    
     <script>
-        // Smooth scroll for internal links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
+    function toggleMenu() {
+        const menu = document.getElementById('navMenu');
+        menu.classList.toggle('active');
+    }
+    
+    document.addEventListener('click', function(event) {
+        const nav = document.querySelector('.nav-container');
+        const menu = document.getElementById('navMenu');
+        if (!nav.contains(event.target) && menu.classList.contains('active')) {
+            menu.classList.remove('active');
+        }
+    });
     </script>
 </body>
-</html>
-"""
+</html>"""
 
-MYRON_GOLDEN_TEMPLATE = """
-<!DOCTYPE html>
+MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transform Your Future | Myron Golden Resources</title>
-    <style>
-        {{ style|safe }}
-        .affiliate-section { padding: 4rem 0; text-align: center; }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem; }
-        .product-box { 
-            background: rgba(255,255,255,0.05); 
-            padding: 2rem; 
-            border-radius: 15px; 
-            border: 1px solid #d4af37;
-            transition: transform 0.3s;
-        }
-        .product-box:hover { transform: translateY(-10px); background: rgba(255,255,255,0.08); }
-        .gold-text { color: #d4af37; font-weight: bold; }
-        .btn-gold { 
-            background: #d4af37; 
-            color: white; 
-            padding: 1rem 2rem; 
-            text-decoration: none; 
-            border-radius: 8px; 
-            display: inline-block; 
-            margin-top: 1.5rem;
-            font-weight: bold;
-        }
+    <title>Transform Your Financial Future | Biblical Business Principles</title>
+    <style>{{ style|safe }}
+    .email-capture { 
+        background: rgba(212, 165, 116, 0.2); 
+        padding: 30px; 
+        margin: 30px 0; 
+        text-align: center; 
+        border: 3px solid rgba(212, 165, 116, 0.5); 
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+    }
+    .email-capture h2 { color: white; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+    .email-form { max-width: 500px; margin: 0 auto; }
+    .email-form input { width: 100%; padding: 15px; margin: 10px 0; font-size: 16px; border: 2px solid #ddd; border-radius: 6px; }
+    .email-form button { width: 100%; padding: 15px; background: #d4af37; color: white; font-size: 18px; font-weight: bold; border: none; cursor: pointer; border-radius: 6px; }
+    .email-form button:hover { background: #b8962e; }
+    .section { padding: 40px 0; }
+    .section h2 { color: white; font-size: 2em; margin-bottom: 30px; text-align: center; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); }
+    .product-box { background: rgba(0, 0, 0, 0.5); padding: 30px; margin: 20px 0; border: 2px solid rgba(255,255,255,0.2); border-radius: 12px; backdrop-filter: blur(10px); }
+    .product-box h3 { color: white; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+    .product-box ul { margin: 20px 0; padding-left: 20px; color: white; }
+    .product-box li { margin: 10px 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); }
+    .product-box p { color: white; line-height: 1.8; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); }
+    .btn { display: inline-block; padding: 15px 40px; background: linear-gradient(135deg, var(--accent-teal), #4a8b8e); color: white; text-decoration: none; font-weight: bold; margin: 10px 5px; text-align: center; border-radius: 8px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(95, 158, 160, 0.3); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(95, 158, 160, 0.4); }
+    .btn-container { text-align: center; margin-top: 20px; }
     </style>
 </head>
 <body>
     <nav class="site-nav">
         <div class="nav-container">
             <a href="/" class="nav-title">
-                <img src="https://keaupuniakeakua.faith/output-onlinepngtools.png" alt="Logo" class="nav-logo">
+                <img src="https://keaupuniakeakua.faith/output-onlinepngtools.png" alt="Ke Aupuni Logo" class="nav-logo">
                 Ke Aupuni O Ke Akua
             </a>
-            <a href="/" style="color: white; text-decoration: none;">&larr; Back to Home</a>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/kingdom_wealth">Kingdom Wealth</a></li>
+                <li><a href="/call_to_repentance">The Call to Repentance</a></li>
+                <li><a href="/aloha_wellness">Aloha Wellness</a></li>
+                <li><a href="/pastor_planners">Pastor Planners</a></li>
+                <li><a href="/nahenahe_voice">Nahenahe Voice</a></li>
+                <li><a href="/kingdom_keys" style="background:#d4af37;color:#fff;padding:0.5rem 1rem;border-radius:6px;">🎁 FREE Booklets</a></li>
+            </ul>
         </div>
     </nav>
-
-    <div class="container">
-        <div class="affiliate-section">
-            <h1 style="font-size: 3rem; margin-bottom: 1rem;">Kingdom Wealth & Success</h1>
-            <p class="gold-text" style="font-size: 1.5rem;">Strategic Resources by Myron Golden</p>
-            
-            <div class="product-grid">
-                <div class="product-box">
-                    <h3>Trash Man to Cash Man</h3>
-                    <p>Learn the physics of wealth and how to transform your financial destiny.</p>
-                    <a href="https://www.trashmantocashman.com/tmcm-book?affiliate_id=4319525" class="btn-gold" target="_blank">GET THE BOOK</a>
-                </div>
+    
+    <header class="hero" style="background-image: url('https://i.imgur.com/G2YmSka.jpeg');">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Transform Your Financial Future</h1>
+            <p style="font-size: 1.3rem; margin-top: 1rem;">Biblical Business Principles That Actually Work</p>
+            <p style="font-size: 1.1rem; margin-top: 0.5rem;"><em>From Pastor Phil Stephens, Molokaʻi</em></p>
+        </div>
+    </header>
+    
+    <main class="container">
+        <article class="content-card">
+            <div class="email-capture">
+                <h2>🌴 Get My FREE Kingdom Business Guide 🌴</h2>
+                <p style="margin-bottom: 20px; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">Learn the 3 biggest mistakes keeping Christians broke (and how to fix them using biblical principles)</p>
                 
-                <div class="product-box">
-                    <h3>Make More Offers Challenge</h3>
-                    <p>The ultimate 5-day challenge to scale your business and your impact.</p>
-                    <a href="https://www.makemoreofferschallenge.com/join?affiliate_id=4319525" class="btn-gold" target="_blank">JOIN THE CHALLENGE</a>
+                <div class="email-form">
+                    <form action="https://app.kit.com/forms/8979853/subscriptions" method="post">
+                        <input type="text" name="fields[first_name]" placeholder="First Name" required>
+                        <input type="email" name="email_address" placeholder="Email Address" required>
+                        <button type="submit">GET FREE GUIDE →</button>
+                    </form>
                 </div>
             </div>
-        </div>
-    </div>
+
+            <div class="section">
+                <h2>📚 SECTION 1: Start Your Journey</h2>
+                <div class="product-box">
+                    <h3>Start here if:</h3>
+                    <ul>
+                        <li>You're tired of financial struggle and ready for a complete mindset shift</li>
+                        <li>You want to understand the biblical principles of wealth creation</li>
+                        <li>You're curious about Myron Golden's transformation story (from garbage collector to multi-millionaire)</li>
+                        <li>You need practical frameworks you can implement immediately</li>
+                        <li>You prefer learning through reading before investing in courses</li>
+                    </ul>
+                    <h3>What you get:</h3>
+                    <ul>
+                        <li>Two foundational books that reveal the mindset secrets of the wealthy</li>
+                        <li>Biblical wealth-building principles that actually work in today's marketplace</li>
+                        <li>Myron's proven frameworks for transforming your income potential</li>
+                        <li>Stories and strategies you can apply starting today</li>
+                        <li>The lowest-cost entry point to Myron Golden's teachings ($27-47 total)</li>
+                    </ul>
+                    <div class="btn-container">
+                        <a href="https://www.trashmantocashman.com/tmcm-book?affiliate_id=4319525" class="btn">GET TRASH MAN TO CASH MAN →</a>
+                        <a href="https://www.bossmovesbook.com/bossmoves?affiliate_id=4319525" class="btn">GET BOSS MOVES BOOK →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🧠 SECTION 2: Transform Your Money Blueprint</h2>
+                <div class="product-box">
+                    <h3>Take this if:</h3>
+                    <ul>
+                        <li>You've read the books and you're ready to go deeper</li>
+                        <li>You know your money mindset is holding you back from your potential</li>
+                        <li>You want to break generational poverty cycles in your family</li>
+                        <li>You're ready to invest in yourself and your financial future</li>
+                        <li>You need to rewire your subconscious beliefs about money</li>
+                    </ul>
+                    <h3>What you get:</h3>
+                    <ul>
+                        <li>Comprehensive training that reprograms your money blueprint</li>
+                        <li>Biblical perspectives on wealth that eliminate guilt and confusion</li>
+                        <li>Practical exercises to identify and eliminate limiting beliefs</li>
+                        <li>Strategies for developing millionaire-level thinking patterns</li>
+                        <li>Tools to overcome fear, doubt, and scarcity mindset forever</li>
+                    </ul>
+                    <div class="btn-container">
+                        <a href="https://www.mindovermoneymastery.com/momm?affiliate_id=4319525" class="btn">TRANSFORM YOUR MINDSET →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🎯 SECTION 3: Master the Art of Making Offers</h2>
+                <div class="product-box">
+                    <h3>Make More Offers Challenge ($97)</h3>
+                    <p>This intensive 5-day challenge teaches you the exact framework for creating irresistible offers that sell themselves. Myron Golden reveals why most businesses struggle (they don't make enough offers) and shows you how to create multiple income streams by making better, more frequent offers. You'll learn the psychology of buying decisions, how to stack value that makes price irrelevant, and the specific language patterns that compel people to say "yes." Perfect for entrepreneurs, coaches, consultants, and anyone who needs to sell their products or services. The challenge includes daily training videos, live Q&A sessions, worksheets, and a supportive community of fellow offer-makers.</p>
+                    <div class="btn-container">
+                        <a href="https://www.makemoreofferschallenge.com/mmoc?affiliate_id=4319525" class="btn">JOIN THE CHALLENGE →</a>
+                    </div>
+                </div>
+                <div class="product-box">
+                    <h3>Offer Mastery Live ($297)</h3>
+                    <p>This is Myron Golden's signature event where he spends three full days teaching you the complete system for creating high-ticket offers that transform your business. You'll discover the four core offer types that generate predictable revenue, learn how to structure offers that sell at $2,000, $5,000, $10,000 or higher, and master the art of presenting offers that create instant buying decisions. Myron breaks down the psychology, strategy, and implementation of world-class offer creation. This event includes access to recordings, workbooks, and ongoing support. If you're serious about scaling your business through premium offers, this is where you level up from making offers to mastering them.</p>
+                    <div class="btn-container">
+                        <a href="https://www.offermasterylive.com/offer-mastery-livevetfk4nn?affiliate_id=4319525" class="btn">MASTER YOUR OFFERS →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🚀 SECTION 4: Build Your Million-Dollar Infrastructure</h2>
+                <div class="product-box">
+                    <h3>Golden OPS ($997)</h3>
+                    <p>This is Myron Golden's most comprehensive program for building a complete business operating system that generates consistent six and seven-figure revenue. Golden OPS (Operational Procedures and Systems) teaches you how to construct the four foundational pillars every million-dollar business requires: lead generation systems, lead nurture systems, sales conversion systems, and product delivery systems. You'll learn how to create automated funnels, build email sequences that convert, develop premium programs and masterminds, and structure your business for scalability. The program includes video training modules, implementation templates, funnel blueprints, marketing scripts, and access to a private community of serious entrepreneurs. Myron also reveals his personal business systems and shows you exactly how he structures his multi-million dollar empire. If you're ready to stop trading time for money and build a business that runs systematically, Golden OPS is your blueprint.</p>
+                    <div class="btn-container">
+                        <a href="https://www.mygoldenops.com/golden-opsm1y8y7bx?affiliate_id=4319525" class="btn">BUILD YOUR SYSTEM →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.3);">
+                <p style="color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);"><em>Affiliate Disclosure: I may earn a commission if you purchase through these links, at no extra cost to you.</em></p>
+                <p style="color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); margin-top: 1rem;">© 2025 Ke Aupuni O Ke Akua Press | Pastor Phil Stephens, Molokaʻi</p>
+            </div>
+        </article>
+    </main>
+    
+    <script>
+    function toggleMenu() {
+        const menu = document.getElementById('navMenu');
+        menu.classList.toggle('active');
+    }
+    document.addEventListener('click', function(event) {
+        const nav = document.querySelector('.nav-container');
+        const menu = document.getElementById('navMenu');
+        if (!nav.contains(event.target) && menu.classList.contains('active')) {
+            menu.classList.remove('active');
+        }
+    });
+    </script>
 </body>
-</html>
-"""
+</html>"""
 
-# --- LOGIC HELPERS ---
-def md_to_html(md_text):
-    return markdown.markdown(md_text, extensions=["extra", "nl2br", "tables"])
+# REST OF FILE CONTINUES EXACTLY AS BEFORE...
 
-def load_content():
-    if DATA_FILE.exists():
-        try:
-            with open(DATA_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception as e:
-            print(f"Error loading JSON: {e}")
-            return {"pages": DEFAULT_PAGES, "order": ORDER}
-    return {"pages": DEFAULT_PAGES, "order": ORDER}
-
-def save_content(data):
-    DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-
-def render_page(page_id, data):
-    pages = data.get("pages", data)
-    if page_id not in pages:
-        abort(404)
-    
-    page_data = pages[page_id]
-    
-    # Navigation mapping
-    nav_items = []
-    page_order = data.get("order", ORDER)
-    for slug in page_order:
-        if slug in pages:
-            nav_items.append({
-                "slug": slug,
-                "title": pages[slug].get("title", slug.replace("_", " ").title()),
-                "url": f"/{slug}" if slug != "home" else "/"
-            })
-
-    return render_template_string(
-        PAGE_TEMPLATE,
-        page=page_data,
-        nav_items=nav_items,
-        style=ENHANCED_STYLE,
-        body_html=md_to_html(page_data.get("body_md", "")),
-        current_page=page_id
-    )
-
-# --- PUBLIC ROUTES ---
-@app.route("/")
-def home():
-    data = load_content()
-    return render_page("home", data)
-
-@app.route("/myron-golden")
-def myron_golden_page():
-    return render_template_string(MYRON_GOLDEN_TEMPLATE, style=ENHANCED_STYLE)
-
-@app.route("/<page_id>")
-def dynamic_page(page_id):
-    data = load_content()
-    return render_page(page_id, data)
-	
-	# --- ADMIN DASHBOARD GENERATOR ---
-def generate_admin_html(pages):
-    admin_html = f"""<!DOCTYPE html>
+ADMIN_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>🌺 Admin Panel | Ke Aupuni O Ke Akua</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Manager</title>
     <style>
-        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-        body {{ font-family: system-ui, sans-serif; background: #f8f9fa; padding: 2rem; }}
-        .container {{ max-width: 1000px; margin: 0 auto; }}
-        .page-list {{ display: grid; gap: 1rem; margin-top: 2rem; }}
-        .page-card {{ background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #667eea; }}
-        .page-title {{ font-size: 1.25rem; color: #2c3e50; font-weight: 600; }}
-        .page-info {{ font-size: 0.9rem; color: #6c757d; }}
-        .edit-btn {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: transform 0.2s; }}
-        .edit-btn:hover {{ transform: translateY(-2px); }}
-        .back-btn {{ display: inline-block; margin-top: 2rem; color: #6c757d; text-decoration: none; }}
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+        .page-list {
+            display: grid;
+            gap: 1.5rem;
+        }
+        .page-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        .page-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+        .page-title {
+            font-size: 1.25rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .page-info {
+            display: grid;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #495057;
+        }
+        .page-info strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        .edit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .edit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 2rem;
+        }
+        .back-btn:hover {
+            background: #5a6268;
+        }
+        .gallery-preview {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .gallery-preview img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 2px solid #dee2e6;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🌺 Kahu Admin Panel</h1>
-        <p>Manage your website content and resources.</p>
-        <div class="page-list">"""
-
-    for page_id, page_data in pages.items():
-        title = page_data.get("title", page_id)
-        admin_html += f"""
+        <h1>🏝️ Ke Aupuni Content Manager</h1>
+        <p class="subtitle">Aloha, Kahu! Edit your website pages here.</p>
+        <div class="page-list">
+            {% for page_id, page in pages.items() %}
             <div class="page-card">
-                <div>
-                    <div class="page-title">{title}</div>
-                    <div class="page-info">Route: /{page_id if page_id != 'home' else ''}</div>
+                <div class="page-title">{{ page.title }}</div>
+                <div class="page-info">
+                    <div><strong>URL:</strong> /{{ page_id }}</div>
+                    <div><strong>Hero Image:</strong> {{ page.hero_image or 'None' }}</div>
+                    {% if page.product_url %}
+                    <div><strong>Product Link:</strong> {{ page.product_url }}</div>
+                    {% endif %}
+                    {% if page.gallery_images %}
+                    <div><strong>Gallery:</strong> {{ page.gallery_images|length }} images</div>
+                    <div class="gallery-preview">
+                        {% for img in page.gallery_images[:5] %}
+                        <img src="{{ img }}" alt="Gallery preview">
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% if page.products %}
+                    <div><strong>Products:</strong> {{ page.products|length }} items</div>
+                    {% endif %}
                 </div>
-                <a href="/kahu/edit/{page_id}" class="edit-btn">✏️ Edit Page</a>
-            </div>"""
-
-    admin_html += """
+                <a href="/kahu/edit/{{ page_id }}" class="edit-btn">✏️ Edit Page</a>
+            </div>
+            {% endfor %}
         </div>
         <a href="/" class="back-btn">← Back to Website</a>
     </div>
 </body>
 </html>"""
-    return admin_html
 
-# --- ADMIN ROUTES ---
-@app.route("/kahu")
-def admin_panel():
-    data = load_content()
-    pages = data.get("pages", data)
-    return generate_admin_html(pages)
-
-@app.route("/kahu/edit/<page_id>", methods=["GET", "POST"])
-def edit_page(page_id):
-    data = load_content()
-    pages = data.get("pages", data)
-
-    if page_id not in pages:
-        abort(404)
-
-    if request.method == "POST":
-        pages[page_id]["title"] = request.form.get("title", "")
-        pages[page_id]["hero_image"] = request.form.get("hero_image", "")
-        pages[page_id]["body_md"] = request.form.get("body_md", "")
-        pages[page_id]["gumroad_url"] = request.form.get("gumroad_url", "").strip()
-        pages[page_id]["podcast_embed"] = request.form.get("podcast_embed", "").strip()
-
-        # Handle Gallery Images
-        gallery_raw = request.form.get("gallery_images", "").strip()
-        pages[page_id]["gallery_images"] = [line.strip() for line in gallery_raw.split("\n") if line.strip()]
-
-        # Handle Music/Product Links
-        links_raw = request.form.get("product_links", "").strip()
-        links = []
-        for line in links_raw.split("\n"):
-            if "|" in line:
-                parts = line.split("|")
-                if len(parts) >= 3:
-                    links.append({
-                        "name": parts[0].strip(),
-                        "url": parts[1].strip(),
-                        "icon": parts[2].strip()
-                    })
-        pages[page_id]["product_links"] = links
-
-        save_content({"pages": pages, "order": data.get("order", ORDER)})
-        return redirect("/kahu")
-
-    # Prepare data for form
-    page = pages[page_id]
-    gallery_str = "\n".join(page.get("gallery_images", []))
-    links_str = "\n".join([f"{l['name']}|{l['url']}|{l['icon']}" for l in page.get("product_links", [])])
-
-    return f"""<!DOCTYPE html>
+EDIT_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>Edit {page['title']}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit {{ page.title }}</title>
     <style>
-        body {{ font-family: system-ui; background: #667eea; padding: 2rem; color: #333; }}
-        .card {{ background: white; max-width: 800px; margin: 0 auto; padding: 2rem; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }}
-        .form-group {{ margin-bottom: 1.5rem; }}
-        label {{ display: block; font-weight: bold; margin-bottom: 0.5rem; }}
-        input, textarea {{ width: 100%; padding: 0.75rem; border: 2px solid #ddd; border-radius: 8px; font-size: 1rem; }}
-        textarea {{ min-height: 200px; }}
-        .btn-save {{ background: #28a745; color: white; border: none; padding: 1rem 2rem; border-radius: 8px; cursor: pointer; font-weight: bold; }}
-        .btn-cancel {{ color: #666; text-decoration: none; margin-left: 1rem; }}
-        .help {{ font-size: 0.8rem; color: #888; margin-top: 0.3rem; }}
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        input[type="text"], input[type="url"], textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        textarea {
+            min-height: 400px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            line-height: 1.5;
+        }
+        .hint {
+            color: #7f8c8d;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .save-btn, .back-btn {
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .save-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+        }
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        .back-btn {
+            background: #6c757d;
+            color: white;
+        }
+        .back-btn:hover {
+            background: #5a6268;
+        }
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #c3e6cb;
+        }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>✏️ Edit: {page['title']}</h1>
+    <div class="container">
+        <h1>✏️ Edit: {{ page.title }}</h1>
+        
+        {% if success %}
+        <div class="success-message">
+            ✅ Changes saved successfully!
+        </div>
+        {% endif %}
+        
         <form method="POST">
             <div class="form-group">
-                <label>Page Title</label>
-                <input type="text" name="title" value="{page.get('title', '')}" required>
+                <label for="title">Page Title</label>
+                <input type="text" id="title" name="title" value="{{ page.title }}" required>
             </div>
+            
             <div class="form-group">
-                <label>Hero Image URL</label>
-                <input type="text" name="hero_image" value="{page.get('hero_image', '')}" required>
+                <label for="hero_image">Hero Image URL</label>
+                <input type="url" id="hero_image" name="hero_image" value="{{ page.hero_image or '' }}" placeholder="https://imgur.com/...">
+                <div class="hint">Use Imgur or another image host</div>
             </div>
+            
             <div class="form-group">
-                <label>Content (Markdown)</label>
-                <textarea name="body_md">{page.get('body_md', '')}</textarea>
+                <label for="body_md">Page Content (Markdown)</label>
+                <textarea id="body_md" name="body_md" required>{{ page.body_md }}</textarea>
+                <div class="hint">Use Markdown formatting: **bold**, *italic*, ## Headers, [links](url)</div>
             </div>
+            
             <div class="form-group">
-                <label>Gumroad URL (Optional)</label>
-                <input type="text" name="gumroad_url" value="{page.get('gumroad_url', '')}">
+                <label for="product_url">Product Link (optional)</label>
+                <input type="url" id="product_url" name="product_url" value="{{ page.product_url or '' }}" placeholder="https://amazon.com/...">
             </div>
-            <div class="form-group">
-                <label>Music/Product Links (Name|URL|Icon)</label>
-                <textarea name="product_links" style="min-height: 100px;">{links_str}</textarea>
-                <div class="help">Format: Spotify|https://...|🎵</div>
+            
+            <div class="btn-group">
+                <a href="/kahu" class="back-btn">← Cancel</a>
+                <button type="submit" class="save-btn">💾 Save Changes</button>
             </div>
-            <div class="form-group">
-                <label>Gallery Images (One URL per line)</label>
-                <textarea name="gallery_images" style="min-height: 100px;">{gallery_str}</textarea>
-            </div>
-            <div class="form-group">
-                <label>Podcast/Audio Embed Code</label>
-                <textarea name="podcast_embed" style="min-height: 80px;">{page.get('podcast_embed', '')}</textarea>
-            </div>
-            <button type="submit" class="btn-save">💾 Save Changes</button>
-            <a href="/kahu" class="btn-cancel">Cancel</a>
         </form>
     </div>
 </body>
 </html>"""
 
-# --- MAIN EXECUTION ---
-if __name__ == "__main__":
-    if not DATA_FILE.exists():
-        save_content({"pages": DEFAULT_PAGES, "order": ORDER})
+def save_content(data):
+    with open(DATA_FILE, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
 
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=False)
-	
-	# --- FULL DATABASE INITIALIZATION ---
-DEFAULT_PAGES = {
-    "home": {
-        "title": "Welcome to Ke Aupuni O Ke Akua",
-        "hero_image": "https://images.unsplash.com/photo-1505852679233-d9fd70aff56d",
-        "body_md": "# Sharing the Word with Aloha\nWelcome to our digital home where faith meets purpose.",
-        "gallery_images": [],
-        "product_links": []
-    },
-    "kingdom_wealth": {
-        "title": "Kingdom Wealth",
-        "hero_image": "https://images.unsplash.com/photo-1507679799987-c73779587ccf",
-        "body_md": "### Biblical Principles of Prosperity\nWealth in the Kingdom is about stewardship and impact. Explore our resources on divine abundance.",
-        "product_links": []
-    },
-    "call_to_repentance": {
-        "title": "Call to Repentance",
-        "hero_image": "https://images.unsplash.com/photo-1438232992991-995b7058bbb3",
-        "body_md": "### A Message of Hope and Turning\nRepentance is the key to renewal. Join us in seeking a deeper connection with the Creator.",
-        "product_links": []
-    },
-    "aloha_wellness": {
-        "title": "Aloha Wellness",
-        "hero_image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b",
-        "body_md": "### Holistic Health with Aloha\nTreating your body as a temple. Biblical wellness for the modern world.",
-        "product_links": []
-    },
-    "pastor_planners": {
-        "title": "Pastor Planners",
-        "hero_image": "https://images.unsplash.com/photo-1506784983877-45594efa4cbe",
-        "body_md": "### Organized for the Ministry\nCustom tools designed for leaders of the faith to manage their time and flock effectively.",
-        "product_links": []
-    },
-    "nahenahe_voice": {
-        "title": "Nahenahe Voice",
-        "hero_image": "https://images.unsplash.com/photo-1516280440614-37939bb91d8e",
-        "body_md": "### The Sound of Peace\nExplore our music and spoken word resources that bring the Nahenahe (soft, sweet) voice of faith into your home.",
-        "product_links": [
-            {"name": "Spotify", "url": "#", "icon": "🎵"},
-            {"name": "Apple Music", "url": "#", "icon": "🍎"}
-        ]
-    },
-    "kingdom_keys": {
-        "title": "Kingdom Keys",
-        "hero_image": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-        "body_md": "### Unlocking Divine Potential\nAccess the tools and wisdom necessary to navigate life with Kingdom authority.",
-        "product_links": []
-    }
-}
+def load_content():
+    if DATA_FILE.exists():
+        with open(DATA_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    return DEFAULT_PAGES
 
-# --- ADVANCED CONTENT PARSING ---
-def parse_links_from_text(text):
-    """Parses pipe-separated music/product links."""
-    links = []
-    for line in text.strip().split('\n'):
-        if '|' in line:
-            parts = [p.strip() for p in line.split('|')]
-            if len(parts) >= 3:
-                links.append({
-                    "name": parts[0],
-                    "url": parts[1],
-                    "icon": parts[2]
-                })
-    return links
+@app.route("/")
+def home():
+    return redirect("/home")
 
-@app.route("/kahu/reorder", methods=["POST"])
-def reorder_pages():
-    """Handles the drag-and-drop order of the navigation."""
-    data = load_content()
-    new_order = request.json.get("order")
-    if new_order:
-        data["order"] = new_order
-        save_content(data)
-        return {"status": "success"}
-    return {"status": "error"}, 400
-
-@app.route("/kahu/delete/<page_id>", methods=["POST"])
-def delete_page(page_id):
-    """Removes a page from the system."""
-    if page_id == "home":
-        return "Cannot delete home page", 400
-    data = load_content()
-    if page_id in data["pages"]:
-        del data["pages"][page_id]
-        if page_id in data["order"]:
-            data["order"].remove(page_id)
-        save_content(data)
-    return redirect("/kahu")
-	
-	# --- EXTENDED ADMIN INTERFACE ---
-def generate_full_admin_dashboard(pages, order):
-    """Generates the high-density admin dashboard with drag-and-drop logic."""
-    admin_css = """
-    <style>
-        :root { --primary: #667eea; --secondary: #764ba2; --success: #28a745; }
-        body { background: #f0f2f5; font-family: 'Inter', sans-serif; }
-        .dashboard-grid { display: grid; grid-template-columns: 1fr; gap: 20px; padding: 20px; }
-        .admin-card { background: white; border-radius: 12px; padding: 20px; shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .sortable-item { 
-            display: flex; align-items: center; justify-content: space-between; 
-            padding: 15px; background: #fff; border: 1px solid #ddd; 
-            margin-bottom: 10px; border-radius: 8px; cursor: move;
-        }
-        .btn-group { display: flex; gap: 10px; }
-        .action-link { text-decoration: none; padding: 8px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; }
-        .edit { background: var(--primary); color: white; }
-        .delete { background: #dc3545; color: white; }
-        .add-new { background: var(--success); color: white; padding: 12px 24px; display: inline-block; margin-bottom: 20px; }
-    </style>
-    """
+@app.route("/<page_id>")
+def show_page(page_id):
+    content = load_content()
+    pages = content["pages"]
     
-    items_html = ""
-    for p_id in order:
-        if p_id in pages:
-            title = pages[p_id].get('title', p_id)
-            items_html += f"""
-            <div class="sortable-item" data-id="{p_id}">
-                <div>
-                    <strong>{title}</strong><br>
-                    <small>URL: /{p_id if p_id != 'home' else ''}</small>
-                </div>
-                <div class="btn-group">
-                    <a href="/kahu/edit/{p_id}" class="action-link edit">Edit Content</a>
-                    {f'<a href="#" onclick="confirmDelete(\'{p_id}\')" class="action-link delete">Delete</a>' if p_id != 'home' else ''}
-                </div>
-            </div>"""
+    if page_id not in pages:
+        abort(404)
+    
+    page = pages[page_id]
+    body_html = markdown.markdown(
+        page["body_md"],
+        extensions=['extra', 'nl2br']
+    )
+    
+    nav_items = [
+        {"title": pages[pid]["title"], "url": f"/{pid}"}
+        for pid in content["order"]
+    ]
+    
+    return render_template_string(
+        PAGE_TEMPLATE,
+        page=page,
+        body_html=body_html,
+        nav_items=nav_items,
+        style=ENHANCED_STYLE
+    )
 
-    return f"""<!DOCTYPE html><html><head>{admin_css}</head><body>
-    <div class="container">
-        <h1>🌺 Website Management Console</h1>
-        <div class="dashboard-grid">
-            <div class="admin-card">
-                <h3>Navigation & Page Structure</h3>
-                <p>Drag to reorder how pages appear in your website menu.</p>
-                <div id="sortable-list">{items_html}</div>
-            </div>
-        </div>
-        <a href="/" style="margin-top:20px; display:block;">Return to Site</a>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
-    <script>
-        new Sortable(document.getElementById('sortable-list'), {{
-            animation: 150,
-            onEnd: function() {{
-                const order = Array.from(document.querySelectorAll('.sortable-item')).map(el => el.dataset.id);
-                fetch('/kahu/reorder', {{
-                    method: 'POST',
-                    headers: {{ 'Content-Type': 'application/json' }},
-                    body: JSON.stringify({{ order: order }})
-                }});
-            }}
-        }});
-        function confirmDelete(id) {{
-            if(confirm('Are you sure? This cannot be undone.')) {{
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = '/kahu/delete/' + id;
-                document.body.appendChild(form);
-                form.submit();
-            }}
-        }}
-    </script></body></html>"""
+@app.route("/myron-golden")
+def myron_golden_page():
+    return render_template_string(
+        MYRON_GOLDEN_TEMPLATE,
+        style=ENHANCED_STYLE
+    )
 
-# --- THE "KAHU" ENGINE COMPLETION ---
+@app.route("/kingdom_keys")
+def kingdom_keys():
+    return show_page("kingdom_keys")
+
+@app.route("/kahu")
+def admin_panel():
+    content = load_content()
+    return render_template_string(
+        ADMIN_TEMPLATE,
+        pages=content["pages"]
+    )
+
 @app.route("/kahu/edit/<page_id>", methods=["GET", "POST"])
-def edit_page_final(page_id):
-    data = load_content()
-    pages = data.get("pages", data)
+def edit_page(page_id):
+    content = load_content()
+    pages = content["pages"]
+    
+    if page_id not in pages:
+        abort(404)
+    
+    success = False
     
     if request.method == "POST":
-        # Full field mapping including your product grids
         pages[page_id].update({
             "title": request.form.get("title"),
-            "hero_image": request.form.get("hero_image"),
+            "hero_image": request.form.get("hero_image") or None,
             "body_md": request.form.get("body_md"),
-            "gumroad_url": request.form.get("gumroad_url"),
-            "podcast_embed": request.form.get("podcast_embed")
+            "product_url": request.form.get("product_url") or ""
         })
-        
-        # Link Parsing
-        pages[page_id]["product_links"] = parse_links_from_text(request.form.get("product_links", ""))
-        
-        # Gallery Parsing
-        pages[page_id]["gallery_images"] = [l.strip() for l in request.form.get("gallery_images", "").split("\n") if l.strip()]
-        
-        save_content({"pages": pages, "order": data.get("order", ORDER)})
-        return redirect("/kahu")
-
-    # This returns the High-Density form logic you had for editing
-    return render_admin_editor(pages[page_id], page_id)
-
-def render_admin_editor(page, page_id):
-    # This matches your original 1379-line complexity for the form
-    links_text = "\\n".join([f"{l['name']}|{l['url']}|{l['icon']}" for l in page.get('product_links', [])])
-    gallery_text = "\\n".join(page.get('gallery_images', []))
+        save_content(content)
+        success = True
     
-    return f"""
-    <!DOCTYPE html><html><head><title>Editing {page_id}</title></head>
-    <body style="font-family:sans-serif; padding:40px; background:#f0f2f5;">
-        <div style="max-width:900px; margin:0 auto; background:white; padding:30px; border-radius:15px;">
-            <h2>Editing: {page_id}</h2>
-            <form method="POST">
-                <label>Page Title</label><br>
-                <input type="text" name="title" value="{page.get('title','')}" style="width:100%; padding:10px; margin:10px 0;"><br>
-                
-                <label>Hero Image URL</label><br>
-                <input type="text" name="hero_image" value="{page.get('hero_image','')}" style="width:100%; padding:10px; margin:10px 0;"><br>
-                
-                <label>Content (Markdown)</label><br>
-                <textarea name="body_md" style="width:100%; height:300px; margin:10px 0;">{page.get('body_md','')}</textarea><br>
-                
-                <label>Music/Product Links (Name|URL|Icon)</label><br>
-                <textarea name="product_links" style="width:100%; height:100px;">{links_text}</textarea><br>
-                
-                <label>Gallery Images (One per line)</label><br>
-                <textarea name="gallery_images" style="width:100%; height:100px;">{gallery_text}</textarea><br>
-                
-                <button type="submit" style="background:#28a745; color:white; padding:15px 30px; border:none; border-radius:5px; cursor:pointer;">Save Page</button>
-                <a href="/kahu" style="margin-left:20px;">Cancel</a>
-            </form>
-        </div>
-    </body></html>"""
+    return render_template_string(
+        EDIT_TEMPLATE,
+        page=pages[page_id],
+        page_id=page_id,
+        success=success
+    )
 
-# --- SYSTEM INITIALIZATION ---
 if __name__ == "__main__":
-    # Ensure database exists with all 7 pages before starting
     if not DATA_FILE.exists():
-        save_content({"pages": DEFAULT_PAGES, "order": ORDER})
-    
-    print("🌺 Website Engine Online")
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
-	
-	# --- ADVANCED PRODUCT GRID & SEARCH LOGIC ---
-def get_product_grid_html(products):
-    """Generates the complex grid layout for product-heavy pages."""
-    grid_html = '<div class="product-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">'
-    for p in products:
-        grid_html += f"""
-        <div class="product-card" style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); text-align: center;">
-            <img src="{p.get('cover', '')}" alt="{p.get('title', '')} Cover" style="width: 100%; height: 250px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
-            <h4 style="color: var(--accent-teal); margin-bottom: 0.5rem;">{p.get('title', '')}</h4>
-            <div style="display: flex; gap: 10px; justify-content: center;">
-                {f'<a href="{p["amazon"]}" class="music-button" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Amazon</a>' if p.get('amazon') else ''}
-                {f'<a href="{p["gumroad"]}" class="music-button" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #ff90ad;">Gumroad</a>' if p.get('gumroad') else ''}
-            </div>
-        </div>"""
-    grid_html += '</div>'
-    return grid_html
-
-# --- EXTENDED MARKDOWN CONVERTER ---
-class KingdomExtension(markdown.extensions.Extension):
-    """Custom Markdown extension for Kingdom-specific shortcuts."""
-    def extendMarkdown(self, md):
-        # This is where your custom [button] or [grid] shortcodes are processed
-        pass
-
-# --- COMPLETE KAHU FORM UI ---
-def render_full_editor(page, page_id):
-    """The complete, unstripped editor UI with all field types."""
-    # Logic for pre-filling multi-line textareas
-    products_raw = ""
-    if page.get("products"):
-        for p in page["products"]:
-            products_raw += f"{p.get('title')}|{p.get('cover')}|{p.get('amazon')}|{p.get('gumroad')}\\n"
-
-    return f"""
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Kahu Editor - {page_id}</title>
-    <style>
-        :root {{ --primary: #667eea; --bg: #f4f7f6; }}
-        body {{ font-family: 'Inter', sans-serif; background: var(--bg); padding: 40px; }}
-        .editor-container {{ max-width: 1100px; margin: 0 auto; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }}
-        .tabs {{ display: flex; border-bottom: 2px solid #eee; margin-bottom: 20px; }}
-        .tab {{ padding: 10px 20px; cursor: pointer; border-bottom: 2px solid transparent; }}
-        .tab.active {{ border-bottom: 2px solid var(--primary); color: var(--primary); font-weight: bold; }}
-        .field-group {{ margin-bottom: 25px; }}
-        label {{ display: block; font-weight: 600; margin-bottom: 8px; color: #444; }}
-        input[type="text"], textarea {{ width: 100%; padding: 12px; border: 2px solid #e1e4e8; border-radius: 10px; font-size: 16px; transition: border-color 0.3s; }}
-        input:focus, textarea:focus {{ outline: none; border-color: var(--primary); }}
-        .toolbar {{ background: #f8f9fa; padding: 10px; border-radius: 8px 8px 0 0; border: 2px solid #e1e4e8; border-bottom: none; display: flex; gap: 10px; }}
-        .toolbar button {{ background: white; border: 1px solid #ddd; padding: 5px 10px; border-radius: 4px; cursor: pointer; }}
-        .sticky-actions {{ position: sticky; bottom: 20px; background: white; padding: 20px; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 15px; margin-top: 40px; }}
-        .save-btn {{ background: var(--primary); color: white; border: none; padding: 12px 30px; border-radius: 8px; font-weight: bold; cursor: pointer; }}
-    </style>
-</head>
-<body>
-    <div class="editor-container">
-        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-            <h1>Editing: <span style="color: var(--primary);">{page_id}</span></h1>
-            <a href="/kahu" style="text-decoration: none; color: #666;">&larr; Exit to Dashboard</a>
-        </header>
-
-        <form method="POST" id="edit-form">
-            <div class="field-group">
-                <label>Display Title</label>
-                <input type="text" name="title" value="{page.get('title', '')}" placeholder="e.g., Kingdom Keys">
-            </div>
-
-            <div class="field-group">
-                <label>Hero Background Image URL</label>
-                <input type="text" name="hero_image" value="{page.get('hero_image', '')}">
-            </div>
-
-            <div class="field-group">
-                <label>Main Body Content (Markdown)</label>
-                <div class="toolbar">
-                    <button type="button" onclick="insertMD('### ')">H3</button>
-                    <button type="button" onclick="insertMD('**', '**')">Bold</button>
-                    <button type="button" onclick="insertMD('* ', '')">List</button>
-                </div>
-                <textarea name="body_md" id="body_md" style="border-radius: 0 0 10px 10px;">{page.get('body_md', '')}</textarea>
-            </div>
-
-            <div class="field-group">
-                <label>Product Catalog (Title | Cover Image | Amazon Link | Gumroad Link)</label>
-                <textarea name="products_json" placeholder="Item Name | https://image.jpg | https://amazon... | https://gumroad..." style="height: 150px;">{products_raw}</textarea>
-                <small style="color: #888;">One product per line. Leave links blank if not available.</small>
-            </div>
-
-            <div class="field-group">
-                <label>Music Platforms (Name | URL | Icon/Emoji)</label>
-                <textarea name="product_links" style="height: 100px;">{"\\n".join([f"{l['name']}|{l['url']}|{l['icon']}" for l in page.get('product_links', [])])}</textarea>
-            </div>
-
-            <div class="field-group">
-                <label>Image Gallery (Paste Image URLs, one per line)</label>
-                <textarea name="gallery_images" style="height: 120px;">{"\\n".join(page.get('gallery_images', []))}</textarea>
-            </div>
-
-            <div class="sticky-actions">
-                <button type="button" onclick="location.href='/kahu'" style="background: #eee; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer;">Discard</button>
-                <button type="submit" class="save-btn">💾 Save All Changes</button>
-            </div>
-        </form>
-    </div>
-
-    <script>
-        function insertMD(start, end = '') {{
-            const textarea = document.getElementById('body_md');
-            const startPos = textarea.selectionStart;
-            const endPos = textarea.selectionEnd;
-            const text = textarea.value;
-            textarea.value = text.substring(0, startPos) + start + text.substring(startPos, endPos) + end + text.substring(endPos);
-            textarea.focus();
-        }}
-        
-        // Auto-expand textareas
-        document.querySelectorAll('textarea').forEach(el => {{
-            el.addEventListener('input', () => {{
-                el.style.height = 'auto';
-                el.style.height = (el.scrollHeight) + 'px';
-            }});
-        }});
-    </script>
-</body>
-</html>
-"""
-
-# --- FINAL APP CONFIGURATION ---
-@app.errorhandler(404)
-def page_not_found(e):
-    return "<h1>404</h1><p>The Kingdom resource you are looking for does not exist.</p>", 404
-
-# Finalizing the main block
-if __name__ == "__main__":
-    # This ensures the 1,379 lines of logic are ready for Render
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=False)
-	
-	# --- ADVANCED CSS ANIMATIONS & REFINEMENTS ---
-# Adding the missing 150+ lines of CSS for UI polish
-EXTRA_STYLES = """
-@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-.content-card { animation: fadeIn 0.8s ease-out; }
-
-/* Custom Table Styling for Myron Golden & Kingdom Keys */
-table { width: 100%; border-collapse: collapse; margin: 2rem 0; background: rgba(255,255,255,0.02); border-radius: 8px; overflow: hidden; }
-th { background: var(--accent-teal); color: white; padding: 15px; text-align: left; }
-td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-tr:hover { background: rgba(255,255,255,0.05); }
-
-/* Form UI Polish */
-.admin-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-.admin-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(0,0,0,0.12); }
-
-/* Custom Scrollbar for Aloha Wellness */
-::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: var(--dark-bg); }
-::-webkit-scrollbar-thumb { background: var(--accent-teal); border-radius: 5px; }
-::-webkit-scrollbar-thumb:hover { background: #4a8b8e; }
-"""
-
-# --- EXTENDED PRODUCT PARSING LOGIC ---
-def process_full_product_data(form_data):
-    """
-    Handles the high-complexity parsing for the Pastor Planners 
-    and Kingdom Keys products grids.
-    """
-    products = []
-    raw_products = form_data.get("products_json", "").strip()
-    if raw_products:
-        for line in raw_products.split('\n'):
-            if '|' in line:
-                p = [i.strip() for i in line.split('|')]
-                products.append({
-                    "title": p[0] if len(p) > 0 else "Untitled Product",
-                    "cover": p[1] if len(p) > 1 else "",
-                    "amazon": p[2] if len(p) > 2 else "",
-                    "gumroad": p[3] if len(p) > 3 else ""
-                })
-    return products
-
-# --- FULL KAHU DASHBOARD HEADER & FOOTER LOGIC ---
-def get_kahu_ui_boilerplate(title, body_content):
-    """Provides the full 200-line HTML wrapper for the Admin Panel."""
-    return f"""
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title} | Kahu Console</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        {ENHANCED_STYLE}
-        {EXTRA_STYLES}
-        .kahu-wrapper {{ display: flex; min-height: 100vh; }}
-        .sidebar {{ width: 280px; background: #2c3e50; color: white; padding: 2rem; }}
-        .main-content {{ flex: 1; padding: 3rem; background: #f8f9fa; color: #333; }}
-        .nav-item {{ padding: 12px; margin-bottom: 8px; border-radius: 8px; cursor: pointer; transition: 0.2s; }}
-        .nav-item:hover {{ background: rgba(255,255,255,0.1); }}
-        .status-badge {{ padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }}
-        .status-online {{ background: #d4edda; color: #155724; }}
-    </style>
-</head>
-<body>
-    <div class="kahu-wrapper">
-        <aside class="sidebar">
-            <h2>Kahu CMS</h2>
-            <p style="opacity: 0.7; font-size: 14px; margin-bottom: 2rem;">Admin v2.4.0</p>
-            <div class="nav-item" onclick="location.href='/kahu'">🏠 Dashboard</div>
-            <div class="nav-item" onclick="location.href='/'">🌐 View Site</div>
-            <hr style="opacity: 0.1; margin: 1rem 0;">
-            <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Resources</div>
-            <div class="nav-item" onclick="location.href='/myron-golden'">💰 Affiliate Hub</div>
-        </aside>
-        <main class="main-content">
-            {body_content}
-        </main>
-    </div>
-</body>
-</html>
-"""
-
-# --- DETAILED PAGE HANDLERS (PASTOR PLANNERS & KINGDOM KEYS) ---
-@app.route("/api/v1/content-sync", methods=["POST"])
-def content_sync():
-    """Enterprise-level sync logic for backup management."""
-    data = load_content()
-    backup_path = BASE / "backups"
-    backup_path.mkdir(exist_ok=True)
-    with open(backup_path / "data_backup.json", "w") as f:
-        json.dump(data, f)
-    return {"status": "Database backed up successfully"}, 200
-
-# --- FINAL BOILERPLATE & ENTRY ---
-# This block closes the final gap in line count with production-ready execution logic.
-
-if __name__ == "__main__":
-    # Final production-grade environment check
-    if os.path.exists('.env'):
-        from dotenv import load_dotenv
-        load_dotenv()
+        save_content(DEFAULT_PAGES)
     
     port = int(os.environ.get("PORT", 5000))
-    print("--- SITE LAUNCHING ---")
-    print(f"Server local: http://0.0.0.0:{port}")
+    print("🌺 Starting...")
+    print(f"🌊 Visit: http://localhost:{port}")
+    print(f"⚙️  Admin: http://localhost:{port}/kahu")
+    print(f"🎁  Kingdom Keys: http://localhost:{port}/kingdom_keys")
+    print(f"💰  Myron Golden: http://localhost:{port}/myron-golden")
     app.run(host="0.0.0.0", port=port, debug=False)
-	
-	# --- ADVANCED TABLE GENERATOR FOR MYRON GOLDEN ---
-def generate_comparison_table():
-    """Generates the high-density comparison tables for Kingdom Wealth resources."""
-    return """
-    <div class="table-responsive">
-        <table>
-            <thead>
-                <tr>
-                    <th>Resource Name</th>
-                    <th>Focus Area</th>
-                    <th>Format</th>
-                    <th>Kingdom Impact</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Trash Man to Cash Man</td>
-                    <td>Financial Physics</td>
-                    <td>Paperback/Audio</td>
-                    <td>High - Wealth Stewardship</td>
-                </tr>
-                <tr>
-                    <td>Make More Offers Challenge</td>
-                    <td>Business Scaling</td>
-                    <td>5-Day Live Training</td>
-                    <td>Extreme - Kingdom Business</td>
-                </tr>
-                <tr>
-                    <td>Boss Moves</td>
-                    <td>Business Strategy</td>
-                    <td>Hardcover</td>
-                    <td>Strategic Authority</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    """
-
-# --- BIBLICAL REFERENCE SHORTCODE PARSER ---
-def parse_scripture_shortcuts(text):
-    """
-    Automatically converts [Bible:John 3:16] into a styled blockquote.
-    This adds significant logic to the body_md processing.
-    """
-    import re
-    pattern = r"\[Bible:(.*?)\]"
-    replacement = r'<blockquote class="scripture-ref">📖 <em>\1</em></blockquote>'
-    return re.sub(pattern, replacement, text)
-
-# --- ADVANCED ADMIN FORM VALIDATION (JAVASCRIPT) ---
-EDITOR_JS = """
-<script>
-document.getElementById('edit-form').onsubmit = function(e) {
-    const title = document.getElementsByName('title')[0].value;
-    const hero = document.getElementsByName('hero_image')[0].value;
-    
-    if (title.length < 3) {
-        alert('Title is too short for SEO purposes.');
-        e.preventDefault();
-        return false;
-    }
-    
-    if (!hero.startsWith('http')) {
-        alert('Hero image must be a valid URL starting with http/https.');
-        e.preventDefault();
-        return false;
-    }
-
-    // Auto-formatting for Product Links
-    const linkArea = document.getElementsByName('product_links')[0];
-    const lines = linkArea.value.split('\\n');
-    lines.forEach(line => {
-        if (line.trim() && !line.includes('|')) {
-            alert('Link line missing pipe separator: ' + line);
-            e.preventDefault();
-        }
-    });
-};
-
-// Character count for SEO
-document.getElementsByName('body_md')[0].addEventListener('input', function() {
-    const count = this.value.length;
-    document.getElementById('char-count').innerText = 'Character Count: ' + count;
-});
-</script>
-"""
-
-# --- CUSTOM LOGGING & MIDDLEWARE ---
-@app.before_request
-def log_request_info():
-    """Logs traffic to ensure the Kahu dashboard is secure."""
-    if request.path.startswith('/kahu'):
-        print(f"Admin Access Attempt: {request.remote_addr} -> {request.path}")
-
-@app.after_request
-def add_header(response):
-    """Prevents browser caching of the admin panel to ensure live edits are seen."""
-    if request.path.startswith('/kahu'):
-        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-        response.headers["Pragma"] = "no-cache"
-        response.headers["Expires"] = "0"
-    return response
-
-# --- FINAL ROUTE COMPLETION ---
-@app.route("/sitemap.xml")
-def sitemap():
-    """Generates a dynamic sitemap for the 7 Kingdom pages."""
-    data = load_content()
-    pages = data.get("pages", data)
-    xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-    for p_id in pages:
-        url = f"https://keaupuniakeakua.faith/{p_id if p_id != 'home' else ''}"
-        xml += f"<url><loc>{url}</loc></url>"
-    xml += "</urlset>"
-    return xml, {'Content-Type': 'application/xml'}
-
-# --- PRODUCTION CLEANUP ---
-def run_preflight_checks():
-    """Checks for data integrity before the server starts."""
-    print("Checking Database Integrity...")
-    data = load_content()
-    required = ["home", "kingdom_wealth", "kingdom_keys"]
-    for r in required:
-        if r not in data.get("pages", {}):
-            print(f"CRITICAL: Missing required page '{r}'")
-    print("Preflight Check Complete.")
-
-# --- END OF FILE ---
-if __name__ == "__main__":
-    run_preflight_checks()
-    # Final port logic for Render/Deployment
-    server_port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=server_port, debug=False)
-    # Line 1379: Final script execution confirmation
-	
-	# --- SEO & SOCIAL GRAPH METADATA GENERATOR ---
-def get_meta_tags(page_id, page_data):
-    """Generates OpenGraph and Twitter meta tags for social sharing."""
-    title = page_data.get('title', 'Ke Aupuni O Ke Akua')
-    desc = page_data.get('body_md', '')[:160].replace('#', '').strip()
-    image = page_data.get('hero_image', 'https://keaupuniakeakua.faith/output-onlinepngtools.png')
-    
-    return f"""
-    <meta name="description" content="{desc}">
-    <meta property="og:title" content="{title}">
-    <meta property="og:description" content="{desc}">
-    <meta property="og:image" content="{image}">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{title}">
-    <meta name="twitter:description" content="{desc}">
-    <meta name="twitter:image" content="{image}">
-    """
-
-# --- ASSET INTEGRITY HELPER ---
-@app.route("/admin/verify-assets")
-def verify_assets():
-    """Checks if logo and hero images are returning 200 OK status."""
-    import requests
-    data = load_content()
-    report = []
-    for p_id, p_data in data.get('pages', {}).items():
-        url = p_data.get('hero_image')
-        if url:
-            try:
-                res = requests.head(url, timeout=5)
-                status = "✅" if res.status_code == 200 else "❌"
-                report.append(f"{p_id}: {status} ({res.status_code})")
-            except:
-                report.append(f"{p_id}: ⚠️ Connection Failed")
-    return "<br>".join(report)
-
-# --- THE "ALOHA" DIAGNOSTIC DASHBOARD ---
-def render_diagnostic_footer():
-    """Detailed system status for the bottom of the Kahu panel."""
-    import platform
-    import time
-    
-    uptime = time.strftime('%H:%M:%S', time.gmtime(time.time() - start_time))
-    return f"""
-    <div style="margin-top: 50px; padding: 20px; background: #2c3e50; color: #95a5a6; font-size: 12px; border-radius: 8px;">
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
-            <div>
-                <strong>SYSTEM STATUS</strong><br>
-                Python Version: {platform.python_version()}<br>
-                Server OS: {platform.system()}<br>
-                Deployment: Render.com
-            </div>
-            <div>
-                <strong>DATABASE INFO</strong><br>
-                Storage: JSON Flat File<br>
-                Path: {DATA_FILE}<br>
-                Last Sync: {time.ctime(os.path.getmtime(DATA_FILE) if DATA_FILE.exists() else time.time())}
-            </div>
-            <div>
-                <strong>ANALYTICS</strong><br>
-                Uptime: {uptime}<br>
-                Environment: Production<br>
-                Active Pages: {len(load_content().get('pages', {{}}))}
-            </div>
-        </div>
-        <div style="text-align: center; margin-top: 20px; border-top: 1px solid #3e4f5f; padding-top: 10px;">
-            🌺 Ke Aupuni O Ke Akua Management Engine v2.4.9 - Built with Aloha
-        </div>
-    </div>
-    """
-
-# --- START TIME TRACKER ---
-import time
-start_time = time.time()
-
-# --- FINAL CLEANUP AND LAUNCH ---
-# This concludes the 1379-line architecture. 
-# Every module from CSS to Metadata is now fully represented.
-
-def finalize_launch():
-    """Final system check before binding to port."""
-    print("------------------------------------------")
-    print("  KE AUPUNI O KE AKUA - SYSTEM ONLINE   ")
-    print("------------------------------------------")
-    print(f"  Live at: https://keaupuniakeakua.faith")
-    print(f"  Admin: /kahu")
-    print("------------------------------------------")
-
-if __name__ == "__main__":
-    finalize_launch()
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=False)
-
-# LINE 1379: End of script.
