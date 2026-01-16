@@ -815,7 +815,7 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
                 <p style="margin-bottom: 20px; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">Learn the 3 biggest mistakes keeping Christians broke (and how to fix them using biblical principles)</p>
                 
                 <div class="email-form">
-                    <form action="https://app.convertkit.com/forms/YOUR_FORM_ID/subscriptions" method="post">
+                    <form action="https://app.kit.com/forms/YOUR_FORM_ID/subscriptions" method="post">
                         <input type="text" name="fields[first_name]" placeholder="First Name" required>
                         <input type="email" name="email_address" placeholder="Email Address" required>
                         <button type="submit">GET FREE GUIDE →</button>
@@ -1377,3 +1377,4 @@ if __name__ == "__main__":
     print(f"🎁  Kingdom Keys: http://localhost:{port}/kingdom_keys")
     print(f"💰  Myron Golden: http://localhost:{port}/myron-golden")
     app.run(host="0.0.0.0", port=port, debug=False)
+
