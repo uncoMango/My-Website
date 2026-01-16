@@ -1,7 +1,7 @@
-
 # ke_aupuni_finalized_with_image_placeholders.py
 # FIXED VERSION - CSS working, products restored
 # NOW WITH KINGDOM KEYS FREE BOOKLETS PAGE
+# ADDED: MYRON GOLDEN AFFILIATE PAGE
 
 from flask import Flask, request, redirect, render_template_string, abort, url_for, send_file
 import json
@@ -742,10 +742,198 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 </body>
 </html>"""
 
+MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transform Your Financial Future | Biblical Business Principles</title>
+    <style>{{ style|safe }}
+    .email-capture { 
+        background: rgba(212, 165, 116, 0.2); 
+        padding: 30px; 
+        margin: 30px 0; 
+        text-align: center; 
+        border: 3px solid rgba(212, 165, 116, 0.5); 
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+    }
+    .email-capture h2 { color: white; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+    .email-form { max-width: 500px; margin: 0 auto; }
+    .email-form input { width: 100%; padding: 15px; margin: 10px 0; font-size: 16px; border: 2px solid #ddd; border-radius: 6px; }
+    .email-form button { width: 100%; padding: 15px; background: #d4af37; color: white; font-size: 18px; font-weight: bold; border: none; cursor: pointer; border-radius: 6px; }
+    .email-form button:hover { background: #b8962e; }
+    .section { padding: 40px 0; }
+    .section h2 { color: white; font-size: 2em; margin-bottom: 30px; text-align: center; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); }
+    .product-box { background: rgba(0, 0, 0, 0.5); padding: 30px; margin: 20px 0; border: 2px solid rgba(255,255,255,0.2); border-radius: 12px; backdrop-filter: blur(10px); }
+    .product-box h3 { color: white; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+    .product-box ul { margin: 20px 0; padding-left: 20px; color: white; }
+    .product-box li { margin: 10px 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); }
+    .product-box p { color: white; line-height: 1.8; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); }
+    .btn { display: inline-block; padding: 15px 40px; background: linear-gradient(135deg, var(--accent-teal), #4a8b8e); color: white; text-decoration: none; font-weight: bold; margin: 10px 5px; text-align: center; border-radius: 8px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(95, 158, 160, 0.3); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(95, 158, 160, 0.4); }
+    .btn-container { text-align: center; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <nav class="site-nav">
+        <div class="nav-container">
+            <a href="/" class="nav-title">
+                <img src="https://keaupuniakeakua.faith/output-onlinepngtools.png" alt="Ke Aupuni Logo" class="nav-logo">
+                Ke Aupuni O Ke Akua
+            </a>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/kingdom_wealth">Kingdom Wealth</a></li>
+                <li><a href="/call_to_repentance">The Call to Repentance</a></li>
+                <li><a href="/aloha_wellness">Aloha Wellness</a></li>
+                <li><a href="/pastor_planners">Pastor Planners</a></li>
+                <li><a href="/nahenahe_voice">Nahenahe Voice</a></li>
+                <li><a href="/kingdom_keys" style="background:#d4af37;color:#fff;padding:0.5rem 1rem;border-radius:6px;">🎁 FREE Booklets</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <header class="hero" style="background-image: url('https://i.imgur.com/G2YmSka.jpeg');">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Transform Your Financial Future</h1>
+            <p style="font-size: 1.3rem; margin-top: 1rem;">Biblical Business Principles That Actually Work</p>
+            <p style="font-size: 1.1rem; margin-top: 0.5rem;"><em>From Pastor Phil Stephens, Molokaʻi</em></p>
+        </div>
+    </header>
+    
+    <main class="container">
+        <article class="content-card">
+            <div class="email-capture">
+                <h2>🌴 Get My FREE Kingdom Business Guide 🌴</h2>
+                <p style="margin-bottom: 20px; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">Learn the 3 biggest mistakes keeping Christians broke (and how to fix them using biblical principles)</p>
+                
+                <div class="email-form">
+                    <form action="https://app.convertkit.com/forms/8979853/subscriptions" method="post">
+                        <input type="text" name="fields[first_name]" placeholder="First Name" required>
+                        <input type="email" name="email_address" placeholder="Email Address" required>
+                        <button type="submit">GET FREE GUIDE →</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>📚 SECTION 1: Start Your Journey</h2>
+                <div class="product-box">
+                    <h3>Start here if:</h3>
+                    <ul>
+                        <li>You're tired of financial struggle and ready for a complete mindset shift</li>
+                        <li>You want to understand the biblical principles of wealth creation</li>
+                        <li>You're curious about Myron Golden's transformation story (from garbage collector to multi-millionaire)</li>
+                        <li>You need practical frameworks you can implement immediately</li>
+                        <li>You prefer learning through reading before investing in courses</li>
+                    </ul>
+                    <h3>What you get:</h3>
+                    <ul>
+                        <li>Two foundational books that reveal the mindset secrets of the wealthy</li>
+                        <li>Biblical wealth-building principles that actually work in today's marketplace</li>
+                        <li>Myron's proven frameworks for transforming your income potential</li>
+                        <li>Stories and strategies you can apply starting today</li>
+                        <li>The lowest-cost entry point to Myron Golden's teachings ($27-47 total)</li>
+                    </ul>
+                    <div class="btn-container">
+                        <a href="https://www.trashmantocashman.com/tmcm-book?affiliate_id=4319525" class="btn">GET TRASH MAN TO CASH MAN →</a>
+                        <a href="https://www.bossmovesbook.com/bossmoves?affiliate_id=4319525" class="btn">GET BOSS MOVES BOOK →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🧠 SECTION 2: Transform Your Money Blueprint</h2>
+                <div class="product-box">
+                    <h3>Take this if:</h3>
+                    <ul>
+                        <li>You've read the books and you're ready to go deeper</li>
+                        <li>You know your money mindset is holding you back from your potential</li>
+                        <li>You want to break generational poverty cycles in your family</li>
+                        <li>You're ready to invest in yourself and your financial future</li>
+                        <li>You need to rewire your subconscious beliefs about money</li>
+                    </ul>
+                    <h3>What you get:</h3>
+                    <ul>
+                        <li>Comprehensive training that reprograms your money blueprint</li>
+                        <li>Biblical perspectives on wealth that eliminate guilt and confusion</li>
+                        <li>Practical exercises to identify and eliminate limiting beliefs</li>
+                        <li>Strategies for developing millionaire-level thinking patterns</li>
+                        <li>Tools to overcome fear, doubt, and scarcity mindset forever</li>
+                    </ul>
+                    <div class="btn-container">
+                        <a href="https://www.mindovermoneymastery.com/momm?affiliate_id=4319525" class="btn">TRANSFORM YOUR MINDSET →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🎯 SECTION 3: Master the Art of Making Offers</h2>
+                <div class="product-box">
+                    <h3>Make More Offers Challenge ($97)</h3>
+                    <p>This intensive 5-day challenge teaches you the exact framework for creating irresistible offers that sell themselves. Myron Golden reveals why most businesses struggle (they don't make enough offers) and shows you how to create multiple income streams by making better, more frequent offers. You'll learn the psychology of buying decisions, how to stack value that makes price irrelevant, and the specific language patterns that compel people to say "yes." Perfect for entrepreneurs, coaches, consultants, and anyone who needs to sell their products or services. The challenge includes daily training videos, live Q&A sessions, worksheets, and a supportive community of fellow offer-makers.</p>
+                    <div class="btn-container">
+                        <a href="https://www.makemoreofferschallenge.com/mmoc?affiliate_id=4319525" class="btn">JOIN THE CHALLENGE →</a>
+                    </div>
+                </div>
+                <div class="product-box">
+                    <h3>Offer Mastery Live ($297)</h3>
+                    <p>This is Myron Golden's signature event where he spends three full days teaching you the complete system for creating high-ticket offers that transform your business. You'll discover the four core offer types that generate predictable revenue, learn how to structure offers that sell at $2,000, $5,000, $10,000 or higher, and master the art of presenting offers that create instant buying decisions. Myron breaks down the psychology, strategy, and implementation of world-class offer creation. This event includes access to recordings, workbooks, and ongoing support. If you're serious about scaling your business through premium offers, this is where you level up from making offers to mastering them.</p>
+                    <div class="btn-container">
+                        <a href="https://www.offermasterylive.com/offer-mastery-livevetfk4nn?affiliate_id=4319525" class="btn">MASTER YOUR OFFERS →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🚀 SECTION 4: Build Your Million-Dollar Infrastructure</h2>
+                <div class="product-box">
+                    <h3>Golden OPS ($997)</h3>
+                    <p>This is Myron Golden's most comprehensive program for building a complete business operating system that generates consistent six and seven-figure revenue. Golden OPS (Operational Procedures and Systems) teaches you how to construct the four foundational pillars every million-dollar business requires: lead generation systems, lead nurture systems, sales conversion systems, and product delivery systems. You'll learn how to create automated funnels, build email sequences that convert, develop premium programs and masterminds, and structure your business for scalability. The program includes video training modules, implementation templates, funnel blueprints, marketing scripts, and access to a private community of serious entrepreneurs. Myron also reveals his personal business systems and shows you exactly how he structures his multi-million dollar empire. If you're ready to stop trading time for money and build a business that runs systematically, Golden OPS is your blueprint.</p>
+                    <div class="btn-container">
+                        <a href="https://www.mygoldenops.com/golden-opsm1y8y7bx?affiliate_id=4319525" class="btn">BUILD YOUR SYSTEM →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.3);">
+                <p style="color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);"><em>Affiliate Disclosure: I may earn a commission if you purchase through these links, at no extra cost to you.</em></p>
+                <p style="color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); margin-top: 1rem;">© 2025 Ke Aupuni O Ke Akua Press | Pastor Phil Stephens, Molokaʻi</p>
+            </div>
+        </article>
+    </main>
+    
+    <script>
+    function toggleMenu() {
+        const menu = document.getElementById('navMenu');
+        menu.classList.toggle('active');
+    }
+    document.addEventListener('click', function(event) {
+        const nav = document.querySelector('.nav-container');
+        const menu = document.getElementById('navMenu');
+        if (!nav.contains(event.target) && menu.classList.contains('active')) {
+            menu.classList.remove('active');
+        }
+    });
+    </script>
+</body>
+</html>"""
+
 @app.route("/")
 def home():
     data = load_content()
     return render_page("home", data)
+
+@app.route("/myron-golden")
+def myron_golden():
+    return render_template_string(MYRON_GOLDEN_TEMPLATE, style=ENHANCED_STYLE)
 
 @app.route("/<page_id>")
 def page(page_id):
@@ -762,7 +950,6 @@ def serve_cover(filename):
         return send_file(cover_path, mimetype='image/jpeg')
     abort(404)
 
-# NEW KINGDOM KEYS FREE BOOKLETS LANDING PAGE
 @app.route("/kahu")
 def admin_panel():
     data = load_content()
@@ -1187,5 +1374,6 @@ if __name__ == "__main__":
     print("🌺 Starting...")
     print(f"🌊 Visit: http://localhost:{port}")
     print(f"⚙️  Admin: http://localhost:{port}/kahu")
-    print(f"🎁  Kingdom Keys: http://localhost:{port}/kingdom-keys")
+    print(f"🎁  Kingdom Keys: http://localhost:{port}/kingdom_keys")
+    print(f"💰  Myron Golden: http://localhost:{port}/myron-golden")
     app.run(host="0.0.0.0", port=port, debug=False)
