@@ -233,7 +233,7 @@ a:visited {
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: 2rem;
+    gap: 1.5rem;
     align-items: center;
 }
 
@@ -299,7 +299,7 @@ a:visited {
 }
 
 .hero {
-    height: 60vh;
+    min-height: 85vh;
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -347,12 +347,14 @@ a:visited {
 
 .container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: -45vh auto 0;
     padding: 0 2rem 4rem;
+    position: relative;
+    z-index: 10;
 }
 
 .content-card {
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(255, 255, 255, 0.85);
     background-image: 
         linear-gradient(45deg, rgba(201, 168, 118, 0.15) 25%, transparent 25%),
         linear-gradient(-45deg, rgba(201, 168, 118, 0.15) 25%, transparent 25%),
