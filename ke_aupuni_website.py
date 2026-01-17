@@ -238,18 +238,22 @@ a:visited {
 }
 
 .nav-menu li a {
-    color: #2c3e50;
+    color: #1a1a1a;
     text-decoration: none;
-    font-weight: 600;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
     transition: all 0.3s ease;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.5);
+    letter-spacing: 0.3px;
 }
 
 .nav-menu li a:hover {
-    color: var(--accent-teal);
-    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    background: rgba(95, 158, 160, 0.8);
     transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
 .hamburger {
@@ -354,12 +358,13 @@ a:visited {
 }
 
 .content-card {
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(255, 255, 255, 0.75);
+    border: 2px solid rgba(212, 165, 116, 0.3);
     background-image: 
-        linear-gradient(45deg, rgba(201, 168, 118, 0.15) 25%, transparent 25%),
-        linear-gradient(-45deg, rgba(201, 168, 118, 0.15) 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, rgba(191, 160, 104, 0.15) 75%),
-        linear-gradient(-45deg, transparent 75%, rgba(191, 160, 104, 0.15) 75%);
+        linear-gradient(45deg, rgba(201, 168, 118, 0.25) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(201, 168, 118, 0.25) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(191, 160, 104, 0.25) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(191, 160, 104, 0.25) 75%);
     background-size: 20px 20px;
     background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
     border-radius: 12px;
@@ -543,7 +548,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     <nav class="site-nav">
         <div class="nav-container">
             <a href="/" class="nav-title">
-                <img src="/static/output-onlinepngtools.png" alt="Ke Aupuni Logo" class="nav-logo">
+                <img src="{{ url_for('static', filename='image/output-onlinepngtools.png') }}" alt="Ke Aupuni Logo" class="nav-logo">
                 Ke Aupuni O Ke Akua
             </a>
             <div class="hamburger" onclick="toggleMenu()">
@@ -715,7 +720,7 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
     <nav class="site-nav">
         <div class="nav-container">
             <a href="/" class="nav-title">
-                <img src="/static/output-onlinepngtools.png" alt="Ke Aupuni Logo" class="nav-logo">
+                <img src="{{ url_for('static', filename='image/output-onlinepngtools.png') }}" alt="Ke Aupuni Logo" class="nav-logo">
                 Ke Aupuni O Ke Akua
             </a>
             <div class="hamburger" onclick="toggleMenu()">
