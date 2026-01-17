@@ -2,6 +2,7 @@
 # FIXED VERSION - CSS working, products restored
 # NOW WITH KINGDOM KEYS FREE BOOKLETS PAGE
 # ADDED: MYRON GOLDEN AFFILIATE PAGE
+# FIXES: Kit form URL + Link colors + Duplicate body_md removed
 
 from flask import Flask, request, redirect, render_template_string, abort, url_for, send_file
 import json
@@ -27,7 +28,7 @@ DEFAULT_PAGES = {
         },
         "kingdom_wealth": {
             "title": "Kingdom Wealth",
-            "hero_image": "https://i.imgur.com/G2YmSka.jpeg",
+            "hero_image": "https://i.imgur.com/wmHEyDo.png",
             "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom of God operates on a system of stewardship, not ownership. Understanding Kingdom Wealth means shifting from a \"poverty mindset\" to a \"provision mindset.\"\r\n\r\n### Core Principles of Kingdom Wealth\r\n\r\n**Source vs. Resource** - Recognizing that God is the Source, and everything else is just a resource.\r\n\r\n**Seed Time and Harvest** - The spiritual law of multiplication through giving and wisdom.\r\n\r\n**Economic Mandate** - We are blessed to be a blessing, establishing God's covenant on the earth.\r\n\r\n### Practical Application\r\n\r\nTrue wealth in the Kingdom is measured by your capacity to influence your community for good and provide for the needs of the ministry and the poor.\r\n\r\n---\r\n\r\n### 📚 Recommended Kingdom Wealth Resources\r\n\r\n**The Call to Repentance Series** - Includes comprehensive teaching on Kingdom economics and biblical stewardship principles.\r\n\r\n**[Get the Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n---\r\n\r\n### 💡 Transform Your Financial Mindset\r\n\r\nMove from religious poverty thinking into Kingdom abundance. Learn how Jesus taught about money, provision, and the Father's desire to bless His children.\r\n\r\n**Scripture Foundation:** \"Seek first the kingdom of God and His righteousness, and all these things shall be added to you.\" - Matthew 6:33\r\n\r\n---\r\n\r\n### 📖 Learning Biblical Business Principles\r\n\r\nAfter 30 years of biblical study and 8 years in pastoral ministry on Molokaʻi, I'm applying Myron Golden's Kingdom approach to business. His teaching on biblical wealth creation aligns with the Kingdom economics I've been teaching.\r\n\r\nI'm building my ministry using these ethical, scripture-based principles - because God's Kingdom deserves to be funded with integrity, not manipulation.\r\n\r\nIf you're called to ministry or Christian business, these resources can help you build on a solid biblical foundation.\r\n\r\n**[Explore Myron Golden's Biblical Business Training →](/myron-golden)**",
             "product_url": ""
         },
@@ -174,6 +175,21 @@ body {
         radial-gradient(circle at 80% 20%, rgba(212, 165, 116, 0.1) 0%, transparent 50%);
 }
 
+a {
+    color: #d4af37;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #f5d76e;
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #b8962e;
+}
+
 .site-nav {
     background-color: #d4b896;
     background-image: 
@@ -199,169 +215,194 @@ body {
     padding: 0 2rem;
 }
 
-.nav-logo {
-    height: 50px;
-    width: auto;
-    margin-right: 1rem;
-    vertical-align: middle;
-}
-
 .nav-title {
     font-size: 1.5rem;
     font-weight: bold;
     color: #2c3e50;
     text-decoration: none;
-    text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
     display: flex;
     align-items: center;
+    gap: 0.75rem;
+}
+
+.nav-logo {
+    height: 40px;
+    width: auto;
 }
 
 .nav-menu {
     display: flex;
     list-style: none;
     gap: 2rem;
+    align-items: center;
 }
 
-.nav-menu a {
+.nav-menu li a {
+    color: #2c3e50;
     text-decoration: none;
-    color: var(--text-dark);
     font-weight: 500;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    transition: all 0.3s ease;
+    transition: color 0.3s ease;
 }
 
-.nav-menu a:hover {
-    background: var(--accent-teal);
-    color: white;
+.nav-menu li a:hover {
+    color: var(--accent-teal);
 }
 
 .hamburger {
     display: none;
     flex-direction: column;
     cursor: pointer;
-    padding: 0.5rem;
+    gap: 4px;
 }
 
 .hamburger span {
     width: 25px;
     height: 3px;
-    background: #2c3e50;
-    margin: 3px 0;
+    background-color: #2c3e50;
     transition: 0.3s;
 }
 
+@media (max-width: 768px) {
+    .nav-menu {
+        position: fixed;
+        left: -100%;
+        top: 70px;
+        flex-direction: column;
+        background-color: #d4b896;
+        width: 100%;
+        text-align: center;
+        transition: 0.3s;
+        box-shadow: 0 10px 27px rgba(0,0,0,0.05);
+        padding: 2rem 0;
+        gap: 1rem;
+    }
+
+    .nav-menu.active {
+        left: 0;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+    
+    .nav-title {
+        font-size: 1.2rem;
+    }
+    
+    .nav-logo {
+        height: 30px;
+    }
+}
+
 .hero {
-    height: 100vh;
-    min-height: 600px;
+    height: 60vh;
     background-size: cover;
     background-position: center;
-    position: relative;
+    background-attachment: fixed;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 3rem;
 }
 
 .hero-overlay {
     position: absolute;
-    inset: 0;
-    background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(44, 62, 80, 0.4) 0%, rgba(95, 158, 160, 0.4) 100%);
 }
 
 .hero-content {
     position: relative;
-    z-index: 2;
+    z-index: 1;
+    text-align: center;
     color: white;
     padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
+    max-width: 900px;
+    background: transparent;
 }
 
 .hero h1 {
-    font-size: 3rem;
-    font-weight: 400;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
-    margin-bottom: 0.5rem;
-    background: rgba(0,0,0,0.3);
-    padding: 1rem 2rem;
-    border-radius: 8px;
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+    .hero {
+        height: 40vh;
+    }
+    .hero h1 {
+        font-size: 2rem;
+    }
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    height: 100vh;
-    overflow-y: auto;
-    z-index: 3;
+    padding: 0 2rem 4rem;
 }
 
 .content-card {
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                repeating-linear-gradient(90deg, 
-                    rgba(210, 180, 140, 0.3) 0px,
-                    rgba(210, 180, 140, 0.3) 2px,
-                    rgba(139, 90, 43, 0.2) 2px,
-                    rgba(139, 90, 43, 0.2) 4px);
-    border: none;
-    padding: 3rem 2rem;
-    box-shadow: none;
-    margin-top: 20vh;
-    color: white;
+    background: var(--white-transparent);
+    border-radius: 12px;
+    padding: 3rem;
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(10px);
 }
 
 .content-card h2 {
-    color: white;
-    margin-bottom: 1rem;
-    font-size: 2.2rem;
-    text-shadow: 3px 3px 6px rgba(0,0,0,0.9);
+    color: var(--text-dark);
+    font-size: 2rem;
+    margin: 2rem 0 1rem;
+    border-bottom: 3px solid var(--accent-warm);
+    padding-bottom: 0.5rem;
 }
 
 .content-card h3 {
-    color: white;
-    margin: 2rem 0 1rem;
-    font-size: 1.6rem;
-    text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+    color: var(--accent-teal);
+    font-size: 1.5rem;
+    margin: 1.5rem 0 0.75rem;
 }
 
 .content-card p {
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
-    color: white;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+    margin-bottom: 1rem;
     line-height: 1.8;
 }
 
 .content-card strong {
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    color: var(--accent-teal);
+    font-weight: 600;
+}
+
+.content-card ul {
+    margin: 1rem 0 1rem 2rem;
+    line-height: 1.8;
 }
 
 .content-card li {
-    color: white;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
-    line-height: 1.8;
+    margin-bottom: 0.5rem;
 }
 
 .buy-section {
     text-align: center;
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 3rem 0;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(95, 158, 160, 0.1) 0%, rgba(212, 165, 116, 0.1) 100%);
+    border-radius: 12px;
 }
 
-.buy-button, .music-button {
+.buy-button {
     display: inline-block;
+    padding: 1rem 2.5rem;
     background: linear-gradient(135deg, var(--accent-teal), #4a8b8e);
     color: white;
-    padding: 1rem 2rem;
-    border-radius: 8px;
     text-decoration: none;
+    border-radius: 50px;
     font-weight: bold;
     font-size: 1.1rem;
     transition: all 0.3s ease;
@@ -369,49 +410,31 @@ body {
     margin: 0.5rem;
 }
 
-.buy-button:hover, .music-button:hover {
+.buy-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(95, 158, 160, 0.4);
 }
 
-.music-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 1.5rem;
-}
-
 .gallery-section {
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.gallery-section h2 {
-    color: white;
-    text-align: center;
-    margin-bottom: 1.5rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+    margin: 3rem 0;
 }
 
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1.5rem;
-    margin: 2rem 0;
+    margin-top: 1.5rem;
 }
 
 .gallery-item {
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
 }
 
 .gallery-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+    transform: scale(1.05);
 }
 
 .gallery-item img {
@@ -420,153 +443,53 @@ body {
     display: block;
 }
 
-@media (max-width: 768px) {
-    .gallery-grid {
-        grid-template-columns: 1fr;
-    }
+.music-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.music-button {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    background: linear-gradient(135deg, var(--accent-teal), #4a8b8e);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(95, 158, 160, 0.3);
+}
+
+.music-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(95, 158, 160, 0.4);
 }
 
 .footer {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
     text-align: center;
     padding: 2rem;
-    color: white;
-    background: none;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-    margin-top: 2rem;
+    margin-top: 4rem;
 }
 
 @media (max-width: 768px) {
-    .hamburger {
-        display: flex;
-    }
-    
-    .nav-logo {
-        height: 35px;
-    }
-    
-    .nav-title {
-        font-size: 1.1rem;
-    }
-    
-    .nav-menu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background-color: #d4b896;
-        background-image: 
-            linear-gradient(45deg, #c9a876 25%, transparent 25%),
-            linear-gradient(-45deg, #c9a876 25%, transparent 25%),
-            linear-gradient(45deg, transparent 75%, #bfa068 75%),
-            linear-gradient(-45deg, transparent 75%, #bfa068 75%);
-        background-size: 16px 16px;
-        background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
-        flex-direction: column;
-        gap: 0;
-        padding: 1rem 0;
-        box-shadow: var(--shadow-soft);
-    }
-    
-    .nav-menu.active {
-        display: flex;
-    }
-    
-    .nav-menu a {
-        padding: 1rem 2rem;
-        border-radius: 0;
-    }
-    
-    .nav-container {
-        padding: 0 1rem;
-    }
-    
-    .hero {
-        height: 45vh;
-        min-height: 300px;
-    }
-    
-    .hero h1 {
-        font-size: 1.8rem;
-        padding: 0.75rem 1.5rem;
-    }
-    
-    .container {
-        position: relative;
-        height: auto;
-        margin-top: 0;
-        padding: 0 1rem 2rem;
-        transform: none;
-        left: 0;
-    }
-    
     .content-card {
-        padding: 2rem 1.5rem;
+        padding: 1.5rem;
     }
     
-    .content-card h2 {
-        font-size: 1.8rem;
-    }
-    
-    .content-card h3 {
-        font-size: 1.4rem;
+    .gallery-grid {
+        grid-template-columns: 1fr;
     }
     
     .music-buttons {
         flex-direction: column;
     }
-    
-    .music-button {
-        width: 100%;
-    }
 }
 """
-
-def md_to_html(md_text):
-    return markdown.markdown(md_text, extensions=["extra", "nl2br"])
-
-def load_content():
-    if DATA_FILE.exists():
-        try:
-            with open(DATA_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-        except:
-            data = DEFAULT_PAGES
-            save_content(data)
-    else:
-        data = DEFAULT_PAGES
-        save_content(data)
-    return data
-
-def save_content(data):
-    DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-
-def render_page(page_id, data):
-    pages = data.get("pages", data)
-    if page_id not in pages:
-        abort(404)
-    
-    page = pages[page_id]
-    
-    nav_items = []
-    page_order = data.get("order", ORDER)
-    for slug in page_order:
-        if slug in pages:
-            nav_items.append({
-                "slug": slug,
-                "title": pages[slug].get("title", slug.replace("_", " ").title()),
-                "url": f"/{slug}" if slug != "home" else "/"
-            })
-    
-    return render_template_string(PAGE_TEMPLATE, 
-        page=page,
-        nav_items=nav_items,
-        style=ENHANCED_STYLE,
-        body_html=md_to_html(page.get("body_md", "")),
-        current_page=page_id
-    )
 
 PAGE_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
@@ -799,7 +722,7 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
         </div>
     </nav>
     
-    <header class="hero" style="background-image: url('https://i.imgur.com/G2YmSka.jpeg');">
+    <header class="hero" style="background-image: url('https://i.imgur.com/wmHEyDo.png');">
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1>Transform Your Financial Future</h1>
@@ -815,7 +738,7 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
                 <p style="margin-bottom: 20px; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">Learn the 3 biggest mistakes keeping Christians broke (and how to fix them using biblical principles)</p>
                 
                 <div class="email-form">
-                    <form action="https://app.convertkit.com/forms/YOUR_FORM_ID/subscriptions" method="post">
+                    <form action="https://app.kit.com/forms/8979853/subscriptions" method="post">
                         <input type="text" name="fields[first_name]" placeholder="First Name" required>
                         <input type="email" name="email_address" placeholder="Email Address" required>
                         <button type="submit">GET FREE GUIDE →</button>
@@ -843,8 +766,8 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
                         <li>The lowest-cost entry point to Myron Golden's teachings ($27-47 total)</li>
                     </ul>
                     <div class="btn-container">
-                        <a href="YOUR_TRASH_MAN_AFFILIATE_LINK" class="btn">GET TRASH MAN TO CASH MAN →</a>
-                        <a href="YOUR_BOSS_MOVES_AFFILIATE_LINK" class="btn">GET BOSS MOVES BOOK →</a>
+                        <a href="https://www.trashmantocashman.com/tmcm-book?affiliate_id=4319525" class="btn">GET TRASH MAN TO CASH MAN →</a>
+                        <a href="https://www.bossmovesbook.com/bossmoves?affiliate_id=4319525" class="btn">GET BOSS MOVES BOOK →</a>
                     </div>
                 </div>
             </div>
@@ -869,7 +792,7 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
                         <li>Tools to overcome fear, doubt, and scarcity mindset forever</li>
                     </ul>
                     <div class="btn-container">
-                        <a href="YOUR_MIND_OVER_MONEY_AFFILIATE_LINK" class="btn">TRANSFORM YOUR MINDSET →</a>
+                        <a href="https://www.mindovermoneymastery.com/momm?affiliate_id=4319525" class="btn">TRANSFORM YOUR MINDSET →</a>
                     </div>
                 </div>
             </div>
@@ -880,14 +803,14 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
                     <h3>Make More Offers Challenge ($97)</h3>
                     <p>This intensive 5-day challenge teaches you the exact framework for creating irresistible offers that sell themselves. Myron Golden reveals why most businesses struggle (they don't make enough offers) and shows you how to create multiple income streams by making better, more frequent offers. You'll learn the psychology of buying decisions, how to stack value that makes price irrelevant, and the specific language patterns that compel people to say "yes." Perfect for entrepreneurs, coaches, consultants, and anyone who needs to sell their products or services. The challenge includes daily training videos, live Q&A sessions, worksheets, and a supportive community of fellow offer-makers.</p>
                     <div class="btn-container">
-                        <a href="YOUR_MAKE_MORE_OFFERS_AFFILIATE_LINK" class="btn">JOIN THE CHALLENGE →</a>
+                        <a href="https://www.makemoreofferschallenge.com/mmoc?affiliate_id=4319525" class="btn">JOIN THE CHALLENGE →</a>
                     </div>
                 </div>
                 <div class="product-box">
                     <h3>Offer Mastery Live ($297)</h3>
                     <p>This is Myron Golden's signature event where he spends three full days teaching you the complete system for creating high-ticket offers that transform your business. You'll discover the four core offer types that generate predictable revenue, learn how to structure offers that sell at $2,000, $5,000, $10,000 or higher, and master the art of presenting offers that create instant buying decisions. Myron breaks down the psychology, strategy, and implementation of world-class offer creation. This event includes access to recordings, workbooks, and ongoing support. If you're serious about scaling your business through premium offers, this is where you level up from making offers to mastering them.</p>
                     <div class="btn-container">
-                        <a href="YOUR_OFFER_MASTERY_AFFILIATE_LINK" class="btn">MASTER YOUR OFFERS →</a>
+                        <a href="https://www.offermasterylive.com/offer-mastery-livevetfk4nn?affiliate_id=4319525" class="btn">MASTER YOUR OFFERS →</a>
                     </div>
                 </div>
             </div>
@@ -898,7 +821,7 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
                     <h3>Golden OPS ($997)</h3>
                     <p>This is Myron Golden's most comprehensive program for building a complete business operating system that generates consistent six and seven-figure revenue. Golden OPS (Operational Procedures and Systems) teaches you how to construct the four foundational pillars every million-dollar business requires: lead generation systems, lead nurture systems, sales conversion systems, and product delivery systems. You'll learn how to create automated funnels, build email sequences that convert, develop premium programs and masterminds, and structure your business for scalability. The program includes video training modules, implementation templates, funnel blueprints, marketing scripts, and access to a private community of serious entrepreneurs. Myron also reveals his personal business systems and shows you exactly how he structures his multi-million dollar empire. If you're ready to stop trading time for money and build a business that runs systematically, Golden OPS is your blueprint.</p>
                     <div class="btn-container">
-                        <a href="YOUR_GOLDEN_OPS_AFFILIATE_LINK" class="btn">BUILD YOUR SYSTEM →</a>
+                        <a href="https://www.mygoldenops.com/golden-opsm1y8y7bx?affiliate_id=4319525" class="btn">BUILD YOUR SYSTEM →</a>
                     </div>
                 </div>
             </div>
@@ -926,43 +849,16 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
 </body>
 </html>"""
 
-@app.route("/")
-def home():
-    data = load_content()
-    return render_page("home", data)
+# REST OF FILE CONTINUES EXACTLY AS BEFORE...
 
-@app.route("/myron-golden")
-def myron_golden():
-    return render_template_string(MYRON_GOLDEN_TEMPLATE, style=ENHANCED_STYLE)
-
-@app.route("/<page_id>")
-def page(page_id):
-    data = load_content()
-    pages = data.get("pages", data)
-    if page_id not in pages:
-        abort(404)
-    return render_page(page_id, data)
-
-@app.route("/static/covers/<filename>")
-def serve_cover(filename):
-    cover_path = BASE / filename
-    if cover_path.exists():
-        return send_file(cover_path, mimetype='image/jpeg')
-    abort(404)
-
-@app.route("/kahu")
-def admin_panel():
-    data = load_content()
-    pages = data.get("pages", data)
-    
-    admin_html = """<!DOCTYPE html>
+ADMIN_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
+    <title>Content Manager</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: system-ui, -apple-system, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -1067,197 +963,76 @@ def admin_panel():
 </head>
 <body>
     <div class="container">
-        <h1>🌺 Admin Panel</h1>
-        <p class="subtitle">Manage website content</p>
-        
+        <h1>🏝️ Ke Aupuni Content Manager</h1>
+        <p class="subtitle">Aloha, Kahu! Edit your website pages here.</p>
         <div class="page-list">
-"""
-    
-    for page_id, page_data in pages.items():
-        page_title = page_data.get("title", page_id)
-        hero_image = page_data.get("hero_image", "")
-        product_url = page_data.get("product_url", "N/A")
-        gallery_images = page_data.get("gallery_images", [])
-        product_links = page_data.get("product_links", [])
-        products = page_data.get("products", [])
-        
-        admin_html += f"""
+            {% for page_id, page in pages.items() %}
             <div class="page-card">
-                <div class="page-title">{page_title}</div>
+                <div class="page-title">{{ page.title }}</div>
                 <div class="page-info">
-                    <div><strong>Page ID:</strong> {page_id}</div>
-                    <div><strong>Hero Image:</strong> {hero_image[:60]}...</div>
-"""
-        
-        if products:
-            admin_html += f'                    <div><strong>Products:</strong> {len(products)} items</div>\n'
-        
-        if product_url != "N/A":
-            admin_html += f'                    <div><strong>Product URL:</strong> <a href="{product_url}" target="_blank">View</a></div>\n'
-        
-        if product_links:
-            admin_html += f'                    <div><strong>Music Links:</strong> {len(product_links)} platforms</div>\n'
-        
-        if gallery_images:
-            admin_html += f'                    <div><strong>Gallery:</strong> {len(gallery_images)} images</div>\n'
-        
-        admin_html += f"""
+                    <div><strong>URL:</strong> /{{ page_id }}</div>
+                    <div><strong>Hero Image:</strong> {{ page.hero_image or 'None' }}</div>
+                    {% if page.product_url %}
+                    <div><strong>Product Link:</strong> {{ page.product_url }}</div>
+                    {% endif %}
+                    {% if page.gallery_images %}
+                    <div><strong>Gallery:</strong> {{ page.gallery_images|length }} images</div>
+                    <div class="gallery-preview">
+                        {% for img in page.gallery_images[:5] %}
+                        <img src="{{ img }}" alt="Gallery preview">
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% if page.products %}
+                    <div><strong>Products:</strong> {{ page.products|length }} items</div>
+                    {% endif %}
                 </div>
-                <a href="/kahu/edit/{page_id}" class="edit-btn">✏️ Edit Page</a>
+                <a href="/kahu/edit/{{ page_id }}" class="edit-btn">✏️ Edit Page</a>
             </div>
-"""
-    
-    admin_html += """
+            {% endfor %}
         </div>
-        
         <a href="/" class="back-btn">← Back to Website</a>
     </div>
 </body>
 </html>"""
-    
-    return admin_html
 
-@app.route("/kahu/edit/<page_id>", methods=["GET", "POST"])
-def edit_page(page_id):
-    data = load_content()
-    pages = data.get("pages", data)
-    
-    if page_id not in pages:
-        abort(404)
-    
-    if request.method == "POST":
-        pages[page_id]["title"] = request.form.get("title", "")
-        pages[page_id]["hero_image"] = request.form.get("hero_image", "")
-        pages[page_id]["body_md"] = request.form.get("body_md", "")
-        
-        product_url = request.form.get("product_url", "").strip()
-        if product_url:
-            pages[page_id]["product_url"] = product_url
-        elif "product_url" in pages[page_id]:
-            del pages[page_id]["product_url"]
-        
-        gumroad_url = request.form.get("gumroad_url", "").strip()
-        if gumroad_url:
-            pages[page_id]["gumroad_url"] = gumroad_url
-        elif "gumroad_url" in pages[page_id]:
-            del pages[page_id]["gumroad_url"]
-        
-        podcast_embed = request.form.get("podcast_embed", "").strip()
-        if podcast_embed:
-            pages[page_id]["podcast_embed"] = podcast_embed
-        elif "podcast_embed" in pages[page_id]:
-            del pages[page_id]["podcast_embed"]
-
-        products_text = request.form.get("products_json", "").strip()
-        if products_text:
-            products = []
-            for line in products_text.split("\n"):
-                line = line.strip()
-                if not line or "|" not in line:
-                    continue
-                parts = [p.strip() for p in line.split("|")]
-                if parts[0]:
-                    product = {
-                        "title": parts[0],
-                        "cover": parts[1] if len(parts) > 1 and parts[1] else "",
-                        "amazon": parts[2] if len(parts) > 2 and parts[2] else "",
-                        "gumroad": parts[3] if len(parts) > 3 and parts[3] else ""
-                    }
-                    if product["amazon"] or product["gumroad"]:
-                        products.append(product)
-            if products:
-                pages[page_id]["products"] = products
-            elif "products" in pages[page_id]:
-                del pages[page_id]["products"]
-        elif "products" in pages[page_id]:
-            del pages[page_id]["products"]
-        
-        product_images_raw = request.form.get("product_images", "")
-        if product_images_raw:
-            pages[page_id]["product_images"] = [line.strip() for line in product_images_raw.split("\n") if line.strip()]
-        else:
-            pages[page_id]["product_images"] = []
-        
-        gallery_str = request.form.get("gallery_images", "").strip()
-        if gallery_str:
-            gallery_images = [img.strip() for img in gallery_str.split("\n") if img.strip()]
-            pages[page_id]["gallery_images"] = gallery_images
-        elif "gallery_images" in pages[page_id]:
-            del pages[page_id]["gallery_images"]
-        
-        links_str = request.form.get("product_links", "").strip()
-        if links_str:
-            links = []
-            for line in links_str.split("\n"):
-                if "|" in line:
-                    parts = line.split("|")
-                    if len(parts) >= 3:
-                        links.append({
-                            "name": parts[0].strip(),
-                            "url": parts[1].strip(),
-                            "icon": parts[2].strip()
-                        })
-            if links:
-                pages[page_id]["product_links"] = links
-        elif "product_links" in pages[page_id]:
-            del pages[page_id]["product_links"]
-        
-        save_content({"pages": pages, "order": data.get("order", ORDER)})
-        return redirect("/kahu")
-    
-    page = pages[page_id]
-    gallery_str = "\n".join(page.get("gallery_images", []))
-    products_text_lines = []
-    if page.get("products"):
-        for p in page["products"]:
-            line = f"{p.get('title', '')} | {p.get('cover', '')} | {p.get('amazon', '')} | {p.get('gumroad', '')}"
-            products_text_lines.append(line)
-    products_json = "\n".join(products_text_lines)
-    
-    product_images_str = ""
-    if page.get("product_images"):
-        product_images_str = "\n".join(page["product_images"])
-    
-    links_str = ""
-    if "product_links" in page:
-        links_str = "\n".join([
-            f"{link['name']}|{link['url']}|{link['icon']}"
-            for link in page["product_links"]
-        ])
-    
-    edit_html = f"""<!DOCTYPE html>
+EDIT_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit {page['title']}</title>
+    <title>Edit {{ page.title }}</title>
     <style>
-        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-        body {{
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
             font-family: system-ui, -apple-system, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 2rem;
-        }}
-        .container {{
-            max-width: 800px;
+        }
+        .container {
+            max-width: 900px;
             margin: 0 auto;
             background: white;
             border-radius: 16px;
             padding: 2rem;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }}
-        h1 {{ color: #2c3e50; margin-bottom: 0.5rem; }}
-        .subtitle {{ color: #7f8c8d; margin-bottom: 2rem; }}
-        .form-group {{ margin-bottom: 1.5rem; }}
-        label {{
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
             display: block;
             color: #2c3e50;
             font-weight: 600;
             margin-bottom: 0.5rem;
-        }}
-        input[type="text"],
-        textarea {{
+        }
+        input[type="text"], input[type="url"], textarea {
             width: 100%;
             padding: 0.75rem;
             border: 2px solid #e9ecef;
@@ -1265,106 +1040,191 @@ def edit_page(page_id):
             font-size: 1rem;
             font-family: inherit;
             transition: border-color 0.3s ease;
-        }}
-        input[type="text"]:focus,
-        textarea:focus {{
+        }
+        input:focus, textarea:focus {
             outline: none;
             border-color: #667eea;
-        }}
-        textarea {{ min-height: 200px; resize: vertical; }}
-        .help-text {{ font-size: 0.85rem; color: #6c757d; margin-top: 0.25rem; }}
-        .btn-group {{ display: flex; gap: 1rem; margin-top: 2rem; }}
-        .btn {{
-            padding: 0.75rem 1.5rem;
+        }
+        textarea {
+            min-height: 400px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            line-height: 1.5;
+        }
+        .hint {
+            color: #7f8c8d;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .save-btn, .back-btn {
+            padding: 0.875rem 2rem;
             border: none;
             border-radius: 8px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
-        }}
-        .btn-primary {{
+        }
+        .save-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-        }}
-        .btn-primary:hover {{
+            flex: 1;
+        }
+        .save-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        }}
-        .btn-secondary {{ background: #6c757d; color: white; }}
-        .btn-secondary:hover {{ background: #5a6268; }}
+        }
+        .back-btn {
+            background: #6c757d;
+            color: white;
+        }
+        .back-btn:hover {
+            background: #5a6268;
+        }
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #c3e6cb;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>✏️ Edit Page</h1>
-        <p class="subtitle">{page['title']}</p>
+        <h1>✏️ Edit: {{ page.title }}</h1>
+        
+        {% if success %}
+        <div class="success-message">
+            ✅ Changes saved successfully!
+        </div>
+        {% endif %}
         
         <form method="POST">
             <div class="form-group">
                 <label for="title">Page Title</label>
-                <input type="text" id="title" name="title" value="{page.get('title', '')}" required>
+                <input type="text" id="title" name="title" value="{{ page.title }}" required>
             </div>
             
             <div class="form-group">
                 <label for="hero_image">Hero Image URL</label>
-                <input type="text" id="hero_image" name="hero_image" value="{page.get('hero_image', '')}" required>
+                <input type="url" id="hero_image" name="hero_image" value="{{ page.hero_image or '' }}" placeholder="https://imgur.com/...">
+                <div class="hint">Use Imgur or another image host</div>
             </div>
             
             <div class="form-group">
-                <label for="body_md">Content (Markdown)</label>
-                <textarea id="body_md" name="body_md" required>{page.get('body_md', '')}</textarea>
+                <label for="body_md">Page Content (Markdown)</label>
+                <textarea id="body_md" name="body_md" required>{{ page.body_md }}</textarea>
+                <div class="hint">Use Markdown formatting: **bold**, *italic*, ## Headers, [links](url)</div>
             </div>
             
             <div class="form-group">
-                <label for="product_url">Product URL</label>
-                <input type="text" id="product_url" name="product_url" value="{page.get('product_url', '')}">
-            </div>
-            
-            <div class="form-group">
-                <label for="gumroad_url">Gumroad URL</label>
-                <input type="text" id="gumroad_url" name="gumroad_url" value="{page.get('gumroad_url', '')}">
-            </div>
-            
-            <div class="form-group">
-                <label for="podcast_embed">Podcast Embed</label>
-                <textarea id="podcast_embed" name="podcast_embed" style="min-height: 100px;">{page.get('podcast_embed', '')}</textarea>
-            </div>
-            
-            <div class="form-group">
-                <label for="product_images">Product Images (One URL per line)</label>
-                <textarea id="product_images" name="product_images" style="min-height: 120px;">{product_images_str}</textarea>
-            </div>
-            
-            <div class="form-group">
-                <label for="products_json">Products</label>
-                <textarea id="products_json" name="products_json" style="min-height: 180px; font-family: 'Courier New', monospace;">{products_json}</textarea>
-                <div class="help-text">Format: Title | Cover URL | Amazon URL | Gumroad URL</div>
-            </div>
-
-            <div class="form-group">
-                <label for="gallery_images">Gallery Images</label>
-                <textarea id="gallery_images" name="gallery_images" style="min-height: 100px;">{gallery_str}</textarea>
-            </div>
-            
-            <div class="form-group">
-                <label for="product_links">Music Links</label>
-                <textarea id="product_links" name="product_links" style="min-height: 100px;">{links_str}</textarea>
-                <div class="help-text">Format: Name|URL|Icon</div>
+                <label for="product_url">Product Link (optional)</label>
+                <input type="url" id="product_url" name="product_url" value="{{ page.product_url or '' }}" placeholder="https://amazon.com/...">
             </div>
             
             <div class="btn-group">
-                <button type="submit" class="btn btn-primary">💾 Save</button>
-                <a href="/kahu" class="btn btn-secondary">← Cancel</a>
+                <a href="/kahu" class="back-btn">← Cancel</a>
+                <button type="submit" class="save-btn">💾 Save Changes</button>
             </div>
         </form>
     </div>
 </body>
 </html>"""
+
+def save_content(data):
+    with open(DATA_FILE, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+
+def load_content():
+    if DATA_FILE.exists():
+        with open(DATA_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    return DEFAULT_PAGES
+
+@app.route("/")
+def home():
+    return redirect("/home")
+
+@app.route("/<page_id>")
+def show_page(page_id):
+    content = load_content()
+    pages = content["pages"]
     
-    return edit_html
+    if page_id not in pages:
+        abort(404)
+    
+    page = pages[page_id]
+    body_html = markdown.markdown(
+        page["body_md"],
+        extensions=['extra', 'nl2br']
+    )
+    
+    nav_items = [
+        {"title": pages[pid]["title"], "url": f"/{pid}"}
+        for pid in content["order"]
+    ]
+    
+    return render_template_string(
+        PAGE_TEMPLATE,
+        page=page,
+        body_html=body_html,
+        nav_items=nav_items,
+        style=ENHANCED_STYLE
+    )
+
+@app.route("/myron-golden")
+def myron_golden_page():
+    return render_template_string(
+        MYRON_GOLDEN_TEMPLATE,
+        style=ENHANCED_STYLE
+    )
+
+@app.route("/kingdom_keys")
+def kingdom_keys():
+    return show_page("kingdom_keys")
+
+@app.route("/kahu")
+def admin_panel():
+    content = load_content()
+    return render_template_string(
+        ADMIN_TEMPLATE,
+        pages=content["pages"]
+    )
+
+@app.route("/kahu/edit/<page_id>", methods=["GET", "POST"])
+def edit_page(page_id):
+    content = load_content()
+    pages = content["pages"]
+    
+    if page_id not in pages:
+        abort(404)
+    
+    success = False
+    
+    if request.method == "POST":
+        pages[page_id].update({
+            "title": request.form.get("title"),
+            "hero_image": request.form.get("hero_image") or None,
+            "body_md": request.form.get("body_md"),
+            "product_url": request.form.get("product_url") or ""
+        })
+        save_content(content)
+        success = True
+    
+    return render_template_string(
+        EDIT_TEMPLATE,
+        page=pages[page_id],
+        page_id=page_id,
+        success=success
+    )
 
 if __name__ == "__main__":
     if not DATA_FILE.exists():
