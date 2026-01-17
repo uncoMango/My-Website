@@ -28,7 +28,7 @@ DEFAULT_PAGES = {
         },
         "kingdom_wealth": {
             "title": "Kingdom Wealth",
-            "hero_image": "https://i.imgur.com/G2YmSka.jpeg",
+            "hero_image": "https://i.imgur.com/wmHEyDo.png",
             "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom of God operates on a system of stewardship, not ownership. Understanding Kingdom Wealth means shifting from a \"poverty mindset\" to a \"provision mindset.\"\r\n\r\n### Core Principles of Kingdom Wealth\r\n\r\n**Source vs. Resource** - Recognizing that God is the Source, and everything else is just a resource.\r\n\r\n**Seed Time and Harvest** - The spiritual law of multiplication through giving and wisdom.\r\n\r\n**Economic Mandate** - We are blessed to be a blessing, establishing God's covenant on the earth.\r\n\r\n### Practical Application\r\n\r\nTrue wealth in the Kingdom is measured by your capacity to influence your community for good and provide for the needs of the ministry and the poor.\r\n\r\n---\r\n\r\n### 📚 Recommended Kingdom Wealth Resources\r\n\r\n**The Call to Repentance Series** - Includes comprehensive teaching on Kingdom economics and biblical stewardship principles.\r\n\r\n**[Get the Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n---\r\n\r\n### 💡 Transform Your Financial Mindset\r\n\r\nMove from religious poverty thinking into Kingdom abundance. Learn how Jesus taught about money, provision, and the Father's desire to bless His children.\r\n\r\n**Scripture Foundation:** \"Seek first the kingdom of God and His righteousness, and all these things shall be added to you.\" - Matthew 6:33\r\n\r\n---\r\n\r\n### 📖 Learning Biblical Business Principles\r\n\r\nAfter 30 years of biblical study and 8 years in pastoral ministry on Molokaʻi, I'm applying Myron Golden's Kingdom approach to business. His teaching on biblical wealth creation aligns with the Kingdom economics I've been teaching.\r\n\r\nI'm building my ministry using these ethical, scripture-based principles - because God's Kingdom deserves to be funded with integrity, not manipulation.\r\n\r\nIf you're called to ministry or Christian business, these resources can help you build on a solid biblical foundation.\r\n\r\n**[Explore Myron Golden's Biblical Business Training →](/myron-golden)**",
             "product_url": ""
         },
@@ -722,7 +722,7 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
         </div>
     </nav>
     
-    <header class="hero" style="background-image: url('https://i.imgur.com/G2YmSka.jpeg');">
+    <header class="hero" style="background-image: url('https://i.imgur.com/wmHEyDo.png');">
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1>Transform Your Financial Future</h1>
