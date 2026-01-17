@@ -312,7 +312,7 @@ a:visited {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(44, 62, 80, 0.7) 0%, rgba(95, 158, 160, 0.7) 100%);
+    background: linear-gradient(135deg, rgba(44, 62, 80, 0.4) 0%, rgba(95, 158, 160, 0.4) 100%);
 }
 
 .hero-content {
@@ -322,6 +322,7 @@ a:visited {
     color: white;
     padding: 2rem;
     max-width: 900px;
+    background: transparent;
 }
 
 .hero h1 {
