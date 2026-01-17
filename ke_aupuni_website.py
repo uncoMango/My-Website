@@ -548,7 +548,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     <nav class="site-nav">
         <div class="nav-container">
             <a href="/" class="nav-title">
-                <img src="{{ url_for('static', filename='image/output-onlinepngtools.png') }}" alt="Ke Aupuni Logo" class="nav-logo">
+                <img src="/static/image/output-onlinepngtools.png" alt="Ke Aupuni Logo" class="nav-logo">
                 Ke Aupuni O Ke Akua
             </a>
             <div class="hamburger" onclick="toggleMenu()">
@@ -720,7 +720,7 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
     <nav class="site-nav">
         <div class="nav-container">
             <a href="/" class="nav-title">
-                <img src="{{ url_for('static', filename='image/output-onlinepngtools.png') }}" alt="Ke Aupuni Logo" class="nav-logo">
+                <img src="/static/image/output-onlinepngtools.png" alt="Ke Aupuni Logo" class="nav-logo">
                 Ke Aupuni O Ke Akua
             </a>
             <div class="hamburger" onclick="toggleMenu()">
