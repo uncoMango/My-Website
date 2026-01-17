@@ -240,12 +240,16 @@ a:visited {
 .nav-menu li a {
     color: #2c3e50;
     text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s ease;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
 }
 
 .nav-menu li a:hover {
     color: var(--accent-teal);
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
 }
 
 .hamburger {
@@ -348,7 +352,14 @@ a:visited {
 }
 
 .content-card {
-    background: var(--white-transparent);
+    background-color: rgba(255, 255, 255, 0.95);
+    background-image: 
+        linear-gradient(45deg, rgba(201, 168, 118, 0.15) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(201, 168, 118, 0.15) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(191, 160, 104, 0.15) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(191, 160, 104, 0.15) 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
     border-radius: 12px;
     padding: 3rem;
     box-shadow: var(--shadow-soft);
@@ -530,7 +541,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     <nav class="site-nav">
         <div class="nav-container">
             <a href="/" class="nav-title">
-                <img src="https://keaupuniakeakua.faith/output-onlinepngtools.png" alt="Ke Aupuni Logo" class="nav-logo">
+                <img src="/static/output-onlinepngtools.png" alt="Ke Aupuni Logo" class="nav-logo">
                 Ke Aupuni O Ke Akua
             </a>
             <div class="hamburger" onclick="toggleMenu()">
@@ -702,7 +713,7 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
     <nav class="site-nav">
         <div class="nav-container">
             <a href="/" class="nav-title">
-                <img src="https://keaupuniakeakua.faith/output-onlinepngtools.png" alt="Ke Aupuni Logo" class="nav-logo">
+                <img src="/static/output-onlinepngtools.png" alt="Ke Aupuni Logo" class="nav-logo">
                 Ke Aupuni O Ke Akua
             </a>
             <div class="hamburger" onclick="toggleMenu()">
