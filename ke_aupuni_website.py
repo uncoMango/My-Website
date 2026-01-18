@@ -97,9 +97,9 @@ DEFAULT_PAGES = {
             "hero_image": "https://i.imgur.com/Vyz6nFJ.png",
             "body_md": "## The Nahenahe Voice of Nahono'opi'ilani - Live from Molokai Ranch Lodge\r\n\r\nExperience the soul-stirring sounds of authentic Hawaiian music captured live at the historic Molokai Ranch Lodge in the year 2000. This intimate recording showcases the true meaning of **nahenahe** - the gentle, soothing voice that carries the spirit of aloha across the islands.\r\n\r\n### A Sacred Musical Journey\r\n\r\nRecorded in the peaceful setting of Molokai Ranch Lodge, this collection features solo guitar and traditional Hawaiian melodies that speak directly to the heart.\r\n\r\n**Nahenahe** means more than just \"soft\" or \"sweet\" - it represents music that heals, soothes, and connects us to the divine presence that flows through all creation.\r\n\r\n### What You'll Experience:\r\n\r\n**Traditional Hawaiian Melodies** - Time-honored songs passed down through generations.\r\n\r\n**Solo Guitar Mastery** - Intimate acoustic performances showcasing Hawaiian slack-key guitar traditions.\r\n\r\n**Authentic Island Atmosphere** - The natural acoustics and peaceful energy of Molokai Ranch Lodge.\r\n\r\n**Healing Through Song** - Each track brings peace, comfort, and the healing power of aloha.\r\n\r\n*\"Music is the language that speaks when words are not enough. The nahenahe voice carries aloha to every heart that listens.\"*\r\n\r\nPerfect for meditation, relaxation, spiritual practice, or any time you need the gentle embrace of island peace.",
             "gallery_images": [
-                "/static/covers/cover1.jpg",
-                "/static/covers/cover2.jpg",
-                "/static/covers/cover3.jpg"
+                "/cover1.jpg",
+                "/cover2.jpg",
+                "/cover3.jpg"
             ],
             "product_links": [
                 {
@@ -1117,7 +1117,15 @@ def save_content(data):
 def load_content():
     if DATA_FILE.exists():
         with open(DATA_FILE, 'r', encoding='utf-8') as f:
-            return json.load(f)
+            saved_data = json.load(f)
+        # Merge DEFAULT_PAGES to fill in missing fields like gallery_images
+        for page_id, default_page in DEFAULT_PAGES["pages"].items():
+            if page_id in saved_data["pages"]:
+                # Preserve fields from DEFAULT_PAGES that might be missing
+                for key, value in default_page.items():
+                    if key not in saved_data["pages"][page_id]:
+                        saved_data["pages"][page_id][key] = value
+        return saved_data
     return DEFAULT_PAGES
 
 @app.route("/")
@@ -1181,12 +1189,12 @@ def edit_page(page_id):
     success = False
     
     if request.method == "POST":
-        pages[page_id].update({
-            "title": request.form.get("title"),
-            "hero_image": request.form.get("hero_image") or None,
-            "body_md": request.form.get("body_md"),
-            "product_url": request.form.get("product_url") or ""
-        })
+        # Update only the editable fields, preserve gallery_images and product_links
+        pages[page_id]["title"] = request.form.get("title")
+        pages[page_id]["hero_image"] = request.form.get("hero_image") or None
+        pages[page_id]["body_md"] = request.form.get("body_md")
+        pages[page_id]["product_url"] = request.form.get("product_url") or ""
+        # gallery_images and product_links are preserved automatically
         save_content(content)
         success = True
     
