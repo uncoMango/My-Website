@@ -196,8 +196,15 @@ body {
     padding: 0 2rem;
 }
 
+
+.nav-logo {
+    height: 80px;
+    width: auto;
+    margin-right: 1rem;
+}
+
 .nav-title {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: bold;
     color: #2c3e50;
     text-decoration: none;
@@ -324,6 +331,21 @@ body {
     line-height: 1.8;
 }
 
+
+.content-card a {
+    color: #87CEEB;
+    text-decoration: underline;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+.content-card a:hover {
+    color: #FFD700;
+}
+
+.content-card a:visited {
+    color: #DDA0DD;
+}
+
 .buy-section {
     text-align: center;
     margin-top: 2rem;
@@ -425,6 +447,10 @@ body {
         left: 0;
     }
     
+    .nav-logo {
+        height: 50px;
+    }
+    
     .content-card {
         padding: 2rem 1.5rem;
     }
@@ -475,6 +501,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     <nav class="site-nav">
         <div class="nav-container">
             <a href="/" class="nav-title">
+                <img src="/static/images/output-onlinepngtools.png" alt="Ke Aupuni Logo" class="nav-logo">
                 Ke Aupuni O Ke Akua
             </a>
             <div class="hamburger" onclick="toggleMenu()">
@@ -646,6 +673,7 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
     <nav class="site-nav">
         <div class="nav-container">
             <a href="/" class="nav-title">
+                <img src="/static/images/output-onlinepngtools.png" alt="Ke Aupuni Logo" class="nav-logo">
                 Ke Aupuni O Ke Akua
             </a>
             <div class="hamburger" onclick="toggleMenu()">
