@@ -28,17 +28,18 @@ DEFAULT_PAGES = {
             "body_md": "## Welcome to Ke Aupuni O Ke Akua - The Kingdom of God\r\n\r\nMahalo for visiting. This site is dedicated to rediscovering the revolutionary Kingdom message that Jesus actually preached, which is often missed in modern religious traditions.\r\n\r\n### Our Mission: Kingdom, Not Religion\r\nJesus's central focus was the Kingdom of God—the reign and rule of God breaking into the human experience here and now. Our resources aim to guide you into a deeper understanding of Kingdom principles, citizenship, and authority, moving you from religious performance into authentic, transformative living.\r\n\r\n**Start your journey today by exploring 'The Call to Repentance' series in the navigation.**\r\n\r\n### What Jesus Actually Taught\r\n\r\n**Kingdom Principles Over Religious Rules** - Discover how Jesus consistently chose kingdom living over religious compliance.\r\n\r\n**Repentance as Transformation** - Move beyond feeling sorry for sins to understanding a complete transformation of mind, heart, and lifestyle.\r\n\r\n**Heaven on Earth** - Learn how the Kingdom of God is meant to manifest in our daily lives, relationships, and communities right now.",
             "product_url": "https://amzn.to/3FfH9ep"
         },
+        "kingdom_wealth": {
+            "title": "Kingdom Wealth",
+            "hero_image": "https://i.imgur.com/G2YmSka.jpeg",
+            "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom operates on stewardship.\r\n\r\n### Core Principles\r\n\r\n**Source vs. Resource** - God is the Source.\r\n\r\n**[Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n**[Myron Golden Training →](/myron-golden)**",
+            "product_url": ""
+
+        },
         "aloha_wellness": {
             "title": "Aloha Wellness - Island Health & Healing",
             "hero_image": "https://i.imgur.com/xGeWW3Q.jpeg",
             "body_md": "## Aloha Wellness - The Sacred Art of How You Eat\r\n\r\nDiscover the life-changing power of **how** you eat, not just what you eat. This groundbreaking wellness book combines cutting-edge scientific research with ancient Hawaiian mana'o (wisdom) to transform your relationship with food and nourishment.\r\n\r\n### Beyond Diet Culture - A Hawaiian Perspective\r\n\r\nTraditional Hawaiian culture understood something modern society has forgotten: eating is a sacred act that connects us to the land, our ancestors, and our own spiritual well-being. This book bridges that ancient wisdom with contemporary nutritional science.\r\n\r\n### Revolutionary Approach: How, Not What\r\n\r\n**Mindful Consumption** - Learn the scientific basis for how mindful eating practices affect digestion, metabolism, and overall health.\r\n\r\n**Cultural Eating Wisdom** - Discover how Hawaiian ancestors approached meals as community ceremonies, gratitude practices, and spiritual connections.\r\n\r\n**Stress and Digestion** - Research-backed insights into how your emotional state during meals affects nutrient absorption and digestive health.\r\n\r\n**Rhythm and Timing** - Ancient Hawaiian understanding of eating in harmony with natural rhythms, supported by modern chronobiology research.\r\n\r\n**Scientific Research Meets Island Wisdom** - This book offers a comprehensive look at the intersection of modern science and ancient practice.\r\n\r\n### Hawaiian Mana'o (Wisdom Principles)\r\n\r\n**Ho'oponopono with Food** - Making right relationships with nourishment and healing food-related guilt or shame.\r\n\r\n**Aloha 'Āina** - Love of the land extends to gratitude for the food it provides and mindful consumption practices.\r\n\r\n**Lōkahi** - Finding unity and balance in your relationship with food, body, and spirit.\r\n\r\n**Mālama** - Caring for your body as a sacred temple through conscious eating practices.\r\n\r\nTransform your health from the inside out by changing not what you eat, but how you approach the sacred act of nourishment.",
             "product_url": "https://amzn.to/3FfH9ep"
-        },
-        "kingdom_wealth": {
-            "title": "Kingdom Wealth",
-            "hero_image": "https://i.imgur.com/G2YmSka.jpeg",
-            "body_md": "## Biblical Stewardship & Economic Increase\\r\\n\\r\\nThe Kingdom operates on stewardship.\\r\\n\\r\\n### Core Principles\\r\\n\\r\\n**Source vs. Resource** - God is the Source.\\r\\n\\r\\n**[Complete Kingdom Series →](/call_to_repentance)**\\r\\n\\r\\n**[Myron Golden Training →](/myron-golden)**",
-            "product_url": ""
         },
         "call_to_repentance": {
             # This page is now the comprehensive Kingdom Series overview
@@ -80,6 +81,18 @@ DEFAULT_PAGES = {
                 }
             ]
         }
+        },
+        "kingdom_keys": {
+            "title": "FREE Kingdom Keys Booklets",
+            "hero_image": "https://i.imgur.com/wmHEyDo.png",
+            "body_md": "## 🌺 FREE Kingdom Keys 🌺\r\n\r\nAfter 30 years of biblical study.\r\n\r\n**[Browse Complete Kingdom Series →](/call_to_repentance)**",
+            "products": [
+                {"title": "7 Scriptures Kingdom Inside You", "cover": "", "amazon": "", "gumroad": ""},
+                {"title": "Kingdom Healing in 10 Minutes", "cover": "", "amazon": "", "gumroad": ""},
+                {"title": "5 Kingdom Prayers", "cover": "", "amazon": "", "gumroad": ""},
+                {"title": "Kingdom Wealth Verses", "cover": "", "amazon": "", "gumroad": ""}
+            ]
+
     }
 }
 
@@ -92,17 +105,6 @@ ENHANCED_STYLE = """
     --accent-warm: #d4a574;
     --white-transparent: rgba(255, 255, 255, 0.95);
     --shadow-soft: 0 2px 10px rgba(0,0,0,0.1);
-        },
-        "kingdom_keys": {
-            "title": "FREE Kingdom Keys Booklets",
-            "hero_image": "https://i.imgur.com/wmHEyDo.png",
-            "body_md": "## 🌺 FREE Kingdom Keys 🌺\\r\\n\\r\\nAfter 30 years of biblical study.\\r\\n\\r\\n**[Browse Complete Series →](/call_to_repentance)**",
-            "products": [
-                {"title": "7 Scriptures Kingdom Is Inside You", "cover": "", "amazon": "", "gumroad": ""},
-                {"title": "Kingdom Healing in 10 Minutes", "cover": "", "amazon": "", "gumroad": ""},
-                {"title": "5 Kingdom Prayers", "cover": "", "amazon": "", "gumroad": ""},
-                {"title": "Kingdom Wealth Verses", "cover": "", "amazon": "", "gumroad": ""}
-            ]
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -143,12 +145,6 @@ body {
     padding: 0 2rem;
 }
 
-.nav-logo {
-    height: 175px;
-    width: auto;
-    vertical-align: middle;
-}
-
 /* UPDATED: Darker title for visibility on lauhala */
 .nav-title {
     font-size: 1.5rem;
@@ -156,9 +152,6 @@ body {
     color: #2c3e50;
     text-decoration: none;
     text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
-    display: flex;
-    align-items: center;
-    gap: 1rem;
 }
 
 /* Desktop Menu */
@@ -250,21 +243,45 @@ body {
 }
 
 .content-card {
-    background: rgba(0, 0, 0, 0.4);
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                repeating-linear-gradient(90deg, 
+                    rgba(210, 180, 140, 0.3) 0px,
+                    rgba(210, 180, 140, 0.3) 2px,
+                    rgba(139, 90, 43, 0.2) 2px,
+                    rgba(139, 90, 43, 0.2) 4px);
     border: none;
     padding: 3rem 2rem;
+    box-shadow: none;
     margin-top: 20vh;
     color: white;
-    border-radius: 12px;
 }
 
-.content-card h2 { color: white; font-size: 2rem; margin: 2rem 0 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); }
+.content-card h2 {
+    color: white;
+    margin-bottom: 1rem;
+    font-size: 2.2rem;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.9);
+}
 
-.content-card h3 { color: white; font-size: 1.5rem; margin: 1.5rem 0 0.75rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); }
+.content-card h3 {
+    color: white;
+    margin: 2rem 0 1rem;
+    font-size: 1.6rem;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+}
 
-.content-card p { margin-bottom: 1rem; line-height: 1.8; text-shadow: 1px 1px 2px rgba(0,0,0,0.7); }
+.content-card p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+    line-height: 1.8;
+}
 
-.content-card strong { color: white; font-weight: 600; }
+.content-card strong {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
 
 .content-card li {
     color: white;
@@ -425,9 +442,13 @@ body {
         padding: 2rem 1.5rem;
     }
     
-    .content-card h2 { color: white; font-size: 2rem; margin: 2rem 0 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); }
+    .content-card h2 {
+        font-size: 1.8rem;
+    }
     
-    .content-card h3 { color: white; font-size: 1.5rem; margin: 1.5rem 0 0.75rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); }
+    .content-card h3 {
+        font-size: 1.4rem;
+    }
     
     .music-buttons {
         flex-direction: column;
@@ -451,14 +472,14 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
 .section{padding:40px 0}.product-box{background:rgba(0,0,0,0.5);padding:30px;margin:20px 0;border-radius:12px;text-align:center}
 .btn{display:inline-block;padding:15px 40px;background:linear-gradient(135deg,#5f9ea0,#4a8b8e);color:white;text-decoration:none;font-weight:bold;margin:10px;border-radius:8px}
 </style></head><body>
-<nav class="site-nav"><div class="nav-container"><a href="/" class="nav-title"><img src="/static/images/output-onlinepngtools.png" class="nav-logo">Ke Aupuni O Ke Akua</a></div></nav>
-<header class="hero" style="background-image:url('https://i.imgur.com/G2YmSka.jpeg')"><div class="hero-overlay"></div><div class="hero-content"><h1 style="color:white;text-shadow:2px 2px 4px rgba(0,0,0,0.9)">Transform Your Financial Future</h1></div></header>
+<nav class="site-nav"><div class="nav-container"><a href="/" class="nav-title"><img src="/static/images/output-onlinepngtools.png" alt="Logo" style="height:40px;width:auto;vertical-align:middle;margin-right:10px;">Ke Aupuni O Ke Akua</a></div></nav>
+<header class="hero" style="background-image:url('https://i.imgur.com/G2YmSka.jpeg')"><div class="hero-overlay"></div><div class="hero-content"><h1>Transform Your Financial Future</h1></div></header>
 <main class="container"><article class="content-card">
-<div class="email-capture"><h2 style="color:white;text-shadow:2px 2px 4px rgba(0,0,0,0.9)">Get FREE Kingdom Business Guide</h2><form action="https://app.kit.com/forms/8979853/subscriptions" method="post"><input type="text" name="fields[first_name]" placeholder="First Name" required style="padding:15px;margin:10px 0;width:100%%;border-radius:6px;border:1px solid #ccc"><input type="email" name="email_address" placeholder="Email" required style="padding:15px;margin:10px 0;width:100%%;border-radius:6px;border:1px solid #ccc"><button type="submit" style="width:100%%;padding:15px;background:#d4af37;color:white;font-weight:bold;border:none;border-radius:6px">GET FREE GUIDE</button></form></div>
-<div class="section"><h2 style="color:white;text-shadow:2px 2px 4px rgba(0,0,0,0.9)">SECTION 1: Start Your Journey</h2><div class="product-box"><a href="https://www.trashmantocashman.com/tmcm-book?affiliate_id=4319525" class="btn">TRASH MAN TO CASH MAN</a><a href="https://www.bossmovesbook.com/bossmoves?affiliate_id=4319525" class="btn">BOSS MOVES BOOK</a></div></div>
-<div class="section"><h2 style="color:white;text-shadow:2px 2px 4px rgba(0,0,0,0.9)">SECTION 2: Transform Your Money Blueprint</h2><div class="product-box"><a href="https://www.mindovermoneymastery.com/momm?affiliate_id=4319525" class="btn">MIND OVER MONEY MASTERY</a></div></div>
-<div class="section"><h2 style="color:white;text-shadow:2px 2px 4px rgba(0,0,0,0.9)">SECTION 3: Master Making Offers</h2><div class="product-box"><a href="https://www.makemoreofferschallenge.com/mmoc?affiliate_id=4319525" class="btn">MAKE MORE OFFERS CHALLENGE</a><a href="https://www.offermasterylive.com/offer-mastery-livevetfk4nn?affiliate_id=4319525" class="btn">OFFER MASTERY LIVE</a></div></div>
-<div class="section"><h2 style="color:white;text-shadow:2px 2px 4px rgba(0,0,0,0.9)">SECTION 4: Build Your System</h2><div class="product-box"><a href="https://www.mygoldenops.com/golden-opsm1y8y7bx?affiliate_id=4319525" class="btn">GOLDEN OPS</a></div></div>
+<div class="email-capture"><h2>Get FREE Kingdom Business Guide</h2><form action="https://app.kit.com/forms/8979853/subscriptions" method="post"><input type="text" name="fields[first_name]" placeholder="First Name" required style="padding:15px;margin:10px 0;width:100%%;border-radius:6px;border:1px solid #ccc"><input type="email" name="email_address" placeholder="Email" required style="padding:15px;margin:10px 0;width:100%%;border-radius:6px;border:1px solid #ccc"><button type="submit" style="width:100%%;padding:15px;background:#d4af37;color:white;font-weight:bold;border:none;border-radius:6px">GET FREE GUIDE</button></form></div>
+<div class="section"><h2>SECTION 1: Start Your Journey</h2><div class="product-box"><a href="https://www.trashmantocashman.com/tmcm-book?affiliate_id=4319525" class="btn">TRASH MAN TO CASH MAN</a><a href="https://www.bossmovesbook.com/bossmoves?affiliate_id=4319525" class="btn">BOSS MOVES</a></div></div>
+<div class="section"><h2>SECTION 2: Transform Your Money Blueprint</h2><div class="product-box"><a href="https://www.mindovermoneymastery.com/momm?affiliate_id=4319525" class="btn">MIND OVER MONEY MASTERY</a></div></div>
+<div class="section"><h2>SECTION 3: Master Making Offers</h2><div class="product-box"><a href="https://www.makemoreofferschallenge.com/mmoc?affiliate_id=4319525" class="btn">MAKE MORE OFFERS</a><a href="https://www.offermasterylive.com/offer-mastery-livevetfk4nn?affiliate_id=4319525" class="btn">OFFER MASTERY LIVE</a></div></div>
+<div class="section"><h2>SECTION 4: Build Your System</h2><div class="product-box"><a href="https://www.mygoldenops.com/golden-opsm1y8y7bx?affiliate_id=4319525" class="btn">GOLDEN OPS</a></div></div>
 </article></main></body></html>"""
 
 
@@ -544,7 +565,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 <body>
     <nav class="site-nav">
         <div class="nav-container">
-            <a href="/" class="nav-title"><img src="/static/images/output-onlinepngtools.png" alt="Logo" class="nav-logo">Ke Aupuni O Ke Akua</a>
+            <a href="/" class="nav-title"><img src="/static/images/output-onlinepngtools.png" alt="Logo" style="height:40px;width:auto;vertical-align:middle;margin-right:10px;">Ke Aupuni O Ke Akua</a>
             <div class="hamburger" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
@@ -583,6 +604,31 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             {% endif %}
             
             {% if page.product_links %}
+
+            {% if page.get("products") %}
+            <div class="products-section" style="margin: 3rem 0;">
+                <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">📚 Available Resources</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                    {% for product in page.products %}
+                    <div style="background: rgba(0,0,0,0.5); padding: 2rem; border-radius: 12px; text-align: center;">
+                        {% if product.cover %}
+                        <img src="{{ product.cover }}" alt="{{ product.title }}" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
+                        {% endif %}
+                        <h3 style="color: white; font-size: 1.1rem; margin-bottom: 1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">{{ product.title }}</h3>
+                        <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+                            {% if product.amazon %}
+                            <a href="{{ product.amazon }}" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #5f9ea0, #4a8b8e); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">🛒 Amazon</a>
+                            {% endif %}
+                            {% if product.gumroad %}
+                            <a href="{{ product.gumroad }}" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #FF90E8, #FFA500); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">💳 Gumroad</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            
             <div class="buy-section">
                 <h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">🎵 Stream Our Music</h2>
                 <div class="music-buttons">
@@ -612,6 +658,31 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             <div class="podcast-section" style="margin: 2rem 0; padding: 2rem; background: rgba(0,0,0,0.3); border-radius: 8px;">
                 <h2 style="color: white; text-align: center; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">🎙️ Listen to Our Podcast</h2>
                 {{ page.podcast_embed|safe }}
+            </div>
+            {% endif %}
+            
+
+            {% if page.get("products") %}
+            <div class="products-section" style="margin: 3rem 0;">
+                <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">📚 Available Resources</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                    {% for product in page.products %}
+                    <div style="background: rgba(0,0,0,0.5); padding: 2rem; border-radius: 12px; text-align: center;">
+                        {% if product.cover %}
+                        <img src="{{ product.cover }}" alt="{{ product.title }}" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
+                        {% endif %}
+                        <h3 style="color: white; font-size: 1.1rem; margin-bottom: 1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">{{ product.title }}</h3>
+                        <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+                            {% if product.amazon %}
+                            <a href="{{ product.amazon }}" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #5f9ea0, #4a8b8e); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">🛒 Amazon</a>
+                            {% endif %}
+                            {% if product.gumroad %}
+                            <a href="{{ product.gumroad }}" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #FF90E8, #FFA500); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">💳 Gumroad</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
             {% endif %}
             
