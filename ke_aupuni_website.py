@@ -1,6 +1,5 @@
 # ke_aupuni_finalized_with_image_placeholders.py
-# FIXED VERSION - CSS working, products restored
-# NOW WITH KINGDOM KEYS FREE BOOKLETS PAGE
+# Corrected content structure, Mobile Responsive, and Volume 6 removed.
 
 from flask import Flask, request, redirect, render_template_string, abort, url_for, send_file
 import json
@@ -10,94 +9,54 @@ import os
 
 app = Flask(__name__)
 
-ORDER = ["home", "kingdom_wealth", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice"]
-ORDER = ["home", "kingdom_wealth", "kingdom_keys", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice"]
+# Page order for navigation - VOLUME 6 REMOVED
+ORDER = ["home", "kingdom_wealth", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice", "kingdom_keys"]
 
+# Data storage
 BASE = Path(__file__).parent
 DATA_FILE = BASE / "website_content.json"
 
+# KAHU PHIL'S ACTUAL CONTENT - Kingdom Message, No Mythology!
+# CONTENT HAS BEEN RESTRUCTURED FOR LOGICAL FLOW
 DEFAULT_PAGES = {
-    "order": ORDER,
+    "order": ORDER, # Uses the clean order above
     "pages": {
         "home": {
+            # New, simpler welcome page content
             "title": "Ke Aupuni O Ke Akua - The Kingdom of God",
             "hero_image": "https://i.imgur.com/wmHEyDo.png",
-            "body_md": "## Welcome to Ke Aupuni O Ke Akua - The Kingdom of God\r\n\r\nMahalo for visiting. This site is dedicated to rediscovering the revolutionary Kingdom message that Jesus actually preached, which is often missed in modern religious traditions.\r\n\r\n### Our Mission: Kingdom, Not Religion\r\nJesus's central focus was the Kingdom of God—the reign and rule of God breaking into the human experience here and now. Our resources aim to guide you into a deeper understanding of Kingdom principles, citizenship, and authority, moving you from religious performance into authentic, transformative living.\r\n\r\n**Start your journey today by exploring 'The Call to Repentance' series in the navigation.**\r\n\r\n### What Jesus Actually Taught\r\n\r\n**Kingdom Principles Over Religious Rules** - Discover how Jesus consistently chose kingdom living over religious compliance.\r\n\r\n**Repentance as Transformation** - Move beyond feeling sorry for sins to understanding a complete transformation of mind, heart, and lifestyle.\r\n\r\n**Heaven on Earth** - Learn how the Kingdom of God is meant to manifest in our daily lives, relationships, and communities right now.\r\n\r\n---\r\n\r\n### 🎁 FREE Kingdom Resources\r\n\r\nNew to Kingdom theology? Start with our **FREE Kingdom Keys booklets** - bite-sized teachings that will transform your understanding of what Jesus really taught.\r\n\r\n**[Download Free Kingdom Keys →](/kingdom_keys)**\r\n\r\n---\r\n\r\n### 💰 Kingdom Wealth & Biblical Prosperity\r\n\r\nDiscover God's economic system and how the Kingdom operates on principles of stewardship, multiplication, and generosity.\r\n\r\n**[Explore Kingdom Wealth Principles →](/kingdom_wealth)**",
-            "body_md": "## Welcome to Ke Aupuni O Ke Akua - The Kingdom of God\r\n\r\nMahalo for visiting. This site is dedicated to rediscovering the revolutionary Kingdom message that Jesus actually preached, which is often missed in modern religious traditions.\r\n\r\n### Our Mission: Kingdom, Not Religion\r\nJesus's central focus was the Kingdom of God—the reign and rule of God breaking into the human experience here and now. Our resources aim to guide you into a deeper understanding of Kingdom principles, citizenship, and authority, moving you from religious performance into authentic, transformative living.\r\n\r\n**Start your journey today by exploring 'The Call to Repentance' series in the navigation.**\r\n\r\n### What Jesus Actually Taught\r\n\r\n**Kingdom Principles Over Religious Rules** - Discover how Jesus consistently chose kingdom living over religious compliance.\r\n\r\n**Repentance as Transformation** - Move beyond feeling sorry for sins to understanding a complete transformation of mind, heart, and lifestyle.\r\n\r\n**Heaven on Earth** - Learn how the Kingdom of God is meant to manifest in our daily lives, relationships, and communities right now.\r\n\r\n---\r\n\r\n### 🎁 NEW TO KINGDOM THEOLOGY? START HERE!\r\n\r\n**FREE Kingdom Keys Booklets** - Bite-sized teachings that will transform your understanding of what Jesus really taught. Perfect introduction before diving into the full series.\r\n\r\n**[Download FREE Kingdom Keys →](/kingdom_keys)**\r\n\r\n---\r\n\r\n### 💰 Kingdom Wealth & Biblical Prosperity\r\n\r\nDiscover God's economic system and how the Kingdom operates on principles of stewardship, multiplication, and generosity.\r\n\r\n**[Explore Kingdom Wealth Principles →](/kingdom_wealth)**",
+            "body_md": "## Welcome to Ke Aupuni O Ke Akua - The Kingdom of God\r\n\r\nMahalo for visiting. This site is dedicated to rediscovering the revolutionary Kingdom message that Jesus actually preached, which is often missed in modern religious traditions.\r\n\r\n### Our Mission: Kingdom, Not Religion\r\nJesus's central focus was the Kingdom of God—the reign and rule of God breaking into the human experience here and now. Our resources aim to guide you into a deeper understanding of Kingdom principles, citizenship, and authority, moving you from religious performance into authentic, transformative living.\r\n\r\n**Start your journey today by exploring 'The Call to Repentance' series in the navigation.**\r\n\r\n### What Jesus Actually Taught\r\n\r\n**Kingdom Principles Over Religious Rules** - Discover how Jesus consistently chose kingdom living over religious compliance.\r\n\r\n**Repentance as Transformation** - Move beyond feeling sorry for sins to understanding a complete transformation of mind, heart, and lifestyle.\r\n\r\n**Heaven on Earth** - Learn how the Kingdom of God is meant to manifest in our daily lives, relationships, and communities right now.",
+            "product_url": "https://amzn.to/3FfH9ep"
+        },
+        "aloha_wellness": {
+            "title": "Aloha Wellness - Island Health & Healing",
+            "hero_image": "https://i.imgur.com/xGeWW3Q.jpeg",
+            "body_md": "## Aloha Wellness - The Sacred Art of How You Eat\r\n\r\nDiscover the life-changing power of **how** you eat, not just what you eat. This groundbreaking wellness book combines cutting-edge scientific research with ancient Hawaiian mana'o (wisdom) to transform your relationship with food and nourishment.\r\n\r\n### Beyond Diet Culture - A Hawaiian Perspective\r\n\r\nTraditional Hawaiian culture understood something modern society has forgotten: eating is a sacred act that connects us to the land, our ancestors, and our own spiritual well-being. This book bridges that ancient wisdom with contemporary nutritional science.\r\n\r\n### Revolutionary Approach: How, Not What\r\n\r\n**Mindful Consumption** - Learn the scientific basis for how mindful eating practices affect digestion, metabolism, and overall health.\r\n\r\n**Cultural Eating Wisdom** - Discover how Hawaiian ancestors approached meals as community ceremonies, gratitude practices, and spiritual connections.\r\n\r\n**Stress and Digestion** - Research-backed insights into how your emotional state during meals affects nutrient absorption and digestive health.\r\n\r\n**Rhythm and Timing** - Ancient Hawaiian understanding of eating in harmony with natural rhythms, supported by modern chronobiology research.\r\n\r\n**Scientific Research Meets Island Wisdom** - This book offers a comprehensive look at the intersection of modern science and ancient practice.\r\n\r\n### Hawaiian Mana'o (Wisdom Principles)\r\n\r\n**Ho'oponopono with Food** - Making right relationships with nourishment and healing food-related guilt or shame.\r\n\r\n**Aloha 'Āina** - Love of the land extends to gratitude for the food it provides and mindful consumption practices.\r\n\r\n**Lōkahi** - Finding unity and balance in your relationship with food, body, and spirit.\r\n\r\n**Mālama** - Caring for your body as a sacred temple through conscious eating practices.\r\n\r\nTransform your health from the inside out by changing not what you eat, but how you approach the sacred act of nourishment.",
             "product_url": "https://amzn.to/3FfH9ep"
         },
         "kingdom_wealth": {
             "title": "Kingdom Wealth",
             "hero_image": "https://i.imgur.com/G2YmSka.jpeg",
-            "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom of God operates on a system of stewardship, not ownership. Understanding Kingdom Wealth means shifting from a \"poverty mindset\" to a \"provision mindset.\"\r\n\r\n### Core Principles of Kingdom Wealth\r\n\r\n**Source vs. Resource** - Recognizing that God is the Source, and everything else is just a resource.\r\n\r\n**Seed Time and Harvest** - The spiritual law of multiplication through giving and wisdom.\r\n\r\n**Economic Mandate** - We are blessed to be a blessing, establishing God's covenant on the earth.\r\n\r\n### Practical Application\r\n\r\nTrue wealth in the Kingdom is measured by your capacity to influence your community for good and provide for the needs of the ministry and the poor.\r\n\r\n---\r\n\r\n### 📚 Recommended Kingdom Wealth Resources\r\n\r\n**The Call to Repentance Series** - Includes comprehensive teaching on Kingdom economics and biblical stewardship principles.\r\n\r\n**[Get the Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n---\r\n\r\n### 💡 Transform Your Financial Mindset\r\n\r\nMove from religious poverty thinking into Kingdom abundance. Learn how Jesus taught about money, provision, and the Father's desire to bless His children.\r\n\r\n**Scripture Foundation:** \"Seek first the kingdom of God and His righteousness, and all these things shall be added to you.\" - Matthew 6:33",
+            "body_md": "## Biblical Stewardship & Economic Increase\\r\\n\\r\\nThe Kingdom operates on stewardship.\\r\\n\\r\\n### Core Principles\\r\\n\\r\\n**Source vs. Resource** - God is the Source.\\r\\n\\r\\n**[Complete Kingdom Series →](/call_to_repentance)**\\r\\n\\r\\n**[Myron Golden Training →](/myron-golden)**",
             "product_url": ""
         },
-        "aloha_wellness": {
-            "title": "Aloha Wellness - Island Health & Healing",
-            "hero_image": "https://i.imgur.com/xGeWW3Q.jpeg",
-            "body_md": "## Aloha Wellness - The Sacred Art of How You Eat\r\n\r\nDiscover the life-changing power of **how** you eat, not just what you eat. This groundbreaking wellness book combines cutting-edge scientific research with ancient Hawaiian mana'o (wisdom) to transform your relationship with food and nourishment.\r\n\r\n### Beyond Diet Culture - A Hawaiian Perspective\r\n\r\nTraditional Hawaiian culture understood something modern society has forgotten: eating is a sacred act that connects us to the land, our ancestors, and our own spiritual well-being. This book bridges that ancient wisdom with contemporary nutritional science.\r\n\r\n### Revolutionary Approach: How, Not What\r\n\r\n**Mindful Consumption** - Learn the scientific basis for how mindful eating practices affect digestion, metabolism, and overall health.\r\n\r\n**Cultural Eating Wisdom** - Discover how Hawaiian ancestors approached meals as community ceremonies, gratitude practices, and spiritual connections.\r\n\r\n**Stress and Digestion** - Research-backed insights into how your emotional state during meals affects nutrient absorption and digestive health.\r\n\r\n**Rhythm and Timing** - Ancient Hawaiian understanding of eating in harmony with natural rhythms, supported by modern chronobiology research.\r\n\r\n**Scientific Research Meets Island Wisdom** - This book offers a comprehensive look at the intersection of modern science and ancient practice.\r\n\r\n### Hawaiian Mana'o (Wisdom Principles)\r\n\r\n**Ho'oponopono with Food** - Making right relationships with nourishment and healing food-related guilt or shame.\r\n\r\n**Aloha 'Āina** - Love of the land extends to gratitude for the food it provides and mindful consumption practices.\r\n\r\n**Lōkahi** - Finding unity and balance in your relationship with food, body, and spirit.\r\n\r\n**Mālama** - Caring for your body as a sacred temple through conscious eating practices.\r\n\r\nTransform your health from the inside out by changing not what you eat, but how you approach the sacred act of nourishment.\r\n\r\n---\r\n\r\n### 🌺 Body, Soul & Spirit Wellness\r\n\r\nTrue wellness integrates physical health with spiritual vitality. Explore how Kingdom principles apply to caring for the temple God gave you.\r\n\r\n**[Discover Kingdom Living Principles →](/kingdom_wealth)**",
-            "product_url": "https://amzn.to/3FfH9ep",
-            "products": [
-                {
-                    "title": "Aloha Wellness Book",
-                    "cover": "https://m.media-amazon.com/images/I/712tO3wmGEL._SL1499_.jpg",
-                    "amazon": "",
-                    "gumroad": ""
-                }
-            ]
-        },
         "call_to_repentance": {
+            # This page is now the comprehensive Kingdom Series overview
             "title": "The Call to Repentance - The Kingdom Series",
             "hero_image": "https://i.imgur.com/tG1vBp9.jpeg",
-            "body_md": "## The Call to Repentance - Rediscovering Jesus's Kingdom Message\r\n\r\nStep beyond religious tradition and rediscover the revolutionary Kingdom message that Jesus actually preached. This transformative book series cuts through centuries of religious interpretation to reveal the pure, life-changing teachings of the Kingdom of God.\r\n\r\n### Series Overview (Volumes 1-5)\r\n\r\nThis isn't a single book but a comprehensive series that systematically unpacks Jesus's kingdom teachings.\r\n\r\n### A Call to Authentic Christianity\r\n\r\nThis series challenges readers to move beyond:\r\n- Religious performance into authentic relationship\r\n- Sunday Christianity into daily kingdom living\r\n- Denominational identity into kingdom citizenship\r\n- Waiting for heaven into experiencing God's kingdom now\r\n\r\n**Join the revolution that Jesus started. Discover the Kingdom message that changes everything.**\r\n\r\n---\r\n\r\n### 💰 Kingdom Wealth Principles\r\n\r\nBook 3 in the series covers biblical prosperity, stewardship, and God's economic system. Learn how Jesus taught about money, provision, and Kingdom increase.\r\n\r\n**[Explore Kingdom Wealth Teaching →](/kingdom_wealth)**\r\n\r\n---\r\n\r\n### 🎁 New to Kingdom Theology?\r\n\r\nStart with our FREE Kingdom Keys booklets - perfect introduction to the core concepts before diving into the full series.\r\n\r\n**[Get Free Kingdom Keys →](/kingdom_keys)**",
-            "body_md": "## The Call to Repentance - Rediscovering Jesus's Kingdom Message\r\n\r\nStep beyond religious tradition and rediscover the revolutionary Kingdom message that Jesus actually preached. This transformative book series cuts through centuries of religious interpretation to reveal the pure, life-changing teachings of the Kingdom of God.\r\n\r\n### Series Overview (Volumes 1-5)\r\n\r\nThis isn't a single book but a comprehensive series that systematically unpacks Jesus's kingdom teachings.\r\n\r\n### A Call to Authentic Christianity\r\n\r\nThis series challenges readers to move beyond:\r\n- Religious performance into authentic relationship\r\n- Sunday Christianity into daily kingdom living\r\n- Denominational identity into kingdom citizenship\r\n- Waiting for heaven into experiencing God's kingdom now\r\n\r\n**Join the revolution that Jesus started. Discover the Kingdom message that changes everything.**\r\n\r\n---\r\n\r\n### 🎁 New to Kingdom Theology?\r\n\r\nStart with our **FREE Kingdom Keys booklets** - perfect introduction to the core concepts before diving into the full series.\r\n\r\n**[Get Free Kingdom Keys →](/kingdom_keys)**\r\n\r\n---\r\n\r\n### 💰 Kingdom Wealth Principles\r\n\r\nBook 3 in the series covers biblical prosperity, stewardship, and God's economic system. Learn how Jesus taught about money, provision, and Kingdom increase.\r\n\r\n**[Explore Kingdom Wealth Teaching →](/kingdom_wealth)**",
-            "product_url": "https://www.amazon.com/CALL-REPENTANCE-Foundation-Application-Lifestyle-ebook/dp/B0FXYDD9SN",
-            "products": [
-                {
-                    "title": "The Call to Repentance - Kingdom Book",
-                    "cover": "",
-                    "amazon": "",
-                    "gumroad": "https://uncomango.gumroad.com/l/myold"
-                }
-            ]
+            "body_md": "## The Call to Repentance - Rediscovering Jesus's Kingdom Message\r\n\r\nStep beyond religious tradition and rediscover the revolutionary Kingdom message that Jesus actually preached. This transformative book series cuts through centuries of religious interpretation to reveal the pure, life-changing teachings of the Kingdom of God.\r\n\r\n### Series Overview (Volumes 1-5)\r\n\r\nThis isn't a single book but a comprehensive series that systematically unpacks Jesus's kingdom teachings. **To display the book covers, simply replace the placeholder URL below each Volume with your image URL from Imgur or Amazon.**\r\n\r\n---\r\n\r\n### **Volume 1: The Foundation**\r\n![The Call to Repentance Volume 1 Cover](https://via.placeholder.com/300x450/4A90E2/FFFFFF?text=Volume+1) \r\nUnderstanding what the Kingdom of God actually is and why Jesus made it His central message.\r\n\r\n---\r\n\r\n### **Volume 2: Kingdom Citizenship**\r\n![The Call to Repentance Volume 2 Cover](https://via.placeholder.com/300x450/50C878/FFFFFF?text=Volume+2)\r\nWhat it means to be a citizen of God's kingdom while living in earthly systems.\r\n\r\n---\r\n\r\n### **Volume 3: Kingdom Economics**\r\n![The Call to Repentance Volume 3 Cover](https://via.placeholder.com/300x450/FFB347/FFFFFF?text=Volume+3)\r\nHow kingdom principles transform our relationship with money, work, and provision.\r\n\r\n---\r\n\r\n### **Volume 4: Kingdom Relationships**\r\n![The Call to Repentance Volume 4 Cover](https://via.placeholder.com/300x450/FF6B6B/FFFFFF?text=Volume+4)\r\nLove, forgiveness, and community the way Jesus intended.\r\n\r\n---\r\n\r\n### **Volume 5: Kingdom Authority**\r\n![The Call to Repentance Volume 5 Cover](https://via.placeholder.com/300x450/9B59B6/FFFFFF?text=Volume+5)\r\nWalking in the supernatural power that Jesus demonstrated and promised to His followers.\r\n\r\n---\r\n\r\n## Embracing True Repentance for Spiritual Growth\r\n\r\nRepentance is not merely feeling sorry for our mistakes - it is a complete transformation of heart and mind that leads us into the fullness of Kingdom living.\r\n\r\n### Understanding Biblical Repentance\r\n\r\nThe Hebrew word **teshuvah** means \"to return\" or \"to turn around.\" It implies a complete change of direction - turning away from patterns that separate us from God and turning toward His kingdom ways.\r\n\r\n**The Three Dimensions of True Repentance:**\r\n\r\n**1. Metanoia (Change of Mind)**\r\nRepentance begins with a fundamental shift in how we think. We must align our thoughts with God's thoughts, seeing ourselves and others through His eyes of love and truth.\r\n\r\n**2. Transformation of Heart**\r\nTrue repentance touches our emotions and desires. Our hearts must be softened and purified, learning to love what God loves and grieve what grieves His heart.\r\n\r\n**3. Changed Actions**\r\nRepentance must bear fruit in our daily choices. We demonstrate our changed hearts through new patterns of behavior that reflect Kingdom values.\r\n\r\n*\"Repent, for the kingdom of heaven has come near.\" - Matthew 4:17*\r\n\r\n---\r\n\r\n### A Call to Authentic Christianity\r\n\r\nThis series challenges readers to move beyond:\r\n- Religious performance into authentic relationship\r\n- Sunday Christianity into daily kingdom living\r\n- Denominational identity into kingdom citizenship\r\n- Waiting for heaven into experiencing God's kingdom now\r\n\r\n**Join the revolution that Jesus started. Discover the Kingdom message that changes everything.**",
+            "product_url": "https://www.amazon.com/CALL-REPENTANCE-Foundation-Application-Lifestyle-ebook/dp/B0FXYDD9SN"
         },
         "pastor_planners": {
             "title": "Pastor Planners - Tools for Ministry Excellence",
             "hero_image": "https://i.imgur.com/tWnn5UY.png",
-            "body_md": "## Organize Your Ministry with Purpose and Prayer\r\n\r\nEffective ministry requires both spiritual sensitivity and practical organization. Our Pastor Planners combine beautiful design with functional tools to help you lead with excellence and peace.\r\n\r\n### Features of Our Ministry Planning System\r\n\r\n**Sermon Planning Sections** - Map out your preaching calendar with space for themes, scriptures, and prayer requests.\r\n\r\n**Prayer and Pastoral Care** - Dedicated sections for tracking prayer requests, hospital visits, counseling sessions, and follow-up care.\r\n\r\n**Meeting and Event Coordination** - Organize board meetings, committee sessions, special events, and outreach activities.\r\n\r\n**Personal Spiritual Disciplines** - Maintain your own spiritual health with guided sections for daily devotions.\r\n\r\n### Why Pastors Love Our Planners\r\n\r\n**Hawaiian-Inspired Design** - Beautiful layouts featuring island imagery and scripture verses.\r\n\r\n**Flexible Formatting** - Works for churches of all sizes and denominations.\r\n\r\n**Durable Construction** - High-quality materials that withstand daily use.\r\n\r\n**Spiritual Focus** - More than just organization - designed to keep your heart centered on God's calling.\r\n\r\n---\r\n\r\n### 📚 Pastor Resources\r\n\r\n**Complete Kingdom Theology Series** - Equip yourself with solid biblical teaching to share with your congregation.\r\n\r\n**[Browse Kingdom Teaching Resources →](/call_to_repentance)**\r\n\r\n---\r\n\r\n### 🎁 FREE Ministry Tools\r\n\r\nDownload our FREE Kingdom Keys booklets - perfect for small groups, new believers, or sermon prep inspiration.\r\n\r\n**[Get Free Kingdom Keys →](/kingdom_keys)**",
-            "body_md": "## Organize Your Ministry with Purpose and Prayer\r\n\r\nEffective ministry requires both spiritual sensitivity and practical organization. Our Pastor Planners combine beautiful design with functional tools to help you lead with excellence and peace.\r\n\r\n### Features of Our Ministry Planning System\r\n\r\n**Sermon Planning Sections** - Map out your preaching calendar with space for themes, scriptures, and prayer requests.\r\n\r\n**Prayer and Pastoral Care** - Dedicated sections for tracking prayer requests, hospital visits, counseling sessions, and follow-up care.\r\n\r\n**Meeting and Event Coordination** - Organize board meetings, committee sessions, special events, and outreach activities.\r\n\r\n**Personal Spiritual Disciplines** - Maintain your own spiritual health with guided sections for daily devotions.\r\n\r\n### Why Pastors Love Our Planners\r\n\r\n**Hawaiian-Inspired Design** - Beautiful layouts featuring island imagery and scripture verses.\r\n\r\n**Flexible Formatting** - Works for churches of all sizes and denominations.\r\n\r\n**Durable Construction** - High-quality materials that withstand daily use.\r\n\r\n**Spiritual Focus** - More than just organization - designed to keep your heart centered on God's calling.\r\n\r\n---\r\n\r\n### 📚 Pastor Resources\r\n\r\n**Complete Kingdom Theology Series** - Equip yourself with solid biblical teaching to share with your congregation.\r\n\r\n**[Browse Kingdom Teaching Resources →](/call_to_repentance)**\r\n\r\n---\r\n\r\n### 🎁 FREE Ministry Tools\r\n\r\nDownload our **FREE Kingdom Keys booklets** - perfect for small groups, new believers, or sermon prep inspiration.\r\n\r\n**[Get Free Kingdom Keys →](/kingdom_keys)**",
-            "product_url": "https://www.amazon.com/s?k=pastor+planner+ministry+organizer",
-            "products": [
-                {
-                    "title": "Hawaiian Pastor Planner - Yearly",
-                    "cover": "https://public-files.gumroad.com/p4346cgzkcd4iivhsgkf7pjtypr2",
-                    "amazon": "",
-                    "gumroad": ""
-                },
-                {
-                    "title": "Hawaiian Pastor Planner - Monthly",
-                    "cover": "https://public-files.gumroad.com/ccssij259a3729na9xx5s12skasm",
-                    "amazon": "",
-                    "gumroad": ""
-                },
-                {
-                    "title": "Samoan Pastor Planner - Yearly",
-                    "cover": "https://public-files.gumroad.com/worm4zkkn4hm5k0f81icc4e4pofp",
-                    "amazon": "",
-                    "gumroad": ""
-                },
-                {
-                    "title": "Samoan Pastor Planner - Monthly",
-                    "cover": "https://public-files.gumroad.com/ztbnhmb1azeotsvxga3979n6dw4g",
-                    "amazon": "",
-                    "gumroad": ""
-                }
-            ]
+            "body_md": "## Organize Your Ministry with Purpose and Prayer\r\n\r\nEffective ministry requires both spiritual sensitivity and practical organization. Our Pastor Planners combine beautiful design with functional tools to help you lead with excellence and peace.\r\n\r\n### Features of Our Ministry Planning System\r\n\r\n**Sermon Planning Sections** - Map out your preaching calendar with space for themes, scriptures, and prayer requests. Plan seasonal series and track the spiritual journey of your congregation.\r\n\r\n**Prayer and Pastoral Care** - Dedicated sections for tracking prayer requests, hospital visits, counseling sessions, and follow-up care. Never let a member of your flock slip through the cracks.\r\n\r\n**Meeting and Event Coordination** - Organize board meetings, committee sessions, special events, and outreach activities with integrated calendars and checklists.\r\n\r\n**Personal Spiritual Disciplines** - Maintain your own spiritual health with guided sections for daily devotions, sabbath planning, and personal growth goals.\r\n\r\n### Why Pastors Love Our Planners\r\n\r\n**Hawaiian-Inspired Design** - Beautiful layouts featuring island imagery and scripture verses that bring peace to your planning time.\r\n\r\n**Flexible Formatting** - Works for churches of all sizes and denominations, with customizable sections for your unique ministry context.\r\n\r\n**Durable Construction** - High-quality materials that withstand daily use throughout the church year.\r\n\r\n**Spiritual Focus** - More than just organization - designed to keep your heart centered on God's calling throughout your busy ministry schedule.\r\n\r\nOrder your Pastor Planner today and experience the peace that comes from organized, prayer-centered ministry leadership.",
+            "product_url": "https://www.amazon.com/s?k=pastor+planner+ministry+organizer"
         },
         "nahenahe_voice": {
             "title": "The Nahenahe Voice of Nahono'opi'ilani - Musical Legacy",
             "hero_image": "https://i.imgur.com/Vyz6nFJ.png",
-            "body_md": "## The Nahenahe Voice of Nahono'opi'ilani - Live from Molokai Ranch Lodge\r\n\r\nExperience the soul-stirring sounds of authentic Hawaiian music captured live at the historic Molokai Ranch Lodge in the year 2000. This intimate recording showcases the true meaning of **nahenahe** - the gentle, soothing voice that carries the spirit of aloha across the islands.\r\n\r\n### A Sacred Musical Journey\r\n\r\nRecorded in the peaceful setting of Molokai Ranch Lodge, this collection features solo guitar and traditional Hawaiian melodies that speak directly to the heart.\r\n\r\n**Nahenahe** means more than just \"soft\" or \"sweet\" - it represents music that heals, soothes, and connects us to the divine presence that flows through all creation.\r\n\r\n### What You'll Experience:\r\n\r\n**Traditional Hawaiian Melodies** - Time-honored songs passed down through generations.\r\n\r\n**Solo Guitar Mastery** - Intimate acoustic performances showcasing Hawaiian slack-key guitar traditions.\r\n\r\n**Authentic Island Atmosphere** - The natural acoustics and peaceful energy of Molokai Ranch Lodge.\r\n\r\n**Healing Through Song** - Each track brings peace, comfort, and the healing power of aloha.\r\n\r\n*\"Music is the language that speaks when words are not enough. The nahenahe voice carries aloha to every heart that listens.\"*\r\n\r\nPerfect for meditation, relaxation, spiritual practice, or any time you need the gentle embrace of island peace.",
+            "body_md": "## The Nahenahe Voice of Nahono'opi'ilani - Live from Molokai Ranch Lodge\r\n\r\nExperience the soul-stirring sounds of authentic Hawaiian music captured live at the historic Molokai Ranch Lodge in the year 2000. This intimate recording showcases the true meaning of **nahenahe** - the gentle, soothing voice that carries the spirit of aloha across the islands.\r\n\r\n### A Sacred Musical Journey\r\n\r\nRecorded in the peaceful setting of Molokai Ranch Lodge, this collection features solo guitar and traditional Hawaiian melodies that speak directly to the heart. Each song was performed live, capturing the mana (spiritual energy) and authentic aloha that can only come from the sacred island of Molokai.\r\n\r\n**Nahenahe** means more than just \"soft\" or \"sweet\" - it represents music that heals, soothes, and connects us to the divine presence that flows through all creation. This recording embodies that sacred tradition.\r\n\r\n### What You'll Experience:\r\n\r\n**Traditional Hawaiian Melodies** - Time-honored songs that have been passed down through generations, preserving the cultural wisdom of our ancestors.\r\n\r\n**Solo Guitar Mastery** - Intimate acoustic performances that showcase the beauty of Hawaiian slack-key guitar traditions and contemporary island sounds.\r\n\r\n**Authentic Island Atmosphere** - The natural acoustics and peaceful energy of Molokai Ranch Lodge create an immersive listening experience.\r\n\r\n**Healing Through Song** - Each track is designed to bring peace, comfort, and the healing power of aloha to your daily life.\r\n\r\n### The Heart of Aloha\r\n\r\nThis recording is more than entertainment - it's a spiritual journey that invites you to slow down, breathe deeply, and connect with the tranquil spirit of Hawaiʻi. Whether you're seeking meditation music, background for quiet reflection, or simply the beauty of authentic Hawaiian sounds, this collection offers a pathway to inner peace.\r\n\r\n*\"Music is the language that speaks when words are not enough. The nahenahe voice carries aloha to every heart that listens.\"*\r\n\r\nPerfect for meditation, relaxation, spiritual practice, or any time you need the gentle embrace of island peace.",
             "gallery_images": [
                 "/static/covers/cover1.jpg",
                 "/static/covers/cover2.jpg",
@@ -120,42 +79,11 @@ DEFAULT_PAGES = {
                     "icon": "🎧"
                 }
             ]
-        },
-        "kingdom_keys": {
-            "title": "FREE Kingdom Keys Booklets",
-            "hero_image": "https://i.imgur.com/wmHEyDo.png",
-            "body_md": "## 🌺 FREE Kingdom Keys Booklets 🌺\r\n\r\n**Hoʻomau i ke Aupuni o ke Akua** (Continue in the Kingdom of God)\r\n\r\n**Aloha!** I'm Pastor Phil Stephens from Molokaʻi. After 30 years of biblical study, I've discovered the Kingdom truths the church forgot. Download these FREE mini-devotionals.\r\n\r\n---\r\n\r\n## 📧 Get Weekly Kingdom Teaching\r\n\r\nJoin believers discovering Kingdom truth at **YOUR-EMAIL-SERVICE.com**\r\n\r\n---\r\n\r\n## 💝 Was This Helpful?\r\n\r\nIf these booklets blessed you, sow back into this ministry:\r\n\r\n**PayPal:** paypal.me/YOUR-PAYPAL\r\n\r\n**Gumroad:** YOUR-GUMROAD.gumroad.com/l/donation",
-            "body_md": "## 🌺 FREE Kingdom Keys Booklets 🌺\r\n\r\n**Hoʻomau i ke Aupuni o ke Akua** (Continue in the Kingdom of God)\r\n\r\n**Aloha!** I'm Pastor Phil Stephens from Molokaʻi. After 30 years of biblical study, I've discovered the Kingdom truths the church forgot. Download these FREE mini-devotionals that will transform how you see Jesus's message.\r\n\r\n---\r\n\r\n## 📧 Get Weekly Kingdom Teaching\r\n\r\nJoin believers worldwide discovering Kingdom truth. Sign up at **[YOUR-EMAIL-SERVICE]**\r\n\r\n---\r\n\r\n## 📚 Ready for Deeper Teaching?\r\n\r\nThese free booklets are just the beginning. Explore the complete **54-book Kingdom Series** for comprehensive biblical teaching.\r\n\r\n**[Browse Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n---\r\n\r\n## 💝 Was This Helpful?\r\n\r\nIf these booklets blessed you, consider sowing back into this Kingdom ministry:\r\n\r\n**PayPal:** paypal.me/YOUR-PAYPAL  \r\n**Gumroad:** YOUR-GUMROAD.gumroad.com/l/donation\r\n\r\n*Every seed sown helps us reach more people with the Kingdom message.*",
-            "products": [
-                {
-                    "title": "7 Scriptures That Prove the Kingdom Is Inside You Now",
-                    "cover": "",
-                    "amazon": "",
-                    "gumroad": ""
-                },
-                {
-                    "title": "How to Release Kingdom Healing in 10 Minutes a Day",
-                    "cover": "",
-                    "amazon": "",
-                    "gumroad": ""
-                },
-                {
-                    "title": "The 5 Kingdom Prayers My Hawaiian Grandma Taught Me",
-                    "cover": "",
-                    "amazon": "",
-                    "gumroad": ""
-                },
-                {
-                    "title": "Kingdom Wealth: 7 Bible Verses the Prosperity Preachers Won't Tell You",
-                    "cover": "",
-                    "amazon": "",
-                    "gumroad": ""
-                }
-            ]
         }
     }
 }
 
+# Enhanced CSS with Mobile Hamburger Menu - NO CHANGE
 ENHANCED_STYLE = """
 :root {
     --primary-bg: #f8f5f0;
@@ -164,6 +92,17 @@ ENHANCED_STYLE = """
     --accent-warm: #d4a574;
     --white-transparent: rgba(255, 255, 255, 0.95);
     --shadow-soft: 0 2px 10px rgba(0,0,0,0.1);
+        },
+        "kingdom_keys": {
+            "title": "FREE Kingdom Keys Booklets",
+            "hero_image": "https://i.imgur.com/wmHEyDo.png",
+            "body_md": "## 🌺 FREE Kingdom Keys 🌺\\r\\n\\r\\nAfter 30 years of biblical study.\\r\\n\\r\\n**[Browse Complete Series →](/call_to_repentance)**",
+            "products": [
+                {"title": "7 Scriptures Kingdom Is Inside You", "cover": "", "amazon": "", "gumroad": ""},
+                {"title": "Kingdom Healing in 10 Minutes", "cover": "", "amazon": "", "gumroad": ""},
+                {"title": "5 Kingdom Prayers", "cover": "", "amazon": "", "gumroad": ""},
+                {"title": "Kingdom Wealth Verses", "cover": "", "amazon": "", "gumroad": ""}
+            ]
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -178,6 +117,7 @@ body {
         radial-gradient(circle at 80% 20%, rgba(212, 165, 116, 0.1) 0%, transparent 50%);
 }
 
+/* UPDATED: Lauhala mat woven pattern navigation */
 .site-nav {
     background-color: #d4b896;
     background-image: 
@@ -203,14 +143,25 @@ body {
     padding: 0 2rem;
 }
 
+.nav-logo {
+    height: 175px;
+    width: auto;
+    vertical-align: middle;
+}
+
+/* UPDATED: Darker title for visibility on lauhala */
 .nav-title {
     font-size: 1.5rem;
     font-weight: bold;
     color: #2c3e50;
     text-decoration: none;
     text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
+/* Desktop Menu */
 .nav-menu {
     display: flex;
     list-style: none;
@@ -231,6 +182,7 @@ body {
     color: white;
 }
 
+/* Hamburger Menu */
 .hamburger {
     display: none;
     flex-direction: column;
@@ -238,6 +190,7 @@ body {
     padding: 0.5rem;
 }
 
+/* UPDATED: Darker hamburger lines for visibility on lauhala */
 .hamburger span {
     width: 25px;
     height: 3px;
@@ -297,45 +250,21 @@ body {
 }
 
 .content-card {
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                repeating-linear-gradient(90deg, 
-                    rgba(210, 180, 140, 0.3) 0px,
-                    rgba(210, 180, 140, 0.3) 2px,
-                    rgba(139, 90, 43, 0.2) 2px,
-                    rgba(139, 90, 43, 0.2) 4px);
+    background: rgba(0, 0, 0, 0.4);
     border: none;
     padding: 3rem 2rem;
-    box-shadow: none;
     margin-top: 20vh;
     color: white;
+    border-radius: 12px;
 }
 
-.content-card h2 {
-    color: white;
-    margin-bottom: 1rem;
-    font-size: 2.2rem;
-    text-shadow: 3px 3px 6px rgba(0,0,0,0.9);
-}
+.content-card h2 { color: white; font-size: 2rem; margin: 2rem 0 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); }
 
-.content-card h3 {
-    color: white;
-    margin: 2rem 0 1rem;
-    font-size: 1.6rem;
-    text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
-}
+.content-card h3 { color: white; font-size: 1.5rem; margin: 1.5rem 0 0.75rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); }
 
-.content-card p {
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
-    color: white;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
-    line-height: 1.8;
-}
+.content-card p { margin-bottom: 1rem; line-height: 1.8; text-shadow: 1px 1px 2px rgba(0,0,0,0.7); }
 
-.content-card strong {
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-}
+.content-card strong { color: white; font-weight: 600; }
 
 .content-card li {
     color: white;
@@ -377,6 +306,8 @@ body {
     margin-top: 1.5rem;
 }
 
+
+/* CD Cover Gallery */
 .gallery-section {
     margin-top: 2rem;
     padding-top: 2rem;
@@ -421,6 +352,7 @@ body {
     }
 }
 
+
 .footer {
     text-align: center;
     padding: 2rem;
@@ -430,11 +362,13 @@ body {
     margin-top: 2rem;
 }
 
+/* Mobile Styles */
 @media (max-width: 768px) {
     .hamburger {
         display: flex;
     }
     
+    /* UPDATED: Lauhala pattern for mobile dropdown menu */
     .nav-menu {
         display: none;
         position: absolute;
@@ -491,13 +425,9 @@ body {
         padding: 2rem 1.5rem;
     }
     
-    .content-card h2 {
-        font-size: 1.8rem;
-    }
+    .content-card h2 { color: white; font-size: 2rem; margin: 2rem 0 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); }
     
-    .content-card h3 {
-        font-size: 1.4rem;
-    }
+    .content-card h3 { color: white; font-size: 1.5rem; margin: 1.5rem 0 0.75rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); }
     
     .music-buttons {
         flex-direction: column;
@@ -510,9 +440,30 @@ body {
 """
 
 def md_to_html(md_text):
+    """Convert markdown to HTML"""
     return markdown.markdown(md_text, extensions=["extra", "nl2br"])
 
+
+MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Transform Your Financial Future</title>
+<style>{{ style|safe }}
+.email-capture{background:rgba(212,165,116,0.2);padding:30px;margin:30px 0;text-align:center;border:3px solid rgba(212,165,116,0.5);border-radius:12px}
+.section{padding:40px 0}.product-box{background:rgba(0,0,0,0.5);padding:30px;margin:20px 0;border-radius:12px;text-align:center}
+.btn{display:inline-block;padding:15px 40px;background:linear-gradient(135deg,#5f9ea0,#4a8b8e);color:white;text-decoration:none;font-weight:bold;margin:10px;border-radius:8px}
+</style></head><body>
+<nav class="site-nav"><div class="nav-container"><a href="/" class="nav-title"><img src="/static/images/output-onlinepngtools.png" class="nav-logo">Ke Aupuni O Ke Akua</a></div></nav>
+<header class="hero" style="background-image:url('https://i.imgur.com/G2YmSka.jpeg')"><div class="hero-overlay"></div><div class="hero-content"><h1 style="color:white;text-shadow:2px 2px 4px rgba(0,0,0,0.9)">Transform Your Financial Future</h1></div></header>
+<main class="container"><article class="content-card">
+<div class="email-capture"><h2 style="color:white;text-shadow:2px 2px 4px rgba(0,0,0,0.9)">Get FREE Kingdom Business Guide</h2><form action="https://app.kit.com/forms/8979853/subscriptions" method="post"><input type="text" name="fields[first_name]" placeholder="First Name" required style="padding:15px;margin:10px 0;width:100%%;border-radius:6px;border:1px solid #ccc"><input type="email" name="email_address" placeholder="Email" required style="padding:15px;margin:10px 0;width:100%%;border-radius:6px;border:1px solid #ccc"><button type="submit" style="width:100%%;padding:15px;background:#d4af37;color:white;font-weight:bold;border:none;border-radius:6px">GET FREE GUIDE</button></form></div>
+<div class="section"><h2 style="color:white;text-shadow:2px 2px 4px rgba(0,0,0,0.9)">SECTION 1: Start Your Journey</h2><div class="product-box"><a href="https://www.trashmantocashman.com/tmcm-book?affiliate_id=4319525" class="btn">TRASH MAN TO CASH MAN</a><a href="https://www.bossmovesbook.com/bossmoves?affiliate_id=4319525" class="btn">BOSS MOVES BOOK</a></div></div>
+<div class="section"><h2 style="color:white;text-shadow:2px 2px 4px rgba(0,0,0,0.9)">SECTION 2: Transform Your Money Blueprint</h2><div class="product-box"><a href="https://www.mindovermoneymastery.com/momm?affiliate_id=4319525" class="btn">MIND OVER MONEY MASTERY</a></div></div>
+<div class="section"><h2 style="color:white;text-shadow:2px 2px 4px rgba(0,0,0,0.9)">SECTION 3: Master Making Offers</h2><div class="product-box"><a href="https://www.makemoreofferschallenge.com/mmoc?affiliate_id=4319525" class="btn">MAKE MORE OFFERS CHALLENGE</a><a href="https://www.offermasterylive.com/offer-mastery-livevetfk4nn?affiliate_id=4319525" class="btn">OFFER MASTERY LIVE</a></div></div>
+<div class="section"><h2 style="color:white;text-shadow:2px 2px 4px rgba(0,0,0,0.9)">SECTION 4: Build Your System</h2><div class="product-box"><a href="https://www.mygoldenops.com/golden-opsm1y8y7bx?affiliate_id=4319525" class="btn">GOLDEN OPS</a></div></div>
+</article></main></body></html>"""
+
+
 def load_content():
+    """Load content from JSON file or create default"""
     if DATA_FILE.exists():
         try:
             with open(DATA_FILE, "r", encoding="utf-8") as f:
@@ -523,21 +474,25 @@ def load_content():
     else:
         data = DEFAULT_PAGES
         save_content(data)
+    
     return data
 
 def save_content(data):
+    """Save content to JSON file"""
     DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 def render_page(page_id, data):
+    """Render a complete page"""
     pages = data.get("pages", data)
     if page_id not in pages:
         abort(404)
-
+    
     page = pages[page_id]
-
+    
     nav_items = []
+    # Use the clean ORDER list
     page_order = data.get("order", ORDER)
     for slug in page_order:
         if slug in pages:
@@ -546,7 +501,7 @@ def render_page(page_id, data):
                 "title": pages[slug].get("title", slug.replace("_", " ").title()),
                 "url": f"/{slug}" if slug != "home" else "/"
             })
-
+    
     return render_template_string(PAGE_TEMPLATE, 
         page=page,
         nav_items=nav_items,
@@ -561,7 +516,8 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title }}</title>
-    <style>{{ style|safe }}
+    <style>{{ style }}
+    /* Image Styling */
     .content-card img {
         max-width: 100%;
         height: auto;
@@ -583,17 +539,12 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             max-width: 100%;
         }
     }
-
-    .content-card div[style*="background: rgba(255,255,255,0.1)"]:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.5) !important;
-    }
 </style>
 </head>
 <body>
     <nav class="site-nav">
         <div class="nav-container">
-            <a href="/" class="nav-title">Ke Aupuni O Ke Akua</a>
+            <a href="/" class="nav-title"><img src="/static/images/output-onlinepngtools.png" alt="Logo" class="nav-logo">Ke Aupuni O Ke Akua</a>
             <div class="hamburger" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
@@ -603,7 +554,6 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
                 {% for item in nav_items %}
                 <li><a href="{{ item.url }}">{{ item.title }}</a></li>
                 {% endfor %}
-                <li><a href="/kingdom_keys" style="background:#d4af37;color:#fff;padding:0.5rem 1rem;border-radius:6px;">🎁 FREE Booklets</a></li>
             </ul>
         </div>
     </nav>
@@ -632,30 +582,6 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             </div>
             {% endif %}
             
-            {% if page.products %}
-            <div style="margin: 3rem 0; padding: 2rem 0; border-top: 2px solid rgba(255,255,255,0.2);">
-                <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">📚 Available Products</h2>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto;">
-                    {% for product in page.products %}
-                    <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.3s ease;">
-                        {% if product.cover %}
-                        <img src="{{ product.cover }}" alt="{{ product.title }}" style="width: 100%; height: auto; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
-                        {% endif %}
-                        <h3 style="color: white; font-size: 1rem; margin-bottom: 1rem; min-height: 2.5rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">{{ product.title }}</h3>
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                            {% if product.amazon %}
-                            <a href="{{ product.amazon }}" target="_blank" style="display: block; background: linear-gradient(135deg, var(--accent-teal), #4a8b8e); color: white; padding: 0.6rem; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.9rem; text-align: center; transition: transform 0.2s;">🛒 Amazon</a>
-                            {% endif %}
-                            {% if product.gumroad %}
-                            <a href="{{ product.gumroad }}" target="_blank" style="display: block; background: linear-gradient(135deg, #FF90E8, #FFA500); color: white; padding: 0.6rem; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.9rem; text-align: center; transition: transform 0.2s;">💳 Gumroad</a>
-                            {% endif %}
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
-
             {% if page.product_links %}
             <div class="buy-section">
                 <h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">🎵 Stream Our Music</h2>
@@ -715,6 +641,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
         menu.classList.toggle('active');
     }
     
+    // Close menu when clicking outside
     document.addEventListener('click', function(event) {
         const nav = document.querySelector('.nav-container');
         const menu = document.getElementById('navMenu');
@@ -739,33 +666,48 @@ def page(page_id):
         abort(404)
     return render_page(page_id, data)
 
+
 @app.route("/static/covers/<filename>")
 def serve_cover(filename):
+    """Serve CD cover images"""
     cover_path = BASE / filename
     if cover_path.exists():
         return send_file(cover_path, mimetype='image/jpeg')
     abort(404)
 
-# NEW KINGDOM KEYS FREE BOOKLETS LANDING PAGE
-@app.route("/kahu")
+
+# ============================================
+# ADMIN PANEL
+# ============================================
+
+ADMIN_PASSWORD = "Kingdom2024"  # Change this in production!
+
+@app.route("/admin")
 def admin_panel():
+    """Admin panel for managing content"""
     data = load_content()
     pages = data.get("pages", data)
-
+    
     admin_html = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
+    <title>Admin Panel - Ke Aupuni O Ke Akua</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: system-ui, -apple-system, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 2rem;
         }
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -774,20 +716,24 @@ def admin_panel():
             padding: 2rem;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
+        
         h1 {
             color: #2c3e50;
             margin-bottom: 0.5rem;
             font-size: 2rem;
         }
+        
         .subtitle {
             color: #7f8c8d;
             margin-bottom: 2rem;
             font-size: 1rem;
         }
+        
         .page-list {
             display: grid;
             gap: 1.5rem;
         }
+        
         .page-card {
             background: #f8f9fa;
             padding: 1.5rem;
@@ -795,16 +741,19 @@ def admin_panel():
             border: 2px solid #e9ecef;
             transition: all 0.3s ease;
         }
+        
         .page-card:hover {
             border-color: #667eea;
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
         }
+        
         .page-title {
             font-size: 1.25rem;
             color: #2c3e50;
             margin-bottom: 1rem;
             font-weight: 600;
         }
+        
         .page-info {
             display: grid;
             gap: 0.5rem;
@@ -812,10 +761,12 @@ def admin_panel():
             font-size: 0.9rem;
             color: #495057;
         }
+        
         .page-info strong {
             color: #2c3e50;
             font-weight: 600;
         }
+        
         .edit-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -829,10 +780,12 @@ def admin_panel():
             text-decoration: none;
             display: inline-block;
         }
+        
         .edit-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }
+        
         .back-btn {
             background: #6c757d;
             color: white;
@@ -845,14 +798,17 @@ def admin_panel():
             display: inline-block;
             margin-top: 2rem;
         }
+        
         .back-btn:hover {
             background: #5a6268;
         }
+        
         .gallery-preview {
             display: flex;
             gap: 0.5rem;
             margin-top: 0.5rem;
         }
+        
         .gallery-preview img {
             width: 60px;
             height: 60px;
@@ -865,19 +821,18 @@ def admin_panel():
 <body>
     <div class="container">
         <h1>🌺 Admin Panel</h1>
-        <p class="subtitle">Manage website content</p>
+        <p class="subtitle">Manage your website content</p>
         
         <div class="page-list">
 """
-
+    
     for page_id, page_data in pages.items():
         page_title = page_data.get("title", page_id)
         hero_image = page_data.get("hero_image", "")
         product_url = page_data.get("product_url", "N/A")
         gallery_images = page_data.get("gallery_images", [])
         product_links = page_data.get("product_links", [])
-        products = page_data.get("products", [])
-
+        
         admin_html += f"""
             <div class="page-card">
                 <div class="page-title">{page_title}</div>
@@ -885,25 +840,26 @@ def admin_panel():
                     <div><strong>Page ID:</strong> {page_id}</div>
                     <div><strong>Hero Image:</strong> {hero_image[:60]}...</div>
 """
-
-        if products:
-            admin_html += f'                    <div><strong>Products:</strong> {len(products)} items</div>\n'
-
+        
         if product_url != "N/A":
             admin_html += f'                    <div><strong>Product URL:</strong> <a href="{product_url}" target="_blank">View</a></div>\n'
-
+        
         if product_links:
             admin_html += f'                    <div><strong>Music Links:</strong> {len(product_links)} platforms</div>\n'
-
+        
         if gallery_images:
             admin_html += f'                    <div><strong>Gallery:</strong> {len(gallery_images)} images</div>\n'
-
+            admin_html += '                    <div class="gallery-preview">\n'
+            for img in gallery_images[:3]:
+                admin_html += f'                        <img src="{img}" alt="Gallery">\n'
+            admin_html += '                    </div>\n'
+        
         admin_html += f"""
                 </div>
-                <a href="/kahu/edit/{page_id}" class="edit-btn">✏️ Edit Page</a>
+                <a href="/admin/edit/{page_id}" class="edit-btn">✏️ Edit Page</a>
             </div>
 """
-
+    
     admin_html += """
         </div>
         
@@ -911,77 +867,143 @@ def admin_panel():
     </div>
 </body>
 </html>"""
-
+    
     return admin_html
 
-@app.route("/kahu/edit/<page_id>", methods=["GET", "POST"])
+
+@app.route("/admin/new", methods=["GET", "POST"])
+def admin_new_page():
+    """Create a new page"""
+    if request.method == "POST":
+        data = load_content()
+        
+        # Generate slug from title
+        title = request.form.get("title", "")
+        slug = title.lower().replace(" ", "_").replace("-", "_")
+        slug = "".join(c for c in slug if c.isalnum() or c == "_")
+        
+        # Create new page
+        new_page = {
+            "title": title,
+            "hero_image": request.form.get("hero_image", ""),
+            "body_md": request.form.get("body_md", ""),
+            "product_url": request.form.get("product_url", ""),
+            "gumroad_url": request.form.get("gumroad_url", ""),
+            "podcast_embed": request.form.get("podcast_embed", "")
+        }
+        
+        data["pages"][slug] = new_page
+        data["order"].append(slug)
+        save_content(data)
+        
+        return redirect("/admin")
+    
+    # GET request - show form
+    new_page_html = f"""<!DOCTYPE html>
+<html>
+<head>
+    <title>Create New Page</title>
+    <style>
+        {ADMIN_STYLE}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📄 Create New Page</h1>
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="title">Page Title</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="hero_image">Hero Image URL</label>
+                <input type="text" id="hero_image" name="hero_image" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="body_md">Content (Markdown)</label>
+                <textarea id="body_md" name="body_md" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="product_url">Amazon/Product URL (Optional)</label>
+                <input type="text" id="product_url" name="product_url">
+            </div>
+            
+            <div class="form-group">
+                <label for="gumroad_url">Gumroad URL (Optional)</label>
+                <input type="text" id="gumroad_url" name="gumroad_url">
+            </div>
+            
+            <div class="form-group">
+                <label for="podcast_embed">Podcast Embed (Optional)</label>
+                <textarea id="podcast_embed" name="podcast_embed"></textarea>
+            </div>
+            
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary">💾 Create Page</button>
+                <a href="/admin" class="btn btn-secondary">← Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>"""
+    return new_page_html
+
+@app.route("/admin/edit/<page_id>", methods=["GET", "POST"])
 def edit_page(page_id):
+    """Edit a specific page"""
     data = load_content()
     pages = data.get("pages", data)
-
+    
     if page_id not in pages:
         abort(404)
-
+    
     if request.method == "POST":
+        # Update page data
         pages[page_id]["title"] = request.form.get("title", "")
         pages[page_id]["hero_image"] = request.form.get("hero_image", "")
         pages[page_id]["body_md"] = request.form.get("body_md", "")
-
+        
+        # Handle product URL
         product_url = request.form.get("product_url", "").strip()
         if product_url:
             pages[page_id]["product_url"] = product_url
         elif "product_url" in pages[page_id]:
             del pages[page_id]["product_url"]
-
+        
+        # Handle Gumroad URL
         gumroad_url = request.form.get("gumroad_url", "").strip()
         if gumroad_url:
             pages[page_id]["gumroad_url"] = gumroad_url
         elif "gumroad_url" in pages[page_id]:
             del pages[page_id]["gumroad_url"]
-
+        
+        # Handle Podcast Embed
         podcast_embed = request.form.get("podcast_embed", "").strip()
         if podcast_embed:
             pages[page_id]["podcast_embed"] = podcast_embed
         elif "podcast_embed" in pages[page_id]:
             del pages[page_id]["podcast_embed"]
-
-        products_text = request.form.get("products_json", "").strip()
-        if products_text:
-            products = []
-            for line in products_text.split("\n"):
-                line = line.strip()
-                if not line or "|" not in line:
-                    continue
-                parts = [p.strip() for p in line.split("|")]
-                if parts[0]:
-                    product = {
-                        "title": parts[0],
-                        "cover": parts[1] if len(parts) > 1 and parts[1] else "",
-                        "amazon": parts[2] if len(parts) > 2 and parts[2] else "",
-                        "gumroad": parts[3] if len(parts) > 3 and parts[3] else ""
-                    }
-                    if product["amazon"] or product["gumroad"]:
-                        products.append(product)
-            if products:
-                pages[page_id]["products"] = products
-            elif "products" in pages[page_id]:
-                del pages[page_id]["products"]
-        elif "products" in pages[page_id]:
-            del pages[page_id]["products"]
-
+        
+        # Handle product images (book covers, planner covers, etc)
         product_images_raw = request.form.get("product_images", "")
         if product_images_raw:
             pages[page_id]["product_images"] = [line.strip() for line in product_images_raw.split("\n") if line.strip()]
         else:
             pages[page_id]["product_images"] = []
-
+        
+        # Handle gallery images
         gallery_str = request.form.get("gallery_images", "").strip()
         if gallery_str:
             gallery_images = [img.strip() for img in gallery_str.split("\n") if img.strip()]
             pages[page_id]["gallery_images"] = gallery_images
         elif "gallery_images" in pages[page_id]:
             del pages[page_id]["gallery_images"]
-
+        
+        # Handle product links (for music page)
         links_str = request.form.get("product_links", "").strip()
         if links_str:
             links = []
@@ -998,30 +1020,29 @@ def edit_page(page_id):
                 pages[page_id]["product_links"] = links
         elif "product_links" in pages[page_id]:
             del pages[page_id]["product_links"]
-
+        
+        # Ensure the order is always saved (even if not modified here)
         save_content({"pages": pages, "order": data.get("order", ORDER)})
-        return redirect("/kahu")
-
+        return redirect("/admin")
+    
     page = pages[page_id]
+    
+    # Format gallery images
     gallery_str = "\n".join(page.get("gallery_images", []))
-    products_text_lines = []
-    if page.get("products"):
-        for p in page["products"]:
-            line = f"{p.get('title', '')} | {p.get('cover', '')} | {p.get('amazon', '')} | {p.get('gumroad', '')}"
-            products_text_lines.append(line)
-    products_json = "\n".join(products_text_lines)
-
+    
+    # Format product images
     product_images_str = ""
     if page.get("product_images"):
         product_images_str = "\n".join(page["product_images"])
-
+    
+    # Format product links
     links_str = ""
     if "product_links" in page:
         links_str = "\n".join([
             f"{link['name']}|{link['url']}|{link['icon']}"
             for link in page["product_links"]
         ])
-
+    
     edit_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1029,13 +1050,19 @@ def edit_page(page_id):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit {page['title']}</title>
     <style>
-        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+        
         body {{
             font-family: system-ui, -apple-system, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 2rem;
         }}
+        
         .container {{
             max-width: 800px;
             margin: 0 auto;
@@ -1044,15 +1071,28 @@ def edit_page(page_id):
             padding: 2rem;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }}
-        h1 {{ color: #2c3e50; margin-bottom: 0.5rem; }}
-        .subtitle {{ color: #7f8c8d; margin-bottom: 2rem; }}
-        .form-group {{ margin-bottom: 1.5rem; }}
+        
+        h1 {{
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }}
+        
+        .subtitle {{
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+        }}
+        
+        .form-group {{
+            margin-bottom: 1.5rem;
+        }}
+        
         label {{
             display: block;
             color: #2c3e50;
             font-weight: 600;
             margin-bottom: 0.5rem;
         }}
+        
         input[type="text"],
         textarea {{
             width: 100%;
@@ -1063,14 +1103,30 @@ def edit_page(page_id):
             font-family: inherit;
             transition: border-color 0.3s ease;
         }}
+        
         input[type="text"]:focus,
         textarea:focus {{
             outline: none;
             border-color: #667eea;
         }}
-        textarea {{ min-height: 200px; resize: vertical; }}
-        .help-text {{ font-size: 0.85rem; color: #6c757d; margin-top: 0.25rem; }}
-        .btn-group {{ display: flex; gap: 1rem; margin-top: 2rem; }}
+        
+        textarea {{
+            min-height: 200px;
+            resize: vertical;
+        }}
+        
+        .help-text {{
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }}
+        
+        .btn-group {{
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }}
+        
         .btn {{
             padding: 0.75rem 1.5rem;
             border: none;
@@ -1082,16 +1138,25 @@ def edit_page(page_id):
             text-decoration: none;
             display: inline-block;
         }}
+        
         .btn-primary {{
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }}
+        
         .btn-primary:hover {{
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }}
-        .btn-secondary {{ background: #6c757d; color: white; }}
-        .btn-secondary:hover {{ background: #5a6268; }}
+        
+        .btn-secondary {{
+            background: #6c757d;
+            color: white;
+        }}
+        
+        .btn-secondary:hover {{
+            background: #5a6268;
+        }}
     </style>
 </head>
 <body>
@@ -1108,68 +1173,79 @@ def edit_page(page_id):
             <div class="form-group">
                 <label for="hero_image">Hero Image URL</label>
                 <input type="text" id="hero_image" name="hero_image" value="{page.get('hero_image', '')}" required>
+                <div class="help-text">Use imgur.com URLs (e.g., https://i.imgur.com/ABC123.jpg)</div>
             </div>
             
             <div class="form-group">
                 <label for="body_md">Content (Markdown)</label>
                 <textarea id="body_md" name="body_md" required>{page.get('body_md', '')}</textarea>
+                <div class="help-text">Use Markdown formatting (## for headings, ** for bold, **![]()** for images).</div>
             </div>
             
             <div class="form-group">
-                <label for="product_url">Product URL</label>
+                <label for="product_url">Product/Buy Button URL (Optional)</label>
                 <input type="text" id="product_url" name="product_url" value="{page.get('product_url', '')}">
+                <div class="help-text">Amazon or other product link.</div>
             </div>
             
+            
             <div class="form-group">
-                <label for="gumroad_url">Gumroad URL</label>
+                <label for="gumroad_url">Gumroad Product URL (Optional)</label>
                 <input type="text" id="gumroad_url" name="gumroad_url" value="{page.get('gumroad_url', '')}">
+                <div class="help-text">Your Gumroad product link (e.g., https://yourusername.gumroad.com/l/product)</div>
             </div>
             
             <div class="form-group">
-                <label for="podcast_embed">Podcast Embed</label>
+                <label for="podcast_embed">Podcast Embed Code (Optional)</label>
                 <textarea id="podcast_embed" name="podcast_embed" style="min-height: 100px;">{page.get('podcast_embed', '')}</textarea>
+                <div class="help-text">Paste your podcast embed code (Spotify, Apple, etc.)</div>
             </div>
             
             <div class="form-group">
-                <label for="product_images">Product Images (One URL per line)</label>
+                <label for="product_images">Product Images - Book Covers, Planner Covers, etc. (One URL per line)</label>
                 <textarea id="product_images" name="product_images" style="min-height: 120px;">{product_images_str}</textarea>
+                <div class="help-text">Direct image URLs only (https://i.imgur.com/ABC123.jpg) - one per line. These will display in a grid on your page.</div>
             </div>
             
-            <div class="form-group">
-                <label for="products_json">Products</label>
-                <textarea id="products_json" name="products_json" style="min-height: 180px; font-family: 'Courier New', monospace;">{products_json}</textarea>
-                <div class="help-text">Format: Title | Cover URL | Amazon URL | Gumroad URL</div>
-            </div>
-
-            <div class="form-group">
-                <label for="gallery_images">Gallery Images</label>
+                        <div class="form-group">
+                <label for="gallery_images">Gallery Images (Optional - One URL per line)</label>
                 <textarea id="gallery_images" name="gallery_images" style="min-height: 100px;">{gallery_str}</textarea>
+                <div class="help-text">For CD covers: /static/covers/cover1.jpg (one per line)</div>
             </div>
             
             <div class="form-group">
-                <label for="product_links">Music Links</label>
+                <label for="product_links">Music Platform Links (Optional - Format: Name|URL|Icon)</label>
                 <textarea id="product_links" name="product_links" style="min-height: 100px;">{links_str}</textarea>
-                <div class="help-text">Format: Name|URL|Icon</div>
+                <div class="help-text">Example: Amazon Music|https://music.amazon.com/...|🛒</div>
             </div>
             
             <div class="btn-group">
-                <button type="submit" class="btn btn-primary">💾 Save</button>
-                <a href="/kahu" class="btn btn-secondary">← Cancel</a>
+                <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+                <a href="/admin" class="btn btn-secondary">← Cancel</a>
             </div>
         </form>
     </div>
 </body>
 </html>"""
-
+    
     return edit_html
+
+
+@app.route("/myron-golden")
+def myron_golden_page():
+    return render_template_string(MYRON_GOLDEN_TEMPLATE, style=ENHANCED_STYLE)
+
+@app.route("/kingdom_keys")
+def kingdom_keys():
+    return show_page("kingdom_keys")
+
 
 if __name__ == "__main__":
     if not DATA_FILE.exists():
         save_content(DEFAULT_PAGES)
-
+    
     port = int(os.environ.get("PORT", 5000))
-    print("🌺 Starting...")
+    print("🌺 Starting Ke Aupuni O Ke Akua website...")
     print(f"🌊 Visit: http://localhost:{port}")
-    print(f"⚙️  Admin: http://localhost:{port}/kahu")
-    print(f"🎁  Kingdom Keys: http://localhost:{port}/kingdom-keys")
-    app.run(host="0.0.0.0", port=port, debug=False)
+    print("=" * 50)
+    app.run(host="0.0.0.0", port=port, debug=True)
