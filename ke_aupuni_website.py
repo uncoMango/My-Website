@@ -1,1254 +1,1051 @@
-# ke_aupuni_finalized_with_image_placeholders.py
-# FIXED VERSION - CSS working, products restored
-# NOW WITH KINGDOM KEYS FREE BOOKLETS PAGE
-# ADDED: MYRON GOLDEN AFFILIATE PAGE
-# FIXES: Kit form URL + Link colors + Duplicate body_md removed
-
-from flask import Flask, request, redirect, render_template_string, abort, url_for, send_file
-import json
-from pathlib import Path
-import markdown
+from flask import Flask, render_template_string, request, redirect, url_for, flash, get_flashed_messages
 import os
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24).hex()
 
-ORDER = ["home", "kingdom_wealth", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice"]
-
-BASE = Path(__file__).parent
-DATA_FILE = BASE / "website_content.json"
-
-DEFAULT_PAGES = {
-    "order": ORDER,
-    "pages": {
-        "home": {
-            "title": "Ke Aupuni O Ke Akua - The Kingdom of God",
-            "hero_image": "https://i.imgur.com/wmHEyDo.png",
-            "body_md": "## Welcome to Ke Aupuni O Ke Akua - The Kingdom of God\r\n\r\nMahalo for visiting. This site is dedicated to rediscovering the revolutionary Kingdom message that Jesus actually preached, which is often missed in modern religious traditions.\r\n\r\n### Our Mission: Kingdom, Not Religion\r\nJesus's central focus was the Kingdom of God—the reign and rule of God breaking into the human experience here and now. Our resources aim to guide you into a deeper understanding of Kingdom principles, citizenship, and authority, moving you from religious performance into authentic, transformative living.\r\n\r\n**Start your journey today by exploring 'The Call to Repentance' series in the navigation.**\r\n\r\n### What Jesus Actually Taught\r\n\r\n**Kingdom Principles Over Religious Rules** - Discover how Jesus consistently chose kingdom living over religious compliance.\r\n\r\n**Repentance as Transformation** - Move beyond feeling sorry for sins to understanding a complete transformation of mind, heart, and lifestyle.\r\n\r\n**Heaven on Earth** - Learn how the Kingdom of God is meant to manifest in our daily lives, relationships, and communities right now.\r\n\r\n---\r\n\r\n### 🎁 NEW TO KINGDOM THEOLOGY? START HERE!\r\n\r\n**FREE Kingdom Keys Booklets** - Bite-sized teachings that will transform your understanding of what Jesus really taught. Perfect introduction before diving into the full series.\r\n\r\n**[Download FREE Kingdom Keys →](/kingdom_keys)**\r\n\r\n---\r\n\r\n### 💰 Kingdom Wealth & Biblical Prosperity\r\n\r\nDiscover God's economic system and how the Kingdom operates on principles of stewardship, multiplication, and generosity.\r\n\r\n**[Explore Kingdom Wealth Principles →](/kingdom_wealth)**",
-            "product_url": "https://amzn.to/3FfH9ep"
-        },
-        "kingdom_wealth": {
-            "title": "Kingdom Wealth",
-            "hero_image": "https://i.imgur.com/wmHEyDo.png",
-            "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom of God operates on a system of stewardship, not ownership. Understanding Kingdom Wealth means shifting from a \"poverty mindset\" to a \"provision mindset.\"\r\n\r\n### Core Principles of Kingdom Wealth\r\n\r\n**Source vs. Resource** - Recognizing that God is the Source, and everything else is just a resource.\r\n\r\n**Seed Time and Harvest** - The spiritual law of multiplication through giving and wisdom.\r\n\r\n**Economic Mandate** - We are blessed to be a blessing, establishing God's covenant on the earth.\r\n\r\n### Practical Application\r\n\r\nTrue wealth in the Kingdom is measured by your capacity to influence your community for good and provide for the needs of the ministry and the poor.\r\n\r\n---\r\n\r\n### 📚 Recommended Kingdom Wealth Resources\r\n\r\n**The Call to Repentance Series** - Includes comprehensive teaching on Kingdom economics and biblical stewardship principles.\r\n\r\n**[Get the Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n---\r\n\r\n### 💡 Transform Your Financial Mindset\r\n\r\nMove from religious poverty thinking into Kingdom abundance. Learn how Jesus taught about money, provision, and the Father's desire to bless His children.\r\n\r\n**Scripture Foundation:** \"Seek first the kingdom of God and His righteousness, and all these things shall be added to you.\" - Matthew 6:33\r\n\r\n---\r\n\r\n### 📖 Learning Biblical Business Principles\r\n\r\nAfter 30 years of biblical study and 8 years in pastoral ministry on Molokaʻi, I'm applying Myron Golden's Kingdom approach to business. His teaching on biblical wealth creation aligns with the Kingdom economics I've been teaching.\r\n\r\nI'm building my ministry using these ethical, scripture-based principles - because God's Kingdom deserves to be funded with integrity, not manipulation.\r\n\r\nIf you're called to ministry or Christian business, these resources can help you build on a solid biblical foundation.\r\n\r\n**[Explore Myron Golden's Biblical Business Training →](/myron-golden)**",
-            "product_url": ""
-        },
-        "aloha_wellness": {
-            "title": "Aloha Wellness - Island Health & Healing",
-            "hero_image": "https://i.imgur.com/xGeWW3Q.jpeg",
-            "body_md": "## Aloha Wellness - The Sacred Art of How You Eat\r\n\r\nDiscover the life-changing power of **how** you eat, not just what you eat. This groundbreaking wellness book combines cutting-edge scientific research with ancient Hawaiian mana'o (wisdom) to transform your relationship with food and nourishment.\r\n\r\n### Beyond Diet Culture - A Hawaiian Perspective\r\n\r\nTraditional Hawaiian culture understood something modern society has forgotten: eating is a sacred act that connects us to the land, our ancestors, and our own spiritual well-being. This book bridges that ancient wisdom with contemporary nutritional science.\r\n\r\n### Revolutionary Approach: How, Not What\r\n\r\n**Mindful Consumption** - Learn the scientific basis for how mindful eating practices affect digestion, metabolism, and overall health.\r\n\r\n**Cultural Eating Wisdom** - Discover how Hawaiian ancestors approached meals as community ceremonies, gratitude practices, and spiritual connections.\r\n\r\n**Stress and Digestion** - Research-backed insights into how your emotional state during meals affects nutrient absorption and digestive health.\r\n\r\n**Rhythm and Timing** - Ancient Hawaiian understanding of eating in harmony with natural rhythms, supported by modern chronobiology research.\r\n\r\n**Scientific Research Meets Island Wisdom** - This book offers a comprehensive look at the intersection of modern science and ancient practice.\r\n\r\n### Hawaiian Mana'o (Wisdom Principles)\r\n\r\n**Ho'oponopono with Food** - Making right relationships with nourishment and healing food-related guilt or shame.\r\n\r\n**Aloha 'Āina** - Love of the land extends to gratitude for the food it provides and mindful consumption practices.\r\n\r\n**Lōkahi** - Finding unity and balance in your relationship with food, body, and spirit.\r\n\r\n**Mālama** - Caring for your body as a sacred temple through conscious eating practices.\r\n\r\nTransform your health from the inside out by changing not what you eat, but how you approach the sacred act of nourishment.\r\n\r\n---\r\n\r\n### 🌺 Body, Soul & Spirit Wellness\r\n\r\nTrue wellness integrates physical health with spiritual vitality. Explore how Kingdom principles apply to caring for the temple God gave you.\r\n\r\n**[Discover Kingdom Living Principles →](/kingdom_wealth)**",
-            "product_url": "https://amzn.to/3FfH9ep",
-            "products": [
-                {
-                    "title": "Aloha Wellness Book",
-                    "cover": "https://m.media-amazon.com/images/I/712tO3wmGEL._SL1499_.jpg",
-                    "amazon": "",
-                    "gumroad": ""
-                }
-            ]
-        },
-        "call_to_repentance": {
-            "title": "The Call to Repentance - The Kingdom Series",
-            "hero_image": "https://i.imgur.com/tG1vBp9.jpeg",
-            "body_md": "## The Call to Repentance - Rediscovering Jesus's Kingdom Message\r\n\r\nStep beyond religious tradition and rediscover the revolutionary Kingdom message that Jesus actually preached. This transformative book series cuts through centuries of religious interpretation to reveal the pure, life-changing teachings of the Kingdom of God.\r\n\r\n### Series Overview (Volumes 1-5)\r\n\r\nThis isn't a single book but a comprehensive series that systematically unpacks Jesus's kingdom teachings.\r\n\r\n### A Call to Authentic Christianity\r\n\r\nThis series challenges readers to move beyond:\r\n- Religious performance into authentic relationship\r\n- Sunday Christianity into daily kingdom living\r\n- Denominational identity into kingdom citizenship\r\n- Waiting for heaven into experiencing God's kingdom now\r\n\r\n**Join the revolution that Jesus started. Discover the Kingdom message that changes everything.**\r\n\r\n---\r\n\r\n### 🎁 New to Kingdom Theology?\r\n\r\nStart with our **FREE Kingdom Keys booklets** - perfect introduction to the core concepts before diving into the full series.\r\n\r\n**[Get Free Kingdom Keys →](/kingdom_keys)**\r\n\r\n---\r\n\r\n### 💰 Kingdom Wealth Principles\r\n\r\nBook 3 in the series covers biblical prosperity, stewardship, and God's economic system. Learn how Jesus taught about money, provision, and Kingdom increase.\r\n\r\n**[Explore Kingdom Wealth Teaching →](/kingdom_wealth)**",
-            "product_url": "https://www.amazon.com/CALL-REPENTANCE-Foundation-Application-Lifestyle-ebook/dp/B0FXYDD9SN",
-            "products": [
-                {
-                    "title": "The Call to Repentance - Kingdom Book",
-                    "cover": "",
-                    "amazon": "",
-                    "gumroad": "https://uncomango.gumroad.com/l/myold"
-                }
-            ]
-        },
-        "pastor_planners": {
-            "title": "Pastor Planners - Tools for Ministry Excellence",
-            "hero_image": "https://i.imgur.com/tWnn5UY.png",
-            "body_md": "## Organize Your Ministry with Purpose and Prayer\r\n\r\nEffective ministry requires both spiritual sensitivity and practical organization. Our Pastor Planners combine beautiful design with functional tools to help you lead with excellence and peace.\r\n\r\n### Features of Our Ministry Planning System\r\n\r\n**Sermon Planning Sections** - Map out your preaching calendar with space for themes, scriptures, and prayer requests.\r\n\r\n**Prayer and Pastoral Care** - Dedicated sections for tracking prayer requests, hospital visits, counseling sessions, and follow-up care.\r\n\r\n**Meeting and Event Coordination** - Organize board meetings, committee sessions, special events, and outreach activities.\r\n\r\n**Personal Spiritual Disciplines** - Maintain your own spiritual health with guided sections for daily devotions.\r\n\r\n### Why Pastors Love Our Planners\r\n\r\n**Hawaiian-Inspired Design** - Beautiful layouts featuring island imagery and scripture verses.\r\n\r\n**Flexible Formatting** - Works for churches of all sizes and denominations.\r\n\r\n**Durable Construction** - High-quality materials that withstand daily use.\r\n\r\n**Spiritual Focus** - More than just organization - designed to keep your heart centered on God's calling.\r\n\r\n---\r\n\r\n### 📚 Pastor Resources\r\n\r\n**Complete Kingdom Theology Series** - Equip yourself with solid biblical teaching to share with your congregation.\r\n\r\n**[Browse Kingdom Teaching Resources →](/call_to_repentance)**\r\n\r\n---\r\n\r\n### 🎁 FREE Ministry Tools\r\n\r\nDownload our **FREE Kingdom Keys booklets** - perfect for small groups, new believers, or sermon prep inspiration.\r\n\r\n**[Get Free Kingdom Keys →](/kingdom_keys)**",
-            "product_url": "https://www.amazon.com/s?k=pastor+planner+ministry+organizer",
-            "products": [
-                {
-                    "title": "Hawaiian Pastor Planner - Yearly",
-                    "cover": "https://public-files.gumroad.com/p4346cgzkcd4iivhsgkf7pjtypr2",
-                    "amazon": "",
-                    "gumroad": ""
-                },
-                {
-                    "title": "Hawaiian Pastor Planner - Monthly",
-                    "cover": "https://public-files.gumroad.com/ccssij259a3729na9xx5s12skasm",
-                    "amazon": "",
-                    "gumroad": ""
-                },
-                {
-                    "title": "Samoan Pastor Planner - Yearly",
-                    "cover": "https://public-files.gumroad.com/worm4zkkn4hm5k0f81icc4e4pofp",
-                    "amazon": "",
-                    "gumroad": ""
-                },
-                {
-                    "title": "Samoan Pastor Planner - Monthly",
-                    "cover": "https://public-files.gumroad.com/ztbnhmb1azeotsvxga3979n6dw4g",
-                    "amazon": "",
-                    "gumroad": ""
-                }
-            ]
-        },
-        "nahenahe_voice": {
-            "title": "The Nahenahe Voice of Nahono'opi'ilani - Musical Legacy",
-            "hero_image": "https://i.imgur.com/Vyz6nFJ.png",
-            "body_md": "## The Nahenahe Voice of Nahono'opi'ilani - Live from Molokai Ranch Lodge\r\n\r\nExperience the soul-stirring sounds of authentic Hawaiian music captured live at the historic Molokai Ranch Lodge in the year 2000. This intimate recording showcases the true meaning of **nahenahe** - the gentle, soothing voice that carries the spirit of aloha across the islands.\r\n\r\n### A Sacred Musical Journey\r\n\r\nRecorded in the peaceful setting of Molokai Ranch Lodge, this collection features solo guitar and traditional Hawaiian melodies that speak directly to the heart.\r\n\r\n**Nahenahe** means more than just \"soft\" or \"sweet\" - it represents music that heals, soothes, and connects us to the divine presence that flows through all creation.\r\n\r\n### What You'll Experience:\r\n\r\n**Traditional Hawaiian Melodies** - Time-honored songs passed down through generations.\r\n\r\n**Solo Guitar Mastery** - Intimate acoustic performances showcasing Hawaiian slack-key guitar traditions.\r\n\r\n**Authentic Island Atmosphere** - The natural acoustics and peaceful energy of Molokai Ranch Lodge.\r\n\r\n**Healing Through Song** - Each track brings peace, comfort, and the healing power of aloha.\r\n\r\n*\"Music is the language that speaks when words are not enough. The nahenahe voice carries aloha to every heart that listens.\"*\r\n\r\nPerfect for meditation, relaxation, spiritual practice, or any time you need the gentle embrace of island peace.",
-            "gallery_images": [
-                "/static/covers/cover1.jpg",
-                "/static/covers/cover2.jpg",
-                "/static/covers/cover3.jpg"
-            ],
-            "product_links": [
-                {
-                    "name": "Amazon Music",
-                    "url": "https://music.amazon.com/search/nahenahe%20voice",
-                    "icon": "🛒"
-                },
-                {
-                    "name": "Apple Music",
-                    "url": "https://music.apple.com/us/search?term=nahenahe%20voice",
-                    "icon": "🍎"
-                },
-                {
-                    "name": "Spotify",
-                    "url": "https://open.spotify.com/search/nahenahe%20voice",
-                    "icon": "🎧"
-                }
-            ]
-        },
-        "kingdom_keys": {
-            "title": "FREE Kingdom Keys Booklets",
-            "hero_image": "https://i.imgur.com/wmHEyDo.png",
-            "body_md": "## 🌺 FREE Kingdom Keys Booklets 🌺\r\n\r\n**Hoʻomau i ke Aupuni o ke Akua** (Continue in the Kingdom of God)\r\n\r\n**Aloha!** I'm Pastor Phil Stephens from Molokaʻi. After 30 years of biblical study, I've discovered the Kingdom truths the church forgot. Download these FREE mini-devotionals that will transform how you see Jesus's message.\r\n\r\n---\r\n\r\n## 📧 Get Weekly Kingdom Teaching\r\n\r\nJoin believers worldwide discovering Kingdom truth. Sign up at **[YOUR-EMAIL-SERVICE]**\r\n\r\n---\r\n\r\n## 📚 Ready for Deeper Teaching?\r\n\r\nThese free booklets are just the beginning. Explore the complete **54-book Kingdom Series** for comprehensive biblical teaching.\r\n\r\n**[Browse Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n---\r\n\r\n## 💝 Was This Helpful?\r\n\r\nIf these booklets blessed you, consider sowing back into this Kingdom ministry:\r\n\r\n**PayPal:** paypal.me/YOUR-PAYPAL  \r\n**Gumroad:** YOUR-GUMROAD.gumroad.com/l/donation\r\n\r\n*Every seed sown helps us reach more people with the Kingdom message.*",
-            "products": [
-                {
-                    "title": "7 Scriptures That Prove the Kingdom Is Inside You Now",
-                    "cover": "",
-                    "amazon": "",
-                    "gumroad": ""
-                },
-                {
-                    "title": "How to Release Kingdom Healing in 10 Minutes a Day",
-                    "cover": "",
-                    "amazon": "",
-                    "gumroad": ""
-                },
-                {
-                    "title": "The 5 Kingdom Prayers My Hawaiian Grandma Taught Me",
-                    "cover": "",
-                    "amazon": "",
-                    "gumroad": ""
-                },
-                {
-                    "title": "Kingdom Wealth: 7 Bible Verses the Prosperity Preachers Won't Tell You",
-                    "cover": "",
-                    "amazon": "",
-                    "gumroad": ""
-                }
-            ]
-        }
-    }
+# ==================== CSS STYLES ====================
+STYLE = """
+/* ==================== RESET & BASE ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-ENHANCED_STYLE = """
-:root {
-    --primary-bg: #f8f5f0;
-    --text-dark: #2c3e50;
-    --accent-teal: #5f9ea0;
-    --accent-warm: #d4a574;
-    --white-transparent: rgba(255, 255, 255, 0.95);
-    --shadow-soft: 0 2px 10px rgba(0,0,0,0.1);
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
 }
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: 'Georgia', 'Times New Roman', serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: var(--text-dark);
-    background: var(--primary-bg);
-    background-image: 
-        radial-gradient(circle at 20% 50%, rgba(175, 216, 248, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(212, 165, 116, 0.1) 0%, transparent 50%);
+    color: #333;
+    background-color: #f9f7f2;
+    position: relative;
+    min-height: 100vh;
 }
 
-a {
-    color: #d4af37;
-    text-decoration: none;
-    transition: color 0.3s ease;
+/* ==================== FIX: FULL-PAGE HERO SECTIONS ==================== */
+.hero-section {
+    height: 100vh !important;
+    min-height: 100vh !important;
+    width: 100vw !important;
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
 }
 
-a:hover {
-    color: #f5d76e;
-    text-decoration: underline;
+/* Fix for background covering entire hero */
+.hero-bg {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1 !important;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)) !important;
 }
 
-a:visited {
-    color: #b8962e;
+/* ==================== FIX: PREVENT TEXT OVERLAP ==================== */
+.hero-content {
+    position: relative !important;
+    z-index: 100 !important;
+    max-width: 800px !important;
+    padding: 20px !important;
+    margin-top: 0 !important;
 }
 
-.site-nav {
-    background-color: #d4b896;
-    background-image: 
-        linear-gradient(45deg, #c9a876 25%, transparent 25%),
-        linear-gradient(-45deg, #c9a876 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, #bfa068 75%),
-        linear-gradient(-45deg, transparent 75%, #bfa068 75%);
-    background-size: 16px 16px;
-    background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
-    padding: 1rem 0;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: var(--shadow-soft);
+.hero-title {
+    font-size: 3.5rem !important;
+    color: white !important;
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8) !important;
+    margin-bottom: 20px !important;
+    font-weight: bold !important;
+    position: relative !important;
+    z-index: 101 !important;
+}
+
+.hero-subtitle {
+    font-size: 1.3rem !important;
+    color: white !important;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7) !important;
+    margin-bottom: 30px !important;
+    position: relative !important;
+    z-index: 101 !important;
+}
+
+/* ==================== NAVIGATION ==================== */
+.navbar {
+    position: fixed !important;
+    top: 0 !important;
+    width: 100% !important;
+    z-index: 1000 !important;
+    background-color: rgba(255, 255, 255, 0.98) !important;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1) !important;
+    padding: 15px 0 !important;
 }
 
 .nav-container {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 2rem;
 }
 
-.nav-title {
-    font-size: 1.5rem;
+.logo {
+    font-size: 1.8rem;
     font-weight: bold;
-    color: #2c3e50;
+    color: #2c5530;
     text-decoration: none;
+    font-family: 'Georgia', serif;
+}
+
+.nav-links {
     display: flex;
-    align-items: center;
-    gap: 0.75rem;
+    gap: 30px;
 }
 
-.nav-logo {
-    height: 175px;
-    width: auto;
-}
-
-.nav-menu {
-    display: flex;
-    list-style: none;
-    gap: 1.5rem;
-    align-items: center;
-}
-
-.nav-menu li a {
-    color: #1a1a1a;
+.nav-links a {
+    color: #333;
     text-decoration: none;
-    font-weight: 700;
-    font-size: 0.95rem;
-    padding: 0.75rem 1.25rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    text-shadow: 0 1px 2px rgba(255,255,255,0.5);
-    letter-spacing: 0.3px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+    padding: 5px 0;
+    position: relative;
 }
 
-.nav-menu li a:hover {
+.nav-links a:hover {
+    color: #2c5530;
+}
+
+.nav-links a.active {
+    color: #2c5530;
+    font-weight: bold;
+}
+
+.nav-links a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #2c5530;
+}
+
+/* ==================== BUTTONS ==================== */
+.btn {
+    display: inline-block;
+    background-color: #2c5530;
     color: white;
-    background: rgba(95, 158, 160, 0.8);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-.hamburger {
-    display: none;
-    flex-direction: column;
+    padding: 14px 32px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    border: none;
     cursor: pointer;
-    gap: 4px;
+    transition: all 0.3s;
+    margin: 10px 5px;
+    position: relative;
+    z-index: 101;
 }
 
-.hamburger span {
-    width: 25px;
-    height: 3px;
-    background-color: #2c3e50;
-    transition: 0.3s;
+.btn:hover {
+    background-color: #1a3a1f;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
+.btn-outline {
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+}
+
+.btn-outline:hover {
+    background-color: white;
+    color: #2c5530;
+}
+
+/* ==================== CONTENT SECTIONS ==================== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.section {
+    padding: 80px 0;
+}
+
+.section-title {
+    text-align: center;
+    color: #2c5530;
+    margin-bottom: 50px;
+    font-size: 2.5rem;
+    font-family: 'Georgia', serif;
+}
+
+/* ==================== PRODUCTS GRID ==================== */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.product-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+}
+
+.product-image {
+    height: 200px;
+    background-color: #f0e6d6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-info {
+    padding: 25px;
+}
+
+.product-info h3 {
+    color: #2c5530;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.product-price {
+    color: #2c5530;
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin: 15px 0;
+}
+
+/* ==================== FORMS ==================== */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c5530;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #2c5530;
+    box-shadow: 0 0 0 3px rgba(44, 85, 48, 0.1);
+}
+
+textarea.form-control {
+    min-height: 150px;
+    resize: vertical;
+}
+
+/* ==================== FOOTER ==================== */
+footer {
+    background-color: #2c5530;
+    color: white;
+    padding: 60px 0 20px;
+    margin-top: 80px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-section h3 {
+    color: #f0e6d6;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.footer-section h4 {
+    color: #f0e6d6;
+    margin-bottom: 20px;
+}
+
+.footer-section a {
+    color: #ddd;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 10px;
+    transition: color 0.3s;
+}
+
+.footer-section a:hover {
+    color: white;
+}
+
+.footer-section p {
+    color: #ddd;
+    margin-bottom: 10px;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+/* ==================== FLASH MESSAGES ==================== */
+.flash-messages {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    z-index: 1001;
+    max-width: 400px;
+}
+
+.flash {
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: slideIn 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.flash-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.flash-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
 @media (max-width: 768px) {
-    .nav-menu {
-        position: fixed;
-        left: -100%;
-        top: 70px;
-        flex-direction: column;
-        background-color: #d4b896;
-        width: 100%;
-        text-align: center;
-        transition: 0.3s;
-        box-shadow: 0 10px 27px rgba(0,0,0,0.05);
-        padding: 2rem 0;
-        gap: 1rem;
-    }
-
-    .nav-menu.active {
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
         left: 0;
+        width: 100%;
+        background-color: white;
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     }
-
-    .hamburger {
+    
+    .nav-links.active {
         display: flex;
     }
     
-    .nav-title {
-        font-size: 1.2rem;
+    .mobile-menu-btn {
+        display: block;
+        font-size: 24px;
+        color: #2c5530;
+        cursor: pointer;
     }
     
-    .nav-logo {
-        height: 30px;
-    }
-}
-
-.hero {
-    min-height: 85vh;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    margin-bottom: 3rem;
-}
-
-.hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(44, 62, 80, 0.4) 0%, rgba(95, 158, 160, 0.4) 100%);
-}
-
-.hero-content {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    color: white;
-    padding: 2rem;
-    max-width: 900px;
-    background: transparent;
-}
-
-.hero h1 {
-    font-size: 3.5rem;
-    margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    line-height: 1.2;
-}
-
-@media (max-width: 768px) {
-    .hero {
-        height: 40vh;
-    }
-    .hero h1 {
-        font-size: 2rem;
-    }
-}
-
-.container {
-    max-width: 1200px;
-    margin: -45vh auto 0;
-    padding: 0 2rem 4rem;
-    position: relative;
-    z-index: 10;
-}
-
-.content-card {
-    background: rgba(0, 0, 0, 0.4);
-    border: none;
-    border-radius: 12px;
-    padding: 3rem;
-    box-shadow: none;
-    backdrop-filter: blur(10px);
-    color: white;
-}
-
-.content-card h2 {
-    color: white;
-    font-size: 2rem;
-    margin: 2rem 0 1rem;
-    border-bottom: 3px solid var(--accent-warm);
-    padding-bottom: 0.5rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
-}
-
-.content-card h3 {
-    color: white;
-    font-size: 1.5rem;
-    margin: 1.5rem 0 0.75rem;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
-}
-
-.content-card p {
-    margin-bottom: 1rem;
-    line-height: 1.8;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-}
-
-.content-card strong {
-    color: white;
-    font-weight: 600;
-}
-
-.content-card ul {
-    margin: 1rem 0 1rem 2rem;
-    line-height: 1.8;
-}
-
-.content-card li {
-    margin-bottom: 0.5rem;
-}
-
-.buy-section {
-    text-align: center;
-    margin: 3rem 0;
-    padding: 2rem;
-    background: linear-gradient(135deg, rgba(95, 158, 160, 0.1) 0%, rgba(212, 165, 116, 0.1) 100%);
-    border-radius: 12px;
-}
-
-.buy-button {
-    display: inline-block;
-    padding: 1rem 2.5rem;
-    background: linear-gradient(135deg, var(--accent-teal), #4a8b8e);
-    color: white;
-    text-decoration: none;
-    border-radius: 50px;
-    font-weight: bold;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(95, 158, 160, 0.3);
-    margin: 0.5rem;
-}
-
-.buy-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(95, 158, 160, 0.4);
-}
-
-.gallery-section {
-    margin: 3rem 0;
-}
-
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1.5rem;
-}
-
-.gallery-item {
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
-}
-
-.gallery-item:hover {
-    transform: scale(1.05);
-}
-
-.gallery-item img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-.music-buttons {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 1.5rem;
-}
-
-.music-button {
-    display: inline-block;
-    padding: 0.875rem 2rem;
-    background: linear-gradient(135deg, var(--accent-teal), #4a8b8e);
-    color: white;
-    text-decoration: none;
-    border-radius: 50px;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(95, 158, 160, 0.3);
-}
-
-.music-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(95, 158, 160, 0.4);
-}
-
-.footer {
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-    color: white;
-    text-align: center;
-    padding: 2rem;
-    margin-top: 4rem;
-}
-
-@media (max-width: 768px) {
-    .content-card {
-        padding: 1.5rem;
+    .hero-title {
+        font-size: 2.5rem !important;
     }
     
-    .gallery-grid {
+    .hero-subtitle {
+        font-size: 1.1rem !important;
+    }
+    
+    .section {
+        padding: 50px 0;
+    }
+    
+    .products-grid {
         grid-template-columns: 1fr;
     }
     
-    .music-buttons {
-        flex-direction: column;
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
     }
 }
+
+/* ==================== UTILITY CLASSES ==================== */
+.text-center { text-align: center; }
+.mt-1 { margin-top: 10px; }
+.mt-2 { margin-top: 20px; }
+.mt-3 { margin-top: 30px; }
+.mt-4 { margin-top: 40px; }
+.mb-1 { margin-bottom: 10px; }
+.mb-2 { margin-bottom: 20px; }
+.mb-3 { margin-bottom: 30px; }
+.mb-4 { margin-bottom: 40px; }
+.p-1 { padding: 10px; }
+.p-2 { padding: 20px; }
+.p-3 { padding: 30px; }
+.p-4 { padding: 40px; }
 """
 
-PAGE_TEMPLATE = """<!DOCTYPE html>
+# ==================== HTML TEMPLATES ====================
+
+def get_base_template(title, active_page='home'):
+    return f"""
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }}</title>
-    <style>{{ style|safe }}
-    .content-card img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 8px;
-        margin: 20px 0;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        display: block;
-    }
-    
-    .content-card img[alt*="Cover"],
-    .content-card img[alt*="Volume"] {
-        max-width: 300px;
-        margin: 20px auto;
-    }
-    
-    @media (max-width: 768px) {
-        .content-card img[alt*="Cover"],
-        .content-card img[alt*="Volume"] {
-            max-width: 100%;
-        }
-    }
-
-    .content-card div[style*="background: rgba(255,255,255,0.1)"]:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.5) !important;
-    }
-</style>
+    <title>{title} - Keaupuni Akeakua</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&family=Segoe+UI:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        {STYLE}
+    </style>
 </head>
 <body>
-    <nav class="site-nav">
+    <!-- Navigation -->
+    <nav class="navbar">
         <div class="nav-container">
-            <a href="/" class="nav-title">
-                <img src="{{ url_for('static', filename='output-onlinepngtools.png') }}" alt="Ke Aupuni Logo" class="nav-logo">
-                Ke Aupuni O Ke Akua
-            </a>
-            <div class="hamburger" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
+            <a href="/" class="logo">Keaupuni Akeakua</a>
+            <div class="nav-links" id="navLinks">
+                <a href="/" {'class="active"' if active_page == 'home' else ''}>Home</a>
+                <a href="/about" {'class="active"' if active_page == 'about' else ''}>About</a>
+                <a href="/products" {'class="active"' if active_page == 'products' else ''}>Products</a>
+                <a href="/contact" {'class="active"' if active_page == 'contact' else ''}>Contact</a>
             </div>
-            <ul class="nav-menu" id="navMenu">
-                {% for item in nav_items %}
-                <li><a href="{{ item.url }}">{{ item.title }}</a></li>
-                {% endfor %}
-                <li><a href="/kingdom_keys" style="background:#d4af37;color:#fff;padding:0.5rem 1rem;border-radius:6px;">🎁 FREE Booklets</a></li>
-            </ul>
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </div>
         </div>
     </nav>
-    
-    <header class="hero" style="background-image: url('{{ page.hero_image }}');">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h1>{{ page.title }}</h1>
-        </div>
-    </header>
-    
-    <main class="container">
-        <article class="content-card">
-            {{ body_html|safe }}
-            
-            {% if page.gallery_images %}
-            <div class="gallery-section">
-                <h2>📸 Album Covers</h2>
-                <div class="gallery-grid">
-                    {% for image in page.gallery_images %}
-                    <div class="gallery-item">
-                        <img src="{{ image }}" alt="CD Cover" loading="lazy">
-                    </div>
-                    {% endfor %}
+
+    <!-- Flash Messages -->
+    <div class="flash-messages" id="flashMessages"></div>
+
+    <!-- Main Content -->
+    <main>
+        {{% content %}}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Keaupuni Akeakua</h3>
+                    <p>Preserving Hawaiian spiritual traditions</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <a href="/">Home</a>
+                    <a href="/about">About</a>
+                    <a href="/products">Products</a>
+                    <a href="/contact">Contact</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> info@keaupuniakeakua.faith</p>
+                    <p><i class="fas fa-phone"></i> (808) 123-4567</p>
                 </div>
             </div>
-            {% endif %}
+            <div class="footer-bottom">
+                <p>&copy; 2024 Keaupuni Akeakua. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {{
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
             
-            {% if page.products %}
-            <div style="margin: 3rem 0; padding: 2rem 0; border-top: 2px solid rgba(255,255,255,0.2);">
-                <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">📚 Available Products</h2>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto;">
-                    {% for product in page.products %}
-                    <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.3s ease;">
-                        {% if product.cover %}
-                        <img src="{{ product.cover }}" alt="{{ product.title }}" style="width: 100%; height: auto; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
-                        {% endif %}
-                        <h3 style="color: white; font-size: 1rem; margin-bottom: 1rem; min-height: 2.5rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">{{ product.title }}</h3>
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                            {% if product.amazon %}
-                            <a href="{{ product.amazon }}" target="_blank" style="display: block; background: linear-gradient(135deg, var(--accent-teal), #4a8b8e); color: white; padding: 0.6rem; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.9rem; text-align: center; transition: transform 0.2s;">🛒 Amazon</a>
-                            {% endif %}
-                            {% if product.gumroad %}
-                            <a href="{{ product.gumroad }}" target="_blank" style="display: block; background: linear-gradient(135deg, #FF90E8, #FFA500); color: white; padding: 0.6rem; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.9rem; text-align: center; transition: transform 0.2s;">💳 Gumroad</a>
-                            {% endif %}
+            if (mobileMenuBtn) {{
+                mobileMenuBtn.addEventListener('click', function() {{
+                    navLinks.classList.toggle('active');
+                }});
+            }}
+            
+            // Close flash messages
+            const flashMessages = document.getElementById('flashMessages');
+            if (flashMessages) {{
+                setTimeout(() => {{
+                    flashMessages.style.opacity = '0';
+                    flashMessages.style.transition = 'opacity 0.5s';
+                    setTimeout(() => flashMessages.remove(), 500);
+                }}, 5000);
+            }}
+            
+            // Add padding to body for fixed nav
+            const navbar = document.querySelector('.navbar');
+            if (navbar) {{
+                document.body.style.paddingTop = navbar.offsetHeight + 'px';
+            }}
+        }});
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {{
+            const navLinks = document.getElementById('navLinks');
+            if (window.innerWidth > 768) {{
+                navLinks.classList.remove('active');
+            }}
+        }});
+    </script>
+</body>
+</html>
+"""
+
+# ==================== ROUTES ====================
+
+@app.route('/')
+def home():
+    content = f"""
+    <!-- Hero Section - FIXED: Full page, no overlap -->
+    <section class="hero-section" style="background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Welcome to Keaupuni Akeakua</h1>
+            <p class="hero-subtitle">Authentic Hawaiian Spiritual Products & Traditional Healing Wisdom</p>
+            <div>
+                <a href="/products" class="btn">Explore Products</a>
+                <a href="/about" class="btn btn-outline">Our Story</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Our Sacred Mission</h2>
+            <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                <p style="font-size: 1.2rem; margin-bottom: 30px; color: #555;">
+                    Keaupuni Akeakua ("Realm of the Divine") is dedicated to preserving and sharing 
+                    authentic Hawaiian spiritual practices. We honor the 'āina (land) and our kupuna 
+                    (ancestors) through traditional products and healing wisdom.
+                </p>
+                <a href="/about" class="btn">Learn About Our Traditions</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Preview -->
+    <section class="section" style="background-color: #f0e6d6;">
+        <div class="container">
+            <h2 class="section-title">Sacred Products</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-leaf" style="font-size: 60px; color: #2c5530;"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>Healing Herbs & Plants</h3>
+                        <p>Traditional Hawaiian medicinal plants used for centuries in healing practices</p>
+                        <div class="product-price">$45.00</div>
+                        <a href="/products" class="btn" style="padding: 10px 20px; font-size: 1rem;">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-gem" style="font-size: 60px; color: #2c5530;"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>Spiritual Stones</h3>
+                        <p>Sacred stones for protection, energy work, and spiritual connection</p>
+                        <div class="product-price">$35.00</div>
+                        <a href="/products" class="btn" style="padding: 10px 20px; font-size: 1rem;">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-hand-holding-heart" style="font-size: 60px; color: #2c5530;"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>Ceremonial Items</h3>
+                        <p>Authentic tools for traditional Hawaiian ceremonies and rituals</p>
+                        <div class="product-price">$75.00</div>
+                        <a href="/products" class="btn" style="padding: 10px 20px; font-size: 1rem;">View Details</a>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 50px;">
+                <a href="/products" class="btn">View All Sacred Products</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Seeking Spiritual Guidance?</h2>
+            <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+                <p style="font-size: 1.2rem; margin-bottom: 30px; color: #555;">
+                    Connect with us for traditional Hawaiian spiritual consultations, 
+                    personalized guidance, and healing sessions.
+                </p>
+                <a href="/contact" class="btn">Request Guidance</a>
+            </div>
+        </div>
+    </section>
+    """
+    
+    template = get_base_template("Home", "home")
+    return template.replace("{{% content %}}", content)
+
+@app.route('/about')
+def about():
+    content = f"""
+    <!-- About Hero - FIXED: Full page -->
+    <section class="hero-section" style="background: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Our Story & Traditions</h1>
+            <p class="hero-subtitle">Preserving Hawaiian spiritual wisdom for generations</p>
+        </div>
+    </section>
+
+    <!-- Our Story -->
+    <section class="section">
+        <div class="container">
+            <div style="max-width: 800px; margin: 0 auto;">
+                <h2 class="section-title">Who We Are</h2>
+                <div style="font-size: 1.1rem; line-height: 1.8; color: #555;">
+                    <p style="margin-bottom: 20px;">
+                        Keaupuni Akeakua, which translates to "Realm of the Divine," was founded with a deep 
+                        reverence for Hawaiian culture and spiritual practices. Our journey began with a simple 
+                        mission: to preserve and share the authentic spiritual wisdom of our kupuna (ancestors).
+                    </p>
+                    
+                    <p style="margin-bottom: 20px;">
+                        As modern life continues to evolve, we believe it's crucial to maintain the connection 
+                        to traditional Hawaiian spirituality. Our offerings are more than just products – they 
+                        are bridges to understanding, healing, and connecting with the 'āina (land) and our 
+                        cultural heritage.
+                    </p>
+                    
+                    <h3 style="color: #2c5530; margin: 30px 0 15px;">Our Mission</h3>
+                    <p style="margin-bottom: 30px;">
+                        To provide authentic Hawaiian spiritual products and guidance while honoring traditional 
+                        practices, supporting local communities, and educating those seeking spiritual connection 
+                        through Hawaiian wisdom.
+                    </p>
+                </div>
+                
+                <!-- Values Grid -->
+                <h2 class="section-title" style="margin-top: 60px;">Our Values</h2>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-mountain" style="font-size: 60px; color: #2c5530;"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3>Respect for 'Āina</h3>
+                            <p>Honoring and protecting the land that sustains us</p>
                         </div>
                     </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
-
-            {% if page.product_links %}
-            <div class="buy-section">
-                <h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">🎵 Stream Our Music</h2>
-                <div class="music-buttons">
-                    {% for link in page.product_links %}
-                    <a href="{{ link.url }}" target="_blank" class="music-button">
-                        {{ link.icon }} {{ link.name }}
-                    </a>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
-            
-            {% if page.product_images %}
-            <div class="product-gallery" style="margin: 3rem 0;">
-                <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">📚 Available Products</h2>
-                <div class="gallery-grid">
-                    {% for img in page.product_images %}
-                    <div class="gallery-item">
-                        <img src="{{ img }}" alt="Product Cover" loading="lazy">
+                    
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-history" style="font-size: 60px; color: #2c5530;"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3>Cultural Preservation</h3>
+                            <p>Keeping traditional practices alive for future generations</p>
+                        </div>
                     </div>
-                    {% endfor %}
+                    
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-handshake" style="font-size: 60px; color: #2c5530;"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3>Authenticity</h3>
+                            <p>Genuine products made with traditional knowledge</p>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-heart" style="font-size: 60px; color: #2c5530;"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3>Healing & Aloha</h3>
+                            <p>Promoting spiritual, emotional, and physical wellness</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            {% endif %}
-            
-            {% if page.podcast_embed %}
-            <div class="podcast-section" style="margin: 2rem 0; padding: 2rem; background: rgba(0,0,0,0.3); border-radius: 8px;">
-                <h2 style="color: white; text-align: center; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">🎙️ Listen to Our Podcast</h2>
-                {{ page.podcast_embed|safe }}
-            </div>
-            {% endif %}
-            
-            <div class="buy-section">
-                {% if page.product_url %}
-                <a href="{{ page.product_url }}" target="_blank" class="buy-button">
-                    🛒 Buy on Amazon
-                </a>
-                {% endif %}
-                
-                {% if page.gumroad_url %}
-                <a href="{{ page.gumroad_url }}" target="_blank" class="buy-button" style="background: linear-gradient(135deg, #FF90E8, #FFA500);">
-                    💳 Buy on Gumroad
-                </a>
-                {% endif %}
-            </div>
-        </article>
-    </main>
-    
-    <footer class="footer">
-        <p>© 2025 Ke Aupuni O Ke Akua. All rights reserved. Made with aloha in Hawaiʻi.</p>
-    </footer>
-    
-    <script>
-    function toggleMenu() {
-        const menu = document.getElementById('navMenu');
-        menu.classList.toggle('active');
-    }
-    
-    document.addEventListener('click', function(event) {
-        const nav = document.querySelector('.nav-container');
-        const menu = document.getElementById('navMenu');
-        if (!nav.contains(event.target) && menu.classList.contains('active')) {
-            menu.classList.remove('active');
-        }
-    });
-    </script>
-</body>
-</html>"""
-
-MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transform Your Financial Future | Biblical Business Principles</title>
-    <style>{{ style|safe }}
-    .email-capture { 
-        background: rgba(212, 165, 116, 0.2); 
-        padding: 30px; 
-        margin: 30px 0; 
-        text-align: center; 
-        border: 3px solid rgba(212, 165, 116, 0.5); 
-        border-radius: 12px;
-        backdrop-filter: blur(10px);
-    }
-    .email-capture h2 { color: white; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
-    .email-form { max-width: 500px; margin: 0 auto; }
-    .email-form input { width: 100%; padding: 15px; margin: 10px 0; font-size: 16px; border: 2px solid #ddd; border-radius: 6px; }
-    .email-form button { width: 100%; padding: 15px; background: #d4af37; color: white; font-size: 18px; font-weight: bold; border: none; cursor: pointer; border-radius: 6px; }
-    .email-form button:hover { background: #b8962e; }
-    .section { padding: 40px 0; }
-    .section h2 { color: white; font-size: 2em; margin-bottom: 30px; text-align: center; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); }
-    .product-box { background: rgba(0, 0, 0, 0.5); padding: 30px; margin: 20px 0; border: 2px solid rgba(255,255,255,0.2); border-radius: 12px; backdrop-filter: blur(10px); }
-    .product-box h3 { color: white; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
-    .product-box ul { margin: 20px 0; padding-left: 20px; color: white; }
-    .product-box li { margin: 10px 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); }
-    .product-box p { color: white; line-height: 1.8; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); }
-    .btn { display: inline-block; padding: 15px 40px; background: linear-gradient(135deg, var(--accent-teal), #4a8b8e); color: white; text-decoration: none; font-weight: bold; margin: 10px 5px; text-align: center; border-radius: 8px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(95, 158, 160, 0.3); }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(95, 158, 160, 0.4); }
-    .btn-container { text-align: center; margin-top: 20px; }
-    </style>
-</head>
-<body>
-    <nav class="site-nav">
-        <div class="nav-container">
-            <a href="/" class="nav-title">
-                <img src="{{ url_for('static', filename='output-onlinepngtools.png') }}" alt="Ke Aupuni Logo" class="nav-logo">
-                Ke Aupuni O Ke Akua
-            </a>
-            <div class="hamburger" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="/">Home</a></li>
-                <li><a href="/kingdom_wealth">Kingdom Wealth</a></li>
-                <li><a href="/call_to_repentance">The Call to Repentance</a></li>
-                <li><a href="/aloha_wellness">Aloha Wellness</a></li>
-                <li><a href="/pastor_planners">Pastor Planners</a></li>
-                <li><a href="/nahenahe_voice">Nahenahe Voice</a></li>
-                <li><a href="/kingdom_keys" style="background:#d4af37;color:#fff;padding:0.5rem 1rem;border-radius:6px;">🎁 FREE Booklets</a></li>
-            </ul>
         </div>
-    </nav>
+    </section>
+    """
     
-    <header class="hero" style="background-image: url('https://i.imgur.com/wmHEyDo.png');">
-        <div class="hero-overlay"></div>
+    template = get_base_template("About Us", "about")
+    return template.replace("{{% content %}}", content)
+
+@app.route('/products')
+def products():
+    content = f"""
+    <!-- Products Hero - FIXED: Full page -->
+    <section class="hero-section" style="background: url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');">
+        <div class="hero-bg"></div>
         <div class="hero-content">
-            <h1>Transform Your Financial Future</h1>
-            <p style="font-size: 1.3rem; margin-top: 1rem;">Biblical Business Principles That Actually Work</p>
-            <p style="font-size: 1.1rem; margin-top: 0.5rem;"><em>From Pastor Phil Stephens, Molokaʻi</em></p>
+            <h1 class="hero-title">Sacred Hawaiian Products</h1>
+            <p class="hero-subtitle">Authentic spiritual items for healing, protection, and connection</p>
         </div>
-    </header>
-    
-    <main class="container">
-        <article class="content-card">
-            <div class="email-capture">
-                <h2>🌴 Get My FREE Kingdom Business Guide 🌴</h2>
-                <p style="margin-bottom: 20px; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">Learn the 3 biggest mistakes keeping Christians broke (and how to fix them using biblical principles)</p>
+    </section>
+
+    <!-- Products Content -->
+    <section class="section">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 50px;">
+                <h2 class="section-title">Our Spiritual Offerings</h2>
+                <p style="max-width: 600px; margin: 0 auto; font-size: 1.1rem; color: #666;">
+                    Each product is carefully selected or created with respect for traditional Hawaiian practices and spiritual significance.
+                </p>
+            </div>
+
+            <!-- Healing Herbs Category -->
+            <h3 style="color: #2c5530; margin: 40px 0 20px; padding-bottom: 10px; border-bottom: 2px solid #f0e6d6;">Healing Herbs & Plants</h3>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-leaf" style="font-size: 70px; color: #2c5530;"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>Traditional Healing Herbs Bundle</h3>
+                        <p>A collection of sacred Hawaiian medicinal plants used for centuries in traditional healing practices.</p>
+                        <div class="product-price">$45.00</div>
+                        <a href="/contact" class="btn" style="padding: 10px 20px; font-size: 1rem;">Inquire About Purchase</a>
+                    </div>
+                </div>
                 
-                <div class="email-form">
-                    <form action="https://app.kit.com/forms/8979853/subscriptions" method="post">
-                        <input type="text" name="fields[first_name]" placeholder="First Name" required>
-                        <input type="email" name="email_address" placeholder="Email Address" required>
-                        <button type="submit">GET FREE GUIDE →</button>
-                    </form>
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-spa" style="font-size: 70px; color: #2c5530;"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>Sacred Ti Leaf Bundle</h3>
+                        <p>Ti leaves used for protection, purification, and blessing ceremonies.</p>
+                        <div class="product-price">$25.00</div>
+                        <a href="/contact" class="btn" style="padding: 10px 20px; font-size: 1rem;">Inquire About Purchase</a>
+                    </div>
                 </div>
-            </div>
-
-            <div class="section">
-                <h2>📚 SECTION 1: Start Your Journey</h2>
-                <div class="product-box">
-                    <h3>Start here if:</h3>
-                    <ul>
-                        <li>You're tired of financial struggle and ready for a complete mindset shift</li>
-                        <li>You want to understand the biblical principles of wealth creation</li>
-                        <li>You're curious about Myron Golden's transformation story (from garbage collector to multi-millionaire)</li>
-                        <li>You need practical frameworks you can implement immediately</li>
-                        <li>You prefer learning through reading before investing in courses</li>
-                    </ul>
-                    <h3>What you get:</h3>
-                    <ul>
-                        <li>Two foundational books that reveal the mindset secrets of the wealthy</li>
-                        <li>Biblical wealth-building principles that actually work in today's marketplace</li>
-                        <li>Myron's proven frameworks for transforming your income potential</li>
-                        <li>Stories and strategies you can apply starting today</li>
-                        <li>The lowest-cost entry point to Myron Golden's teachings ($27-47 total)</li>
-                    </ul>
-                    <div class="btn-container">
-                        <a href="https://www.trashmantocashman.com/tmcm-book?affiliate_id=4319525" class="btn">GET TRASH MAN TO CASH MAN →</a>
-                        <a href="https://www.bossmovesbook.com/bossmoves?affiliate_id=4319525" class="btn">GET BOSS MOVES BOOK →</a>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-seedling" style="font-size: 70px; color: #2c5530;"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>Medicinal Plant Seeds</h3>
+                        <p>Seeds of traditional Hawaiian healing plants for growing your own medicinal garden.</p>
+                        <div class="product-price">$18.00</div>
+                        <a href="/contact" class="btn" style="padding: 10px 20px; font-size: 1rem;">Inquire About Purchase</a>
                     </div>
                 </div>
             </div>
 
-            <div class="section">
-                <h2>🧠 SECTION 2: Transform Your Money Blueprint</h2>
-                <div class="product-box">
-                    <h3>Take this if:</h3>
-                    <ul>
-                        <li>You've read the books and you're ready to go deeper</li>
-                        <li>You know your money mindset is holding you back from your potential</li>
-                        <li>You want to break generational poverty cycles in your family</li>
-                        <li>You're ready to invest in yourself and your financial future</li>
-                        <li>You need to rewire your subconscious beliefs about money</li>
-                    </ul>
-                    <h3>What you get:</h3>
-                    <ul>
-                        <li>Comprehensive training that reprograms your money blueprint</li>
-                        <li>Biblical perspectives on wealth that eliminate guilt and confusion</li>
-                        <li>Practical exercises to identify and eliminate limiting beliefs</li>
-                        <li>Strategies for developing millionaire-level thinking patterns</li>
-                        <li>Tools to overcome fear, doubt, and scarcity mindset forever</li>
-                    </ul>
-                    <div class="btn-container">
-                        <a href="https://www.mindovermoneymastery.com/momm?affiliate_id=4319525" class="btn">TRANSFORM YOUR MINDSET →</a>
+            <!-- Spiritual Stones Category -->
+            <h3 style="color: #2c5530; margin: 60px 0 20px; padding-bottom: 10px; border-bottom: 2px solid #f0e6d6;">Spiritual Stones & Crystals</h3>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-gem" style="font-size: 70px; color: #2c5530;"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>Hawaiian Lava Stones</h3>
+                        <p>Sacred stones from Hawaiian volcanoes, used for grounding and connection to Pele.</p>
+                        <div class="product-price">$35.00</div>
+                        <a href="/contact" class="btn" style="padding: 10px 20px; font-size: 1rem;">Inquire About Purchase</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-mountain" style="font-size: 70px; color: #2c5530;"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>Protection Stone Set</h3>
+                        <p>A collection of stones traditionally used for spiritual protection and energy clearing.</p>
+                        <div class="product-price">$55.00</div>
+                        <a href="/contact" class="btn" style="padding: 10px 20px; font-size: 1rem;">Inquire About Purchase</a>
                     </div>
                 </div>
             </div>
 
-            <div class="section">
-                <h2>🎯 SECTION 3: Master the Art of Making Offers</h2>
-                <div class="product-box">
-                    <h3>Make More Offers Challenge ($97)</h3>
-                    <p>This intensive 5-day challenge teaches you the exact framework for creating irresistible offers that sell themselves. Myron Golden reveals why most businesses struggle (they don't make enough offers) and shows you how to create multiple income streams by making better, more frequent offers. You'll learn the psychology of buying decisions, how to stack value that makes price irrelevant, and the specific language patterns that compel people to say "yes." Perfect for entrepreneurs, coaches, consultants, and anyone who needs to sell their products or services. The challenge includes daily training videos, live Q&A sessions, worksheets, and a supportive community of fellow offer-makers.</p>
-                    <div class="btn-container">
-                        <a href="https://www.makemoreofferschallenge.com/mmoc?affiliate_id=4319525" class="btn">JOIN THE CHALLENGE →</a>
+            <!-- Ceremonial Items Category -->
+            <h3 style="color: #2c5530; margin: 60px 0 20px; padding-bottom: 10px; border-bottom: 2px solid #f0e6d6;">Ceremonial Items</h3>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-fire" style="font-size: 70px; color: #2c5530;"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>Traditional Ceremony Bowl</h3>
+                        <p>Handcrafted bowl used in traditional Hawaiian ceremonies and offerings.</p>
+                        <div class="product-price">$75.00</div>
+                        <a href="/contact" class="btn" style="padding: 10px 20px; font-size: 1rem;">Inquire About Purchase</a>
                     </div>
                 </div>
-                <div class="product-box">
-                    <h3>Offer Mastery Live ($297)</h3>
-                    <p>This is Myron Golden's signature event where he spends three full days teaching you the complete system for creating high-ticket offers that transform your business. You'll discover the four core offer types that generate predictable revenue, learn how to structure offers that sell at $2,000, $5,000, $10,000 or higher, and master the art of presenting offers that create instant buying decisions. Myron breaks down the psychology, strategy, and implementation of world-class offer creation. This event includes access to recordings, workbooks, and ongoing support. If you're serious about scaling your business through premium offers, this is where you level up from making offers to mastering them.</p>
-                    <div class="btn-container">
-                        <a href="https://www.offermasterylive.com/offer-mastery-livevetfk4nn?affiliate_id=4319525" class="btn">MASTER YOUR OFFERS →</a>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-feather-alt" style="font-size: 70px; color: #2c5530;"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>Sacred Feather Bundle</h3>
+                        <p>Traditional feathers used in ceremonial dress and spiritual practices.</p>
+                        <div class="product-price">$40.00</div>
+                        <a href="/contact" class="btn" style="padding: 10px 20px; font-size: 1rem;">Inquire About Purchase</a>
                     </div>
                 </div>
             </div>
 
-            <div class="section">
-                <h2>🚀 SECTION 4: Build Your Million-Dollar Infrastructure</h2>
-                <div class="product-box">
-                    <h3>Golden OPS ($997)</h3>
-                    <p>This is Myron Golden's most comprehensive program for building a complete business operating system that generates consistent six and seven-figure revenue. Golden OPS (Operational Procedures and Systems) teaches you how to construct the four foundational pillars every million-dollar business requires: lead generation systems, lead nurture systems, sales conversion systems, and product delivery systems. You'll learn how to create automated funnels, build email sequences that convert, develop premium programs and masterminds, and structure your business for scalability. The program includes video training modules, implementation templates, funnel blueprints, marketing scripts, and access to a private community of serious entrepreneurs. Myron also reveals his personal business systems and shows you exactly how he structures his multi-million dollar empire. If you're ready to stop trading time for money and build a business that runs systematically, Golden OPS is your blueprint.</p>
-                    <div class="btn-container">
-                        <a href="https://www.mygoldenops.com/golden-opsm1y8y7bx?affiliate_id=4319525" class="btn">BUILD YOUR SYSTEM →</a>
-                    </div>
-                </div>
+            <div style="text-align: center; margin-top: 60px;">
+                <p style="font-size: 1.1rem; margin-bottom: 20px; color: #666;">
+                    Looking for something specific or need guidance on product selection?
+                </p>
+                <a href="/contact" class="btn">Contact Us for Guidance</a>
             </div>
-
-            <div class="footer" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.3);">
-                <p style="color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);"><em>Affiliate Disclosure: I may earn a commission if you purchase through these links, at no extra cost to you.</em></p>
-                <p style="color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); margin-top: 1rem;">© 2025 Ke Aupuni O Ke Akua Press | Pastor Phil Stephens, Molokaʻi</p>
-            </div>
-        </article>
-    </main>
-    
-    <script>
-    function toggleMenu() {
-        const menu = document.getElementById('navMenu');
-        menu.classList.toggle('active');
-    }
-    document.addEventListener('click', function(event) {
-        const nav = document.querySelector('.nav-container');
-        const menu = document.getElementById('navMenu');
-        if (!nav.contains(event.target) && menu.classList.contains('active')) {
-            menu.classList.remove('active');
-        }
-    });
-    </script>
-</body>
-</html>"""
-
-# REST OF FILE CONTINUES EXACTLY AS BEFORE...
-
-ADMIN_TEMPLATE = """<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Content Manager</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 2rem;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 0.5rem;
-            font-size: 2rem;
-        }
-        .subtitle {
-            color: #7f8c8d;
-            margin-bottom: 2rem;
-            font-size: 1rem;
-        }
-        .page-list {
-            display: grid;
-            gap: 1.5rem;
-        }
-        .page-card {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 2px solid #e9ecef;
-            transition: all 0.3s ease;
-        }
-        .page-card:hover {
-            border-color: #667eea;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-        }
-        .page-title {
-            font-size: 1.25rem;
-            color: #2c3e50;
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-        .page-info {
-            display: grid;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            color: #495057;
-        }
-        .page-info strong {
-            color: #2c3e50;
-            font-weight: 600;
-        }
-        .edit-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .edit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        }
-        .back-btn {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 2rem;
-        }
-        .back-btn:hover {
-            background: #5a6268;
-        }
-        .gallery-preview {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-        .gallery-preview img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 4px;
-            border: 2px solid #dee2e6;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>🏝️ Ke Aupuni Content Manager</h1>
-        <p class="subtitle">Aloha, Kahu! Edit your website pages here.</p>
-        <div class="page-list">
-            {% for page_id, page in pages.items() %}
-            <div class="page-card">
-                <div class="page-title">{{ page.title }}</div>
-                <div class="page-info">
-                    <div><strong>URL:</strong> /{{ page_id }}</div>
-                    <div><strong>Hero Image:</strong> {{ page.hero_image or 'None' }}</div>
-                    {% if page.product_url %}
-                    <div><strong>Product Link:</strong> {{ page.product_url }}</div>
-                    {% endif %}
-                    {% if page.gallery_images %}
-                    <div><strong>Gallery:</strong> {{ page.gallery_images|length }} images</div>
-                    <div class="gallery-preview">
-                        {% for img in page.gallery_images[:5] %}
-                        <img src="{{ img }}" alt="Gallery preview">
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-                    {% if page.products %}
-                    <div><strong>Products:</strong> {{ page.products|length }} items</div>
-                    {% endif %}
-                </div>
-                <a href="/kahu/edit/{{ page_id }}" class="edit-btn">✏️ Edit Page</a>
-            </div>
-            {% endfor %}
         </div>
-        <a href="/" class="back-btn">← Back to Website</a>
-    </div>
-</body>
-</html>"""
+    </section>
+    """
+    
+    template = get_base_template("Products", "products")
+    return template.replace("{{% content %}}", content)
 
-EDIT_TEMPLATE = """<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit {{ page.title }}</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 2rem;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 1.5rem;
-            font-size: 2rem;
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        label {
-            display: block;
-            color: #2c3e50;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        input[type="text"], input[type="url"], textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-family: inherit;
-            transition: border-color 0.3s ease;
-        }
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        textarea {
-            min-height: 400px;
-            font-family: 'Consolas', 'Monaco', monospace;
-            line-height: 1.5;
-        }
-        .hint {
-            color: #7f8c8d;
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-        }
-        .btn-group {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-        .save-btn, .back-btn {
-            padding: 0.875rem 2rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .save-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            flex: 1;
-        }
-        .save-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        }
-        .back-btn {
-            background: #6c757d;
-            color: white;
-        }
-        .back-btn:hover {
-            background: #5a6268;
-        }
-        .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            border: 1px solid #c3e6cb;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>✏️ Edit: {{ page.title }}</h1>
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        message = request.form.get('message')
         
-        {% if success %}
-        <div class="success-message">
-            ✅ Changes saved successfully!
+        # Here you would typically save to database or send email
+        flash('Mahalo for your message! We will contact you soon.', 'success')
+        return redirect('/contact')
+    
+    # Get flash messages
+    flash_html = ""
+    messages = get_flashed_messages(with_categories=True)
+    if messages:
+        for category, message in messages:
+            flash_html += f'<div class="flash flash-{category}">{message}</div>'
+    
+    content = f"""
+    <!-- Contact Hero - FIXED: Full page -->
+    <section class="hero-section" style="background: url('https://images.unsplash.com/photo-1516483638261-f4dbaf036963?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Contact Us</h1>
+            <p class="hero-subtitle">Connect with us for spiritual guidance and product inquiries</p>
         </div>
-        {% endif %}
-        
-        <form method="POST">
-            <div class="form-group">
-                <label for="title">Page Title</label>
-                <input type="text" id="title" name="title" value="{{ page.title }}" required>
+    </section>
+
+    <!-- Contact Content -->
+    <section class="section">
+        <div class="container">
+            <div class="products-grid">
+                <!-- Contact Form -->
+                <div class="product-card" style="grid-column: span 2;">
+                    <div class="product-info">
+                        <h2 style="color: #2c5530; margin-bottom: 30px;">Send Us a Message</h2>
+                        <form method="POST" action="/contact">
+                            <div class="form-group">
+                                <label for="name">Your Name</label>
+                                <input type="text" id="name" name="name" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Your Email</label>
+                                <input type="email" id="email" name="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Your Message</label>
+                                <textarea id="message" name="message" class="form-control" required></textarea>
+                            </div>
+                            <button type="submit" class="btn">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Contact Info -->
+                               <div class="product-card">
+                    <div class="product-info">
+                        <h2 style="color: #2c5530; margin-bottom: 30px;">Contact Information</h2>
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="color: #2c5530; margin-bottom: 10px;"><i class="fas fa-envelope"></i> Email</h4>
+                            <p>info@keaupuniakeakua.faith</p>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="color: #2c5530; margin-bottom: 10px;"><i class="fas fa-phone"></i> Phone</h4>
+                            <p>(808) 123-4567</p>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="color: #2c5530; margin-bottom: 10px;"><i class="fas fa-map-marker-alt"></i> Location</h4>
+                            <p>Hawaii</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #2c5530; margin-bottom: 10px;"><i class="fas fa-clock"></i> Response Time</h4>
+                            <p>We typically respond within 24-48 hours</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             
-            <div class="form-group">
-                <label for="hero_image">Hero Image URL</label>
-                <input type="url" id="hero_image" name="hero_image" value="{{ page.hero_image or '' }}" placeholder="https://imgur.com/...">
-                <div class="hint">Use Imgur or another image host</div>
+            <!-- Additional Contact Info -->
+            <div style="text-align: center; margin-top: 50px;">
+                <h3 style="color: #2c5530; margin-bottom: 20px;">Other Ways to Connect</h3>
+                <div style="display: flex; justify-content: center; gap: 20px; margin-top: 30px;">
+                    <a href="#" style="color: #2c5530; font-size: 24px;"><i class="fab fa-facebook"></i></a>
+                    <a href="#" style="color: #2c5530; font-size: 24px;"><i class="fab fa-instagram"></i></a>
+                    <a href="#" style="color: #2c5530; font-size: 24px;"><i class="fab fa-youtube"></i></a>
+                </div>
             </div>
-            
-            <div class="form-group">
-                <label for="body_md">Page Content (Markdown)</label>
-                <textarea id="body_md" name="body_md" required>{{ page.body_md }}</textarea>
-                <div class="hint">Use Markdown formatting: **bold**, *italic*, ## Headers, [links](url)</div>
+        </div>
+    </section>
+    """
+    
+    # Add flash messages to the template
+    flash_script = ""
+    if flash_html:
+        flash_script = f"""
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {{
+                const flashContainer = document.getElementById('flashMessages');
+                flashContainer.innerHTML = `{flash_html}`;
+                
+                // Auto-remove flash messages after 5 seconds
+                setTimeout(() => {{
+                    flashContainer.style.opacity = '0';
+                    flashContainer.style.transition = 'opacity 0.5s';
+                    setTimeout(() => flashContainer.remove(), 500);
+                }}, 5000);
+            }});
+        </script>
+        """
+    
+    template = get_base_template("Contact", "contact")
+    template = template.replace("{{% content %}}", content)
+    
+    # Insert flash script before closing body tag
+    if flash_script:
+        template = template.replace("</body>", flash_script + "</body>")
+    
+    return template
+
+# ==================== ERROR HANDLERS ====================
+
+@app.errorhandler(404)
+def page_not_found(e):
+    content = f"""
+    <!-- 404 Hero -->
+    <section class="hero-section" style="background: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Page Not Found</h1>
+            <p class="hero-subtitle">The page you're looking for doesn't exist</p>
+            <a href="/" class="btn">Return Home</a>
+        </div>
+    </section>
+    
+    <section class="section">
+        <div class="container" style="text-align: center;">
+            <p style="font-size: 1.2rem; margin-bottom: 30px;">
+                The page you tried to access could not be found. It may have been moved or deleted.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                <a href="/" class="btn">Home</a>
+                <a href="/products" class="btn">Products</a>
+                <a href="/about" class="btn">About</a>
+                <a href="/contact" class="btn">Contact</a>
             </div>
-            
-            <div class="form-group">
-                <label for="product_url">Product Link (optional)</label>
-                <input type="url" id="product_url" name="product_url" value="{{ page.product_url or '' }}" placeholder="https://amazon.com/...">
+        </div>
+    </section>
+    """
+    
+    template = get_base_template("Page Not Found", "home")
+    return template.replace("{{% content %}}", content), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    content = f"""
+    <!-- 500 Hero -->
+    <section class="hero-section" style="background: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Server Error</h1>
+            <p class="hero-subtitle">Something went wrong on our end</p>
+            <a href="/" class="btn">Return Home</a>
+        </div>
+    </section>
+    
+    <section class="section">
+        <div class="container" style="text-align: center;">
+            <p style="font-size: 1.2rem; margin-bottom: 30px;">
+                We're experiencing technical difficulties. Please try again later.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                <a href="/" class="btn">Home</a>
+                <a href="/contact" class="btn">Contact Support</a>
             </div>
-            
-            <div class="btn-group">
-                <a href="/kahu" class="back-btn">← Cancel</a>
-                <button type="submit" class="save-btn">💾 Save Changes</button>
-            </div>
-        </form>
-    </div>
-</body>
-</html>"""
-
-def save_content(data):
-    with open(DATA_FILE, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
-
-def load_content():
-    if DATA_FILE.exists():
-        with open(DATA_FILE, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    return DEFAULT_PAGES
-
-@app.route("/")
-def home():
-    return redirect("/home")
-
-@app.route("/<page_id>")
-def show_page(page_id):
-    content = load_content()
-    pages = content["pages"]
+        </div>
+    </section>
+    """
     
-    if page_id not in pages:
-        abort(404)
-    
-    page = pages[page_id]
-    body_html = markdown.markdown(
-        page["body_md"],
-        extensions=['extra', 'nl2br']
-    )
-    
-    nav_items = [
-        {"title": pages[pid]["title"], "url": f"/{pid}"}
-        for pid in content["order"]
-    ]
-    
-    return render_template_string(
-        PAGE_TEMPLATE,
-        page=page,
-        body_html=body_html,
-        nav_items=nav_items,
-        style=ENHANCED_STYLE
-    )
+    template = get_base_template("Server Error", "home")
+    return template.replace("{{% content %}}", content), 500
 
-@app.route("/myron-golden")
-def myron_golden_page():
-    return render_template_string(
-        MYRON_GOLDEN_TEMPLATE,
-        style=ENHANCED_STYLE
-    )
+# ==================== RUN APPLICATION ====================
 
-@app.route("/kingdom_keys")
-def kingdom_keys():
-    return show_page("kingdom_keys")
-
-@app.route("/kahu")
-def admin_panel():
-    content = load_content()
-    return render_template_string(
-        ADMIN_TEMPLATE,
-        pages=content["pages"]
-    )
-
-@app.route("/kahu/edit/<page_id>", methods=["GET", "POST"])
-def edit_page(page_id):
-    content = load_content()
-    pages = content["pages"]
-    
-    if page_id not in pages:
-        abort(404)
-    
-    success = False
-    
-    if request.method == "POST":
-        pages[page_id].update({
-            "title": request.form.get("title"),
-            "hero_image": request.form.get("hero_image") or None,
-            "body_md": request.form.get("body_md"),
-            "product_url": request.form.get("product_url") or ""
-        })
-        save_content(content)
-        success = True
-    
-    return render_template_string(
-        EDIT_TEMPLATE,
-        page=pages[page_id],
-        page_id=page_id,
-        success=success
-    )
-
-if __name__ == "__main__":
-    if not DATA_FILE.exists():
-        save_content(DEFAULT_PAGES)
-    
-    port = int(os.environ.get("PORT", 5000))
-    print("🌺 Starting...")
-    print(f"🌊 Visit: http://localhost:{port}")
-    print(f"⚙️  Admin: http://localhost:{port}/kahu")
-    print(f"🎁  Kingdom Keys: http://localhost:{port}/kingdom_keys")
-    print(f"💰  Myron Golden: http://localhost:{port}/myron-golden")
-    app.run(host="0.0.0.0", port=port, debug=False)
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
