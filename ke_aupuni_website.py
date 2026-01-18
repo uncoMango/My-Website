@@ -198,7 +198,7 @@ body {
 
 
 .nav-logo {
-    height: 80px;
+    height: 160px;
     width: auto;
     margin-right: 1rem;
 }
@@ -448,7 +448,7 @@ body {
     }
     
     .nav-logo {
-        height: 50px;
+        height: 100px;
     }
     
     .content-card {
@@ -1139,7 +1139,7 @@ def show_page(page_id):
     )
     
     nav_items = [
-        {"title": pages[pid]["title"], "url": f"/{pid}"}
+        {"title": pages[pid]["title"], "url": "/" if pid == "home" else f"/{pid}"}
         for pid in content["order"]
     ]
     
