@@ -278,7 +278,7 @@ body {
 }
 
 .content-card {
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
                 repeating-linear-gradient(90deg, 
                     rgba(210, 180, 140, 0.3) 0px,
                     rgba(210, 180, 140, 0.3) 2px,
