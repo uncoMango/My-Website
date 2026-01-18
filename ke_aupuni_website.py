@@ -226,7 +226,7 @@ a:visited {
 }
 
 .nav-logo {
-    height: 40px;
+    height: 70px;
     width: auto;
 }
 
@@ -238,22 +238,18 @@ a:visited {
 }
 
 .nav-menu li a {
-    color: #1a1a1a;
+    color: #2c3e50;
     text-decoration: none;
-    font-weight: 700;
-    font-size: 0.95rem;
-    padding: 0.75rem 1.25rem;
-    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
     transition: all 0.3s ease;
-    text-shadow: 0 1px 2px rgba(255,255,255,0.5);
-    letter-spacing: 0.3px;
 }
 
 .nav-menu li a:hover {
-    color: white;
-    background: rgba(95, 158, 160, 0.8);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    color: #5f9ea0;
+    background: rgba(255, 255, 255, 0.4);
 }
 
 .hamburger {
@@ -361,10 +357,10 @@ a:visited {
     background-color: rgba(255, 255, 255, 0.75);
     border: 2px solid rgba(212, 165, 116, 0.3);
     background-image: 
-        linear-gradient(45deg, rgba(201, 168, 118, 0.25) 25%, transparent 25%),
-        linear-gradient(-45deg, rgba(201, 168, 118, 0.25) 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, rgba(191, 160, 104, 0.25) 75%),
-        linear-gradient(-45deg, transparent 75%, rgba(191, 160, 104, 0.25) 75%);
+        linear-gradient(45deg, rgba(201, 168, 118, 0.12) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(201, 168, 118, 0.12) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(191, 160, 104, 0.12) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(191, 160, 104, 0.12) 75%);
     background-size: 20px 20px;
     background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
     border-radius: 12px;
