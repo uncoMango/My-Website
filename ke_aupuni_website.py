@@ -398,14 +398,14 @@ body {
         display: flex;
     }
     
-    /* MOBILE MENU - FULLY TRANSPARENT BACKGROUND */
+    /* Forces the menu container to be invisible/transparent */
     .nav-menu {
         display: none;
         position: absolute;
         top: 100%;
         left: 0;
         right: 0;
-        background: transparent !important;
+        background: transparent !important; /* This removes the solid background */
         flex-direction: column;
         gap: 0;
         padding: 0.5rem 0;
@@ -415,25 +415,27 @@ body {
         display: flex;
     }
     
-    /* DARK TEXT FOR VISIBILITY ON LAUHALA BACKGROUND */
+    /* Removes any background from the individual links */
     .nav-menu a {
-        background: transparent !important;
+        background: transparent !important; 
         padding: 1rem 2rem;
         border-radius: 0;
-        color: #2c3e50 !important;
-        text-shadow: 1px 1px 2px rgba(255,255,255,0.5) !important;
+        color: white !important; /* Keeping text white for visibility on your hero images */
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8) !important;
         font-size: 1.3rem;
         font-weight: 600;
     }
     
+    /* Optional: a very slight tint only when hovering */
     .nav-menu a:hover {
-        background: rgba(95, 158, 160, 0.3) !important;
-        color: #2c3e50 !important;
+        background: rgba(255, 255, 255, 0.1) !important;
     }
-    
+
     .nav-container {
         padding: 0 1rem;
+        background: transparent !important;
     }
+}
     
     .hero {
         height: 45vh;
@@ -1406,6 +1408,7 @@ if __name__ == "__main__":
     print(f"🌊 Visit: http://localhost:{port}")
     print("=" * 50)
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
