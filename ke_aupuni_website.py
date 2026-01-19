@@ -136,11 +136,10 @@ body {
 }
 
 .site-nav {
-    background: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
+    background: none;
+    padding: 0;
+    margin: 0;
     position: relative;
-    top: 0;
     z-index: 1000;
 }
 
@@ -148,9 +147,10 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    padding: 0;
+    padding: 0.5rem 2rem;
+    background: none;
 }
 
 /* UPDATED: Darker title for visibility on lauhala */
@@ -170,7 +170,7 @@ body {
     display: flex;
     list-style: none;
     gap: 2rem;
-    background: none !important;
+    background: none;
     margin: 0;
     padding: 0;
 }
@@ -486,7 +486,21 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
 .section{padding:40px 0}.product-box{background:rgba(0,0,0,0.5);padding:30px;margin:20px 0;border-radius:12px;text-align:center}
 .btn{display:inline-block;padding:15px 40px;background:linear-gradient(135deg,#5f9ea0,#4a8b8e);color:white;text-decoration:none;font-weight:bold;margin:10px;border-radius:8px}
 </style></head><body>
-<nav class="site-nav"><div class="nav-container" style="display:flex;align-items:center;gap:2rem;padding:0.5rem 2rem;"><a href="/"><img src="/static/images/output-onlinepngtools.png" alt="Logo" style="height:60px;width:auto;"></a></div></nav>
+<nav class="site-nav">
+<div class="nav-container">
+<a href="/"><img src="/static/images/output-onlinepngtools.png" alt="Logo" style="height:180px;width:auto;"></a>
+<ul class="nav-menu">
+<li><a href="/">Ke Aupuni O Ke Akua</a></li>
+<li><a href="/kingdom_wealth">Kingdom Wealth</a></li>
+<li><a href="/free_booklets">FREE Booklets</a></li>
+<li><a href="/kingdom_keys">FREE Kingdom Keys</a></li>
+<li><a href="/call_to_repentance">Call to Repentance</a></li>
+<li><a href="/aloha_wellness">Aloha Wellness</a></li>
+<li><a href="/pastor_planners">Pastor Planners</a></li>
+<li><a href="/nahenahe_voice">Nahenahe Voice</a></li>
+</ul>
+</div>
+</nav>
 <header class="hero" style="background-image:url('https://i.imgur.com/G2YmSka.jpeg')"><div class="hero-overlay"></div><div class="hero-content"><h1>Transform Your Financial Future</h1></div></header>
 <main class="container"><article class="content-card">
 <div class="email-capture"><h2>Get FREE Kingdom Business Guide</h2><form action="https://app.kit.com/forms/8979853/subscriptions" method="post"><input type="text" name="fields[first_name]" placeholder="First Name" required style="padding:15px;margin:10px 0;width:100%%;border-radius:6px;border:1px solid #ccc"><input type="email" name="email_address" placeholder="Email" required style="padding:15px;margin:10px 0;width:100%%;border-radius:6px;border:1px solid #ccc"><button type="submit" style="width:100%%;padding:15px;background:#d4af37;color:white;font-weight:bold;border:none;border-radius:6px">GET FREE GUIDE</button></form></div>
@@ -578,8 +592,8 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 </head>
 <body>
     <nav class="site-nav">
-        <div class="nav-container" style="display:flex;align-items:center;gap:2rem;padding:0.5rem 2rem;">
-            <a href="/"><img src="/static/images/output-onlinepngtools.png" alt="Logo" style="height:60px;width:auto;"></a>
+        <div class="nav-container">
+            <a href="/"><img src="/static/images/output-onlinepngtools.png" alt="Logo" style="height:180px;width:auto;"></a>
             <div class="hamburger" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
