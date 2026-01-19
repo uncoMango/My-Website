@@ -1,3 +1,4 @@
+
 # ke_aupuni_finalized_with_image_placeholders.py
 # Corrected content structure, Mobile Responsive, and Volume 6 removed.
 
@@ -10,7 +11,7 @@ import os
 app = Flask(__name__)
 
 # Page order for navigation - VOLUME 6 REMOVED
-ORDER = ["home", "kingdom_wealth", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice", "kingdom_keys"]
+ORDER = ["home", "kingdom_wealth", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice", "kingdom_keys", "free_booklets"]
 
 # Data storage
 BASE = Path(__file__).parent
@@ -32,7 +33,7 @@ DEFAULT_PAGES = {
         "kingdom_wealth": {
             "title": "Kingdom Wealth",
             "hero_image": "https://i.imgur.com/G2YmSka.jpeg",
-            "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom operates on stewardship.\r\n\r\n### Core Principles\r\n\r\n**Source vs. Resource** - God is the Source.\r\n\r\n**[Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n**[Myron Golden Training →](/myron-golden)**",
+            "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom operates on stewardship, not ownership. God is your Source.\r\n\r\n### Core Principles\r\n\r\n**Source vs. Resource** - Your job is a channel, but God is the Source of all provision.\r\n\r\n**Seed and Harvest** - Kingdom economics works on agricultural principles.\r\n\r\n**[FREE Kingdom Keys Pamphlets →](/kingdom_keys)**\r\n\r\n**[FREE Wealth & Wellness Booklets →](/free_booklets)**\r\n\r\n**[Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n**[Myron Golden Training →](/myron-golden)**",
             "product_url": ""
 
         },
@@ -93,7 +94,19 @@ DEFAULT_PAGES = {
                 {"title": "7 Scriptures Kingdom Inside You", "download": "/download/pamphlet1"},
                 {"title": "Kingdom Healing in 10 Minutes", "download": "/download/pamphlet2"},
                 {"title": "5 Kingdom Prayers", "download": "/download/pamphlet3"},
-                {"title": "Kingdom Wealth Verses", "download": "/download/pamphlet4"}
+                {"title": "Kingdom Wealth Verses", "download": "/download/pamphlet4"}            ]
+        },
+        "free_booklets": {
+            "title": "FREE Kingdom Booklets",
+            "hero_image": "https://i.imgur.com/wmHEyDo.png",
+            "body_md": "## 🎁 FREE Kingdom Booklets\r\n\r\nDeep dive into Kingdom principles for wealth, wellness, and daily living. Download all 6 FREE below:",
+            "products": [
+                {"title": "Kingdom Wealth Principles", "download": "/download/booklet1"},
+                {"title": "Kingdom Wealth for Couples", "download": "/download/booklet2"},
+                {"title": "Kingdom Wellness Principles", "download": "/download/booklet3"},
+                {"title": "Kingdom Wellness for Couples", "download": "/download/booklet4"},
+                {"title": "Kingdom Living Principles", "download": "/download/booklet5"},
+                {"title": "Kingdom Living for Couples", "download": "/download/booklet6"}
             ]
         }
     }
@@ -123,7 +136,7 @@ body {
 }
 
 .site-nav {
-    background: rgba(212, 165, 116, 0.95);
+    background: transparent;
     padding: 1rem 0;
     position: sticky;
     top: 0;
@@ -161,9 +174,11 @@ body {
 
 .nav-menu a {
     text-decoration: none;
-    color: var(--text-dark);
-    font-weight: 500;
-    padding: 0.5rem 1rem;
+    color: white;
+    font-weight: 600;
+    font-size: 1.15rem;
+    padding: 0.6rem 1.2rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
     border-radius: 6px;
     transition: all 0.3s ease;
 }
@@ -241,12 +256,7 @@ body {
 }
 
 .content-card {
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                repeating-linear-gradient(90deg, 
-                    rgba(210, 180, 140, 0.3) 0px,
-                    rgba(210, 180, 140, 0.3) 2px,
-                    rgba(139, 90, 43, 0.2) 2px,
-                    rgba(139, 90, 43, 0.2) 4px);
+    background: rgba(0, 0, 0, 0.25);
     border: none;
     padding: 3rem 2rem;
     box-shadow: none;
@@ -396,7 +406,7 @@ body {
         top: 100%;
         left: 0;
         right: 0;
-        background: rgba(212, 165, 116, 0.95);
+        background: rgba(0, 0, 0, 0.85);
         flex-direction: column;
         gap: 0;
         padding: 1rem 0;
@@ -1309,12 +1319,61 @@ def edit_page(page_id):
 def myron_golden_page():
     return render_template_string(MYRON_GOLDEN_TEMPLATE, style=ENHANCED_STYLE)
 
+
+@app.route("/free_booklets")
+def free_booklets():
+    data = load_content()
+    return render_page("free_booklets", data)
+
 @app.route("/kingdom_keys")
 def kingdom_keys():
     data = load_content()
     return render_page("kingdom_keys", data)
 
 
+
+
+@app.route("/download/booklet1")
+def download_booklet1():
+    pdf_path = BASE / "Free_Booklet_1_Kingdom_Wealth.pdf"
+    if pdf_path.exists():
+        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
+    abort(404)
+
+@app.route("/download/booklet2")
+def download_booklet2():
+    pdf_path = BASE / "Free_Booklet_2_Kingdom_Wealth_Couples.pdf"
+    if pdf_path.exists():
+        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
+    abort(404)
+
+@app.route("/download/booklet3")
+def download_booklet3():
+    pdf_path = BASE / "Free_Booklet_3_Kingdom_Wellness.pdf"
+    if pdf_path.exists():
+        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
+    abort(404)
+
+@app.route("/download/booklet4")
+def download_booklet4():
+    pdf_path = BASE / "Free_Booklet_4_Kingdom_Wellness_Couples.pdf"
+    if pdf_path.exists():
+        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
+    abort(404)
+
+@app.route("/download/booklet5")
+def download_booklet5():
+    pdf_path = BASE / "Free_Booklet_5_Kingdom_Living.pdf"
+    if pdf_path.exists():
+        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
+    abort(404)
+
+@app.route("/download/booklet6")
+def download_booklet6():
+    pdf_path = BASE / "Free_Booklet_6_Kingdom_Living_Couples.pdf"
+    if pdf_path.exists():
+        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
+    abort(404)
 
 @app.route("/download/pamphlet1")
 def download_pamphlet1():
