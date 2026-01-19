@@ -1,4 +1,3 @@
-
 # ke_aupuni_finalized_with_image_placeholders.py
 # Corrected content structure, Mobile Responsive, and Volume 6 removed.
 
@@ -11,7 +10,7 @@ import os
 app = Flask(__name__)
 
 # Page order for navigation - VOLUME 6 REMOVED
-ORDER = ["home", "kingdom_wealth", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice", "kingdom_keys", "free_booklets"]
+ORDER = ["home", "kingdom_wealth", "free_booklets", "kingdom_keys", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice"]
 
 # Data storage
 BASE = Path(__file__).parent
@@ -33,7 +32,7 @@ DEFAULT_PAGES = {
         "kingdom_wealth": {
             "title": "Kingdom Wealth",
             "hero_image": "https://i.imgur.com/G2YmSka.jpeg",
-            "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom operates on stewardship, not ownership. God is your Source.\r\n\r\n### Core Principles\r\n\r\n**Source vs. Resource** - Your job is a channel, but God is the Source of all provision.\r\n\r\n**Seed and Harvest** - Kingdom economics works on agricultural principles.\r\n\r\n**[FREE Kingdom Keys Pamphlets →](/kingdom_keys)**\r\n\r\n**[FREE Wealth & Wellness Booklets →](/free_booklets)**\r\n\r\n**[Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n**[Myron Golden Training →](/myron-golden)**",
+            "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom operates on stewardship, not ownership.\r\n\r\n### Core Principles\r\n\r\n**Source vs. Resource** - God is your Source.\r\n\r\n**[FREE Kingdom Keys →](/kingdom_keys)**\r\n\r\n**[FREE Kingdom Booklets →](/free_booklets)**\r\n\r\n**[Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n**[Myron Golden Training →](/myron-golden)**",
             "product_url": ""
 
         },
@@ -86,20 +85,10 @@ DEFAULT_PAGES = {
                 }
             ]
         },
-        "kingdom_keys": {
-            "title": "FREE Kingdom Keys Booklets",
-            "hero_image": "https://i.imgur.com/wmHEyDo.png",
-            "body_md": "## 🌺 FREE Kingdom Keys 🌺\r\n\r\nAfter 30 years of biblical study.\r\n\r\n**[Browse Complete Kingdom Series →](/call_to_repentance)**",
-            "products": [
-                {"title": "7 Scriptures Kingdom Inside You", "download": "/download/pamphlet1"},
-                {"title": "Kingdom Healing in 10 Minutes", "download": "/download/pamphlet2"},
-                {"title": "5 Kingdom Prayers", "download": "/download/pamphlet3"},
-                {"title": "Kingdom Wealth Verses", "download": "/download/pamphlet4"}            ]
-        },
         "free_booklets": {
-            "title": "FREE Kingdom Booklets",
+            "title": "FREE Booklets",
             "hero_image": "https://i.imgur.com/wmHEyDo.png",
-            "body_md": "## 🎁 FREE Kingdom Booklets\r\n\r\nDeep dive into Kingdom principles for wealth, wellness, and daily living. Download all 6 FREE below:",
+            "body_md": "## 🎁 FREE Kingdom Booklets\r\n\r\nDownload all 6:",
             "products": [
                 {"title": "Kingdom Wealth Principles", "download": "/download/booklet1"},
                 {"title": "Kingdom Wealth for Couples", "download": "/download/booklet2"},
@@ -107,6 +96,17 @@ DEFAULT_PAGES = {
                 {"title": "Kingdom Wellness for Couples", "download": "/download/booklet4"},
                 {"title": "Kingdom Living Principles", "download": "/download/booklet5"},
                 {"title": "Kingdom Living for Couples", "download": "/download/booklet6"}
+            ]
+        },
+        "kingdom_keys": {
+            "title": "FREE Kingdom Keys Booklets",
+            "hero_image": "https://i.imgur.com/wmHEyDo.png",
+            "body_md": "## 🌺 FREE Kingdom Keys 🌺\r\n\r\nAfter 30 years of biblical study.\r\n\r\n**[Browse Complete Kingdom Series →](/call_to_repentance)**",
+            "products": [
+                {"title": "7 Scriptures Kingdom Inside You", "cover": "", "amazon": "", "gumroad": ""},
+                {"title": "Kingdom Healing in 10 Minutes", "cover": "", "amazon": "", "gumroad": ""},
+                {"title": "5 Kingdom Prayers", "cover": "", "amazon": "", "gumroad": ""},
+                {"title": "Kingdom Wealth Verses", "cover": "", "amazon": "", "gumroad": ""}
             ]
         }
     }
@@ -128,7 +128,7 @@ ENHANCED_STYLE = """
 body {
     font-family: 'Georgia', 'Times New Roman', serif;
     line-height: 1.6;
-    color: var(--text-dark);
+    color: white;
     background: var(--primary-bg);
     background-image: 
         radial-gradient(circle at 20% 50%, rgba(175, 216, 248, 0.1) 0%, transparent 50%),
@@ -175,10 +175,8 @@ body {
 .nav-menu a {
     text-decoration: none;
     color: white;
-    font-weight: 600;
-    font-size: 1.15rem;
-    padding: 0.6rem 1.2rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+    font-weight: 700;
+    padding: 0.7rem 1.3rem; font-size: 1.2rem; text-shadow: 2px 2px 6px rgba(0,0,0,1);
     border-radius: 6px;
     transition: all 0.3s ease;
 }
@@ -257,6 +255,7 @@ body {
 
 .content-card {
     background: rgba(0, 0, 0, 0.25);
+
     border: none;
     padding: 3rem 2rem;
     box-shadow: none;
@@ -406,7 +405,7 @@ body {
         top: 100%;
         left: 0;
         right: 0;
-        background: rgba(0, 0, 0, 0.85);
+        background: rgba(0, 0, 0, 0.9);
         flex-direction: column;
         gap: 0;
         padding: 1rem 0;
@@ -623,9 +622,6 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
                         {% endif %}
                         <h3 style="color: white; font-size: 1.1rem; margin-bottom: 1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">{{ product.title }}</h3>
                         <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
-                            {% if product.get('download') %}
-                            <a href="{{ product.download }}" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #d4af37, #b8960c); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">📥 Download FREE</a>
-                            {% endif %}
                             {% if product.amazon %}
                             <a href="{{ product.amazon }}" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #5f9ea0, #4a8b8e); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">🛒 Amazon</a>
                             {% endif %}
@@ -683,9 +679,6 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
                         {% endif %}
                         <h3 style="color: white; font-size: 1.1rem; margin-bottom: 1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">{{ product.title }}</h3>
                         <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
-                            {% if product.get('download') %}
-                            <a href="{{ product.download }}" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #d4af37, #b8960c); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">📥 Download FREE</a>
-                            {% endif %}
                             {% if product.amazon %}
                             <a href="{{ product.amazon }}" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #5f9ea0, #4a8b8e); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">🛒 Amazon</a>
                             {% endif %}
@@ -766,7 +759,7 @@ def serve_cover(filename):
 
 ADMIN_PASSWORD = "Kingdom2024"  # Change this in production!
 
-@app.route("/admin")
+@app.route("/kahu")
 def admin_panel():
     """Admin panel for managing content"""
     data = load_content()
@@ -1319,12 +1312,6 @@ def edit_page(page_id):
 def myron_golden_page():
     return render_template_string(MYRON_GOLDEN_TEMPLATE, style=ENHANCED_STYLE)
 
-
-@app.route("/free_booklets")
-def free_booklets():
-    data = load_content()
-    return render_page("free_booklets", data)
-
 @app.route("/kingdom_keys")
 def kingdom_keys():
     data = load_content()
@@ -1333,76 +1320,34 @@ def kingdom_keys():
 
 
 
+@app.route("/free_booklets")
+def free_booklets():
+    data = load_content()
+    return render_page("free_booklets", data)
+
 @app.route("/download/booklet1")
 def download_booklet1():
-    pdf_path = BASE / "Free_Booklet_1_Kingdom_Wealth.pdf"
-    if pdf_path.exists():
-        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
-    abort(404)
+    return send_file(BASE / "Free_Booklet_1_Kingdom_Wealth.pdf", mimetype='application/pdf', as_attachment=True)
 
 @app.route("/download/booklet2")
 def download_booklet2():
-    pdf_path = BASE / "Free_Booklet_2_Kingdom_Wealth_Couples.pdf"
-    if pdf_path.exists():
-        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
-    abort(404)
+    return send_file(BASE / "Free_Booklet_2_Kingdom_Wealth_Couples.pdf", mimetype='application/pdf', as_attachment=True)
 
 @app.route("/download/booklet3")
 def download_booklet3():
-    pdf_path = BASE / "Free_Booklet_3_Kingdom_Wellness.pdf"
-    if pdf_path.exists():
-        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
-    abort(404)
+    return send_file(BASE / "Free_Booklet_3_Kingdom_Wellness.pdf", mimetype='application/pdf', as_attachment=True)
 
 @app.route("/download/booklet4")
 def download_booklet4():
-    pdf_path = BASE / "Free_Booklet_4_Kingdom_Wellness_Couples.pdf"
-    if pdf_path.exists():
-        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
-    abort(404)
+    return send_file(BASE / "Free_Booklet_4_Kingdom_Wellness_Couples.pdf", mimetype='application/pdf', as_attachment=True)
 
 @app.route("/download/booklet5")
 def download_booklet5():
-    pdf_path = BASE / "Free_Booklet_5_Kingdom_Living.pdf"
-    if pdf_path.exists():
-        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
-    abort(404)
+    return send_file(BASE / "Free_Booklet_5_Kingdom_Living.pdf", mimetype='application/pdf', as_attachment=True)
 
 @app.route("/download/booklet6")
 def download_booklet6():
-    pdf_path = BASE / "Free_Booklet_6_Kingdom_Living_Couples.pdf"
-    if pdf_path.exists():
-        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
-    abort(404)
-
-@app.route("/download/pamphlet1")
-def download_pamphlet1():
-    pdf_path = BASE / "Kingdom_Keys_1_Kingdom_Inside_You.pdf"
-    if pdf_path.exists():
-        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
-    abort(404)
-
-@app.route("/download/pamphlet2")
-def download_pamphlet2():
-    pdf_path = BASE / "Kingdom_Keys_2_Release_Healing.pdf"
-    if pdf_path.exists():
-        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
-    abort(404)
-
-@app.route("/download/pamphlet3")
-def download_pamphlet3():
-    pdf_path = BASE / "Kingdom_Keys_3_Hawaiian_Grandmas_Prayers.pdf"
-    if pdf_path.exists():
-        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
-    abort(404)
-
-@app.route("/download/pamphlet4")
-def download_pamphlet4():
-    pdf_path = BASE / "Kingdom_Keys_4_Kingdom_Wealth.pdf"
-    if pdf_path.exists():
-        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
-    abort(404)
-
+    return send_file(BASE / "Free_Booklet_6_Kingdom_Living_Couples.pdf", mimetype='application/pdf', as_attachment=True)
 
 if __name__ == "__main__":
     if not DATA_FILE.exists():
