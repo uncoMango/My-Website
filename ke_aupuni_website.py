@@ -122,16 +122,8 @@ body {
         radial-gradient(circle at 80% 20%, rgba(212, 165, 116, 0.1) 0%, transparent 50%);
 }
 
-/* UPDATED: Lauhala mat woven pattern navigation */
 .site-nav {
-    background-color: #d4b896;
-    background-image: 
-        linear-gradient(45deg, #c9a876 25%, transparent 25%),
-        linear-gradient(-45deg, #c9a876 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, #bfa068 75%),
-        linear-gradient(-45deg, transparent 75%, #bfa068 75%);
-    background-size: 16px 16px;
-    background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+    background: rgba(212, 165, 116, 0.95);
     padding: 1rem 0;
     position: sticky;
     top: 0;
@@ -278,7 +270,7 @@ body {
 
 
 .content-card a {
-    color: #87CEEB;
+    color: #FFD700;
     text-decoration: underline;
     font-weight: 600;
 }
@@ -398,21 +390,13 @@ body {
         display: flex;
     }
     
-    /* UPDATED: Lauhala pattern for mobile dropdown menu */
     .nav-menu {
         display: none;
         position: absolute;
         top: 100%;
         left: 0;
         right: 0;
-        background-color: #d4b896;
-        background-image: 
-            linear-gradient(45deg, #c9a876 25%, transparent 25%),
-            linear-gradient(-45deg, #c9a876 25%, transparent 25%),
-            linear-gradient(45deg, transparent 75%, #bfa068 75%),
-            linear-gradient(-45deg, transparent 75%, #bfa068 75%);
-        background-size: 16px 16px;
-        background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+        background: rgba(212, 165, 116, 0.95);
         flex-direction: column;
         gap: 0;
         padding: 1rem 0;
@@ -926,17 +910,23 @@ def admin_panel():
 """
         
         if product_url != "N/A":
-            admin_html += f'                    <div><strong>Product URL:</strong> <a href="{product_url}" target="_blank">View</a></div>\n'
+            admin_html += f'                    <div><strong>Product URL:</strong> <a href="{product_url}" target="_blank">View</a></div>
+'
         
         if product_links:
-            admin_html += f'                    <div><strong>Music Links:</strong> {len(product_links)} platforms</div>\n'
+            admin_html += f'                    <div><strong>Music Links:</strong> {len(product_links)} platforms</div>
+'
         
         if gallery_images:
-            admin_html += f'                    <div><strong>Gallery:</strong> {len(gallery_images)} images</div>\n'
-            admin_html += '                    <div class="gallery-preview">\n'
+            admin_html += f'                    <div><strong>Gallery:</strong> {len(gallery_images)} images</div>
+'
+            admin_html += '                    <div class="gallery-preview">
+'
             for img in gallery_images[:3]:
-                admin_html += f'                        <img src="{img}" alt="Gallery">\n'
-            admin_html += '                    </div>\n'
+                admin_html += f'                        <img src="{img}" alt="Gallery">
+'
+            admin_html += '                    </div>
+'
         
         admin_html += f"""
                 </div>
@@ -1075,14 +1065,16 @@ def edit_page(page_id):
         # Handle product images (book covers, planner covers, etc)
         product_images_raw = request.form.get("product_images", "")
         if product_images_raw:
-            pages[page_id]["product_images"] = [line.strip() for line in product_images_raw.split("\n") if line.strip()]
+            pages[page_id]["product_images"] = [line.strip() for line in product_images_raw.split("
+") if line.strip()]
         else:
             pages[page_id]["product_images"] = []
         
         # Handle gallery images
         gallery_str = request.form.get("gallery_images", "").strip()
         if gallery_str:
-            gallery_images = [img.strip() for img in gallery_str.split("\n") if img.strip()]
+            gallery_images = [img.strip() for img in gallery_str.split("
+") if img.strip()]
             pages[page_id]["gallery_images"] = gallery_images
         elif "gallery_images" in pages[page_id]:
             del pages[page_id]["gallery_images"]
@@ -1091,7 +1083,8 @@ def edit_page(page_id):
         links_str = request.form.get("product_links", "").strip()
         if links_str:
             links = []
-            for line in links_str.split("\n"):
+            for line in links_str.split("
+"):
                 if "|" in line:
                     parts = line.split("|")
                     if len(parts) >= 3:
@@ -1112,17 +1105,20 @@ def edit_page(page_id):
     page = pages[page_id]
     
     # Format gallery images
-    gallery_str = "\n".join(page.get("gallery_images", []))
+    gallery_str = "
+".join(page.get("gallery_images", []))
     
     # Format product images
     product_images_str = ""
     if page.get("product_images"):
-        product_images_str = "\n".join(page["product_images"])
+        product_images_str = "
+".join(page["product_images"])
     
     # Format product links
     links_str = ""
     if "product_links" in page:
-        links_str = "\n".join([
+        links_str = "
+".join([
             f"{link['name']}|{link['url']}|{link['icon']}"
             for link in page["product_links"]
         ])
