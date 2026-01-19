@@ -393,12 +393,12 @@ body {
     margin-top: 2rem;
 }
 
-/* Mobile Styles */
 @media (max-width: 768px) {
     .hamburger {
         display: flex;
     }
     
+    /* MOBILE MENU - FULLY TRANSPARENT BACKGROUND */
     .nav-menu {
         display: none;
         position: absolute;
@@ -415,12 +415,20 @@ body {
         display: flex;
     }
     
+    /* DARK TEXT FOR VISIBILITY ON LAUHALA BACKGROUND */
     .nav-menu a {
         background: transparent !important;
         padding: 1rem 2rem;
         border-radius: 0;
         color: #2c3e50 !important;
         text-shadow: 1px 1px 2px rgba(255,255,255,0.5) !important;
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+    
+    .nav-menu a:hover {
+        background: rgba(95, 158, 160, 0.3) !important;
+        color: #2c3e50 !important;
     }
     
     .nav-container {
@@ -466,6 +474,7 @@ body {
         width: 100%;
     }
 }
+
 """
 
 def md_to_html(md_text):
@@ -1397,6 +1406,7 @@ if __name__ == "__main__":
     print(f"🌊 Visit: http://localhost:{port}")
     print("=" * 50)
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
