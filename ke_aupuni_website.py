@@ -136,7 +136,7 @@ body {
 }
 
 .site-nav {
-    background: none;
+    background: rgba(0,0,0,0);
     padding: 0;
     margin: 0;
     position: relative;
@@ -150,7 +150,7 @@ body {
     justify-content: flex-start;
     align-items: center;
     padding: 0.5rem 2rem;
-    background: none;
+    background: rgba(0,0,0,0);
 }
 
 /* UPDATED: Darker title for visibility on lauhala */
@@ -486,8 +486,8 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
 .section{padding:40px 0}.product-box{background:rgba(0,0,0,0.5);padding:30px;margin:20px 0;border-radius:12px;text-align:center}
 .btn{display:inline-block;padding:15px 40px;background:linear-gradient(135deg,#5f9ea0,#4a8b8e);color:white;text-decoration:none;font-weight:bold;margin:10px;border-radius:8px}
 </style></head><body>
-<nav class="site-nav">
-<div class="nav-container">
+<nav class="site-nav" style="background:rgba(0,0,0,0) !important;">
+<div class="nav-container" style="background:rgba(0,0,0,0) !important;">
 <a href="/"><img src="/static/images/output-onlinepngtools.png" alt="Logo" style="height:180px;width:auto;"></a>
 <ul class="nav-menu">
 <li><a href="/">Ke Aupuni O Ke Akua</a></li>
@@ -591,8 +591,8 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 </style>
 </head>
 <body>
-    <nav class="site-nav">
-        <div class="nav-container">
+    <nav class="site-nav" style="background:rgba(0,0,0,0) !important;">
+        <div class="nav-container" style="background:rgba(0,0,0,0) !important;">
             <a href="/"><img src="/static/images/output-onlinepngtools.png" alt="Logo" style="height:180px;width:auto;"></a>
             <div class="hamburger" onclick="toggleMenu()">
                 <span></span>
