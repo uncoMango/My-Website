@@ -175,17 +175,16 @@ body {
     padding: 0;
 }
 
-.nav-menu a {
-    background: transparent !important;
-    text-decoration: none;
-    color: white;
-    font-weight: 600;
-    padding: 0.4rem 1rem; 
-    font-size: 1.3rem; 
-    font-family: 'Georgia', serif;
-    text-shadow: 2px 2px 6px rgba(0,0,0,1);
-    border-radius: 6px;
-    transition: all 0.3s ease;
+.nav-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: transparent !important;  /* ← FULLY TRANSPARENT NOW */
+    flex-direction: column;
+    gap: 0;
+    padding: 0.5rem 0;
 }
 
 .nav-menu a:hover {
@@ -1403,3 +1402,4 @@ if __name__ == "__main__":
     print(f"🌊 Visit: http://localhost:{port}")
     print("=" * 50)
     app.run(host="0.0.0.0", port=port, debug=True)
+
