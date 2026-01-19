@@ -129,17 +129,17 @@ body {
     font-family: 'Georgia', 'Times New Roman', serif;
     line-height: 1.6;
     color: white;
-    background: var(--primary-bg);
+    background: #1a1a1a;
     background-image: 
-        radial-gradient(circle at 20% 50%, rgba(175, 216, 248, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(212, 165, 116, 0.1) 0%, transparent 50%);
+        radial-gradient(circle at 20% 50%, rgba(175, 216, 248, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(212, 165, 116, 0.05) 0%, transparent 50%);
 }
 
 .site-nav {
     background: none !important;
     padding: 0 !important;
     margin: 0 !important;
-    position: sticky;
+    position: relative;
     top: 0;
     z-index: 1000;
 }
@@ -176,6 +176,7 @@ body {
 }
 
 .nav-menu a {
+    background: transparent !important;
     text-decoration: none;
     color: white;
     font-weight: 600;
@@ -423,6 +424,7 @@ body {
     }
     
     .nav-menu a {
+    background: transparent !important;
         padding: 1rem 2rem;
         border-radius: 0;
     }
@@ -484,7 +486,7 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
 .section{padding:40px 0}.product-box{background:rgba(0,0,0,0.5);padding:30px;margin:20px 0;border-radius:12px;text-align:center}
 .btn{display:inline-block;padding:15px 40px;background:linear-gradient(135deg,#5f9ea0,#4a8b8e);color:white;text-decoration:none;font-weight:bold;margin:10px;border-radius:8px}
 </style></head><body>
-<div style="text-align:center;padding:1rem 0;background:transparent;"><a href="/"><img src="/static/images/output-onlinepngtools.png" alt="Logo" style="height:180px;width:auto;"></a></div>
+<div style="text-align:center;padding:0.2rem 0;background:transparent;"><a href="/"><img src="/static/images/output-onlinepngtools.png" alt="Logo" style="height:180px;width:auto;"></a></div>
 <nav class="site-nav"><div class="nav-container"></div></nav>
 <header class="hero" style="background-image:url('https://i.imgur.com/G2YmSka.jpeg')"><div class="hero-overlay"></div><div class="hero-content"><h1>Transform Your Financial Future</h1></div></header>
 <main class="container"><article class="content-card">
@@ -576,7 +578,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 </style>
 </head>
 <body>
-    <div style="text-align:center;padding:1rem 0;background:transparent;">
+    <div style="text-align:center;padding:0.2rem 0;background:transparent;">
         <a href="/"><img src="/static/images/output-onlinepngtools.png" alt="Logo" style="height:180px;width:auto;"></a>
     </div>
     <nav class="site-nav">
