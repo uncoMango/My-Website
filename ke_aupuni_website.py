@@ -129,7 +129,7 @@ body {
     font-family: 'Georgia', 'Times New Roman', serif;
     line-height: 1.6;
     color: white;
-    background: #1a1a1a;
+    background: transparent;
     background-image: 
         radial-gradient(circle at 20% 50%, rgba(175, 216, 248, 0.05) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(212, 165, 116, 0.05) 0%, transparent 50%);
