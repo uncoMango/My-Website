@@ -114,7 +114,6 @@ DEFAULT_PAGES = {
 
 # Enhanced CSS with Mobile Hamburger Menu - NO CHANGE
 ENHANCED_STYLE = """
-ENHANCED_STYLE = """
 :root {
     --primary-bg: #f8f5f0;
     --text-dark: #2c3e50;
@@ -137,8 +136,8 @@ body {
 }
 
 .site-nav {
-    background: transparent !important; 
-    padding: 10px 0 !important;
+    background: none !important;
+    padding: 0 !important;
     margin: 0 !important;
     position: relative;
     top: 0;
@@ -149,28 +148,29 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    justify-content: flex-start; /* Logo stays left */
+    justify-content: center;
     align-items: center;
-    padding: 0 2rem;
-    gap: 3rem; /* Space between logo and first menu item */
+    padding: 0;
 }
 
+/* UPDATED: Darker title for visibility on lauhala */
 .nav-title {
-    font-size: 1.5rem; /* Kept original size */
+    font-size: 1.5rem;
     font-weight: bold;
     color: #2c3e50;
     text-decoration: none;
     text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
     display: flex;
     align-items: center;
-    white-space: nowrap;
+    gap: 1rem;
 }
 
+/* Desktop Menu */
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: 1.5rem; 
-    background: transparent !important;
+    gap: 2rem;
+    background: none !important;
     margin: 0;
     padding: 0;
 }
@@ -180,8 +180,8 @@ body {
     text-decoration: none;
     color: white;
     font-weight: 600;
-    padding: 0.1rem 0.4rem; /* Field size reduced 3x */
-    font-size: 1.3rem; /* Kept original size */
+    padding: 0.4rem 1rem; 
+    font-size: 1.3rem; 
     font-family: 'Georgia', serif;
     text-shadow: 2px 2px 6px rgba(0,0,0,1);
     border-radius: 6px;
@@ -193,6 +193,7 @@ body {
     color: white;
 }
 
+/* Hamburger Menu */
 .hamburger {
     display: none;
     flex-direction: column;
@@ -200,6 +201,7 @@ body {
     padding: 0.5rem;
 }
 
+/* UPDATED: Darker hamburger lines for visibility on lauhala */
 .hamburger span {
     width: 25px;
     height: 3px;
@@ -260,6 +262,7 @@ body {
 
 .content-card {
     background: rgba(0, 0, 0, 0.25);
+
     border: none;
     padding: 3rem 2rem;
     box-shadow: none;
@@ -280,6 +283,7 @@ body {
     font-size: 1.6rem;
     text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
 }
+
 
 .content-card a {
     color: #FFD700;
@@ -305,7 +309,171 @@ body {
     text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
     line-height: 1.8;
 }
+
+.buy-section {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.buy-button, .music-button {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent-teal), #4a8b8e);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(95, 158, 160, 0.3);
+    margin: 0.5rem;
+}
+
+.buy-button:hover, .music-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(95, 158, 160, 0.4);
+}
+
+.music-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+
+/* CD Cover Gallery */
+.gallery-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.gallery-section h2 {
+    color: white;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.gallery-item {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+.footer {
+    text-align: center;
+    padding: 2rem;
+    color: white;
+    background: none;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    margin-top: 2rem;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+    
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.85) !important;
+        flex-direction: column;
+        gap: 0;
+        padding: 0.5rem 0;
+        
+    }
+    
+    .nav-menu.active {
+        display: flex;
+    }
+    
+    .nav-menu a {
+    background: transparent !important;
+        padding: 1rem 2rem;
+        border-radius: 0;
+    }
+    
+    .nav-container {
+        padding: 0 1rem;
+    }
+    
+    .hero {
+        height: 45vh;
+        min-height: 300px;
+    }
+    
+    .hero h1 {
+        font-size: 1.8rem;
+        padding: 0.75rem 1.5rem;
+    }
+    
+    .container {
+        position: relative;
+        height: auto;
+        margin-top: 0;
+        padding: 0 1rem 2rem;
+        transform: none;
+        left: 0;
+    }
+    
+    .content-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    .content-card h2 {
+        font-size: 1.8rem;
+    }
+    
+    .content-card h3 {
+        font-size: 1.4rem;
+    }
+    
+    .music-buttons {
+        flex-direction: column;
+    }
+    
+    .music-button {
+        width: 100%;
+    }
+}
 """
+
 def md_to_html(md_text):
     """Convert markdown to HTML"""
     return markdown.markdown(md_text, extensions=["extra", "nl2br"])
@@ -1224,4 +1392,3 @@ if __name__ == "__main__":
     print(f"🌊 Visit: http://localhost:{port}")
     print("=" * 50)
     app.run(host="0.0.0.0", port=port, debug=True)
-
