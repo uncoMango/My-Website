@@ -411,7 +411,7 @@ body {
         top: 100%;
         left: 0;
         right: 0;
-        background: rgba(0, 0, 0, 0.85) !important;
+        background: transparent !important;
         flex-direction: column;
         gap: 0;
         padding: 0.5rem 0;
@@ -423,9 +423,11 @@ body {
     }
     
     .nav-menu a {
-    background: transparent !important;
+        background: transparent !important;
         padding: 1rem 2rem;
         border-radius: 0;
+        color: #2c3e50 !important;
+        text-shadow: 1px 1px 2px rgba(255,255,255,0.5) !important;
     }
     
     .nav-container {
@@ -1402,4 +1404,5 @@ if __name__ == "__main__":
     print(f"🌊 Visit: http://localhost:{port}")
     print("=" * 50)
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
