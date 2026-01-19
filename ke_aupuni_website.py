@@ -114,12 +114,8 @@ DEFAULT_PAGES = {
 
 ENHANCED_STYLE = """
 :root {
-    --primary-bg: #f8f5f0;
-    --text-dark: #2c3e50;
     --accent-teal: #5f9ea0;
-    --accent-warm: #d4a574;
-    --white-transparent: rgba(255, 255, 255, 0.95);
-    --shadow-soft: 0 2px 10px rgba(0,0,0,0.1);
+    --text-light: #ffffff;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -128,17 +124,20 @@ body {
     font-family: 'Georgia', 'Times New Roman', serif;
     line-height: 1.6;
     color: white;
-    background: transparent;
-    background-image: 
-        radial-gradient(circle at 20% 50%, rgba(175, 216, 248, 0.05) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(212, 165, 116, 0.05) 0%, transparent 50%);
+    background-color: #121212; /* Deep background, NO lauhala */
+}
+
+/* NAVIGATION - CLEAN & INVISIBLE */
+.site-nav, .nav-container, .nav-menu {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .site-nav {
-    background: rgba(0,0,0,0);
-    padding: 0;
-    margin: 0;
-    position: relative;
+    position: absolute;
+    top: 0;
+    width: 100%;
     z-index: 1000;
 }
 
@@ -146,50 +145,48 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
-    padding: 0.5rem 2rem;
-    background: rgba(0,0,0,0);
+    padding: 1rem 2rem;
 }
 
+/* LOGO/TITLE AREA */
 .nav-title {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #2c3e50;
+    color: white !important; /* Changed from dark grey to white */
     text-decoration: none;
-    text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
-/* Desktop Menu */
+/* DESKTOP MENU - USES YOUR FONTS & SIZES */
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: 2rem;
-    background: none;
-    margin: 0;
-    padding: 0;
+    gap: 1.5rem;
 }
 
 .nav-menu a {
     background: transparent !important;
     text-decoration: none;
-    color: white;
+    color: white !important;
     font-weight: 600;
     padding: 0.4rem 1rem; 
     font-size: 1.3rem; 
     font-family: 'Georgia', serif;
     text-shadow: 2px 2px 6px rgba(0,0,0,1);
-    border-radius: 6px;
     transition: all 0.3s ease;
 }
 
 .nav-menu a:hover {
-    background: var(--accent-teal);
-    color: white;
+    background: var(--accent-teal) !important;
+    color: white !important;
+    border-radius: 6px;
 }
+"""
 
 /* Hamburger Menu */
 .hamburger {
@@ -208,13 +205,14 @@ body {
 }
 
 .hero {
-    height: 100vh;
-    min-height: 600px;
+    height: 60vh; /* This creates the "window" for your image */
     background-size: cover;
     background-position: center;
     position: relative;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
+    justify-content: center;
+    background-color: #121212; /* Dark placeholder so it's not white if image fails */
 }
 
 .hero-overlay {
@@ -570,16 +568,106 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title }}</title>
-    <style>{{ style }}
-    /* Image Styling */
-    .content-card img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 8px;
-        margin: 20px 0;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        display: block;
+    <style>
+        {{ style|safe }}
+        
+        /* HERO & CONTAINER FIX - STOPS THE WHITE-OUT */
+        .hero {
+            height: 60vh;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 5;
+        }
+
+        .content-card {
+            background: rgba(30, 30, 30, 0.95); /* Dark card, white text */
+            padding: 3rem;
+            border-radius: 12px;
+            margin-top: -60px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            color: white;
+        }
+
+        /* Your Image Styling */
+        .content-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: block;
+        }
+        
+        .content-card img[alt*="Cover"],
+        .content-card img[alt*="Volume"] {
+            max-width: 300px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <nav class="site-nav">
+        <div class="nav-container">
+            <a href="/" class="nav-title">
+                <img src="/static/images/output-onlinepngtools.png" alt="Logo" style="height:100px;width:auto;">
+            </a>
+            <div class="hamburger" onclick="toggleMenu()" style="cursor:pointer; display:none;">
+                <span style="display:block; width:25px; height:3px; background:white; margin:5px;"></span>
+                <span style="display:block; width:25px; height:3px; background:white; margin:5px;"></span>
+                <span style="display:block; width:25px; height:3px; background:white; margin:5px;"></span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                {% for item in nav_items %}
+                <li><a href="{{ item.url }}">{{ item.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero" style="background-image: url('{{ page.hero_image }}');">
+        <div class="hero-overlay"></div>
+        <h1 style="position:relative; z-index:2; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); font-size: 3rem;">{{ page.title }}</h1>
+    </header>
+
+    <main class="container">
+        <article class="content-card">
+            {{ body_html|safe }}
+        </article>
+    </main>
+
+    <script>
+    function toggleMenu() {
+        var x = document.getElementById("navMenu");
+        if (x.classList.contains("active")) {
+            x.classList.remove("active");
+            x.style.display = "none";
+        } else {
+            x.classList.add("active");
+            x.style.display = "flex";
+        }
     }
+    </script>
+</body>
+</html>
+"""
     
     .content-card img[alt*="Cover"],
     .content-card img[alt*="Volume"] {
@@ -1408,6 +1496,7 @@ if __name__ == "__main__":
     print(f"🌊 Visit: http://localhost:{port}")
     print("=" * 50)
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
