@@ -486,8 +486,7 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
 .section{padding:40px 0}.product-box{background:rgba(0,0,0,0.5);padding:30px;margin:20px 0;border-radius:12px;text-align:center}
 .btn{display:inline-block;padding:15px 40px;background:linear-gradient(135deg,#5f9ea0,#4a8b8e);color:white;text-decoration:none;font-weight:bold;margin:10px;border-radius:8px}
 </style></head><body>
-<div style="text-align:center;padding:0.2rem 0;background:transparent;"><a href="/"><img src="/static/images/output-onlinepngtools.png" alt="Logo" style="height:180px;width:auto;"></a></div>
-<nav class="site-nav"><div class="nav-container"></div></nav>
+<nav class="site-nav"><div class="nav-container" style="display:flex;align-items:center;gap:2rem;padding:0.5rem 2rem;"><a href="/"><img src="/static/images/output-onlinepngtools.png" alt="Logo" style="height:60px;width:auto;"></a></div></nav>
 <header class="hero" style="background-image:url('https://i.imgur.com/G2YmSka.jpeg')"><div class="hero-overlay"></div><div class="hero-content"><h1>Transform Your Financial Future</h1></div></header>
 <main class="container"><article class="content-card">
 <div class="email-capture"><h2>Get FREE Kingdom Business Guide</h2><form action="https://app.kit.com/forms/8979853/subscriptions" method="post"><input type="text" name="fields[first_name]" placeholder="First Name" required style="padding:15px;margin:10px 0;width:100%%;border-radius:6px;border:1px solid #ccc"><input type="email" name="email_address" placeholder="Email" required style="padding:15px;margin:10px 0;width:100%%;border-radius:6px;border:1px solid #ccc"><button type="submit" style="width:100%%;padding:15px;background:#d4af37;color:white;font-weight:bold;border:none;border-radius:6px">GET FREE GUIDE</button></form></div>
@@ -578,11 +577,9 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 </style>
 </head>
 <body>
-    <div style="text-align:center;padding:0.2rem 0;background:transparent;">
-        <a href="/"><img src="/static/images/output-onlinepngtools.png" alt="Logo" style="height:180px;width:auto;"></a>
-    </div>
     <nav class="site-nav">
-        <div class="nav-container">
+        <div class="nav-container" style="display:flex;align-items:center;gap:2rem;padding:0.5rem 2rem;">
+            <a href="/"><img src="/static/images/output-onlinepngtools.png" alt="Logo" style="height:60px;width:auto;"></a>
             <div class="hamburger" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
