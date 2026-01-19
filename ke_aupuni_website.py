@@ -103,10 +103,10 @@ DEFAULT_PAGES = {
             "hero_image": "https://i.imgur.com/wmHEyDo.png",
             "body_md": "## 🌺 FREE Kingdom Keys 🌺\r\n\r\nAfter 30 years of biblical study.\r\n\r\n**[Browse Complete Kingdom Series →](/call_to_repentance)**",
             "products": [
-                {"title": "7 Scriptures Kingdom Inside You", "cover": "", "amazon": "", "gumroad": ""},
-                {"title": "Kingdom Healing in 10 Minutes", "cover": "", "amazon": "", "gumroad": ""},
-                {"title": "5 Kingdom Prayers", "cover": "", "amazon": "", "gumroad": ""},
-                {"title": "Kingdom Wealth Verses", "cover": "", "amazon": "", "gumroad": ""}
+                {"title": "7 Scriptures Kingdom Inside You", "download": "/download/pamphlet1"},
+                {"title": "Kingdom Healing in 10 Minutes", "download": "/download/pamphlet2"},
+                {"title": "5 Kingdom Prayers", "download": "/download/pamphlet3"},
+                {"title": "Kingdom Wealth Verses", "download": "/download/pamphlet4"}
             ]
         }
     }
@@ -137,11 +137,11 @@ body {
 
 .site-nav {
     background: transparent;
-    padding: 1rem 0;
+    padding: 0.5rem 0;
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: var(--shadow-soft);
+    
 }
 
 .nav-container {
@@ -408,8 +408,8 @@ body {
         background: rgba(0, 0, 0, 0.9);
         flex-direction: column;
         gap: 0;
-        padding: 1rem 0;
-        box-shadow: var(--shadow-soft);
+        padding: 0.5rem 0;
+        
     }
     
     .nav-menu.active {
