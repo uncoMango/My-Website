@@ -112,7 +112,6 @@ DEFAULT_PAGES = {
     }
 }
 
-# Enhanced CSS with Mobile Hamburger Menu - NO CHANGE
 ENHANCED_STYLE = """
 :root {
     --primary-bg: #f8f5f0;
@@ -153,7 +152,6 @@ body {
     background: rgba(0,0,0,0);
 }
 
-/* UPDATED: Darker title for visibility on lauhala */
 .nav-title {
     font-size: 1.5rem;
     font-weight: bold;
@@ -175,16 +173,17 @@ body {
     padding: 0;
 }
 
-.nav-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: transparent !important;  /* ← FULLY TRANSPARENT NOW */
-    flex-direction: column;
-    gap: 0;
-    padding: 0.5rem 0;
+.nav-menu a {
+    background: transparent !important;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    padding: 0.4rem 1rem; 
+    font-size: 1.3rem; 
+    font-family: 'Georgia', serif;
+    text-shadow: 2px 2px 6px rgba(0,0,0,1);
+    border-radius: 6px;
+    transition: all 0.3s ease;
 }
 
 .nav-menu a:hover {
@@ -200,7 +199,6 @@ body {
     padding: 0.5rem;
 }
 
-/* UPDATED: Darker hamburger lines for visibility on lauhala */
 .hamburger span {
     width: 25px;
     height: 3px;
@@ -261,7 +259,6 @@ body {
 
 .content-card {
     background: rgba(0, 0, 0, 0.25);
-
     border: none;
     padding: 3rem 2rem;
     box-shadow: none;
@@ -282,7 +279,6 @@ body {
     font-size: 1.6rem;
     text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
 }
-
 
 .content-card a {
     color: #FFD700;
@@ -343,7 +339,6 @@ body {
     margin-top: 1.5rem;
 }
 
-
 /* CD Cover Gallery */
 .gallery-section {
     margin-top: 2rem;
@@ -389,7 +384,6 @@ body {
     }
 }
 
-
 .footer {
     text-align: center;
     padding: 2rem;
@@ -415,7 +409,6 @@ body {
         flex-direction: column;
         gap: 0;
         padding: 0.5rem 0;
-        
     }
     
     .nav-menu.active {
@@ -1404,5 +1397,6 @@ if __name__ == "__main__":
     print(f"🌊 Visit: http://localhost:{port}")
     print("=" * 50)
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
