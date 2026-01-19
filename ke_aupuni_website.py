@@ -622,6 +622,9 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
                         {% endif %}
                         <h3 style="color: white; font-size: 1.1rem; margin-bottom: 1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">{{ product.title }}</h3>
                         <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+                            {% if product.get('download') %}
+                            <a href="{{ product.download }}" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #d4af37, #b8960c); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">📥 FREE Download</a>
+                            {% endif %}
                             {% if product.amazon %}
                             <a href="{{ product.amazon }}" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #5f9ea0, #4a8b8e); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">🛒 Amazon</a>
                             {% endif %}
@@ -679,6 +682,9 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
                         {% endif %}
                         <h3 style="color: white; font-size: 1.1rem; margin-bottom: 1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">{{ product.title }}</h3>
                         <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+                            {% if product.get('download') %}
+                            <a href="{{ product.download }}" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #d4af37, #b8960c); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">📥 FREE Download</a>
+                            {% endif %}
                             {% if product.amazon %}
                             <a href="{{ product.amazon }}" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #5f9ea0, #4a8b8e); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">🛒 Amazon</a>
                             {% endif %}
@@ -1324,6 +1330,23 @@ def kingdom_keys():
 def free_booklets():
     data = load_content()
     return render_page("free_booklets", data)
+
+
+@app.route("/download/pamphlet1")
+def download_pamphlet1():
+    return send_file(BASE / "Kingdom_Keys_1_Kingdom_Inside_You.pdf", mimetype='application/pdf', as_attachment=True)
+
+@app.route("/download/pamphlet2")
+def download_pamphlet2():
+    return send_file(BASE / "Kingdom_Keys_2_Release_Healing.pdf", mimetype='application/pdf', as_attachment=True)
+
+@app.route("/download/pamphlet3")
+def download_pamphlet3():
+    return send_file(BASE / "Kingdom_Keys_3_Hawaiian_Grandmas_Prayers.pdf", mimetype='application/pdf', as_attachment=True)
+
+@app.route("/download/pamphlet4")
+def download_pamphlet4():
+    return send_file(BASE / "Kingdom_Keys_4_Kingdom_Wealth.pdf", mimetype='application/pdf', as_attachment=True)
 
 @app.route("/download/booklet1")
 def download_booklet1():
