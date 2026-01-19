@@ -136,12 +136,12 @@ body {
 }
 
 .site-nav {
-    background: transparent;
-    padding: 0.15rem 0;
+    background: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
     position: sticky;
     top: 0;
     z-index: 1000;
-    
 }
 
 .nav-container {
@@ -150,7 +150,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0 2rem;
+    padding: 0;
 }
 
 /* UPDATED: Darker title for visibility on lauhala */
@@ -170,6 +170,9 @@ body {
     display: flex;
     list-style: none;
     gap: 2rem;
+    background: none !important;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-menu a {
@@ -408,7 +411,7 @@ body {
         top: 100%;
         left: 0;
         right: 0;
-        background: rgba(0, 0, 0, 0.9);
+        background: rgba(0, 0, 0, 0.85) !important;
         flex-direction: column;
         gap: 0;
         padding: 0.5rem 0;
