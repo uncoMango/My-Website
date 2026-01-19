@@ -90,10 +90,10 @@ DEFAULT_PAGES = {
             "hero_image": "https://i.imgur.com/wmHEyDo.png",
             "body_md": "## 🌺 FREE Kingdom Keys 🌺\r\n\r\nAfter 30 years of biblical study.\r\n\r\n**[Browse Complete Kingdom Series →](/call_to_repentance)**",
             "products": [
-                {"title": "7 Scriptures Kingdom Inside You", "cover": "", "amazon": "", "gumroad": ""},
-                {"title": "Kingdom Healing in 10 Minutes", "cover": "", "amazon": "", "gumroad": ""},
-                {"title": "5 Kingdom Prayers", "cover": "", "amazon": "", "gumroad": ""},
-                {"title": "Kingdom Wealth Verses", "cover": "", "amazon": "", "gumroad": ""}
+                {"title": "7 Scriptures Kingdom Inside You", "download": "/download/pamphlet1"},
+                {"title": "Kingdom Healing in 10 Minutes", "download": "/download/pamphlet2"},
+                {"title": "5 Kingdom Prayers", "download": "/download/pamphlet3"},
+                {"title": "Kingdom Wealth Verses", "download": "/download/pamphlet4"}
             ]
         }
     }
@@ -613,6 +613,9 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
                         {% endif %}
                         <h3 style="color: white; font-size: 1.1rem; margin-bottom: 1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">{{ product.title }}</h3>
                         <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+                            {% if product.get('download') %}
+                            <a href="{{ product.download }}" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #d4af37, #b8960c); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">📥 Download FREE</a>
+                            {% endif %}
                             {% if product.amazon %}
                             <a href="{{ product.amazon }}" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #5f9ea0, #4a8b8e); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">🛒 Amazon</a>
                             {% endif %}
@@ -670,6 +673,9 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
                         {% endif %}
                         <h3 style="color: white; font-size: 1.1rem; margin-bottom: 1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">{{ product.title }}</h3>
                         <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+                            {% if product.get('download') %}
+                            <a href="{{ product.download }}" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #d4af37, #b8960c); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">📥 Download FREE</a>
+                            {% endif %}
                             {% if product.amazon %}
                             <a href="{{ product.amazon }}" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #5f9ea0, #4a8b8e); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">🛒 Amazon</a>
                             {% endif %}
@@ -910,23 +916,17 @@ def admin_panel():
 """
         
         if product_url != "N/A":
-            admin_html += f'                    <div><strong>Product URL:</strong> <a href="{product_url}" target="_blank">View</a></div>
-'
+            admin_html += f'                    <div><strong>Product URL:</strong> <a href="{product_url}" target="_blank">View</a></div>\n'
         
         if product_links:
-            admin_html += f'                    <div><strong>Music Links:</strong> {len(product_links)} platforms</div>
-'
+            admin_html += f'                    <div><strong>Music Links:</strong> {len(product_links)} platforms</div>\n'
         
         if gallery_images:
-            admin_html += f'                    <div><strong>Gallery:</strong> {len(gallery_images)} images</div>
-'
-            admin_html += '                    <div class="gallery-preview">
-'
+            admin_html += f'                    <div><strong>Gallery:</strong> {len(gallery_images)} images</div>\n'
+            admin_html += '                    <div class="gallery-preview">\n'
             for img in gallery_images[:3]:
-                admin_html += f'                        <img src="{img}" alt="Gallery">
-'
-            admin_html += '                    </div>
-'
+                admin_html += f'                        <img src="{img}" alt="Gallery">\n'
+            admin_html += '                    </div>\n'
         
         admin_html += f"""
                 </div>
@@ -1065,16 +1065,14 @@ def edit_page(page_id):
         # Handle product images (book covers, planner covers, etc)
         product_images_raw = request.form.get("product_images", "")
         if product_images_raw:
-            pages[page_id]["product_images"] = [line.strip() for line in product_images_raw.split("
-") if line.strip()]
+            pages[page_id]["product_images"] = [line.strip() for line in product_images_raw.split("\n") if line.strip()]
         else:
             pages[page_id]["product_images"] = []
         
         # Handle gallery images
         gallery_str = request.form.get("gallery_images", "").strip()
         if gallery_str:
-            gallery_images = [img.strip() for img in gallery_str.split("
-") if img.strip()]
+            gallery_images = [img.strip() for img in gallery_str.split("\n") if img.strip()]
             pages[page_id]["gallery_images"] = gallery_images
         elif "gallery_images" in pages[page_id]:
             del pages[page_id]["gallery_images"]
@@ -1083,8 +1081,7 @@ def edit_page(page_id):
         links_str = request.form.get("product_links", "").strip()
         if links_str:
             links = []
-            for line in links_str.split("
-"):
+            for line in links_str.split("\n"):
                 if "|" in line:
                     parts = line.split("|")
                     if len(parts) >= 3:
@@ -1105,20 +1102,17 @@ def edit_page(page_id):
     page = pages[page_id]
     
     # Format gallery images
-    gallery_str = "
-".join(page.get("gallery_images", []))
+    gallery_str = "\n".join(page.get("gallery_images", []))
     
     # Format product images
     product_images_str = ""
     if page.get("product_images"):
-        product_images_str = "
-".join(page["product_images"])
+        product_images_str = "\n".join(page["product_images"])
     
     # Format product links
     links_str = ""
     if "product_links" in page:
-        links_str = "
-".join([
+        links_str = "\n".join([
             f"{link['name']}|{link['url']}|{link['icon']}"
             for link in page["product_links"]
         ])
@@ -1319,6 +1313,36 @@ def myron_golden_page():
 def kingdom_keys():
     data = load_content()
     return render_page("kingdom_keys", data)
+
+
+
+@app.route("/download/pamphlet1")
+def download_pamphlet1():
+    pdf_path = BASE / "Kingdom_Keys_1_Kingdom_Inside_You.pdf"
+    if pdf_path.exists():
+        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
+    abort(404)
+
+@app.route("/download/pamphlet2")
+def download_pamphlet2():
+    pdf_path = BASE / "Kingdom_Keys_2_Release_Healing.pdf"
+    if pdf_path.exists():
+        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
+    abort(404)
+
+@app.route("/download/pamphlet3")
+def download_pamphlet3():
+    pdf_path = BASE / "Kingdom_Keys_3_Hawaiian_Grandmas_Prayers.pdf"
+    if pdf_path.exists():
+        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
+    abort(404)
+
+@app.route("/download/pamphlet4")
+def download_pamphlet4():
+    pdf_path = BASE / "Kingdom_Keys_4_Kingdom_Wealth.pdf"
+    if pdf_path.exists():
+        return send_file(pdf_path, mimetype='application/pdf', as_attachment=True)
+    abort(404)
 
 
 if __name__ == "__main__":
