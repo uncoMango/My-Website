@@ -103,6 +103,12 @@ DEFAULT_PAGES = {
 }
 
 ENHANCED_STYLE = """
+
+nav, nav *, .site-nav, .site-nav *, .nav-container, .nav-container * {
+    background-color: transparent !important;
+    background: transparent !important;
+}
+
 :root {
     --primary-bg: #f8f5f0;
     --text-dark: #2c3e50;
@@ -1286,4 +1292,5 @@ if __name__ == "__main__":
     print("=" * 50)
     app.run(host="0.0.0.0", port=port, debug=True)
     
+
 
