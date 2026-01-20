@@ -1,6 +1,5 @@
 # ke_aupuni_finalized_with_image_placeholders.py
-# Corrected content structure, Mobile Responsive, and Volume 6 removed.
-
+# FIXED: Transparent nav + working hamburger on ALL pages
 from flask import Flask, request, redirect, render_template_string, abort, url_for, send_file
 import json
 from pathlib import Path
@@ -8,21 +7,14 @@ import markdown
 import os
 
 app = Flask(__name__)
-
-# Page order for navigation - VOLUME 6 REMOVED
 ORDER = ["home", "kingdom_wealth", "free_booklets", "kingdom_keys", "call_to_repentance", "aloha_wellness", "pastor_planners", "nahenahe_voice"]
-
-# Data storage
 BASE = Path(__file__).parent
 DATA_FILE = BASE / "website_content.json"
 
-# KAHU PHIL'S ACTUAL CONTENT - Kingdom Message, No Mythology!
-# CONTENT HAS BEEN RESTRUCTURED FOR LOGICAL FLOW
 DEFAULT_PAGES = {
-    "order": ORDER, # Uses the clean order above
+    "order": ORDER,
     "pages": {
         "home": {
-            # New, simpler welcome page content
             "title": "Ke Aupuni O Ke Akua - The Kingdom of God",
             "hero_image": "https://i.imgur.com/wmHEyDo.png",
             "body_md": "## Welcome to Ke Aupuni O Ke Akua - The Kingdom of God\r\n\r\nMahalo for visiting. This site is dedicated to rediscovering the revolutionary Kingdom message that Jesus actually preached, which is often missed in modern religious traditions.\r\n\r\n### Our Mission: Kingdom, Not Religion\r\nJesus's central focus was the Kingdom of God—the reign and rule of God breaking into the human experience here and now. Our resources aim to guide you into a deeper understanding of Kingdom principles, citizenship, and authority, moving you from religious performance into authentic, transformative living.\r\n\r\n**Start your journey today by exploring 'The Call to Repentance' series in the navigation.**\r\n\r\n### What Jesus Actually Taught\r\n\r\n**Kingdom Principles Over Religious Rules** - Discover how Jesus consistently chose kingdom living over religious compliance.\r\n\r\n**Repentance as Transformation** - Move beyond feeling sorry for sins to understanding a complete transformation of mind, heart, and lifestyle.\r\n\r\n**Heaven on Earth** - Learn how the Kingdom of God is meant to manifest in our daily lives, relationships, and communities right now.",
@@ -34,7 +26,6 @@ DEFAULT_PAGES = {
             "hero_image": "https://i.imgur.com/G2YmSka.jpeg",
             "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom operates on stewardship, not ownership.\r\n\r\n### Core Principles\r\n\r\n**Source vs. Resource** - God is your Source.\r\n\r\n**[FREE Kingdom Keys →](/kingdom_keys)**\r\n\r\n**[FREE Kingdom Booklets →](/free_booklets)**\r\n\r\n**[Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n**[Myron Golden Training →](/myron-golden)**",
             "product_url": ""
-
         },
         "aloha_wellness": {
             "title": "Aloha Wellness - Island Health & Healing",
@@ -44,7 +35,6 @@ DEFAULT_PAGES = {
             "gumroad_url": "https://keaupuni.gumroad.com/l/aloha-wellness"
         },
         "call_to_repentance": {
-            # This page is now the comprehensive Kingdom Series overview
             "title": "The Call to Repentance - The Kingdom Series",
             "hero_image": "https://i.imgur.com/tG1vBp9.jpeg",
             "body_md": "## The Call to Repentance - Rediscovering Jesus's Kingdom Message\r\n\r\nStep beyond religious tradition and rediscover the revolutionary Kingdom message that Jesus actually preached. This transformative book series cuts through centuries of religious interpretation to reveal the pure, life-changing teachings of the Kingdom of God.\r\n\r\n### Series Overview (Volumes 1-5)\r\n\r\nThis isn't a single book but a comprehensive series that systematically unpacks Jesus's kingdom teachings. **To display the book covers, simply replace the placeholder URL below each Volume with your image URL from Imgur or Amazon.**\r\n\r\n---\r\n\r\n### **Volume 1: The Foundation**\r\n![The Call to Repentance Volume 1 Cover](https://via.placeholder.com/300x450/4A90E2/FFFFFF?text=Volume+1) \r\nUnderstanding what the Kingdom of God actually is and why Jesus made it His central message.\r\n\r\n---\r\n\r\n### **Volume 2: Kingdom Citizenship**\r\n![The Call to Repentance Volume 2 Cover](https://via.placeholder.com/300x450/50C878/FFFFFF?text=Volume+2)\r\nWhat it means to be a citizen of God's kingdom while living in earthly systems.\r\n\r\n---\r\n\r\n### **Volume 3: Kingdom Economics**\r\n![The Call to Repentance Volume 3 Cover](https://via.placeholder.com/300x450/FFB347/FFFFFF?text=Volume+3)\r\nHow kingdom principles transform our relationship with money, work, and provision.\r\n\r\n---\r\n\r\n### **Volume 4: Kingdom Relationships**\r\n![The Call to Repentance Volume 4 Cover](https://via.placeholder.com/300x450/FF6B6B/FFFFFF?text=Volume+4)\r\nLove, forgiveness, and community the way Jesus intended.\r\n\r\n---\r\n\r\n### **Volume 5: Kingdom Authority**\r\n![The Call to Repentance Volume 5 Cover](https://via.placeholder.com/300x450/9B59B6/FFFFFF?text=Volume+5)\r\nWalking in the supernatural power that Jesus demonstrated and promised to His followers.\r\n\r\n---\r\n\r\n## Embracing True Repentance for Spiritual Growth\r\n\r\nRepentance is not merely feeling sorry for our mistakes - it is a complete transformation of heart and mind that leads us into the fullness of Kingdom living.\r\n\r\n### Understanding Biblical Repentance\r\n\r\nThe Hebrew word **teshuvah** means \"to return\" or \"to turn around.\" It implies a complete change of direction - turning away from patterns that separate us from God and turning toward His kingdom ways.\r\n\r\n**The Three Dimensions of True Repentance:**\r\n\r\n**1. Metanoia (Change of Mind)**\r\nRepentance begins with a fundamental shift in how we think. We must align our thoughts with God's thoughts, seeing ourselves and others through His eyes of love and truth.\r\n\r\n**2. Transformation of Heart**\r\nTrue repentance touches our emotions and desires. Our hearts must be softened and purified, learning to love what God loves and grieve what grieves His heart.\r\n\r\n**3. Changed Actions**\r\nRepentance must bear fruit in our daily choices. We demonstrate our changed hearts through new patterns of behavior that reflect Kingdom values.\r\n\r\n*\"Repent, for the kingdom of heaven has come near.\" - Matthew 4:17*\r\n\r\n---\r\n\r\n### A Call to Authentic Christianity\r\n\r\nThis series challenges readers to move beyond:\r\n- Religious performance into authentic relationship\r\n- Sunday Christianity into daily kingdom living\r\n- Denominational identity into kingdom citizenship\r\n- Waiting for heaven into experiencing God's kingdom now\r\n\r\n**Join the revolution that Jesus started. Discover the Kingdom message that changes everything.**",
@@ -112,7 +102,6 @@ DEFAULT_PAGES = {
     }
 }
 
-# Enhanced CSS with Mobile Hamburger Menu - NO CHANGE
 ENHANCED_STYLE = """
 :root {
     --primary-bg: #f8f5f0;
@@ -136,7 +125,7 @@ body {
 }
 
 .site-nav {
-    background: rgba(0,0,0,0);
+    background: transparent !important;
     padding: 0;
     margin: 0;
     position: relative;
@@ -150,10 +139,9 @@ body {
     justify-content: flex-start;
     align-items: center;
     padding: 0.5rem 2rem;
-    background: rgba(0,0,0,0);
+    background: transparent !important;
 }
 
-/* UPDATED: Darker title for visibility on lauhala */
 .nav-title {
     font-size: 1.5rem;
     font-weight: bold;
@@ -165,7 +153,6 @@ body {
     gap: 1rem;
 }
 
-/* Desktop Menu */
 .nav-menu {
     display: flex;
     list-style: none;
@@ -193,7 +180,6 @@ body {
     color: white;
 }
 
-/* Hamburger Menu */
 .hamburger {
     display: none;
     flex-direction: column;
@@ -201,7 +187,6 @@ body {
     padding: 0.5rem;
 }
 
-/* UPDATED: Darker hamburger lines for visibility on lauhala */
 .hamburger span {
     width: 25px;
     height: 3px;
@@ -262,7 +247,6 @@ body {
 
 .content-card {
     background: rgba(0, 0, 0, 0.25);
-
     border: none;
     padding: 3rem 2rem;
     box-shadow: none;
@@ -283,7 +267,6 @@ body {
     font-size: 1.6rem;
     text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
 }
-
 
 .content-card a {
     color: #FFD700;
@@ -344,8 +327,6 @@ body {
     margin-top: 1.5rem;
 }
 
-
-/* CD Cover Gallery */
 .gallery-section {
     margin-top: 2rem;
     padding-top: 2rem;
@@ -390,7 +371,6 @@ body {
     }
 }
 
-
 .footer {
     text-align: center;
     padding: 2rem;
@@ -400,7 +380,6 @@ body {
     margin-top: 2rem;
 }
 
-/* Mobile Styles */
 @media (max-width: 768px) {
     .hamburger {
         display: flex;
@@ -416,7 +395,6 @@ body {
         flex-direction: column;
         gap: 0;
         padding: 0.5rem 0;
-        
     }
     
     .nav-menu.active {
@@ -424,7 +402,7 @@ body {
     }
     
     .nav-menu a {
-    background: transparent !important;
+        background: transparent !important;
         padding: 1rem 2rem;
         border-radius: 0;
     }
@@ -475,9 +453,7 @@ body {
 """
 
 def md_to_html(md_text):
-    """Convert markdown to HTML"""
     return markdown.markdown(md_text, extensions=["extra", "nl2br"])
-
 
 MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
 <html><head><meta charset="UTF-8"><title>Transform Your Financial Future</title>
@@ -486,10 +462,15 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
 .section{padding:40px 0}.product-box{background:rgba(0,0,0,0.5);padding:30px;margin:20px 0;border-radius:12px;text-align:center}
 .btn{display:inline-block;padding:15px 40px;background:linear-gradient(135deg,#5f9ea0,#4a8b8e);color:white;text-decoration:none;font-weight:bold;margin:10px;border-radius:8px}
 </style></head><body>
-<nav class="site-nav" style="background:rgba(0,0,0,0) !important;">
-<div class="nav-container" style="background:rgba(0,0,0,0) !important;">
+<nav class="site-nav" style="background:transparent !important;">
+<div class="nav-container" style="background:transparent !important;">
 <a href="/"><img src="/static/images/output-onlinepngtools.png" alt="Logo" style="height:180px;width:auto;"></a>
-<ul class="nav-menu">
+<div class="hamburger" onclick="toggleMenu()">
+<span></span>
+<span></span>
+<span></span>
+</div>
+<ul class="nav-menu" id="navMenu">
 <li><a href="/">Ke Aupuni O Ke Akua</a></li>
 <li><a href="/kingdom_wealth">Kingdom Wealth</a></li>
 <li><a href="/free_booklets">FREE Booklets</a></li>
@@ -508,11 +489,23 @@ MYRON_GOLDEN_TEMPLATE = """<!DOCTYPE html>
 <div class="section"><h2>SECTION 2: Transform Your Money Blueprint</h2><div class="product-box"><a href="https://www.mindovermoneymastery.com/momm?affiliate_id=4319525" class="btn">MIND OVER MONEY MASTERY</a></div></div>
 <div class="section"><h2>SECTION 3: Master Making Offers</h2><div class="product-box"><a href="https://www.makemoreofferschallenge.com/mmoc?affiliate_id=4319525" class="btn">MAKE MORE OFFERS</a><a href="https://www.offermasterylive.com/offer-mastery-livevetfk4nn?affiliate_id=4319525" class="btn">OFFER MASTERY LIVE</a></div></div>
 <div class="section"><h2>SECTION 4: Build Your System</h2><div class="product-box"><a href="https://www.mygoldenops.com/golden-opsm1y8y7bx?affiliate_id=4319525" class="btn">GOLDEN OPS</a></div></div>
-</article></main></body></html>"""
-
+</article></main>
+<script>
+function toggleMenu() {
+    const menu = document.getElementById('navMenu');
+    menu.classList.toggle('active');
+}
+document.addEventListener('click', function(event) {
+    const nav = document.querySelector('.nav-container');
+    const menu = document.getElementById('navMenu');
+    if (!nav.contains(event.target) && menu.classList.contains('active')) {
+        menu.classList.remove('active');
+    }
+});
+</script>
+</body></html>"""
 
 def load_content():
-    """Load content from JSON file or create default"""
     if DATA_FILE.exists():
         try:
             with open(DATA_FILE, "r", encoding="utf-8") as f:
@@ -523,25 +516,19 @@ def load_content():
     else:
         data = DEFAULT_PAGES
         save_content(data)
-    
     return data
 
 def save_content(data):
-    """Save content to JSON file"""
     DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 def render_page(page_id, data):
-    """Render a complete page"""
     pages = data.get("pages", data)
     if page_id not in pages:
         abort(404)
-    
     page = pages[page_id]
-    
     nav_items = []
-    # Use the clean ORDER list
     page_order = data.get("order", ORDER)
     for slug in page_order:
         if slug in pages:
@@ -550,7 +537,6 @@ def render_page(page_id, data):
                 "title": pages[slug].get("title", slug.replace("_", " ").title()),
                 "url": f"/{slug}" if slug != "home" else "/"
             })
-    
     return render_template_string(PAGE_TEMPLATE, 
         page=page,
         nav_items=nav_items,
@@ -566,7 +552,6 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title }}</title>
     <style>{{ style }}
-    /* Image Styling */
     .content-card img {
         max-width: 100%;
         height: auto;
@@ -591,8 +576,8 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 </style>
 </head>
 <body>
-    <nav class="site-nav" style="background:rgba(0,0,0,0) !important;">
-        <div class="nav-container" style="background:rgba(0,0,0,0) !important;">
+    <nav class="site-nav" style="background:transparent !important;">
+        <div class="nav-container" style="background:transparent !important;">
             <a href="/"><img src="/static/images/output-onlinepngtools.png" alt="Logo" style="height:180px;width:auto;"></a>
             <div class="hamburger" onclick="toggleMenu()">
                 <span></span>
@@ -632,7 +617,6 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             {% endif %}
             
             {% if page.product_links %}
-
             {% if page.get("products") %}
             <div class="products-section" style="margin: 3rem 0;">
                 <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">📚 Available Resources</h2>
@@ -692,7 +676,6 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             </div>
             {% endif %}
             
-
             {% if page.get("products") %}
             <div class="products-section" style="margin: 3rem 0;">
                 <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">📚 Available Resources</h2>
@@ -746,7 +729,6 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
         menu.classList.toggle('active');
     }
     
-    // Close menu when clicking outside
     document.addEventListener('click', function(event) {
         const nav = document.querySelector('.nav-container');
         const menu = document.getElementById('navMenu');
@@ -771,25 +753,17 @@ def page(page_id):
         abort(404)
     return render_page(page_id, data)
 
-
 @app.route("/static/covers/<filename>")
 def serve_cover(filename):
-    """Serve CD cover images"""
     cover_path = BASE / filename
     if cover_path.exists():
         return send_file(cover_path, mimetype='image/jpeg')
     abort(404)
 
-
-# ============================================
-# ADMIN PANEL
-# ============================================
-
-ADMIN_PASSWORD = "Kingdom2024"  # Change this in production!
+ADMIN_PASSWORD = "Kingdom2024"
 
 @app.route("/kahu")
 def admin_panel():
-    """Admin panel for managing content"""
     data = load_content()
     pages = data.get("pages", data)
     
@@ -975,91 +949,8 @@ def admin_panel():
     
     return admin_html
 
-
-@app.route("/admin/new", methods=["GET", "POST"])
-def admin_new_page():
-    """Create a new page"""
-    if request.method == "POST":
-        data = load_content()
-        
-        # Generate slug from title
-        title = request.form.get("title", "")
-        slug = title.lower().replace(" ", "_").replace("-", "_")
-        slug = "".join(c for c in slug if c.isalnum() or c == "_")
-        
-        # Create new page
-        new_page = {
-            "title": title,
-            "hero_image": request.form.get("hero_image", ""),
-            "body_md": request.form.get("body_md", ""),
-            "product_url": request.form.get("product_url", ""),
-            "gumroad_url": request.form.get("gumroad_url", ""),
-            "podcast_embed": request.form.get("podcast_embed", "")
-        }
-        
-        data["pages"][slug] = new_page
-        data["order"].append(slug)
-        save_content(data)
-        
-        return redirect("/admin")
-    
-    # GET request - show form
-    new_page_html = f"""<!DOCTYPE html>
-<html>
-<head>
-    <title>Create New Page</title>
-    <style>
-        {ADMIN_STYLE}
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>📄 Create New Page</h1>
-        
-        <form method="POST">
-            <div class="form-group">
-                <label for="title">Page Title</label>
-                <input type="text" id="title" name="title" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="hero_image">Hero Image URL</label>
-                <input type="text" id="hero_image" name="hero_image" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="body_md">Content (Markdown)</label>
-                <textarea id="body_md" name="body_md" required></textarea>
-            </div>
-            
-            <div class="form-group">
-                <label for="product_url">Amazon/Product URL (Optional)</label>
-                <input type="text" id="product_url" name="product_url">
-            </div>
-            
-            <div class="form-group">
-                <label for="gumroad_url">Gumroad URL (Optional)</label>
-                <input type="text" id="gumroad_url" name="gumroad_url">
-            </div>
-            
-            <div class="form-group">
-                <label for="podcast_embed">Podcast Embed (Optional)</label>
-                <textarea id="podcast_embed" name="podcast_embed"></textarea>
-            </div>
-            
-            <div class="btn-group">
-                <button type="submit" class="btn btn-primary">💾 Create Page</button>
-                <a href="/admin" class="btn btn-secondary">← Cancel</a>
-            </div>
-        </form>
-    </div>
-</body>
-</html>"""
-    return new_page_html
-
 @app.route("/admin/edit/<page_id>", methods=["GET", "POST"])
 def edit_page(page_id):
-    """Edit a specific page"""
     data = load_content()
     pages = data.get("pages", data)
     
@@ -1067,40 +958,34 @@ def edit_page(page_id):
         abort(404)
     
     if request.method == "POST":
-        # Update page data
         pages[page_id]["title"] = request.form.get("title", "")
         pages[page_id]["hero_image"] = request.form.get("hero_image", "")
         pages[page_id]["body_md"] = request.form.get("body_md", "")
         
-        # Handle product URL
         product_url = request.form.get("product_url", "").strip()
         if product_url:
             pages[page_id]["product_url"] = product_url
         elif "product_url" in pages[page_id]:
             del pages[page_id]["product_url"]
         
-        # Handle Gumroad URL
         gumroad_url = request.form.get("gumroad_url", "").strip()
         if gumroad_url:
             pages[page_id]["gumroad_url"] = gumroad_url
         elif "gumroad_url" in pages[page_id]:
             del pages[page_id]["gumroad_url"]
         
-        # Handle Podcast Embed
         podcast_embed = request.form.get("podcast_embed", "").strip()
         if podcast_embed:
             pages[page_id]["podcast_embed"] = podcast_embed
         elif "podcast_embed" in pages[page_id]:
             del pages[page_id]["podcast_embed"]
         
-        # Handle product images (book covers, planner covers, etc)
         product_images_raw = request.form.get("product_images", "")
         if product_images_raw:
             pages[page_id]["product_images"] = [line.strip() for line in product_images_raw.split("\n") if line.strip()]
         else:
             pages[page_id]["product_images"] = []
         
-        # Handle gallery images
         gallery_str = request.form.get("gallery_images", "").strip()
         if gallery_str:
             gallery_images = [img.strip() for img in gallery_str.split("\n") if img.strip()]
@@ -1108,7 +993,6 @@ def edit_page(page_id):
         elif "gallery_images" in pages[page_id]:
             del pages[page_id]["gallery_images"]
         
-        # Handle product links (for music page)
         links_str = request.form.get("product_links", "").strip()
         if links_str:
             links = []
@@ -1126,21 +1010,17 @@ def edit_page(page_id):
         elif "product_links" in pages[page_id]:
             del pages[page_id]["product_links"]
         
-        # Ensure the order is always saved (even if not modified here)
         save_content({"pages": pages, "order": data.get("order", ORDER)})
-        return redirect("/admin")
+        return redirect("/kahu")
     
     page = pages[page_id]
     
-    # Format gallery images
     gallery_str = "\n".join(page.get("gallery_images", []))
     
-    # Format product images
     product_images_str = ""
     if page.get("product_images"):
         product_images_str = "\n".join(page["product_images"])
     
-    # Format product links
     links_str = ""
     if "product_links" in page:
         links_str = "\n".join([
@@ -1293,7 +1173,6 @@ def edit_page(page_id):
                 <div class="help-text">Amazon or other product link.</div>
             </div>
             
-            
             <div class="form-group">
                 <label for="gumroad_url">Gumroad Product URL (Optional)</label>
                 <input type="text" id="gumroad_url" name="gumroad_url" value="{page.get('gumroad_url', '')}">
@@ -1312,7 +1191,7 @@ def edit_page(page_id):
                 <div class="help-text">Direct image URLs only (https://i.imgur.com/ABC123.jpg) - one per line. These will display in a grid on your page.</div>
             </div>
             
-                        <div class="form-group">
+            <div class="form-group">
                 <label for="gallery_images">Gallery Images (Optional - One URL per line)</label>
                 <textarea id="gallery_images" name="gallery_images" style="min-height: 100px;">{gallery_str}</textarea>
                 <div class="help-text">For CD covers: /static/covers/cover1.jpg (one per line)</div>
@@ -1326,7 +1205,7 @@ def edit_page(page_id):
             
             <div class="btn-group">
                 <button type="submit" class="btn btn-primary">💾 Save Changes</button>
-                <a href="/admin" class="btn btn-secondary">← Cancel</a>
+                <a href="/kahu" class="btn btn-secondary">← Cancel</a>
             </div>
         </form>
     </div>
@@ -1334,7 +1213,6 @@ def edit_page(page_id):
 </html>"""
     
     return edit_html
-
 
 @app.route("/myron-golden")
 def myron_golden_page():
@@ -1345,14 +1223,10 @@ def kingdom_keys():
     data = load_content()
     return render_page("kingdom_keys", data)
 
-
-
-
 @app.route("/free_booklets")
 def free_booklets():
     data = load_content()
     return render_page("free_booklets", data)
-
 
 @app.route("/download/pamphlet1")
 def download_pamphlet1():
@@ -1403,3 +1277,4 @@ if __name__ == "__main__":
     print(f"🌊 Visit: http://localhost:{port}")
     print("=" * 50)
     app.run(host="0.0.0.0", port=port, debug=True)
+    
