@@ -118,8 +118,16 @@ nav, nav *, .site-nav, .site-nav *, .nav-container, .nav-container * {
     --shadow-soft: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-.site-nav, .nav-container, .nav-menu, .nav-menu li, .nav-menu a, .hamburger {
-    background: transparent !important;
+.site-nav {
+    background: none !important;
+    background-color: transparent !important;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
 }
 
 nav, nav * {
@@ -1292,5 +1300,6 @@ if __name__ == "__main__":
     print("=" * 50)
     app.run(host="0.0.0.0", port=port, debug=True)
     
+
 
 
