@@ -112,6 +112,14 @@ ENHANCED_STYLE = """
     --shadow-soft: 0 2px 10px rgba(0,0,0,0.1);
 }
 
+.site-nav, .nav-container, .nav-menu, .nav-menu li, .nav-menu a, .hamburger {
+    background: transparent !important;
+}
+
+nav, nav * {
+    background: transparent !important;
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -1278,3 +1286,4 @@ if __name__ == "__main__":
     print("=" * 50)
     app.run(host="0.0.0.0", port=port, debug=True)
     
+
