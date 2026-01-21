@@ -44,9 +44,7 @@ DEFAULT_PAGES = {
         "pastor_planners": {
             "title": "Pastor Planners - Tools for Ministry Excellence",
             "hero_image": "https://i.imgur.com/tWnn5UY.png",
-            "body_md": "## Organize Your Ministry with Purpose and Prayer\r\n\r\nEffective ministry requires both spiritual sensitivity and practical organization. Our Pastor Planners combine beautiful design with functional tools to help you lead with excellence and peace.\r\n\r\n### Features of Our Ministry Planning System\r\n\r\n**Sermon Planning Sections** - Map out your preaching calendar with space for themes, scriptures, and prayer requests. Plan seasonal series and track the spiritual journey of your congregation.\r\n\r\n**Prayer and Pastoral Care** - Dedicated sections for tracking prayer requests, hospital visits, counseling sessions, and follow-up care. Never let a member of your flock slip through the cracks.\r\n\r\n**Meeting and Event Coordination** - Organize board meetings, committee sessions, special events, and outreach activities with integrated calendars and checklists.\r\n\r\n**Personal Spiritual Disciplines** - Maintain your own spiritual health with guided sections for daily devotions, sabbath planning, and personal growth goals.\r\n\r\n### Why Pastors Love Our Planners\r\n\r\n**Hawaiian-Inspired Design** - Beautiful layouts featuring island imagery and scripture verses that bring peace to your planning time.\r\n\r\n**Flexible Formatting** - Works for churches of all sizes and denominations, with customizable sections for your unique ministry context.\r\n\r\n**Durable Construction** - High-quality materials that withstand daily use throughout the church year.\r\n\r\n**Spiritual Focus** - More than just organization - designed to keep your heart centered on God's calling throughout your busy ministry schedule.\r\n\r\n### Available in Multiple Pacific Islander Languages\r\n\r\n**Ke Kauoha La Haku (Hawaiian Edition 2026)**\r\n📖 [Get on Amazon](https://a.co/d/gatnNET) | 💳 [Get on Gumroad](https://uncomango.gumroad.com/l/ulrmu)\r\n\r\n**Tusi Fuataiaga a le Faifeau (Samoan Enhanced Edition 2026)**\r\n📖 [Get on Amazon](https://a.co/d/gs0WRPh) | 💳 [Get on Gumroad](https://uncomango.gumroad.com/l/ubzevn)\r\n\r\nOrder your Pastor Planner today and experience the peace that comes from organized, prayer-centered ministry leadership.",
-            "product_url": "https://a.co/d/gatnNET",
-            "gumroad_url": "https://uncomango.gumroad.com/l/ulrmu"
+            "body_md": "## Organize Your Ministry with Purpose and Prayer\r\n\r\nEffective ministry requires both spiritual sensitivity and practical organization. Our Pastor Planners combine beautiful design with functional tools to help you lead with excellence and peace.\r\n\r\n### Features of Our Ministry Planning System\r\n\r\n**Sermon Planning Sections** - Map out your preaching calendar with space for themes, scriptures, and prayer requests. Plan seasonal series and track the spiritual journey of your congregation.\r\n\r\n**Prayer and Pastoral Care** - Dedicated sections for tracking prayer requests, hospital visits, counseling sessions, and follow-up care. Never let a member of your flock slip through the cracks.\r\n\r\n**Meeting and Event Coordination** - Organize board meetings, committee sessions, special events, and outreach activities with integrated calendars and checklists.\r\n\r\n**Personal Spiritual Disciplines** - Maintain your own spiritual health with guided sections for daily devotions, sabbath planning, and personal growth goals.\r\n\r\n### Why Pastors Love Our Planners\r\n\r\n**Hawaiian-Inspired Design** - Beautiful layouts featuring island imagery and scripture verses that bring peace to your planning time.\r\n\r\n**Flexible Formatting** - Works for churches of all sizes and denominations, with customizable sections for your unique ministry context.\r\n\r\n**Durable Construction** - High-quality materials that withstand daily use throughout the church year.\r\n\r\n**Spiritual Focus** - More than just organization - designed to keep your heart centered on God's calling throughout your busy ministry schedule.\r\n\r\n### Available in Multiple Pacific Islander Languages\r\n\r\n**Ke Kauoha La Haku (Hawaiian Edition 2026)**\r\n📖 [Get on Amazon](https://a.co/d/gatnNET) | 💳 [Get on Gumroad](https://uncomango.gumroad.com/l/ulrmu)\r\n\r\n**Tusi Fuataiaga a le Faifeau (Samoan Enhanced Edition 2026)**\r\n📖 [Get on Amazon](https://a.co/d/gs0WRPh) | 💳 [Get on Gumroad](https://uncomango.gumroad.com/l/ubzevn)\r\n\r\nOrder your Pastor Planner today and experience the peace that comes from organized, prayer-centered ministry leadership."
         },
         "nahenahe_voice": {
             "title": "The Nahenahe Voice of Nahono'opi'ilani - Musical Legacy",
@@ -128,11 +126,11 @@ body {
     background: none !important;
     padding: 0;
     margin: 0;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000;
+    z-index: 9999;
 }
 
 .nav-container {
@@ -206,6 +204,7 @@ body {
     position: relative;
     display: flex;
     align-items: flex-end;
+    overflow: hidden;
 }
 
 .hero-overlay {
@@ -232,6 +231,8 @@ body {
     background: rgba(0,0,0,0.3);
     padding: 1rem 2rem;
     border-radius: 8px;
+    position: relative;
+    z-index: 2;
 }
 
 .container {
@@ -249,12 +250,14 @@ body {
 }
 
 .content-card {
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.75);
     border: none;
     padding: 3rem 2rem;
     box-shadow: none;
-    margin-top: 20vh;
+    margin-top: 25vh;
+    padding-top: 4rem;
     color: white;
+    backdrop-filter: blur(10px);
 }
 
 .content-card h2 {
@@ -262,6 +265,8 @@ body {
     margin-bottom: 1rem;
     font-size: 2.2rem;
     text-shadow: 3px 3px 6px rgba(0,0,0,0.9);
+    position: relative;
+    z-index: 1;
 }
 
 .content-card h3 {
@@ -269,6 +274,8 @@ body {
     margin: 2rem 0 1rem;
     font-size: 1.6rem;
     text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+    position: relative;
+    z-index: 1;
 }
 
 .content-card a {
@@ -435,6 +442,8 @@ body {
     
     .content-card {
         padding: 2rem 1.5rem;
+        margin-top: 2rem;
+        padding-top: 3rem;
     }
     
     .content-card h2 {
