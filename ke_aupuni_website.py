@@ -11,6 +11,16 @@ ORDER = ["home", "kingdom_wealth", "free_booklets", "kingdom_keys", "call_to_rep
 BASE = Path(__file__).parent
 DATA_FILE = BASE / "website_content.json"
 
+# ===== DIGITAL PRODUCTS SETUP =====
+from datetime import datetime
+from werkzeug.utils import secure_filename
+
+PRODUCTS_FILE = BASE / "digital_products.json"
+PRODUCTS_FOLDER = BASE / "digital_products"
+
+# Create products folder if it doesn't exist
+PRODUCTS_FOLDER.mkdir(exist_ok=True)
+
 DEFAULT_PAGES = {
     "order": ORDER,
     "pages": {
@@ -721,6 +731,24 @@ def save_content(data):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
+# ===== DIGITAL PRODUCTS HELPER FUNCTIONS =====
+
+def load_digital_products():
+    """Load digital products from JSON file"""
+    if PRODUCTS_FILE.exists():
+        with open(PRODUCTS_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    return {"products": []}
+
+def save_digital_products(products_data):
+    """Save digital products to JSON file"""
+    with open(PRODUCTS_FILE, 'w', encoding='utf-8') as f:
+        json.dump(products_data, f, indent=2, ensure_ascii=False)
+
+def generate_product_id():
+    """Generate unique product ID"""
+    return f"prod_{datetime.now().strftime('%Y%m%d%H%M%S')}"
+
 def render_page(page_id, data):
     pages = data.get("pages", data)
     if page_id not in pages:
@@ -1009,7 +1037,10 @@ def admin_panel():
     admin_html += """
         </div>
         
-        <a href="/" class="back-btn">← Back to Website</a>
+        <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #e9ecef;">
+            <a href="/admin/products" class="edit-btn" style="display: inline-block; margin-right: 1rem;">💰 Manage Digital Products</a>
+            <a href="/" class="back-btn" style="display: inline-block;">← Back to Website</a>
+        </div>
     </div>
 </body>
 </html>"""
@@ -1280,3 +1311,847 @@ def edit_page(page_id):
 </html>"""
     
     return edit_html
+
+# ===== DIGITAL PRODUCTS ROUTES =====
+
+@app.route("/admin/products")
+def admin_products():
+    """Digital Products Management Page"""
+    products_data = load_digital_products()
+    products = products_data.get("products", [])
+    
+    html = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Products Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .products-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .product-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+        
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+        
+        .product-title {
+            font-size: 1.25rem;
+            color: #2c3e50;
+            font-weight: 600;
+            flex: 1;
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .product-info {
+            display: grid;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #495057;
+        }
+        
+        .product-info strong {
+            color: #2c3e50;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+        }
+        
+        .empty-state h3 {
+            margin-bottom: 1rem;
+            color: #495057;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+        
+        .close {
+            float: right;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: #000;
+        }
+        
+        .file-info {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💰 Digital Products Manager</h1>
+        <p class="subtitle">Sell your ebooks, planners, and digital downloads directly from your website</p>
+        
+        <div class="actions">
+            <button class="btn btn-primary" onclick="openAddModal()">➕ Add New Product</button>
+            <a href="/kahu" class="btn btn-secondary">← Back to Admin</a>
+            <a href="/" class="btn btn-secondary">🏠 View Website</a>
+        </div>
+"""
+    
+    if products:
+        html += '<div class="products-grid">'
+        for product in products:
+            status_class = "status-active" if product.get("active", True) else "status-inactive"
+            status_text = "Active" if product.get("active", True) else "Inactive"
+            
+            html += f"""
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-title">{product['name']}</div>
+                    <div class="product-price">${product['price']}</div>
+                </div>
+                <div class="product-info">
+                    <div><span class="status-badge {status_class}">{status_text}</span></div>
+                    <div><strong>Description:</strong> {product.get('description', 'No description')[:100]}...</div>
+                    <div><strong>File:</strong> {product.get('filename', 'Not uploaded')}</div>
+                    <div><strong>Downloads:</strong> {product.get('downloads', 0)}</div>
+                    <div><strong>Sales:</strong> ${product.get('total_sales', 0):.2f}</div>
+                    <div><strong>Product ID:</strong> {product['id']}</div>
+                </div>
+                <div class="product-actions">
+                    <a href="/product/{product['id']}" class="btn btn-sm btn-primary" target="_blank">👁️ View Sales Page</a>
+                    <button class="btn btn-sm btn-success" onclick="editProduct('{product['id']}')">✏️ Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteProduct('{product['id']}')">🗑️ Delete</button>
+                </div>
+            </div>
+            """
+        html += '</div>'
+    else:
+        html += """
+        <div class="empty-state">
+            <h3>📦 No Products Yet</h3>
+            <p>Start selling by adding your first digital product!</p>
+            <p style="margin-top: 1rem;">Click "Add New Product" above to get started.</p>
+        </div>
+        """
+    
+    html += """
+    </div>
+    
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddModal()">&times;</span>
+            <h2>Add New Product</h2>
+            <form id="addProductForm" action="/admin/products/add" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="name">Product Name *</label>
+                    <input type="text" id="name" name="name" required placeholder="e.g., Aloha Wellness Ebook">
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Description *</label>
+                    <textarea id="description" name="description" required placeholder="Describe your product..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="price">Price (USD) *</label>
+                    <input type="number" id="price" name="price" step="0.01" min="0" required placeholder="9.97">
+                </div>
+                
+                <div class="form-group">
+                    <label for="file">Product File *</label>
+                    <input type="file" id="file" name="file" required accept=".pdf,.epub,.zip,.html">
+                    <div class="file-info">Accepted: PDF, EPUB, ZIP, HTML (max 50MB)</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category">
+                        <option value="ebook">Ebook</option>
+                        <option value="planner">Planner</option>
+                        <option value="booklet">Booklet</option>
+                        <option value="course">Course</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cover_image">Cover Image URL (optional)</label>
+                    <input type="url" id="cover_image" name="cover_image" placeholder="https://i.imgur.com/...">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        function openAddModal() {
+            document.getElementById('addModal').style.display = 'block';
+        }
+        
+        function closeAddModal() {
+            document.getElementById('addModal').style.display = 'none';
+        }
+        
+        function editProduct(productId) {
+            window.location.href = '/admin/products/edit/' + productId;
+        }
+        
+        function deleteProduct(productId) {
+            if (confirm('Are you sure you want to delete this product? This cannot be undone.')) {
+                fetch('/admin/products/delete/' + productId, {
+                    method: 'POST'
+                }).then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        alert('Error deleting product');
+                    }
+                });
+            }
+        }
+        
+        window.onclick = function(event) {
+            const modal = document.getElementById('addModal');
+            if (event.target == modal) {
+                closeAddModal();
+            }
+        }
+    </script>
+</body>
+</html>
+"""
+    
+    return html
+
+@app.route("/admin/products/add", methods=["POST"])
+def add_product():
+    """Add new digital product"""
+    name = request.form.get("name")
+    description = request.form.get("description")
+    price = float(request.form.get("price", 0))
+    category = request.form.get("category", "ebook")
+    cover_image = request.form.get("cover_image", "")
+    
+    file = request.files.get("file")
+    if not file:
+        return "No file uploaded", 400
+    
+    filename = secure_filename(file.filename)
+    product_id = generate_product_id()
+    file_path = PRODUCTS_FOLDER / f"{product_id}_{filename}"
+    file.save(file_path)
+    
+    products_data = load_digital_products()
+    new_product = {
+        "id": product_id,
+        "name": name,
+        "description": description,
+        "price": price,
+        "category": category,
+        "filename": filename,
+        "file_path": str(file_path),
+        "cover_image": cover_image,
+        "active": True,
+        "downloads": 0,
+        "total_sales": 0,
+        "created_at": datetime.now().isoformat()
+    }
+    
+    products_data["products"].append(new_product)
+    save_digital_products(products_data)
+    
+    return redirect("/admin/products")
+
+@app.route("/admin/products/edit/<product_id>", methods=["GET", "POST"])
+def edit_product_route(product_id):
+    """Edit existing product"""
+    products_data = load_digital_products()
+    product = next((p for p in products_data["products"] if p["id"] == product_id), None)
+    
+    if not product:
+        abort(404)
+    
+    if request.method == "POST":
+        product["name"] = request.form.get("name")
+        product["description"] = request.form.get("description")
+        product["price"] = float(request.form.get("price", 0))
+        product["category"] = request.form.get("category", "ebook")
+        product["cover_image"] = request.form.get("cover_image", "")
+        product["active"] = request.form.get("active") == "on"
+        
+        save_digital_products(products_data)
+        return redirect("/admin/products")
+    
+    checked = "checked" if product.get("active", True) else ""
+    
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product - {product['name']}</title>
+    <style>
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+        
+        body {{
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }}
+        
+        .container {{
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }}
+        
+        h1 {{
+            color: #2c3e50;
+            margin-bottom: 2rem;
+        }}
+        
+        .form-group {{
+            margin-bottom: 1.5rem;
+        }}
+        
+        .form-group label {{
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }}
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {{
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }}
+        
+        .form-group textarea {{
+            min-height: 100px;
+            resize: vertical;
+        }}
+        
+        .checkbox-group {{
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }}
+        
+        .checkbox-group input {{
+            width: auto;
+        }}
+        
+        .form-actions {{
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }}
+        
+        .btn {{
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+        }}
+        
+        .btn-primary {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }}
+        
+        .btn-secondary {{
+            background: #6c757d;
+            color: white;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Product</h1>
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="name">Product Name *</label>
+                <input type="text" id="name" name="name" value="{product['name']}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description *</label>
+                <textarea id="description" name="description" required>{product['description']}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="price">Price (USD) *</label>
+                <input type="number" id="price" name="price" step="0.01" min="0" value="{product['price']}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category">
+                    <option value="ebook" {"selected" if product.get('category') == 'ebook' else ""}>Ebook</option>
+                    <option value="planner" {"selected" if product.get('category') == 'planner' else ""}>Planner</option>
+                    <option value="booklet" {"selected" if product.get('category') == 'booklet' else ""}>Booklet</option>
+                    <option value="course" {"selected" if product.get('category') == 'course' else ""}>Course</option>
+                    <option value="other" {"selected" if product.get('category') == 'other' else ""}>Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="cover_image">Cover Image URL</label>
+                <input type="url" id="cover_image" name="cover_image" value="{product.get('cover_image', '')}">
+            </div>
+            
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="active" name="active" {checked}>
+                    <label for="active" style="margin-bottom: 0;">Product is Active (visible for sale)</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Current File</label>
+                <div style="padding: 0.75rem; background: #f8f9fa; border-radius: 8px;">
+                    {product['filename']}
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <a href="/admin/products" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+"""
+    
+    return html
+
+@app.route("/admin/products/delete/<product_id>", methods=["POST"])
+def delete_product(product_id):
+    """Delete a product"""
+    from flask import jsonify
+    
+    products_data = load_digital_products()
+    product = next((p for p in products_data["products"] if p["id"] == product_id), None)
+    
+    if product:
+        file_path = Path(product["file_path"])
+        if file_path.exists():
+            file_path.unlink()
+        
+        products_data["products"] = [p for p in products_data["products"] if p["id"] != product_id]
+        save_digital_products(products_data)
+    
+    return jsonify({"success": True})
+
+@app.route("/product/<product_id>")
+def product_page(product_id):
+    """Public product sales page"""
+    products_data = load_digital_products()
+    product = next((p for p in products_data["products"] if p["id"] == product_id), None)
+    
+    if not product or not product.get("active", True):
+        abort(404)
+    
+    cover_image = product.get("cover_image", "https://i.imgur.com/wmHEyDo.png")
+    
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{product['name']} - Ke Aupuni O Ke Akua</title>
+    <style>
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+        
+        body {{
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }}
+        
+        .container {{
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }}
+        
+        .product-header {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }}
+        
+        .product-header h1 {{
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }}
+        
+        .product-content {{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+        }}
+        
+        .product-image {{
+            text-align: center;
+        }}
+        
+        .product-image img {{
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }}
+        
+        .product-details h2 {{
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }}
+        
+        .product-description {{
+            color: #495057;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }}
+        
+        .price {{
+            font-size: 3rem;
+            color: #28a745;
+            font-weight: bold;
+            margin-bottom: 2rem;
+        }}
+        
+        .buy-button {{
+            display: block;
+            width: 100%;
+            padding: 1.5rem;
+            background: #28a745;
+            color: white;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: bold;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }}
+        
+        .buy-button:hover {{
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }}
+        
+        .features {{
+            list-style: none;
+            margin-bottom: 2rem;
+        }}
+        
+        .features li {{
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }}
+        
+        .features li:before {{
+            content: "✓ ";
+            color: #28a745;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }}
+        
+        @media (max-width: 768px) {{
+            .product-content {{
+                grid-template-columns: 1fr;
+            }}
+            
+            .product-header h1 {{
+                font-size: 1.75rem;
+            }}
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="product-header">
+            <h1>{product['name']}</h1>
+            <p>From Ke Aupuni O Ke Akua Press</p>
+        </div>
+        
+        <div class="product-content">
+            <div class="product-image">
+                <img src="{cover_image}" alt="{product['name']}">
+            </div>
+            
+            <div class="product-details">
+                <h2>About This Product</h2>
+                <div class="product-description">
+                    {product['description']}
+                </div>
+                
+                <ul class="features">
+                    <li>Instant digital download</li>
+                    <li>Read on any device</li>
+                    <li>Full lifetime access</li>
+                    <li>No DRM - yours forever</li>
+                </ul>
+                
+                <div class="price">${product['price']}</div>
+                
+                <a href="mailto:keaupuniakeakua@gmail.com?subject=Purchase: {product['name']}&body=I would like to purchase {product['name']} for ${product['price']}. Please send me payment instructions." class="buy-button">
+                    📧 Email to Purchase
+                </a>
+                <p style="text-align: center; margin-top: 1rem; color: #6c757d; font-size: 0.9rem;">
+                    Click to email for payment instructions (PayPal, Venmo, or Zelle)
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+"""
+    
+    return html
+
+@app.route("/download/<product_id>")
+def download_product(product_id):
+    """Download product file"""
+    products_data = load_digital_products()
+    product = next((p for p in products_data["products"] if p["id"] == product_id), None)
+    
+    if not product:
+        abort(404)
+    
+    product["downloads"] = product.get("downloads", 0) + 1
+    save_digital_products(products_data)
+    
+    file_path = Path(product["file_path"])
+    return send_file(file_path, as_attachment=True, download_name=product["filename"])
+
