@@ -1636,33 +1636,41 @@ def admin_products():
     <div id="addModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeAddModal()">&times;</span>
-            <h2>Add New Product</h2>
+            <h2>➕ Add New Product</h2>
             <form id="addProductForm" action="/admin/products/add" method="POST" enctype="multipart/form-data">
+                
                 <div class="form-group">
-                    <label for="name">Product Name *</label>
-                    <input type="text" id="name" name="name" required placeholder="e.g., Aloha Wellness Ebook">
+                    <label for="name">📌 Product Name *</label>
+                    <input type="text" id="name" name="name" required placeholder="e.g., Aloha Wellness: Island-Inspired Natural Weight Management">
+                    <div class="file-info">The title customers will see on the sales page</div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="description">Description *</label>
-                    <textarea id="description" name="description" required placeholder="Describe your product..."></textarea>
+                    <label for="description">📝 Description *</label>
+                    <textarea id="description" name="description" required style="min-height: 150px;" placeholder="Describe what customers will get, what problems it solves, and why they need it...">A respectful integration of Hawaiian wisdom and modern science for sustainable health. Discover the Four Pillars of Aloha Wellness - Malama, Pono, Ohana, and Aloha - and how they transform your relationship with food, your body, and your health. Written by Kahu Phil Stephens from Molokai, this cutting-edge book combines ancient Hawaiian cultural wisdom with evidence-based nutritional science for lasting, sustainable wellness.</textarea>
+                    <div class="file-info">This appears on your sales page. Be descriptive - sell the transformation!</div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="price">Price (USD) *</label>
-                    <input type="number" id="price" name="price" step="0.01" min="0" required placeholder="9.97">
+                    <label for="price">💰 Price (USD) *</label>
+                    <input type="number" id="price" name="price" step="0.01" min="0" required value="47.00">
+                    <div class="file-info">Your price is $47.00 - customers pay this via PayPal</div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="file">Product File *</label>
+                    <label for="file">📁 Product File * (The actual ebook customers will download)</label>
                     <input type="file" id="file" name="file" required accept=".pdf,.epub,.zip,.html">
-                    <div class="file-info">Accepted: PDF, EPUB, ZIP, HTML (max 50MB)</div>
+                    <div class="file-info">
+                        ✅ Upload your <strong>aloha_wellness_ebook_COMPLETE.html</strong> file here<br>
+                        📌 Find it in your Downloads folder from this session<br>
+                        📋 Accepted formats: PDF, HTML, EPUB, ZIP (max 50MB)
+                    </div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="category">Category</label>
+                    <label for="category">🏷️ Category</label>
                     <select id="category" name="category">
-                        <option value="ebook">Ebook</option>
+                        <option value="ebook" selected>Ebook</option>
                         <option value="planner">Planner</option>
                         <option value="booklet">Booklet</option>
                         <option value="course">Course</option>
@@ -1671,13 +1679,14 @@ def admin_products():
                 </div>
                 
                 <div class="form-group">
-                    <label for="cover_image">Cover Image URL (optional)</label>
-                    <input type="url" id="cover_image" name="cover_image" placeholder="https://i.imgur.com/...">
+                    <label for="cover_image">🖼️ Cover Image URL (optional but recommended!)</label>
+                    <input type="url" id="cover_image" name="cover_image" value="https://i.imgur.com/xGeWW3Q.jpeg" placeholder="https://i.imgur.com/...">
+                    <div class="file-info">Pre-filled with your Aloha Wellness image. Change if needed.</div>
                 </div>
                 
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" onclick="closeAddModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Add Product</button>
+                    <button type="submit" class="btn btn-primary">🌺 Add Product & Start Selling!</button>
                 </div>
             </form>
         </div>
