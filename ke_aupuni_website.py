@@ -2155,3 +2155,515 @@ def download_product(product_id):
     file_path = Path(product["file_path"])
     return send_file(file_path, as_attachment=True, download_name=product["filename"])
 
+
+# ===== PAYPAL API CHECKOUT SYSTEM =====
+
+import urllib.request
+import urllib.parse
+import base64
+
+PAYPAL_CLIENT_ID = "Af3hvjHUPRVuFeQ8xO_T18V234j-B-qvN9I9ydlWnEU9M0vKKOVyMw0si6r-N47Y_fg-Mw35VvAifkZ6"
+PAYPAL_CLIENT_SECRET = "ECBlGV46JMgXmIk2H9u_i-kyMUO1X5--GYkjqYlqf2QMv4LbrWFhUNwd3rzCswN1-UfrwbPrk5WIUPHQ"
+PAYPAL_BASE_URL = "https://api-m.paypal.com"
+
+def get_paypal_access_token():
+    """Get PayPal access token using Client ID and Secret"""
+    credentials = f"{PAYPAL_CLIENT_ID}:{PAYPAL_CLIENT_SECRET}"
+    encoded = base64.b64encode(credentials.encode()).decode()
+    
+    data = urllib.parse.urlencode({"grant_type": "client_credentials"}).encode()
+    req = urllib.request.Request(
+        f"{PAYPAL_BASE_URL}/v1/oauth2/token",
+        data=data,
+        headers={
+            "Authorization": f"Basic {encoded}",
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    )
+    
+    with urllib.request.urlopen(req) as response:
+        result = json.loads(response.read().decode())
+        return result["access_token"]
+
+def create_paypal_order(product_id, product_name, price):
+    """Create a PayPal order and return approval URL"""
+    access_token = get_paypal_access_token()
+    
+    order_data = json.dumps({
+        "intent": "CAPTURE",
+        "purchase_units": [{
+            "amount": {
+                "currency_code": "USD",
+                "value": str(price)
+            },
+            "description": product_name,
+            "custom_id": product_id
+        }],
+        "application_context": {
+            "brand_name": "Ke Aupuni O Ke Akua Press",
+            "landing_page": "BILLING",
+            "user_action": "PAY_NOW",
+            "return_url": "https://keaupuniakeakua.faith/paypal/success",
+            "cancel_url": "https://keaupuniakeakua.faith/paypal/cancel"
+        }
+    }).encode()
+    
+    req = urllib.request.Request(
+        f"{PAYPAL_BASE_URL}/v2/checkout/orders",
+        data=order_data,
+        headers={
+            "Authorization": f"Bearer {access_token}",
+            "Content-Type": "application/json"
+        }
+    )
+    
+    with urllib.request.urlopen(req) as response:
+        result = json.loads(response.read().decode())
+        
+        # Find the approval URL
+        for link in result.get("links", []):
+            if link["rel"] == "approve":
+                return result["id"], link["href"]
+        
+        return None, None
+
+def capture_paypal_order(order_id):
+    """Capture payment after customer approves"""
+    access_token = get_paypal_access_token()
+    
+    req = urllib.request.Request(
+        f"{PAYPAL_BASE_URL}/v2/checkout/orders/{order_id}/capture",
+        data=b"{}",
+        headers={
+            "Authorization": f"Bearer {access_token}",
+            "Content-Type": "application/json"
+        }
+    )
+    
+    with urllib.request.urlopen(req) as response:
+        return json.loads(response.read().decode())
+
+@app.route("/checkout/<product_id>")
+def checkout_page(product_id):
+    """Checkout page with PayPal button"""
+    products_data = load_digital_products()
+    product = next((p for p in products_data["products"] if p["id"] == product_id), None)
+    
+    if not product:
+        abort(404)
+
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - {product['name']}</title>
+    <style>
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+        
+        body {{
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }}
+        
+        .container {{
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }}
+        
+        .header {{
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #e9ecef;
+        }}
+        
+        .header h1 {{
+            color: #2c3e50;
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }}
+        
+        .product-summary {{
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }}
+        
+        .product-name {{
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }}
+        
+        .product-type {{
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }}
+        
+        .product-price {{
+            font-size: 2rem;
+            color: #28a745;
+            font-weight: bold;
+        }}
+        
+        .features {{
+            list-style: none;
+            margin-bottom: 2rem;
+        }}
+        
+        .features li {{
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e9ecef;
+            color: #495057;
+        }}
+        
+        .features li:before {{
+            content: "✓ ";
+            color: #28a745;
+            font-weight: bold;
+        }}
+        
+        .paypal-section {{
+            text-align: center;
+        }}
+        
+        .paypal-section p {{
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }}
+        
+        #paypal-button-container {{
+            margin: 1rem 0;
+        }}
+        
+        .secure-badge {{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: #6c757d;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }}
+        
+        .back-link {{
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #6c757d;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }}
+        
+        .back-link:hover {{
+            color: #2c3e50;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌺 Complete Your Purchase</h1>
+            <p style="color: #6c757d;">Ke Aupuni O Ke Akua Press</p>
+        </div>
+        
+        <div class="product-summary">
+            <div>
+                <div class="product-name">{product['name']}</div>
+                <div class="product-type">Digital Ebook - Instant Download</div>
+            </div>
+            <div class="product-price">${product['price']}</div>
+        </div>
+        
+        <ul class="features">
+            <li>Instant digital download after payment</li>
+            <li>Read on any device - phone, tablet, computer</li>
+            <li>Full lifetime access</li>
+            <li>From Kahu Phil Stephens, Molokaʻi</li>
+        </ul>
+        
+        <div class="paypal-section">
+            <div id="paypal-button-container"></div>
+            <div class="secure-badge">
+                🔒 Secure checkout powered by PayPal
+            </div>
+            <p>You don't need a PayPal account - credit and debit cards accepted</p>
+        </div>
+        
+        <a href="/product/{product_id}" class="back-link">← Back to product page</a>
+    </div>
+
+    <script src="https://www.paypal.com/sdk/js?client-id={PAYPAL_CLIENT_ID}&currency=USD"></script>
+    <script>
+        paypal.Buttons({{
+            style: {{
+                layout: 'vertical',
+                color: 'gold',
+                shape: 'rect',
+                label: 'pay'
+            }},
+            createOrder: function(data, actions) {{
+                return actions.order.create({{
+                    purchase_units: [{{
+                        amount: {{
+                            value: '{product['price']}'
+                        }},
+                        description: '{product['name']}',
+                        custom_id: '{product_id}'
+                    }}],
+                    application_context: {{
+                        brand_name: 'Ke Aupuni O Ke Akua Press',
+                        user_action: 'PAY_NOW'
+                    }}
+                }});
+            }},
+            onApprove: function(data, actions) {{
+                return actions.order.capture().then(function(details) {{
+                    // Payment successful - redirect to download page
+                    window.location.href = '/paypal/success?orderID=' + data.orderID + '&product_id={product_id}';
+                }});
+            }},
+            onCancel: function(data) {{
+                window.location.href = '/product/{product_id}?cancelled=true';
+            }},
+            onError: function(err) {{
+                alert('Payment error. Please try again or contact keaupuniakeakua@gmail.com');
+            }}
+        }}).render('#paypal-button-container');
+    </script>
+</body>
+</html>"""
+    
+    return html
+
+@app.route("/paypal/success")
+def paypal_success():
+    """Handle successful PayPal payment and deliver download"""
+    order_id = request.args.get("orderID")
+    product_id = request.args.get("product_id")
+    
+    if not order_id or not product_id:
+        abort(400)
+    
+    # Get product details
+    products_data = load_digital_products()
+    product = next((p for p in products_data["products"] if p["id"] == product_id), None)
+    
+    if not product:
+        abort(404)
+    
+    # Update sales tracking
+    product["downloads"] = product.get("downloads", 0) + 1
+    product["total_sales"] = product.get("total_sales", 0) + float(product["price"])
+    save_digital_products(products_data)
+    
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahalo! Your Download Is Ready</title>
+    <style>
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+        
+        body {{
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }}
+        
+        .container {{
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }}
+        
+        .success-icon {{
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }}
+        
+        h1 {{
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }}
+        
+        .subtitle {{
+            color: #6c757d;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }}
+        
+        .download-btn {{
+            display: inline-block;
+            padding: 1.25rem 2.5rem;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }}
+        
+        .download-btn:hover {{
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }}
+        
+        .message {{
+            background: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: left;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+            line-height: 1.6;
+        }}
+        
+        .order-info {{
+            color: #6c757d;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }}
+        
+        .home-link {{
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: #6c757d;
+            text-decoration: none;
+        }}
+        
+        .home-link:hover {{
+            color: #2c3e50;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon">🌺</div>
+        <h1>Mahalo! Payment Received!</h1>
+        <p class="subtitle">Your copy of <strong>{product['name']}</strong> is ready!</p>
+        
+        <a href="/download/{product_id}" class="download-btn">
+            ⬇️ Download Your Ebook Now
+        </a>
+        
+        <div class="message">
+            <p><strong>Aloha friend!</strong></p>
+            <br>
+            <p>Mahalo nui for your purchase! This book represents years of study combining ancient Hawaiian wisdom with modern science.</p>
+            <br>
+            <p>May it bring you health, harmony, and the spirit of aloha in your wellness journey.</p>
+            <br>
+            <p>If you have any questions, email me at <strong>keaupuniakeakua@gmail.com</strong></p>
+            <br>
+            <p>A hui hou,<br><strong>Kahu Phil Stephens</strong><br>Molokaʻi, Hawaiʻi 🌺</p>
+        </div>
+        
+        <div class="order-info">Order ID: {order_id}</div>
+        
+        <a href="/" class="home-link">← Return to Ke Aupuni O Ke Akua</a>
+    </div>
+    
+    <script>
+        // Auto-trigger download
+        window.onload = function() {{
+            setTimeout(function() {{
+                window.location.href = '/download/{product_id}';
+            }}, 2000);
+        }};
+    </script>
+</body>
+</html>"""
+    
+    return html
+
+@app.route("/paypal/cancel")
+def paypal_cancel():
+    """Handle cancelled PayPal payment"""
+    html = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Cancelled</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 500px;
+            background: white;
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 { color: #2c3e50; margin-bottom: 1rem; }
+        p { color: #6c757d; margin-bottom: 2rem; line-height: 1.6; }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>No worries! 🌺</h1>
+        <p>Your payment was cancelled. No charge was made.</p>
+        <p>Whenever you're ready, the book will be here waiting for you.</p>
+        <a href="/" class="btn">← Back to Website</a>
+    </div>
+</body>
+</html>"""
+    
+    return html
