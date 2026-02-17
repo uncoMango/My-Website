@@ -42,7 +42,8 @@ DEFAULT_PAGES = {
             "hero_image": "https://i.imgur.com/xGeWW3Q.jpeg",
             "body_md": "## Aloha Wellness - The Sacred Art of How You Eat\r\n\r\nDiscover the life-changing power of **how** you eat, not just what you eat. This groundbreaking wellness book combines cutting-edge scientific research with ancient Hawaiian mana'o (wisdom) to transform your relationship with food and nourishment.\r\n\r\n### Beyond Diet Culture - A Hawaiian Perspective\r\n\r\nTraditional Hawaiian culture understood something modern society has forgotten: eating is a sacred act that connects us to the land, our ancestors, and our own spiritual well-being. This book bridges that ancient wisdom with contemporary nutritional science.\r\n\r\n### Revolutionary Approach: How, Not What\r\n\r\n**Mindful Consumption** - Learn the scientific basis for how mindful eating practices affect digestion, metabolism, and overall health.\r\n\r\n**Cultural Eating Wisdom** - Discover how Hawaiian ancestors approached meals as community ceremonies, gratitude practices, and spiritual connections.\r\n\r\n**Stress and Digestion** - Research-backed insights into how your emotional state during meals affects nutrient absorption and digestive health.\r\n\r\n**Rhythm and Timing** - Ancient Hawaiian understanding of eating in harmony with natural rhythms, supported by modern chronobiology research.\r\n\r\n**Scientific Research Meets Island Wisdom** - This book offers a comprehensive look at the intersection of modern science and ancient practice.\r\n\r\n### Hawaiian Mana'o (Wisdom Principles)\r\n\r\n**Ho'oponopono with Food** - Making right relationships with nourishment and healing food-related guilt or shame.\r\n\r\n**Aloha 'Āina** - Love of the land extends to gratitude for the food it provides and mindful consumption practices.\r\n\r\n**Lōkahi** - Finding unity and balance in your relationship with food, body, and spirit.\r\n\r\n**Mālama** - Caring for your body as a sacred temple through conscious eating practices.\r\n\r\nTransform your health from the inside out by changing not what you eat, but how you approach the sacred act of nourishment.",
             "product_url": "https://a.co/d/6YrcnQp",
-            "gumroad_url": "https://keaupuni.gumroad.com/l/aloha-wellness"
+            "gumroad_url": "https://keaupuni.gumroad.com/l/aloha-wellness",
+            "direct_buy_url": ""
         },
         "call_to_repentance": {
             "title": "The Call to Repentance - The Kingdom Series",
@@ -677,6 +678,12 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             {% endif %}
             
             <div class="buy-section">
+                {% if page.direct_buy_url %}
+                <a href="{{ page.direct_buy_url }}" class="buy-button" style="background: linear-gradient(135deg, #28a745, #218838); font-size: 1.2rem; padding: 1rem 2rem;">
+                    🌺 Instant Access - $47
+                </a>
+                {% endif %}
+                
                 {% if page.product_url %}
                 <a href="{{ page.product_url }}" target="_blank" class="buy-button">
                     🛒 Buy on Amazon
@@ -1060,6 +1067,12 @@ def edit_page(page_id):
         pages[page_id]["hero_image"] = request.form.get("hero_image", "")
         pages[page_id]["body_md"] = request.form.get("body_md", "")
         
+        direct_buy_url = request.form.get("direct_buy_url", "").strip()
+        if direct_buy_url:
+            pages[page_id]["direct_buy_url"] = direct_buy_url
+        elif "direct_buy_url" in pages[page_id]:
+            del pages[page_id]["direct_buy_url"]
+        
         product_url = request.form.get("product_url", "").strip()
         if product_url:
             pages[page_id]["product_url"] = product_url
@@ -1263,6 +1276,12 @@ def edit_page(page_id):
                 <label for="body_md">Content (Markdown)</label>
                 <textarea id="body_md" name="body_md" required>{page.get('body_md', '')}</textarea>
                 <div class="help-text">Use Markdown formatting (## for headings, ** for bold, **![]()** for images).</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="direct_buy_url">🌺 Direct Buy URL (Your Website Checkout)</label>
+                <input type="text" id="direct_buy_url" name="direct_buy_url" value="{page.get('direct_buy_url', '')}">
+                <div class="help-text">Paste your product checkout URL here - e.g. /checkout/prod_20260216123456 - This shows the green "Instant Access - $47" button on your page!</div>
             </div>
             
             <div class="form-group">
