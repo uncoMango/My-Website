@@ -1,0 +1,100 @@
+{# templates/admin/edit_page.html #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit – {{ page.title }}</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:system-ui,sans-serif; background:linear-gradient(135deg,#667eea,#764ba2); min-height:100vh; padding:2rem; }
+        .container { max-width:800px; margin:0 auto; background:white; border-radius:16px; padding:2rem; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+        h1 { color:#2c3e50; margin-bottom:0.5rem; }
+        .subtitle { color:#7f8c8d; margin-bottom:2rem; }
+        .form-group { margin-bottom:1.5rem; }
+        label { display:block; color:#2c3e50; font-weight:600; margin-bottom:0.5rem; }
+        input[type="text"], textarea {
+            width:100%; padding:0.75rem; border:2px solid #e9ecef; border-radius:8px;
+            font-size:1rem; font-family:inherit; transition:border-color 0.3s ease;
+        }
+        input[type="text"]:focus, textarea:focus { outline:none; border-color:#667eea; }
+        textarea { min-height:200px; resize:vertical; }
+        .help-text { font-size:0.85rem; color:#6c757d; margin-top:0.25rem; }
+        .btn-group { display:flex; gap:1rem; margin-top:2rem; }
+        .btn { padding:0.75rem 1.5rem; border:none; border-radius:8px; font-size:1rem; font-weight:600; cursor:pointer; transition:all 0.2s ease; text-decoration:none; display:inline-block; }
+        .btn-primary { background:linear-gradient(135deg,#667eea,#764ba2); color:white; }
+        .btn-primary:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(102,126,234,0.4); }
+        .btn-secondary { background:#6c757d; color:white; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>✏️ Edit Page</h1>
+    <p class="subtitle">{{ page.title }}</p>
+
+    <form method="POST">
+        <div class="form-group">
+            <label for="title">Page Title</label>
+            <input type="text" id="title" name="title" value="{{ page.title or '' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="hero_image">Hero Image URL</label>
+            <input type="text" id="hero_image" name="hero_image" value="{{ page.hero_image or '' }}" required>
+            <div class="help-text">Use imgur.com URLs (e.g., https://i.imgur.com/ABC123.jpg)</div>
+        </div>
+
+        <div class="form-group">
+            <label for="body_md">Content (Markdown)</label>
+            <textarea id="body_md" name="body_md" required>{{ page.body_md or '' }}</textarea>
+            <div class="help-text">Use Markdown: ## for headings, **bold**, [link text](url)</div>
+        </div>
+
+        <div class="form-group">
+            <label for="direct_buy_url">🌺 Direct Buy URL (Your Website Checkout)</label>
+            <input type="text" id="direct_buy_url" name="direct_buy_url" value="{{ page.direct_buy_url or '' }}">
+            <div class="help-text">e.g. /checkout/prod_20260216123456 – shows green "Instant Access" button</div>
+        </div>
+
+        <div class="form-group">
+            <label for="product_url">Amazon Product URL (Optional)</label>
+            <input type="text" id="product_url" name="product_url" value="{{ page.product_url or '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="gumroad_url">Gumroad Product URL (Optional)</label>
+            <input type="text" id="gumroad_url" name="gumroad_url" value="{{ page.gumroad_url or '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="podcast_embed">Podcast Embed Code (Optional)</label>
+            <textarea id="podcast_embed" name="podcast_embed" style="min-height:100px;">{{ page.podcast_embed or '' }}</textarea>
+            <div class="help-text">Paste your Spotify, Apple, or other embed code here</div>
+        </div>
+
+        <div class="form-group">
+            <label for="product_images">Product Image URLs – one per line (Optional)</label>
+            <textarea id="product_images" name="product_images" style="min-height:120px;">{{ product_images_str }}</textarea>
+            <div class="help-text">Direct image URLs only, one per line. Shows as a grid on your page.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="gallery_images">Gallery Images – one per line (Optional)</label>
+            <textarea id="gallery_images" name="gallery_images" style="min-height:100px;">{{ gallery_str }}</textarea>
+            <div class="help-text">For CD covers: /static/covers/cover1.jpg (one per line)</div>
+        </div>
+
+        <div class="form-group">
+            <label for="product_links">Music Platform Links – format: Name|URL|Icon (Optional)</label>
+            <textarea id="product_links" name="product_links" style="min-height:100px;">{{ links_str }}</textarea>
+            <div class="help-text">Example: Amazon Music|https://music.amazon.com/...|🛒</div>
+        </div>
+
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+            <a href="/kahu" class="btn btn-secondary">← Cancel</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
