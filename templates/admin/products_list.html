@@ -74,7 +74,7 @@
                 <div><strong>Description:</strong> {{ (product.description or '')[:100] }}...</div>
                 <div><strong>File:</strong> {{ product.filename or 'Not uploaded' }}</div>
                 <div><strong>Downloads:</strong> {{ product.downloads or 0 }}</div>
-                <div><strong>Sales:</strong> ${{ '%.2f' % (product.total_sales or 0) }}</div>
+                <div><strong>Sales:</strong> ${{ product.total_sales or 0 }}</div>
                 <div><strong>Product ID:</strong> {{ product.id }}</div>
             </div>
             <div
