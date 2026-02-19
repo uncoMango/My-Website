@@ -1,0 +1,45 @@
+{# templates/payment_success.html
+   Shown after successful payment from either PayPal or Stripe. #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahalo! Your Download Is Ready</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:system-ui,sans-serif; background:linear-gradient(135deg,#667eea,#764ba2); min-height:100vh; padding:2rem; display:flex; align-items:center; justify-content:center; }
+        .container { max-width:600px; width:100%; background:white; border-radius:16px; padding:3rem 2rem; box-shadow:0 20px 60px rgba(0,0,0,0.3); text-align:center; }
+        .success-icon { font-size:4rem; margin-bottom:1rem; }
+        h1 { color:#2c3e50; font-size:2rem; margin-bottom:1rem; }
+        .subtitle { color:#6c757d; margin-bottom:2rem; font-size:1.1rem; }
+        .download-btn { display:inline-block; padding:1.25rem 2.5rem; background:#28a745; color:white; text-decoration:none; border-radius:8px; font-size:1.25rem; font-weight:bold; transition:all 0.3s ease; margin-bottom:2rem; }
+        .download-btn:hover { background:#218838; transform:translateY(-2px); box-shadow:0 6px 20px rgba(40,167,69,0.4); }
+        .message { background:#e8f4f8; border-left:4px solid #3498db; padding:1.5rem; border-radius:8px; text-align:left; margin-bottom:2rem; color:#2c3e50; line-height:1.6; }
+        .order-info { color:#6c757d; font-size:0.85rem; margin-top:1rem; }
+        .home-link { display:inline-block; margin-top:1.5rem; color:#6c757d; text-decoration:none; }
+        .home-link:hover { color:#2c3e50; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="success-icon">🎉</div>
+    <h1>Mahalo! Payment Received</h1>
+    <p class="subtitle">Your download is ready, {{ product.name }}</p>
+
+    <a href="{{ download_url }}" class="download-btn">📥 Download Your Ebook Now</a>
+
+    <div class="message">
+        <strong>🌺 A note from Kahu Phil:</strong><br><br>
+        Mahalo nui loa for your purchase. May this resource bless your life and bring you closer to the Kingdom of God. If you have any questions, please reach out — I am here to serve.
+    </div>
+
+    <div class="order-info">
+        Order ID: {{ order_id }}<br>
+        Save this page or your order ID for future reference.
+    </div>
+
+    <a href="/" class="home-link">← Return to Ke Aupuni O Ke Akua</a>
+</div>
+</body>
+</html>
