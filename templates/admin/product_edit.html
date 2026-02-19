@@ -1,0 +1,74 @@
+{# templates/admin/product_edit.html #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product – {{ product.name }}</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:system-ui,sans-serif; background:linear-gradient(135deg,#667eea,#764ba2); min-height:100vh; padding:2rem; }
+        .container { max-width:800px; margin:0 auto; background:white; border-radius:16px; padding:2rem; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+        h1 { color:#2c3e50; margin-bottom:2rem; }
+        .form-group { margin-bottom:1.5rem; }
+        .form-group label { display:block; margin-bottom:0.5rem; color:#2c3e50; font-weight:600; }
+        .form-group input, .form-group textarea, .form-group select { width:100%; padding:0.75rem; border:2px solid #e9ecef; border-radius:8px; font-size:1rem; font-family:inherit; }
+        .form-group textarea { min-height:100px; resize:vertical; }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline:none; border-color:#667eea; }
+        .checkbox-group { display:flex; align-items:center; gap:0.5rem; }
+        .checkbox-group input { width:auto; }
+        .current-file { padding:0.75rem; background:#f8f9fa; border-radius:8px; color:#495057; }
+        .form-actions { display:flex; gap:1rem; margin-top:2rem; }
+        .btn { padding:0.75rem 1.5rem; border-radius:8px; font-size:1rem; font-weight:600; cursor:pointer; text-decoration:none; display:inline-block; border:none; }
+        .btn-primary { background:linear-gradient(135deg,#667eea,#764ba2); color:white; }
+        .btn-secondary { background:#6c757d; color:white; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Edit Product</h1>
+    <form method="POST">
+        <div class="form-group">
+            <label for="name">Product Name *</label>
+            <input type="text" id="name" name="name" value="{{ product.name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description *</label>
+            <textarea id="description" name="description" required>{{ product.description }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="price">Price (USD) *</label>
+            <input type="number" id="price" name="price" step="0.01" min="0" value="{{ product.price }}" required>
+        </div>
+        <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" name="category">
+                <option value="ebook" {% if product.category == 'ebook' %}selected{% endif %}>Ebook</option>
+                <option value="planner" {% if product.category == 'planner' %}selected{% endif %}>Planner</option>
+                <option value="booklet" {% if product.category == 'booklet' %}selected{% endif %}>Booklet</option>
+                <option value="course" {% if product.category == 'course' %}selected{% endif %}>Course</option>
+                <option value="other" {% if product.category == 'other' %}selected{% endif %}>Other</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="cover_image">Cover Image URL</label>
+            <input type="url" id="cover_image" name="cover_image" value="{{ product.cover_image or '' }}">
+        </div>
+        <div class="form-group">
+            <div class="checkbox-group">
+                <input type="checkbox" id="active" name="active" {% if product.active %}checked{% endif %}>
+                <label for="active" style="margin-bottom:0;">Product is Active (visible for sale)</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Current File</label>
+            <div class="current-file">{{ product.filename }}</div>
+        </div>
+        <div class="form-actions">
+            <a href="/admin/products" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
