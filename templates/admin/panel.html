@@ -1,0 +1,61 @@
+{# templates/admin/panel.html #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel – Ke Aupuni O Ke Akua</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:system-ui,sans-serif; background:linear-gradient(135deg,#667eea,#764ba2); min-height:100vh; padding:2rem; }
+        .container { max-width:1200px; margin:0 auto; background:white; border-radius:16px; padding:2rem; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+        h1 { color:#2c3e50; margin-bottom:0.5rem; font-size:2rem; }
+        .subtitle { color:#7f8c8d; margin-bottom:2rem; }
+        .page-list { display:grid; gap:1.5rem; }
+        .page-card { background:#f8f9fa; padding:1.5rem; border-radius:12px; border:2px solid #e9ecef; transition:all 0.3s ease; }
+        .page-card:hover { border-color:#667eea; box-shadow:0 4px 12px rgba(102,126,234,0.2); }
+        .page-title { font-size:1.25rem; color:#2c3e50; margin-bottom:1rem; font-weight:600; }
+        .page-info { display:grid; gap:0.5rem; margin-bottom:1rem; font-size:0.9rem; color:#495057; }
+        .page-info strong { color:#2c3e50; }
+        .btn { padding:0.75rem 1.5rem; border:none; border-radius:8px; cursor:pointer; font-size:1rem; font-weight:600; text-decoration:none; display:inline-block; transition:all 0.2s ease; }
+        .btn-primary { background:linear-gradient(135deg,#667eea,#764ba2); color:white; }
+        .btn-primary:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(102,126,234,0.4); }
+        .btn-secondary { background:#6c757d; color:white; }
+        .btn-secondary:hover { background:#5a6268; }
+        .actions { margin-top:2rem; padding-top:2rem; border-top:2px solid #e9ecef; display:flex; gap:1rem; flex-wrap:wrap; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🌺 Admin Panel</h1>
+    <p class="subtitle">Manage your website content</p>
+
+    <div class="page-list">
+        {% for page_id, page_data in pages.items() %}
+        <div class="page-card">
+            <div class="page-title">{{ page_data.title }}</div>
+            <div class="page-info">
+                <div><strong>Page ID:</strong> {{ page_id }}</div>
+                <div><strong>Hero Image:</strong> {{ (page_data.hero_image or '')[:60] }}...</div>
+                {% if page_data.product_url %}
+                <div><strong>Amazon URL:</strong> <a href="{{ page_data.product_url }}" target="_blank">View</a></div>
+                {% endif %}
+                {% if page_data.product_links %}
+                <div><strong>Music Links:</strong> {{ page_data.product_links | length }} platforms</div>
+                {% endif %}
+                {% if page_data.gallery_images %}
+                <div><strong>Gallery:</strong> {{ page_data.gallery_images | length }} images</div>
+                {% endif %}
+            </div>
+            <a href="/admin/edit/{{ page_id }}" class="btn btn-primary">✏️ Edit Page</a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="actions">
+        <a href="/admin/products" class="btn btn-primary">💰 Manage Digital Products</a>
+        <a href="/" class="btn btn-secondary">← Back to Website</a>
+    </div>
+</div>
+</body>
+</html>
