@@ -42,17 +42,6 @@ def home():
     return render_page("home", data)
 
 
-@pages_bp.route("/<page_id>")
-def page(page_id):
-    # Let other blueprints handle their own routes first.
-    # This catch-all only fires for slugs in website_content.json.
-    data = load_content()
-    pages = data.get("pages", {})
-    if page_id not in pages:
-        abort(404)
-    return render_page(page_id, data)
-
-
 @pages_bp.route("/myron-golden")
 def myron_golden_page():
     data = load_content()
@@ -64,3 +53,15 @@ def myron_golden_page():
         logo_height=LOGO_HEIGHT,
         footer_text=FOOTER_TEXT,
     )
+
+
+@pages_bp.route("/<page_id>")
+def page(page_id):
+    # Skip reserved prefixes so other blueprints handle them.
+    if page_id in ("admin", "product", "checkout", "download", "paypal", "stripe", "kahu"):
+        abort(404)
+    data = load_content()
+    pages = data.get("pages", {})
+    if page_id not in pages:
+        abort(404)
+    return render_page(page_id, data)
