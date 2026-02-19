@@ -1,0 +1,72 @@
+{# templates/checkout.html #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - {{ product.name }}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, sans-serif; background: linear-gradient(135deg,#667eea,#764ba2); min-height: 100vh; padding: 2rem; }
+        .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .header { text-align: center; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 2px solid #e9ecef; }
+        .header h1 { color: #2c3e50; font-size: 1.75rem; margin-bottom: 0.5rem; }
+        .product-summary { background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .product-name { font-weight: 600; color: #2c3e50; font-size: 1.1rem; }
+        .product-type { color: #6c757d; font-size: 0.9rem; margin-top: 0.25rem; }
+        .product-price { font-size: 2rem; color: #28a745; font-weight: bold; }
+        .features { list-style: none; margin-bottom: 2rem; }
+        .features li { padding: 0.5rem 0; border-bottom: 1px solid #e9ecef; color: #495057; }
+        .features li:before { content: "✓ "; color: #28a745; font-weight: bold; }
+        .payment-section { text-align: center; }
+        .divider { display: flex; align-items: center; margin: 1.5rem 0; color: #6c757d; font-size: 0.9rem; }
+        .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #e9ecef; }
+        .divider span { padding: 0 1rem; }
+        .stripe-btn {
+            display: block; width: 100%; padding: 1rem;
+            background: #635bff; color: white; border: none;
+            border-radius: 8px; font-size: 1.1rem; font-weight: bold;
+            cursor: pointer; transition: all 0.2s ease;
+        }
+        .stripe-btn:hover { background: #5246e5; transform: translateY(-1px); }
+        .secure-badge { display: flex; align-items: center; justify-content: center; gap: 0.5rem; color: #6c757d; font-size: 0.85rem; margin-top: 1rem; }
+        .back-link { display: block; text-align: center; margin-top: 1.5rem; color: #6c757d; text-decoration: none; font-size: 0.9rem; }
+        .back-link:hover { color: #2c3e50; }
+        #paypal-button-container { margin: 1rem 0; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🌺 Complete Your Purchase</h1>
+        <p style="color:#6c757d;">Ke Aupuni O Ke Akua Press</p>
+    </div>
+
+    <div class="product-summary">
+        <div>
+            <div class="product-name">{{ product.name }}</div>
+            <div class="product-type">Digital Ebook – Instant Download</div>
+        </div>
+        <div class="product-price">${{ product.price }}</div>
+    </div>
+
+    <ul class="features">
+        <li>Instant digital download after payment</li>
+        <li>Read on any device – phone, tablet, computer</li>
+        <li>Full lifetime access</li>
+        <li>From Kahu Phil Stephens, Molokaʻi</li>
+    </ul>
+
+    <div class="payment-section">
+
+        {# ---- PAYPAL (always shown) ---- #}
+        <div id="paypal-button-container"></div>
+        <div class="secure-badge">🔒 Secure checkout powered by PayPal</div>
+        <p style="text-align:center; margin-top:0.5rem; color:#6c757d; font-size:0.9rem;">
+            No PayPal account needed – credit &amp; debit cards accepted
+        </p>
+
+        {# ---- STRIPE (shown only when STRIPE_ENABLED=True in config.py) ---- #}
+        {% if stripe_enabled %}
+        <div class="divider"><span>or pay with card</span></div>
+        <form action="/stripe/create-session/{{ product.id }
