@@ -1,0 +1,51 @@
+{# templates/base.html
+   Shared layout used by all public pages.
+   Child templates fill in the 'content' block. #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Ke Aupuni O Ke Akua{% endblock %}</title>
+    <style>
+        {% include 'partials/styles.css' %}
+        {% block extra_styles %}{% endblock %}
+    </style>
+</head>
+<body>
+
+<nav class="site-nav" style="background:transparent !important;">
+    <div class="nav-container" style="background:transparent !important;">
+        <a href="/"><img src="{{ logo_path }}" alt="Logo" style="height:{{ logo_height }};width:auto;"></a>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+        <ul class="nav-menu" id="navMenu">
+            {% for item in nav_items %}
+            <li><a href="{{ item.url }}">{{ item.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</nav>
+
+{% block content %}{% endblock %}
+
+<footer class="footer">
+    <p>{{ footer_text }}</p>
+</footer>
+
+<script>
+function toggleMenu() {
+    document.getElementById('navMenu').classList.toggle('active');
+}
+document.addEventListener('click', function(e) {
+    const nav = document.querySelector('.nav-container');
+    const menu = document.getElementById('navMenu');
+    if (nav && menu && !nav.contains(e.target) && menu.classList.contains('active')) {
+        menu.classList.remove('active');
+    }
+});
+</script>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>
