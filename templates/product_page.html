@@ -1,0 +1,58 @@
+{# templates/product_page.html #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} – Ke Aupuni O Ke Akua</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:system-ui,sans-serif; background:linear-gradient(135deg,#667eea,#764ba2); min-height:100vh; padding:2rem; }
+        .container { max-width:900px; margin:0 auto; background:white; border-radius:16px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+        .product-header { background:linear-gradient(135deg,#667eea,#764ba2); color:white; padding:3rem 2rem; text-align:center; }
+        .product-header h1 { font-size:2.5rem; margin-bottom:1rem; }
+        .product-content { display:grid; grid-template-columns:1fr 1fr; gap:2rem; padding:2rem; }
+        .product-image img { max-width:100%; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+        .product-details h2 { color:#2c3e50; margin-bottom:1rem; }
+        .product-description { color:#495057; line-height:1.6; margin-bottom:2rem; }
+        .price { font-size:3rem; color:#28a745; font-weight:bold; margin-bottom:2rem; }
+        .buy-button { display:block; width:100%; padding:1.5rem; background:#28a745; color:white; text-align:center; font-size:1.25rem; font-weight:bold; border-radius:8px; text-decoration:none; transition:all 0.3s ease; }
+        .buy-button:hover { background:#218838; transform:translateY(-2px); box-shadow:0 6px 20px rgba(40,167,69,0.4); }
+        .features { list-style:none; margin-bottom:2rem; }
+        .features li { padding:0.5rem 0; border-bottom:1px solid #e9ecef; }
+        .features li:before { content:"✓ "; color:#28a745; font-weight:bold; }
+        @media (max-width:768px) {
+            .product-content { grid-template-columns:1fr; }
+            .product-header h1 { font-size:1.75rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="product-header">
+        <h1>{{ product.name }}</h1>
+        <p>From Ke Aupuni O Ke Akua Press</p>
+    </div>
+
+    <div class="product-content">
+        <div class="product-image">
+            <img src="{{ product.cover_image or 'https://i.imgur.com/wmHEyDo.png' }}"
+                 alt="{{ product.name }}">
+        </div>
+
+        <div class="product-details">
+            <h2>About This Product</h2>
+            <div class="product-description">{{ product.description }}</div>
+            <ul class="features">
+                <li>Instant digital download</li>
+                <li>Read on any device</li>
+                <li>Full lifetime access</li>
+                <li>No DRM – yours forever</li>
+            </ul>
+            <div class="price">${{ product.price }}</div>
+            <a href="/checkout/{{ product.id }}" class="buy-button">🌺 Buy Now – ${{ product.price }}</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
