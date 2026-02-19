@@ -931,9 +931,9 @@ def wellness_funnel():
 
 <div class="section">
     <h2>The Kupuna Who Changed Everything</h2>
-    <p>I was sitting with one of our island kūpuna — an elder who had lived over 90 years on Molokaʻi. I asked her what her secret was. She took my hand, looked me in the eye, and gave me a health assessment that stopped me cold.</p>
-    <p>I scored 11 out of a possible score that told me I was not living — I was barely surviving. She looked at me with the kind of love that only comes from someone who has seen generations rise and fall and said, quietly, "Phil, you are dead."</p>
-    <p>She was not wrong. At 67, I was carrying 54 pounds I did not need, my blood sugar was heading in the wrong direction, and I was tired in ways that sleep could not fix. I had been praying for healing for years. I had not understood that God had already provided everything I needed — in the way He designed my body to eat, move, and rest from the very beginning.</p>
+    <p>A woman in her fifties handed me a health assessment form. The form was clear — score 3 or above and you are in danger. I looked down at my number and then looked up at her and said it myself: "I am dead."</p>
+    <p>My score was 11. And here is what made it even more striking — I had already lost the weight by then. I had already seen the transformation in my own body. But their form, built around conventional eating advice that I do not believe helps anyone, had me scoring 11.</p>
+    <p>That moment told me everything. By their standard I was failing. By God's original design for the human body I was thriving. The difference between those two things is exactly what this book is about.</p>
 </div>
 
 <div class="quote-block">
