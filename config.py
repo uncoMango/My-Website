@@ -39,7 +39,7 @@ PAYPAL_CANCEL_URL = "https://keaupuniakeakua.faith/paypal/cancel"
 # ----- STRIPE -----
 # Sign up at https://stripe.com then paste your keys here.
 # Get them from: Stripe Dashboard > Developers > API Keys
-TRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "")
+STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "")
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
 STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET", "")
 STRIPE_ENABLED = os.environ.get("STRIPE_ENABLED", "False") == "True"
