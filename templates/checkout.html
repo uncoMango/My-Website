@@ -22,12 +22,7 @@
         .divider { display: flex; align-items: center; margin: 1.5rem 0; color: #6c757d; font-size: 0.9rem; }
         .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #e9ecef; }
         .divider span { padding: 0 1rem; }
-        .stripe-btn {
-            display: block; width: 100%; padding: 1rem;
-            background: #635bff; color: white; border: none;
-            border-radius: 8px; font-size: 1.1rem; font-weight: bold;
-            cursor: pointer; transition: all 0.2s ease;
-        }
+        .stripe-btn { display: block; width: 100%; padding: 1rem; background: #635bff; color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.2s ease; }
         .stripe-btn:hover { background: #5246e5; transform: translateY(-1px); }
         .secure-badge { display: flex; align-items: center; justify-content: center; gap: 0.5rem; color: #6c757d; font-size: 0.85rem; margin-top: 1rem; }
         .back-link { display: block; text-align: center; margin-top: 1.5rem; color: #6c757d; text-decoration: none; font-size: 0.9rem; }
@@ -58,15 +53,42 @@
     </ul>
 
     <div class="payment-section">
-
-        {# ---- PAYPAL (always shown) ---- #}
         <div id="paypal-button-container"></div>
         <div class="secure-badge">🔒 Secure checkout powered by PayPal</div>
         <p style="text-align:center; margin-top:0.5rem; color:#6c757d; font-size:0.9rem;">
             No PayPal account needed – credit &amp; debit cards accepted
         </p>
-
-        {# ---- STRIPE (shown only when STRIPE_ENABLED=True in config.py) ---- #}
         {% if stripe_enabled %}
         <div class="divider"><span>or pay with card</span></div>
-        <form action="/stripe/create-session/{{ product.id }
+        <form action="/stripe/create-session/{{ product.id }}" method="POST">
+            <button type="submit" class="stripe-btn">💳 Pay with Card (Stripe)</button>
+        </form>
+        {% endif %}
+    </div>
+
+    <a href="/product/{{ product.id }}" class="back-link">← Back to product page</a>
+</div>
+
+<script src="https://www.paypal.com/sdk/js?client-id={{ paypal_client_id }}&currency=USD"></script>
+<script>
+paypal.Buttons({
+    createOrder: function(data, actions) {
+        return actions.order.create({
+            purchase_units: [{
+                amount: { value: '{{ product.price }}' },
+                description: '{{ product.name }}'
+            }]
+        });
+    },
+    onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+            window.location.href = '/paypal/success?orderID=' + data.orderID + '&product_id={{ product.id }}';
+        });
+    },
+    onError: function(err) {
+        alert('Payment error. Please try again.');
+    }
+}).render('#paypal-button-container');
+</script>
+</body>
+</html>
