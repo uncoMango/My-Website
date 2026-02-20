@@ -17,10 +17,4 @@
 }
 ```
 
-Then go to `website_content.json` → pencil → find:
-```
-"direct_buy_url": "/checkout/prod_20260219222445"
-```
-Change to:
-```
-"direct_buy_url": "/checkout/prod_aloha_wellness"
+
