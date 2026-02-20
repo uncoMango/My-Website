@@ -4,6 +4,7 @@
 # Edit this file to change passwords, API keys, and paths.
 # =========================================================
 
+import os
 from pathlib import Path
 
 # ----- PATHS -----
@@ -38,11 +39,10 @@ PAYPAL_CANCEL_URL = "https://keaupuniakeakua.faith/paypal/cancel"
 # ----- STRIPE -----
 # Sign up at https://stripe.com then paste your keys here.
 # Get them from: Stripe Dashboard > Developers > API Keys
-STRIPE_PUBLISHABLE_KEY = "pk_live_REPLACE_WITH_YOUR_STRIPE_PUBLISHABLE_KEY"
-STRIPE_SECRET_KEY = "sk_live_REPLACE_WITH_YOUR_STRIPE_SECRET_KEY"
-STRIPE_WEBHOOK_SECRET = "whsec_REPLACE_WITH_YOUR_STRIPE_WEBHOOK_SECRET"
-# Set STRIPE_ENABLED = True once you have your keys
-STRIPE_ENABLED = False
+TRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
+STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET", "")
+STRIPE_ENABLED = os.environ.get("STRIPE_ENABLED", "False") == "True"
 
 # ----- EMAIL / KIT.COM -----
 KIT_FORM_URL = "https://app.kit.com/forms/8979853/subscriptions"
