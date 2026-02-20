@@ -2839,3 +2839,135 @@ def paypal_cancel():
     
     return html
 
+
+PAYPAL_CLIENT_ID_FOR_WELLNESS = "Af3hvjHUPRVuFeQ8xO_T18V234j-B-qvN9I9ydlWnEU9M0vKKOVyMw0si6r-N47Y_fg-Mw35VvAifkZ6"
+
+ALOHA_WELLNESS_CHECKOUT = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aloha Wellness - Instant Access $47</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Georgia, serif; background: linear-gradient(135deg, #1a4a3a 0%, #2d7a5a 100%); min-height: 100vh; padding: 2rem; display: flex; align-items: center; justify-content: center; }
+.container { max-width: 600px; width: 100%; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+.header { background: linear-gradient(135deg, #1a4a3a, #2d7a5a); color: white; padding: 2.5rem 2rem; text-align: center; }
+.header h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+.header p { opacity: 0.85; font-size: 1rem; }
+.body { padding: 2rem; }
+.product-row { display: flex; justify-content: space-between; align-items: center; background: #f0faf5; padding: 1.25rem; border-radius: 10px; margin-bottom: 1.5rem; border: 2px solid #2d7a5a; }
+.product-name { font-weight: bold; color: #1a4a3a; font-size: 1.05rem; }
+.product-type { color: #6c757d; font-size: 0.85rem; margin-top: 0.2rem; }
+.price { font-size: 2.2rem; color: #28a745; font-weight: bold; }
+.features { list-style: none; margin-bottom: 1.5rem; }
+.features li { padding: 0.5rem 0; border-bottom: 1px solid #e9ecef; color: #495057; font-size: 0.95rem; }
+.features li:before { content: "✓ "; color: #28a745; font-weight: bold; }
+.secure { text-align: center; color: #6c757d; font-size: 0.85rem; margin-top: 1rem; }
+#paypal-button-container { margin: 1rem 0; }
+.back { display: block; text-align: center; margin-top: 1.5rem; color: #6c757d; text-decoration: none; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🌺 Aloha Wellness</h1>
+<p>Island-Inspired Natural Weight Management</p>
+<p style="margin-top:0.5rem; font-size:0.9rem;">By Kahu Phil Stephens — Molokaʻi, Hawaiʻi</p>
+</div>
+<div class="body">
+<div class="product-row">
+<div>
+<div class="product-name">Aloha Wellness Ebook</div>
+<div class="product-type">Instant Digital Download</div>
+</div>
+<div class="price">$47</div>
+</div>
+<ul class="features">
+<li>Instant download — read on any device</li>
+<li>54 pounds lost without dieting — the real story</li>
+<li>Hawaiian wisdom meets modern wellness science</li>
+<li>God's original design for your body</li>
+<li>Full lifetime access</li>
+</ul>
+<div id="paypal-button-container"></div>
+<div class="secure">🔒 Secure checkout powered by PayPal<br>Credit and debit cards accepted — no PayPal account needed</div>
+<a href="/aloha_wellness" class="back">← Back to Aloha Wellness page</a>
+</div>
+</div>
+<script src="https://www.paypal.com/sdk/js?client-id=Af3hvjHUPRVuFeQ8xO_T18V234j-B-qvN9I9ydlWnEU9M0vKKOVyMw0si6r-N47Y_fg-Mw35VvAifkZ6&currency=USD"></script>
+<script>
+paypal.Buttons({
+    style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay' },
+    createOrder: function(data, actions) {
+        return actions.order.create({
+            purchase_units: [{
+                amount: { value: '47.00' },
+                description: 'Aloha Wellness: Island-Inspired Natural Weight Management'
+            }],
+            application_context: {
+                brand_name: 'Ke Aupuni O Ke Akua Press',
+                user_action: 'PAY_NOW',
+                return_url: 'https://keaupuniakeakua.faith/aloha-wellness-thankyou',
+                cancel_url: 'https://keaupuniakeakua.faith/aloha_wellness'
+            }
+        });
+    },
+    onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+            window.location.href = '/aloha-wellness-thankyou?orderID=' + data.orderID;
+        });
+    },
+    onCancel: function(data) { window.location.href = '/aloha_wellness'; },
+    onError: function(err) { alert('Payment error. Please email kahuphil@keaupuni.faith'); }
+}).render('#paypal-button-container');
+</script>
+</body>
+</html>"""
+
+ALOHA_WELLNESS_THANKYOU = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mahalo! Payment Received</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Georgia, serif; background: linear-gradient(135deg, #1a4a3a 0%, #2d7a5a 100%); min-height: 100vh; padding: 2rem; display: flex; align-items: center; justify-content: center; }
+.container { max-width: 600px; width: 100%; background: white; border-radius: 16px; padding: 3rem 2rem; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+.icon { font-size: 4rem; margin-bottom: 1rem; }
+h1 { color: #1a4a3a; font-size: 2rem; margin-bottom: 1rem; }
+p { color: #495057; line-height: 1.7; margin-bottom: 1.5rem; }
+.message { background: #f0faf5; border-left: 4px solid #2d7a5a; padding: 1.25rem; border-radius: 8px; text-align: left; color: #1a4a3a; margin-bottom: 1.5rem; }
+.home { display: inline-block; margin-top: 1rem; color: #6c757d; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+<div class="icon">🌺</div>
+<h1>Mahalo! Payment Received!</h1>
+<div class="message">
+<strong>Your purchase is confirmed.</strong><br><br>
+Please email: <strong>kahuphil@keaupuni.faith</strong><br>
+Subject line: <em>Aloha Wellness Download</em><br><br>
+Kahu Phil will send your ebook within 24 hours. Aloha!
+</div>
+<a href="/" class="home">← Return to Ke Aupuni O Ke Akua</a>
+</div>
+</body>
+</html>"""
+
+
+@app.route("/aloha-wellness-buy")
+def aloha_wellness_buy():
+    return ALOHA_WELLNESS_CHECKOUT
+
+
+@app.route("/aloha-wellness-thankyou")
+def aloha_wellness_thankyou():
+    return ALOHA_WELLNESS_THANKYOU
+
+
+@app.route("/product/prod_20260219054130")
+def old_product_redirect():
+    return redirect("/aloha-wellness-buy", code=301)
