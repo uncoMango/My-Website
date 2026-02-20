@@ -1,3 +1,26 @@
 {
-  "products": []
+  "products": [
+    {
+      "id": "prod_aloha_wellness",
+      "name": "Aloha Wellness - Island Health & Healing",
+      "description": "Discover the life-changing power of how you eat, not just what you eat. This groundbreaking wellness book combines cutting-edge scientific research with ancient Hawaiian mana'o (wisdom) to transform your relationship with food and nourishment.",
+      "price": 47.00,
+      "category": "ebook",
+      "filename": "aloha_wellness_ebook_COMPLETE.html",
+      "file_path": "digital_products/aloha_wellness_ebook_COMPLETE.html",
+      "cover_image": "https://i.imgur.com/xGeWW3Q.jpeg",
+      "active": true,
+      "downloads": 0,
+      "total_sales": 0
+    }
+  ]
 }
+```
+
+Then go to `website_content.json` → pencil → find:
+```
+"direct_buy_url": "/checkout/prod_20260219222445"
+```
+Change to:
+```
+"direct_buy_url": "/checkout/prod_aloha_wellness"
