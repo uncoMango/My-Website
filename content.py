@@ -26,7 +26,7 @@ DEFAULT_PAGES = {
         },
         "kingdom_wealth": {
             "title": "Kingdom Wealth",
-            "hero_image": "https://i.imgur.com/G2YmSka.jpeg",
+            "hero_image": "/static/images/scottsdale-mint-ATq9BSFebRE-unsplash.jpg",
             "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom operates on stewardship, not ownership.\r\n\r\n### Core Principles\r\n\r\n**Source vs. Resource** - God is your Source.\r\n\r\n**[FREE Kingdom Keys →](/kingdom_keys)**\r\n\r\n**[FREE Kingdom Booklets →](/free_booklets)**\r\n\r\n**[Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n**[Myron Golden Training →](/myron-golden)**",
             "product_url": "",
         },
@@ -34,9 +34,9 @@ DEFAULT_PAGES = {
             "title": "Aloha Wellness - Island Health & Healing",
             "hero_image": "https://i.imgur.com/xGeWW3Q.jpeg",
             "body_md": "## Aloha Wellness - The Sacred Art of How You Eat\r\n\r\nDiscover the life-changing power of **how** you eat, not just what you eat. This groundbreaking wellness book combines cutting-edge scientific research with ancient Hawaiian mana'o (wisdom) to transform your relationship with food and nourishment.\r\n\r\n### Beyond Diet Culture - A Hawaiian Perspective\r\n\r\nTraditional Hawaiian culture understood something modern society has forgotten: eating is a sacred act that connects us to the land, our ancestors, and our own spiritual well-being. This book bridges that ancient wisdom with contemporary nutritional science.\r\n\r\n### Revolutionary Approach: How, Not What\r\n\r\n**Mindful Consumption** - Learn the scientific basis for how mindful eating practices affect digestion, metabolism, and overall health.\r\n\r\n**Cultural Eating Wisdom** - Discover how Hawaiian ancestors approached meals as community ceremonies, gratitude practices, and spiritual connections.\r\n\r\n**Stress and Digestion** - Research-backed insights into how your emotional state during meals affects nutrient absorption and digestive health.\r\n\r\n**Rhythm and Timing** - Ancient Hawaiian understanding of eating in harmony with natural rhythms, supported by modern chronobiology research.\r\n\r\n### Hawaiian Mana'o (Wisdom Principles)\r\n\r\n**Ho'oponopono with Food** - Making right relationships with nourishment and healing food-related guilt or shame.\r\n\r\n**Aloha 'Āina** - Love of the land extends to gratitude for the food it provides and mindful consumption practices.\r\n\r\n**Lōkahi** - Finding unity and balance in your relationship with food, body, and spirit.\r\n\r\n**Mālama** - Caring for your body as a sacred temple through conscious eating practices.\r\n\r\nTransform your health from the inside out by changing not what you eat, but how you approach the sacred act of nourishment.",
-            "product_url": "https://a.co/d/6YrcnQp",
-            "gumroad_url": "https://keaupuni.gumroad.com/l/aloha-wellness",
-            "direct_buy_url": "",
+            "product_url": "",
+            "gumroad_url": "",
+            "direct_buy_url": "/checkout/prod_aloha_wellness",
         },
         "call_to_repentance": {
             "title": "The Call to Repentance - The Kingdom Series",
