@@ -919,25 +919,6 @@ Until then, your email is the fastest path to your book.
 </body>
 </html>"""
 
-@app.route("/aloha-wellness-buy")
-def aloha_wellness_buy():
-    """Permanent Aloha Wellness checkout page - hardcoded, never breaks on redeploy"""
-    page = ALOHA_WELLNESS_CHECKOUT.replace("PAYPAL_CLIENT_ID_PLACEHOLDER", PAYPAL_CLIENT_ID_FOR_WELLNESS)
-    return page
-
-@app.route("/aloha-wellness-thankyou")
-def aloha_wellness_thankyou():
-    """Thank you page after PayPal payment"""
-    return ALOHA_WELLNESS_THANKYOU
-
-@app.route("/product/prod_20260219054130")
-def old_product_redirect():
-    """Redirect old broken product link to the new permanent checkout"""
-    return redirect("/aloha-wellness-buy", code=301)
-@app.route("/myron-golden")
-def myron_golden_page():
-    return render_template_string(MYRON_GOLDEN_TEMPLATE, style=ENHANCED_STYLE)
-
 @app.route("/kingdom_keys")
 def kingdom_keys():
     data = load_content()
@@ -2971,3 +2952,4 @@ def aloha_wellness_thankyou():
 @app.route("/product/prod_20260219054130")
 def old_product_redirect():
     return redirect("/aloha-wellness-buy", code=301)
+
