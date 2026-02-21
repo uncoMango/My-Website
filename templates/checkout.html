@@ -18,16 +18,50 @@
         .features { list-style: none; margin-bottom: 2rem; }
         .features li { padding: 0.5rem 0; border-bottom: 1px solid #e9ecef; color: #495057; }
         .features li:before { content: "✓ "; color: #28a745; font-weight: bold; }
-        .payment-section { text-align: center; }
-        .divider { display: flex; align-items: center; margin: 1.5rem 0; color: #6c757d; font-size: 0.9rem; }
-        .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #e9ecef; }
-        .divider span { padding: 0 1rem; }
+
+        /* Stripe section - highlighted as preferred */
+        .stripe-section {
+            background: linear-gradient(135deg, #f0f4ff, #e8edff);
+            border: 2px solid #635bff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .stripe-section-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #635bff;
+            margin-bottom: 0.5rem;
+        }
+        .stripe-section-msg {
+            font-size: 0.95rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
         .stripe-btn { display: block; width: 100%; padding: 1rem; background: #635bff; color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.2s ease; }
         .stripe-btn:hover { background: #5246e5; transform: translateY(-1px); }
+
+        /* PayPal section */
+        .paypal-section {
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .paypal-section-msg {
+            font-size: 0.95rem;
+            color: #495057;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            text-align: center;
+        }
+
         .secure-badge { display: flex; align-items: center; justify-content: center; gap: 0.5rem; color: #6c757d; font-size: 0.85rem; margin-top: 1rem; }
         .back-link { display: block; text-align: center; margin-top: 1.5rem; color: #6c757d; text-decoration: none; font-size: 0.9rem; }
         .back-link:hover { color: #2c3e50; }
-        #paypal-button-container { margin: 1rem 0; }
+        #paypal-button-container { margin: 0.5rem 0; }
     </style>
 </head>
 <body>
@@ -52,18 +86,30 @@
         <li>From Kahu Phil Stephens, Molokaʻi</li>
     </ul>
 
-    <div class="payment-section">
+    {% if stripe_enabled %}
+    <!-- STRIPE - Preferred Option -->
+    <div class="stripe-section">
+        <div class="stripe-section-label">⭐ Recommended</div>
+        <div class="stripe-section-msg">
+            Join our Wellness Community! Use Credit/Debit below to receive automatic email updates.
+        </div>
+        <form action="/stripe/create-session/{{ product.id }}" method="POST">
+            <button type="submit" class="stripe-btn">💳 Pay with Credit / Debit Card</button>
+        </form>
+        <div class="secure-badge">🔒 Secure checkout powered by Stripe</div>
+    </div>
+    {% endif %}
+
+    <!-- PAYPAL -->
+    <div class="paypal-section">
+        <div class="paypal-section-msg">
+            Or, use your trusted PayPal account for a familiar checkout.
+        </div>
         <div id="paypal-button-container"></div>
         <div class="secure-badge">🔒 Secure checkout powered by PayPal</div>
-        <p style="text-align:center; margin-top:0.5rem; color:#6c757d; font-size:0.9rem;">
+        <p style="text-align:center; margin-top:0.5rem; color:#6c757d; font-size:0.85rem;">
             No PayPal account needed – credit &amp; debit cards accepted
         </p>
-        {% if stripe_enabled %}
-        <div class="divider"><span>or pay with card</span></div>
-        <form action="/stripe/create-session/{{ product.id }}" method="POST">
-            <button type="submit" class="stripe-btn">💳 Pay with Card (Stripe)</button>
-        </form>
-        {% endif %}
     </div>
 
     <a href="/product/{{ product.id }}" class="back-link">← Back to product page</a>
