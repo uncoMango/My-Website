@@ -8,6 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Ke Aupuni O Ke Akua{% endblock %}</title>
     <meta name="google-site-verification" content="ba5d8e311152a3a0" />
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V2NY3MEWKB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-V2NY3MEWKB');
+    </script>
     <style>
         {% include 'partials/styles.css' %}
         {% block extra_styles %}{% endblock %}
