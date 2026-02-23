@@ -1,80 +1,496 @@
-{# templates/myron_golden.html #}
-{% extends "base.html" %}
-{% block title %}Transform Your Financial Future{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kingdom Wealth — Free Guide + Resources</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #d4a017;
+            --gold-light: #f0c84a;
+            --dark: #0d0d0d;
+            --dark-2: #1a1a1a;
+            --dark-3: #242424;
+            --text: #e8e0d0;
+        }
 
-{% block extra_styles %}
-.email-capture {
-    background: rgba(212,165,116,0.2);
-    padding: 30px; margin: 30px 0; text-align: center;
-    border: 3px solid rgba(212,165,116,0.5); border-radius: 12px;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .top-bar {
+            background: var(--gold);
+            color: #0d0d0d;
+            text-align: center;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .hero {
+            background: linear-gradient(160deg, #0a0a0a 0%, #1a1a0a 50%, #0d1a0d 100%);
+            padding: 70px 24px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(212,160,23,0.3);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(212,160,23,0.12) 0%, transparent 70%);
+        }
+
+        .hero-tag {
+            display: inline-block;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 6px 20px;
+            border-radius: 2px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            color: white;
+            line-height: 1.15;
+            max-width: 820px;
+            margin: 0 auto 24px;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .hero h1 em { color: var(--gold); font-style: italic; }
+
+        .hero-sub {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: rgba(255,255,255,0.7);
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 300;
+            position: relative;
+        }
+
+        .hero-sub strong { color: white; font-weight: 700; }
+
+        /* STEP 1 */
+        .step-section {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 72px 24px;
+        }
+
+        .step-label {
+            display: inline-block;
+            background: var(--gold);
+            color: #0d0d0d;
+            padding: 4px 14px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border-radius: 2px;
+            margin-bottom: 20px;
+        }
+
+        .step-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            color: white;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .step-section > p {
+            color: rgba(255,255,255,0.6);
+            font-size: 1rem;
+            margin-bottom: 28px;
+        }
+
+        .email-box {
+            background: rgba(212,160,23,0.07);
+            border: 1px solid rgba(212,160,23,0.25);
+            border-radius: 4px;
+            padding: 32px 28px;
+        }
+
+        .email-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .email-form input {
+            padding: 15px 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 3px;
+            color: white;
+            font-size: 1rem;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .email-form input::placeholder { color: rgba(255,255,255,0.3); }
+        .email-form input:focus { outline: none; border-color: var(--gold); }
+
+        .email-form button {
+            padding: 17px;
+            background: var(--gold);
+            color: #0d0d0d;
+            border: none;
+            border-radius: 3px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 0.04em;
+            font-family: 'Nunito', sans-serif;
+            transition: background 0.2s;
+        }
+
+        .email-form button:hover { background: var(--gold-light); }
+
+        .instant-note {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.3);
+        }
+
+        /* DIVIDER */
+        .divider {
+            text-align: center;
+            color: var(--gold);
+            font-size: 1.1rem;
+            letter-spacing: 0.4em;
+            padding: 8px 0;
+            opacity: 0.4;
+        }
+
+        /* STORY */
+        .story {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 64px 24px;
+        }
+
+        .story .kahu-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--gold);
+            margin-bottom: 24px;
+        }
+
+        .story p {
+            font-size: 1.05rem;
+            color: rgba(255,255,255,0.75);
+            margin-bottom: 18px;
+        }
+
+        .story blockquote {
+            border-left: 3px solid var(--gold);
+            padding: 16px 24px;
+            margin: 28px 0;
+            background: rgba(212,160,23,0.06);
+            font-size: 1.1rem;
+            font-style: italic;
+            color: rgba(255,255,255,0.82);
+        }
+
+        /* PRODUCTS */
+        .products {
+            background: var(--dark-2);
+            padding: 72px 24px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .products-inner { max-width: 860px; margin: 0 auto; }
+
+        .products-intro {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        .products-intro h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            color: white;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .products-intro p {
+            color: rgba(255,255,255,0.45);
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .section-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.2rem;
+            color: rgba(212,160,23,0.15);
+            line-height: 1;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .section-subtitle {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.35);
+            margin-top: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 56px;
+        }
+
+        .product-card {
+            background: var(--dark-3);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 4px;
+            padding: 24px 20px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .product-card:hover {
+            border-color: rgba(212,160,23,0.35);
+            transform: translateY(-3px);
+        }
+
+        .product-card h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            color: white;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .product-card p {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.43);
+            margin-bottom: 18px;
+            line-height: 1.65;
+        }
+
+        .product-btn {
+            display: block;
+            text-align: center;
+            padding: 11px 18px;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border-radius: 2px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .product-btn:hover { background: var(--gold); color: #0d0d0d; }
+
+        /* DISCLAIMER */
+        .disclaimer {
+            max-width: 660px;
+            margin: 0 auto;
+            padding: 40px 24px 28px;
+            text-align: center;
+        }
+
+        .disclaimer p {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.22);
+            line-height: 1.8;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #080808;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 18px;
+            text-align: center;
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.18);
+        }
+
+        footer a { color: rgba(255,255,255,0.28); text-decoration: none; }
+
+        @media (max-width: 480px) {
+            .email-box { padding: 22px 16px; }
+            .product-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    🌺 From Kahu Phil Stephens, Molokaʻi — Kingdom Wealth Resources
+</div>
+
+<section class="hero">
+    <div class="hero-tag">Kingdom Wealth — Ke Aupuni O Ke Akua</div>
+    <h1>What If Your Financial Struggle<br>Has Nothing to Do With <em>Money?</em></h1>
+    <p class="hero-sub">Most people have a <strong>money problem</strong>. What they actually have is a <strong>Kingdom problem</strong> — and there's a free guide below that explains exactly what I mean.</p>
+</section>
+
+<!-- STEP 1: EMAIL + INSTANT DOWNLOAD -->
+<section class="step-section">
+    <div class="step-label">Step 1 — Get Your Free Guide</div>
+    <h2>Download the FREE<br>Kingdom Wealth Principles Guide</h2>
+    <p>Enter your name and email. Your free guide downloads instantly — no waiting, no inbox required.</p>
+    <div class="email-box">
+        <form class="email-form" action="https://app.kit.com/forms/8979853/subscriptions" method="post"
+              onsubmit="triggerDownload()">
+            <input type="text" name="fields[first_name]" placeholder="First Name" required>
+            <input type="email" name="email_address" placeholder="Email Address" required>
+            <button type="submit">🌺 Get My Free Kingdom Wealth Guide — Download Now</button>
+        </form>
+        <p class="instant-note">🔒 Your email is safe. No spam. Unsubscribe any time.</p>
+    </div>
+</section>
+
+<div class="divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+<!-- BRIDGE STORY -->
+<section class="story">
+    <p class="kahu-name">From Kahu Phil Stephens — Pastor, Paniolo, Molokaʻi</p>
+    <p>For most of my life I believed what most Christians believe about money — that wanting more is greedy, and that the truly spiritual person lives with less.</p>
+    <p>Then I spent 30 years studying what Jesus actually said. In the original Greek. And I found something that changed everything.</p>
+    <blockquote>"Jesus talked about money more than almost any other subject. Not to warn us away from it — but to show us how the Kingdom operates <em>through</em> it."</blockquote>
+    <p>Myron Golden teaches Kingdom economics in a way I have never heard anyone else do it. He connects biblical principles to real financial transformation — and I recommend his work to everyone in my congregation.</p>
+    <p>The resources below are listed in the order I would suggest going through them. Start where you are. But start.</p>
+</section>
+
+<!-- STEP 2: AFFILIATE PRODUCTS -->
+<section class="products">
+    <div class="products-inner">
+        <div class="products-intro">
+            <div class="step-label" style="display:inline-block; margin-bottom:16px;">Step 2 — Go Deeper</div>
+            <h2>Myron Golden's Kingdom Wealth Resources</h2>
+            <p>Four levels. Start at the beginning and work your way through.</p>
+        </div>
+
+        <div class="section-label">
+            <div class="section-num">01</div>
+            <div>
+                <div class="section-title">Start Your Journey</div>
+                <div class="section-subtitle">Foundation — Begin Here</div>
+            </div>
+        </div>
+        <div class="product-grid">
+            <div class="product-card">
+                <h4>Trash Man to Cash Man</h4>
+                <p>Myron's origin story and the mindset shift that took him from broke to building a multi-million dollar business. Raw, real, Kingdom-grounded.</p>
+                <a href="https://www.trashmantocashman.com/tmcm-book?affiliate_id=4319525" target="_blank" class="product-btn">Get the Book →</a>
+            </div>
+            <div class="product-card">
+                <h4>Boss Moves</h4>
+                <p>The strategic thinking patterns of people who build lasting wealth — not luck, not hustle, but Kingdom-level decision making.</p>
+                <a href="https://www.bossmovesbook.com/bossmoves?affiliate_id=4319525" target="_blank" class="product-btn">Get the Book →</a>
+            </div>
+        </div>
+
+        <div class="section-label">
+            <div class="section-num">02</div>
+            <div>
+                <div class="section-title">Renew Your Money Mind</div>
+                <div class="section-subtitle">Transformation — Go Deeper</div>
+            </div>
+        </div>
+        <div class="product-grid">
+            <div class="product-card">
+                <h4>Mind Over Money Mastery</h4>
+                <p>Your beliefs about money were formed before you were 10 years old. This program rewrites them at the root — using Scripture and proven psychology.</p>
+                <a href="https://www.mindovermoneymastery.com/momm?affiliate_id=4319525" target="_blank" class="product-btn">Learn More →</a>
+            </div>
+        </div>
+
+        <div class="section-label">
+            <div class="section-num">03</div>
+            <div>
+                <div class="section-title">Master the Art of the Offer</div>
+                <div class="section-subtitle">Application — Start Earning</div>
+            </div>
+        </div>
+        <div class="product-grid">
+            <div class="product-card">
+                <h4>Make More Offers Challenge</h4>
+                <p>You don't get paid for working hard — you get paid for making offers. This challenge teaches you exactly how.</p>
+                <a href="https://www.makemoreofferschallenge.com/mmoc?affiliate_id=4319525" target="_blank" class="product-btn">Join the Challenge →</a>
+            </div>
+            <div class="product-card">
+                <h4>Offer Mastery Live</h4>
+                <p>Myron's live training on crafting irresistible offers — the skill that separates those who struggle from those who scale.</p>
+                <a href="https://www.offermasterylive.com/offer-mastery-livevetfk4nn?affiliate_id=4319525" target="_blank" class="product-btn">Get Access →</a>
+            </div>
+        </div>
+
+        <div class="section-label">
+            <div class="section-num">04</div>
+            <div>
+                <div class="section-title">Build Your Kingdom System</div>
+                <div class="section-subtitle">Mastery — The Full Blueprint</div>
+            </div>
+        </div>
+        <div class="product-grid">
+            <div class="product-card">
+                <h4>Golden OPS</h4>
+                <p>Myron's complete business operating system. If you're serious about building income while you sleep — this is the blueprint.</p>
+                <a href="https://www.mygoldenops.com/golden-opsm1y8y7bx?affiliate_id=4319525" target="_blank" class="product-btn">Build Your System →</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="disclaimer">
+    <p>Affiliate Disclosure: As a minister committed to pono (righteousness), I only recommend resources I genuinely believe in. If you purchase through these links, I may receive a commission at no extra cost to you. Mahalo for your trust. 🌺</p>
+</section>
+
+<footer>
+    <p>© 2026 Ke Aupuni O Ke Akua Press &nbsp;|&nbsp; Pastor Phil Stephens, Molokaʻi, Hawaiʻi &nbsp;|&nbsp; <a href="/">Return Home</a></p>
+</footer>
+
+<script>
+function triggerDownload() {
+    setTimeout(function() {
+        window.location.href = '/download/booklet1';
+    }, 400);
 }
-.mg-section { padding: 40px 0; }
-.product-box {
-    background: rgba(0,0,0,0.5);
-    padding: 30px; margin: 20px 0; border-radius: 12px; text-align: center;
-}
-.mg-btn {
-    display: inline-block; padding: 15px 40px;
-    background: linear-gradient(135deg,#5f9ea0,#4a8b8e);
-    color: white; text-decoration: none; font-weight: bold;
-    margin: 10px; border-radius: 8px;
-    transition: transform 0.2s ease;
-}
-.mg-btn:hover { transform: translateY(-2px); }
-{% endblock %}
+</script>
 
-{% block content %}
-<header class="hero" style="background-image:url('/static/images/scottsdale-mint-ATq9BSFebRE-unsplash.jpg');">
-    <div class="hero-content"><h1>Transform Your Financial Future</h1></div>
-</header>
-
-<main class="container">
-    <article class="content-card">
-
-        <div class="email-capture">
-            <h2>Get FREE Kingdom Business Guide</h2>
-            <form action="https://app.kit.com/forms/8979853/subscriptions" method="post">
-                <input type="text" name="fields[first_name]" placeholder="First Name" required
-                    style="padding:15px; margin:10px 0; width:100%; border-radius:6px; border:1px solid #ccc;">
-                <input type="email" name="email_address" placeholder="Email" required
-                    style="padding:15px; margin:10px 0; width:100%; border-radius:6px; border:1px solid #ccc;">
-                <button type="submit"
-                    style="width:100%; padding:15px; background:#d4af37; color:white; font-weight:bold; border:none; border-radius:6px; cursor:pointer;">
-                    GET FREE GUIDE
-                </button>
-            </form>
-        </div>
-
-        <div class="mg-section">
-            <h2>SECTION 1: Start Your Journey</h2>
-            <div class="product-box">
-                <a href="https://www.trashmantocashman.com/tmcm-book?affiliate_id=4319525" class="mg-btn">TRASH MAN TO CASH MAN</a>
-                <a href="https://www.bossmovesbook.com/bossmoves?affiliate_id=4319525" class="mg-btn">BOSS MOVES</a>
-            </div>
-        </div>
-
-        <div class="mg-section">
-            <h2>SECTION 2: Transform Your Money Blueprint</h2>
-            <div class="product-box">
-                <a href="https://www.mindovermoneymastery.com/momm?affiliate_id=4319525" class="mg-btn">MIND OVER MONEY MASTERY</a>
-            </div>
-        </div>
-
-        <div class="mg-section">
-            <h2>SECTION 3: Master Making Offers</h2>
-            <div class="product-box">
-                <a href="https://www.makemoreofferschallenge.com/mmoc?affiliate_id=4319525" class="mg-btn">MAKE MORE OFFERS</a>
-                <a href="https://www.offermasterylive.com/offer-mastery-livevetfk4nn?affiliate_id=4319525" class="mg-btn">OFFER MASTERY LIVE</a>
-            </div>
-        </div>
-
-        <div class="mg-section">
-            <h2>SECTION 4: Build Your System</h2>
-            <div class="product-box">
-                <a href="https://www.mygoldenops.com/golden-opsm1y8y7bx?affiliate_id=4319525" class="mg-btn">GOLDEN OPS</a>
-            </div>
-        </div>
-
-    </article>
-</main>
-{% endblock %}
+</body>
+</html>
