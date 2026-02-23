@@ -1,8 +1,4 @@
 # blueprints/pages.py
-# =========================================================
-# All public-facing page routes.
-# Each page in website_content.json gets rendered here.
-# =========================================================
 import markdown
 from datetime import datetime
 from flask import Blueprint, abort, render_template, Response
@@ -12,11 +8,9 @@ from config import LOGO_PATH, LOGO_HEIGHT, FOOTER_TEXT
 pages_bp = Blueprint("pages", __name__)
 
 def md_to_html(md_text):
-    """Convert Markdown text to HTML."""
     return markdown.markdown(md_text or "", extensions=["extra", "nl2br"])
 
 def render_page(page_id, data):
-    """Render any page from website_content.json by its ID."""
     pages = data.get("pages", {})
     if page_id not in pages:
         abort(404)
@@ -49,30 +43,33 @@ def myron_golden_page():
         logo_height=LOGO_HEIGHT,
         footer_text=FOOTER_TEXT,
     )
-@pages_bp.route("/aloha_wellness")
-def aloha_wellness_page():
+
+@pages_bp.route("/aloha-wellness-funnel")
+def aloha_wellness_funnel():
     data = load_content()
     nav_items = get_nav_items(data)
     return render_template(
-        "aloha_wellness.html",
+        "aloha_wellness_funnel.html",
         nav_items=nav_items,
         logo_path=LOGO_PATH,
         logo_height=LOGO_HEIGHT,
         footer_text=FOOTER_TEXT,
     )
+
 @pages_bp.route("/sitemap.xml")
 def sitemap():
     pages = [
-        ("/",                   "1.0", "weekly"),
-        ("/kingdom_wealth",     "0.9", "weekly"),
-        ("/free_booklets",      "0.9", "weekly"),
-        ("/kingdom_keys",       "0.9", "weekly"),
-        ("/call_to_repentance", "0.9", "weekly"),
-        ("/aloha_wellness",     "0.9", "weekly"),
-        ("/pastor_planners",    "0.8", "monthly"),
-        ("/nahenahe_voice",     "0.8", "monthly"),
-        ("/aloha-wellness-buy", "0.7", "monthly"),
-        ("/myron-golden",       "0.8", "weekly"),
+        ("/",                       "1.0", "weekly"),
+        ("/kingdom_wealth",         "0.9", "weekly"),
+        ("/free_booklets",          "0.9", "weekly"),
+        ("/kingdom_keys",           "0.9", "weekly"),
+        ("/call_to_repentance",     "0.9", "weekly"),
+        ("/aloha_wellness",         "0.9", "weekly"),
+        ("/pastor_planners",        "0.8", "monthly"),
+        ("/nahenahe_voice",         "0.8", "monthly"),
+        ("/aloha-wellness-funnel",  "0.9", "weekly"),
+        ("/aloha-wellness-buy",     "0.7", "monthly"),
+        ("/myron-golden",           "0.8", "weekly"),
     ]
     base_url = "https://keaupuniakeakua.faith"
     today = datetime.now().strftime("%Y-%m-%d")
@@ -95,7 +92,7 @@ def robots():
 
 @pages_bp.route("/<page_id>")
 def page(page_id):
-    if page_id in ("admin", "product", "checkout", "download", "paypal", "stripe", "kahu", "aloha_wellness"):
+    if page_id in ("admin", "product", "checkout", "download", "paypal", "stripe", "kahu"):
         abort(404)
     data = load_content()
     pages = data.get("pages", {})
