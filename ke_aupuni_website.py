@@ -782,7 +782,36 @@ def render_page(page_id, data):
 def home():
     data = load_content()
     return render_page("home", data)
+# ===== SITEMAP AND ROBOTS.TXT FOR GOOGLE INDEXING =====
 
+@app.route("/sitemap.xml")
+def sitemap():
+    """XML sitemap so Google can find and index all your pages."""
+    pages = [
+        ("/",                   "1.0", "weekly"),
+        ("/kingdom_wealth",     "0.9", "weekly"),
+        ("/free_booklets",      "0.9", "weekly"),
+        ("/kingdom_keys",       "0.9", "weekly"),
+        ("/call_to_repentance", "0.9", "weekly"),
+        ("/aloha_wellness",     "0.9", "weekly"),
+        ("/pastor_planners",    "0.8", "monthly"),
+        ("/nahenahe_voice",     "0.8", "monthly"),
+        ("/aloha-wellness-buy", "0.7", "monthly"),
+        ("/myron-golden",       "0.8", "weekly"),
+    ]
+    base_url = "https://keaupuniakeakua.faith"
+    today = datetime.now().strftime("%Y-%m-%d")
+    xml = ['<?xml version="1.0" encoding="UTF-8"?>']
+    xml.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
+    for path, priority, freq in pages:
+        xml.append("  <url>")
+        xml.append(f"    <loc>{base_url}{path}</loc>")
+        xml.append(f"    <lastmod>{today}</lastmod>")
+        xml.append(f"    <changefreq>{freq}</changefreq>")
+        xml.append(f"    <priority>{priority}</priority>")
+        xml.append("  </url>")
+    xml.append("</urlset>")
+    return Response("\n".join(xml), mimetype="application/xml")
 @app.route("/<page_id>")
 def page(page_id):
     data = load_content()
@@ -985,36 +1014,7 @@ def serve_cover(filename):
 
 ADMIN_PASSWORD = "Kingdom2024"
 
-# ===== SITEMAP AND ROBOTS.TXT FOR GOOGLE INDEXING =====
 
-@app.route("/sitemap.xml")
-def sitemap():
-    """XML sitemap so Google can find and index all your pages."""
-    pages = [
-        ("/",                   "1.0", "weekly"),
-        ("/kingdom_wealth",     "0.9", "weekly"),
-        ("/free_booklets",      "0.9", "weekly"),
-        ("/kingdom_keys",       "0.9", "weekly"),
-        ("/call_to_repentance", "0.9", "weekly"),
-        ("/aloha_wellness",     "0.9", "weekly"),
-        ("/pastor_planners",    "0.8", "monthly"),
-        ("/nahenahe_voice",     "0.8", "monthly"),
-        ("/aloha-wellness-buy", "0.7", "monthly"),
-        ("/myron-golden",       "0.8", "weekly"),
-    ]
-    base_url = "https://keaupuniakeakua.faith"
-    today = datetime.now().strftime("%Y-%m-%d")
-    xml = ['<?xml version="1.0" encoding="UTF-8"?>']
-    xml.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
-    for path, priority, freq in pages:
-        xml.append("  <url>")
-        xml.append(f"    <loc>{base_url}{path}</loc>")
-        xml.append(f"    <lastmod>{today}</lastmod>")
-        xml.append(f"    <changefreq>{freq}</changefreq>")
-        xml.append(f"    <priority>{priority}</priority>")
-        xml.append("  </url>")
-    xml.append("</urlset>")
-    return Response("\n".join(xml), mimetype="application/xml")
 
 
 @app.route("/robots.txt")
@@ -2990,5 +2990,6 @@ def old_product_redirect():
 if __name__ == "__main__":
     if not DATA_FILE.exists():
         save_content(DEFAULT_PAGES)
+
 
 
