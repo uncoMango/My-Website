@@ -95,7 +95,7 @@ def robots():
 
 @pages_bp.route("/<page_id>")
 def page(page_id):
-    if page_id in ("admin", "product", "checkout", "download", "paypal", "stripe", "kahu"):
+    if page_id in ("admin", "product", "checkout", "download", "paypal", "stripe", "kahu", "aloha_wellness"):
         abort(404)
     data = load_content()
     pages = data.get("pages", {})
