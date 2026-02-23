@@ -969,9 +969,6 @@ def download_booklet5():
 def download_booklet6():
     return send_file(BASE / "Free_Booklet_6_Kingdom_Living_Couples.pdf", mimetype='application/pdf', as_attachment=True)
 
-if __name__ == "__main__":
-    if not DATA_FILE.exists():
-        save_content(DEFAULT_PAGES)
     
     port = int(os.environ.get("PORT", 5000))
     print("🌺 Starting Ke Aupuni O Ke Akua website...")
@@ -2990,4 +2987,7 @@ def aloha_wellness_thankyou():
 def old_product_redirect():
     return redirect("/aloha-wellness-buy", code=301)
 
+if __name__ == "__main__":
+    if not DATA_FILE.exists():
+        save_content(DEFAULT_PAGES)
 
