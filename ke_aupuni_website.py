@@ -812,7 +812,12 @@ def sitemap():
         xml.append("  </url>")
     xml.append("</urlset>")
     return Response("\n".join(xml), mimetype="application/xml")
-@app.route("/<page_id>")
+@app.route("/robots.txt")
+def robots():
+    """Robots.txt tells Google how to crawl your site."""
+    content = "User-agent: *\nAllow: /\nDisallow: /kahu\nDisallow: /admin\n\nSitemap: https://keaupuniakeakua.faith/sitemap.xml\n"
+    return Response(content, mimetype="text/plain") 
+    @app.route("/<page_id>")
 def page(page_id):
     data = load_content()
     pages = data.get("pages", data)
@@ -1017,11 +1022,7 @@ ADMIN_PASSWORD = "Kingdom2024"
 
 
 
-@app.route("/robots.txt")
-def robots():
-    """Robots.txt tells Google how to crawl your site."""
-    content = "User-agent: *\nAllow: /\nDisallow: /kahu\nDisallow: /admin\n\nSitemap: https://keaupuniakeakua.faith/sitemap.xml\n"
-    return Response(content, mimetype="text/plain")    
+   
 @app.route("/kahu")
 def admin_panel():
     data = load_content()
@@ -2990,6 +2991,7 @@ def old_product_redirect():
 if __name__ == "__main__":
     if not DATA_FILE.exists():
         save_content(DEFAULT_PAGES)
+
 
 
 
