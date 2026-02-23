@@ -1,8 +1,4 @@
 # blueprints/pages.py
-# =========================================================
-# All public-facing page routes.
-# Each page in website_content.json gets rendered here.
-# =========================================================
 import markdown
 from datetime import datetime
 from flask import Blueprint, abort, render_template, Response
@@ -12,11 +8,9 @@ from config import LOGO_PATH, LOGO_HEIGHT, FOOTER_TEXT
 pages_bp = Blueprint("pages", __name__)
 
 def md_to_html(md_text):
-    """Convert Markdown text to HTML."""
     return markdown.markdown(md_text or "", extensions=["extra", "nl2br"])
 
 def render_page(page_id, data):
-    """Render any page from website_content.json by its ID."""
     pages = data.get("pages", {})
     if page_id not in pages:
         abort(404)
@@ -43,7 +37,7 @@ def myron_golden_page():
     data = load_content()
     nav_items = get_nav_items(data)
     return render_template(
-        "myron_golden_funnel.html",
+        "myron_golden.html",
         nav_items=nav_items,
         logo_path=LOGO_PATH,
         logo_height=LOGO_HEIGHT,
