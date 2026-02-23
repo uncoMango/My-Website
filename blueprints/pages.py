@@ -49,7 +49,17 @@ def myron_golden_page():
         logo_height=LOGO_HEIGHT,
         footer_text=FOOTER_TEXT,
     )
-
+@pages_bp.route("/aloha_wellness")
+def aloha_wellness_page():
+    data = load_content()
+    nav_items = get_nav_items(data)
+    return render_template(
+        "aloha_wellness.html",
+        nav_items=nav_items,
+        logo_path=LOGO_PATH,
+        logo_height=LOGO_HEIGHT,
+        footer_text=FOOTER_TEXT,
+    )
 @pages_bp.route("/sitemap.xml")
 def sitemap():
     pages = [
