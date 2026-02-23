@@ -1,6 +1,6 @@
 # ke_aupuni_website.py
 # FIXED: Transparent nav bar - no white background
-from flask import Flask, request, redirect, render_template_string, abort, url_for, send_file
+from flask import Flask, request, redirect, render_template_string, abort, url_for, send_file, Response
 import json
 from pathlib import Path
 import markdown
@@ -2990,4 +2990,5 @@ def old_product_redirect():
 if __name__ == "__main__":
     if not DATA_FILE.exists():
         save_content(DEFAULT_PAGES)
+
 
