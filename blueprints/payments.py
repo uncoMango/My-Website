@@ -1,235 +1,164 @@
-# blueprints/payments.py
-# =========================================================
-# Payment processing: PayPal (active) + Stripe (ready).
-#
-# TO ACTIVATE STRIPE:
-#   1. Get your keys from stripe.com > Developers > API Keys
-#   2. Paste them into config.py
-#   3. Set STRIPE_ENABLED = True in config.py
-#   That's it - the Stripe button will appear automatically.
-# =========================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aloha Wellness - Lose Weight the Kingdom Way</title>
+    <meta name="google-site-verification" content="ba5d8e311152a3a0" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V2NY3MEWKB"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-V2NY3MEWKB');</script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Georgia, serif; background: #0a2a35; color: white; }
+        a { text-decoration: none; }
 
-import json
-import base64
-import urllib.request
-import urllib.parse
+        /* NAV */
+        .aw-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; background: rgba(10,42,53,0.95); }
+        .aw-nav img { height: 50px; width: auto; }
+        .aw-nav-link { color: #c8a84b; font-weight: 600; font-size: 1rem; }
+        .aw-nav-link:hover { color: white; }
 
-from flask import Blueprint, abort, redirect, render_template, request, url_for
-from content import load_digital_products, save_digital_products, get_product_by_id
-from config import (
-    PAYPAL_CLIENT_ID,
-    PAYPAL_CLIENT_SECRET,
-    PAYPAL_BASE_URL,
-    PAYPAL_RETURN_URL,
-    PAYPAL_CANCEL_URL,
-    STRIPE_PUBLISHABLE_KEY,
-    STRIPE_SECRET_KEY,
-    STRIPE_WEBHOOK_SECRET,
-    STRIPE_ENABLED,
-    LOGO_PATH,
-    LOGO_HEIGHT,
-    FOOTER_TEXT,
-    SITE_DOMAIN,
-)
+        /* HERO */
+        .aw-hero { min-height: 100vh; background: linear-gradient(160deg, #0a2a35 0%, #1a5c6b 40%, #2d8a70 100%); display: flex; align-items: center; justify-content: center; padding: 8rem 2rem 4rem; }
+        .aw-inner { max-width: 1100px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .aw-eyebrow { letter-spacing: 0.3em; text-transform: uppercase; color: #c8a84b; font-size: 0.85rem; margin-bottom: 1.5rem; }
+        .aw-inner h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; color: white; }
+        .aw-inner h1 span { color: #c8a84b; display: block; }
+        .aw-subhead { font-size: 1.1rem; line-height: 1.7; color: rgba(255,255,255,0.85); margin-bottom: 2rem; border-left: 3px solid #c8a84b; padding-left: 1.25rem; }
+        .aw-counter { background: rgba(200,168,75,0.15); border: 2px solid #c8a84b; border-radius: 12px; padding: 1.25rem; margin-bottom: 2rem; text-align: center; }
+        .aw-counter-label { font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: #c8a84b; margin-bottom: 0.5rem; }
+        .aw-spots { font-size: 3rem; font-weight: 900; color: white; line-height: 1; }
+        .aw-spots-sub { font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 0.25rem; }
+        .aw-price-row { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+        .aw-sale { font-size: 3rem; font-weight: 900; color: #c8a84b; }
+        .aw-regular { font-size: 1.5rem; color: rgba(255,255,255,0.4); text-decoration: line-through; }
+        .aw-save { background: #d4622a; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; font-weight: 700; }
+        .aw-btn { display: block; width: 100%; padding: 1.25rem 2rem; background: linear-gradient(135deg, #d4622a, #b8511f); color: white; font-size: 1.2rem; font-weight: 700; border-radius: 8px; text-align: center; box-shadow: 0 8px 30px rgba(212,98,42,0.4); transition: transform 0.2s; }
+        .aw-btn:hover { transform: translateY(-2px); color: white; }
+        .aw-small { text-align: center; margin-top: 1rem; font-size: 0.85rem; color: rgba(255,255,255,0.5); }
+        .aw-photo { position: relative; }
+        .aw-photo img { width: 100%; border-radius: 16px; box-shadow: 0 30px 80px rgba(0,0,0,0.5); display: block; }
+        .aw-badge { position: absolute; top: -15px; right: -15px; width: 90px; height: 90px; background: #c8a84b; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .aw-badge-num { font-size: 1.5rem; font-weight: 900; color: #1a1a1a; line-height: 1; }
+        .aw-badge-text { font-size: 0.55rem; font-weight: 700; color: #1a1a1a; text-transform: uppercase; text-align: center; }
 
-payments_bp = Blueprint("payments", __name__)
+        /* STORY */
+        .aw-story { background: #f5e6c8; color: #1a1a1a; padding: 5rem 2rem; }
+        .aw-story-inner { max-width: 800px; margin: 0 auto; }
+        .aw-story h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); color: #1a5c6b; margin-bottom: 2rem; }
+        .aw-story p { font-size: 1.15rem; line-height: 1.9; margin-bottom: 1.5rem; color: #333; }
+        .aw-quote { background: #1a5c6b; color: white; padding: 2rem; border-radius: 12px; margin: 2rem 0; font-size: 1.4rem; font-style: italic; line-height: 1.5; }
 
+        /* BENEFITS */
+        .aw-benefits { background: #0d1f25; padding: 5rem 2rem; }
+        .aw-benefits h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); text-align: center; color: #c8a84b; margin-bottom: 3rem; }
+        .aw-grid { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+        .aw-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(200,168,75,0.2); border-radius: 12px; padding: 1.75rem; }
+        .aw-card .icon { font-size: 2rem; margin-bottom: 1rem; }
+        .aw-card h3 { font-size: 1.1rem; color: #c8a84b; margin-bottom: 0.75rem; }
+        .aw-card p { font-size: 0.95rem; color: rgba(255,255,255,0.7); line-height: 1.7; }
 
-# =========================================================
-# CHECKOUT PAGE
-# Shows PayPal button (always) and Stripe button (if enabled)
-# =========================================================
+        /* CTA */
+        .aw-cta { background: linear-gradient(135deg, #1a5c6b, #0a2a35); padding: 5rem 2rem; text-align: center; }
+        .aw-cta h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); color: white; margin-bottom: 1rem; }
+        .aw-cta p { font-size: 1.1rem; color: rgba(255,255,255,0.7); margin-bottom: 2rem; }
+        .aw-cta .aw-counter { max-width: 400px; margin: 0 auto 2rem; }
+        .aw-cta .aw-price-row { justify-content: center; margin-bottom: 1.5rem; }
+        .aw-cta .aw-btn { max-width: 400px; margin: 0 auto; }
 
-@payments_bp.route("/checkout/<product_id>")
-def checkout_page(product_id):
-    product = get_product_by_id(product_id)
-    if not product or not product.get("active", True):
-        abort(404)
-    return render_template(
-        "checkout.html",
-        product=product,
-        paypal_client_id=PAYPAL_CLIENT_ID,
-        stripe_enabled=STRIPE_ENABLED,
-        stripe_publishable_key=STRIPE_PUBLISHABLE_KEY if STRIPE_ENABLED else "",
-        logo_path=LOGO_PATH,
-        logo_height=LOGO_HEIGHT,
-        footer_text=FOOTER_TEXT,
-    )
+        /* FOOTER */
+        .aw-footer { text-align: center; padding: 2rem; color: rgba(255,255,255,0.5); background: #0a2a35; font-size: 0.9rem; }
 
+        @media (max-width: 768px) {
+            .aw-inner { grid-template-columns: 1fr; gap: 2rem; }
+            .aw-photo { order: -1; }
+        }
+    </style>
+</head>
+<body>
 
-# =========================================================
-# PAYPAL HELPERS
-# =========================================================
+<nav class="aw-nav">
+    <a href="/"><img src="/static/images/output-onlinepngtools.png" alt="Ke Aupuni O Ke Akua"></a>
+    <a href="/" class="aw-nav-link">← Back to Site</a>
+</nav>
 
-def _get_paypal_token():
-    """Exchange client ID + secret for a PayPal access token."""
-    credentials = f"{PAYPAL_CLIENT_ID}:{PAYPAL_CLIENT_SECRET}"
-    encoded = base64.b64encode(credentials.encode()).decode()
-    data = urllib.parse.urlencode({"grant_type": "client_credentials"}).encode()
-    req = urllib.request.Request(
-        f"{PAYPAL_BASE_URL}/v1/oauth2/token",
-        data=data,
-        headers={
-            "Authorization": f"Basic {encoded}",
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-    )
-    with urllib.request.urlopen(req) as resp:
-        return json.loads(resp.read().decode())["access_token"]
+<section class="aw-hero">
+    <div class="aw-inner">
+        <div>
+            <p class="aw-eyebrow">🌺 Molokaʻi, Hawaiʻi</p>
+            <h1>54 Pounds Gone.<span>No Diet. No Starving.</span></h1>
+            <p class="aw-subhead">I went from a 42 to a 34 waist. I didn't change <em>what</em> I ate. I changed <em>when</em> — and everything changed.</p>
+            <div class="aw-counter">
+                <div class="aw-counter-label">🔥 Founding Member Offer — First 100 Only</div>
+                <div class="aw-spots" id="spotsLeft">87</div>
+                <div class="aw-spots-sub">spots remaining at half price</div>
+            </div>
+            <div class="aw-price-row">
+                <span class="aw-sale">$23.50</span>
+                <span class="aw-regular">$47</span>
+                <span class="aw-save">SAVE 50%</span>
+            </div>
+            <a href="/checkout/prod_aloha_wellness" class="aw-btn">🌺 Yes — I Want Aloha Wellness Now</a>
+            <p class="aw-small">📱 Instant digital download • Read on any device</p>
+        </div>
+        <div class="aw-photo">
+            <img src="/static/images/Paniolo_Phil_MR.jpg" alt="Kahu Phil Stephens - Paniolo on Molokaʻi">
+            <div class="aw-badge">
+                <span class="aw-badge-num">54</span>
+                <span class="aw-badge-text">lbs lost</span>
+            </div>
+        </div>
+    </div>
+</section>
 
+<section class="aw-story">
+    <div class="aw-story-inner">
+        <h2>The Story Nobody Expected</h2>
+        <p>I'm a 67-year-old Hawaiian pastor and Paniolo. I spent 30 years as a Paniolo on Molokaʻi. I know hard work. I know the land. And I know my body.</p>
+        <p>Within two weeks of one simple change, my weight started dropping. After three months, everybody on Molokaʻi noticed. I went from a size 42 waist to a 34. Not from dieting. Not from starving. From understanding one thing God designed into your body from the very beginning.</p>
+        <div class="aw-quote">
+            "I only ate when I was hungry. That's it. And the weight left."
+            <div style="font-size:0.9rem;margin-top:0.75rem;color:#c8a84b;">— Kahu Phil Stephens</div>
+        </div>
+        <p>This isn't another diet book. It's a Kingdom book. God designed your body with wisdom. Aloha Wellness helps you return to that design — and the results will surprise you.</p>
+    </div>
+</section>
 
-# =========================================================
-# PAYPAL SUCCESS
-# Called after customer approves payment in PayPal popup.
-# =========================================================
+<section class="aw-benefits">
+    <h2>What You'll Discover Inside</h2>
+    <div class="aw-grid">
+        <div class="aw-card"><div class="icon">🍽️</div><h3>Eat When Hungry — Not By the Clock</h3><p>The one principle that changed everything. Your body knows when it needs fuel. Learn to listen.</p></div>
+        <div class="aw-card"><div class="icon">🌿</div><h3>Hawaiian Mana'o (Wisdom)</h3><p>Ancient Hawaiian understanding of nourishment — Aloha 'Āina, Lōkahi, Mālama — applied to how you eat.</p></div>
+        <div class="aw-card"><div class="icon">👑</div><h3>Kingdom Design for Your Body</h3><p>God didn't create your body to be overweight. Discover the design He built in from the beginning.</p></div>
+        <div class="aw-card"><div class="icon">📉</div><h3>The Belly Secret</h3><p>What Kahu discovered after the initial weight loss that took him from a 42 to a 34 waist.</p></div>
+        <div class="aw-card"><div class="icon">🏇</div><h3>A Paniolo's Perspective</h3><p>30 years as a Paniolo on Molokaʻi taught Kahu Phil how animals eat. And how we should too.</p></div>
+        <div class="aw-card"><div class="icon">🙏</div><h3>Spirit, Soul & Body</h3><p>True wellness isn't just physical. Learn how your spiritual life and your physical health are connected.</p></div>
+    </div>
+</section>
 
-@payments_bp.route("/paypal/success")
-def paypal_success():
-    order_id = request.args.get("orderID")
-    product_id = request.args.get("product_id")
+<section class="aw-cta">
+    <h2>This Is Your Moment</h2>
+    <p>First 100 founding members get Aloha Wellness at half price. Forever.</p>
+    <div class="aw-counter">
+        <div class="aw-counter-label">🔥 Spots Remaining at $23.50</div>
+        <div class="aw-spots" id="spotsLeft2">87</div>
+        <div class="aw-spots-sub">of 100 founding member spots</div>
+    </div>
+    <div class="aw-price-row">
+        <span class="aw-sale">$23.50</span>
+        <span class="aw-regular">$47</span>
+        <span class="aw-save">SAVE 50%</span>
+    </div>
+    <a href="/checkout/prod_aloha_wellness" class="aw-btn">🌺 Get Aloha Wellness — $23.50</a>
+    <p class="aw-small" style="margin-top:1rem;">📱 Instant digital download • Read on any device<br>Questions? <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6308020b16130b0a0f230806021613160d0a4d05020a170b">[email&#160;protected]</a></p>
+</section>
 
-    if not order_id or not product_id:
-        abort(400)
+<footer class="aw-footer">
+    <p>© 2025 Ke Aupuni O Ke Akua. All rights reserved. Made with aloha in Hawaiʻi. 🌺</p>
+</footer>
 
-    product = get_product_by_id(product_id)
-    if not product:
-        abort(404)
-
-    # Update sales tracking
-    products_data = load_digital_products()
-    for p in products_data["products"]:
-        if p["id"] == product_id:
-            p["downloads"] = p.get("downloads", 0) + 1
-            p["total_sales"] = p.get("total_sales", 0) + float(product["price"])
-    save_digital_products(products_data)
-
-    download_url = f"/download/product/{product_id}"
-    return render_template(
-        "payment_success.html",
-        product=product,
-        order_id=order_id,
-        download_url=download_url,
-        logo_path=LOGO_PATH,
-        logo_height=LOGO_HEIGHT,
-        footer_text=FOOTER_TEXT,
-    )
-
-
-@payments_bp.route("/paypal/cancel")
-def paypal_cancel():
-    return redirect("/")
-
-
-# =========================================================
-# STRIPE ROUTES
-# These routes exist but only work when STRIPE_ENABLED=True.
-# =========================================================
-
-@payments_bp.route("/stripe/create-session/<product_id>", methods=["POST"])
-def stripe_create_session(product_id):
-    if not STRIPE_ENABLED:
-        abort(404)
-
-    try:
-        import stripe
-        stripe.api_key = STRIPE_SECRET_KEY
-    except ImportError:
-        abort(500, "Stripe library not installed. Run: pip install stripe")
-
-    product = get_product_by_id(product_id)
-    if not product or not product.get("active", True):
-        abort(404)
-
-    price_cents = int(float(product["price"]) * 100)
-
-    session = stripe.checkout.Session.create(
-        payment_method_types=["card"],
-        line_items=[{
-            "price_data": {
-                "currency": "usd",
-                "product_data": {
-                    "name": product["name"],
-                    "images": [product.get("cover_image", "")] if product.get("cover_image") else [],
-                },
-                "unit_amount": price_cents,
-            },
-            "quantity": 1,
-        }],
-        mode="payment",
-        success_url=f"{SITE_DOMAIN}/stripe/success?session_id={{CHECKOUT_SESSION_ID}}&product_id={product_id}",
-        cancel_url=f"{SITE_DOMAIN}/product/{product_id}?cancelled=true",
-        metadata={"product_id": product_id},
-    )
-    return redirect(session.url, code=303)
-
-
-@payments_bp.route("/stripe/success")
-def stripe_success():
-    if not STRIPE_ENABLED:
-        abort(404)
-
-    try:
-        import stripe
-        stripe.api_key = STRIPE_SECRET_KEY
-    except ImportError:
-        abort(500)
-
-    session_id = request.args.get("session_id")
-    product_id = request.args.get("product_id")
-
-    if not session_id or not product_id:
-        abort(400)
-
-    session = stripe.checkout.Session.retrieve(session_id)
-    if session.payment_status != "paid":
-        abort(402)
-
-    product = get_product_by_id(product_id)
-    if not product:
-        abort(404)
-
-    products_data = load_digital_products()
-    for p in products_data["products"]:
-        if p["id"] == product_id:
-            p["downloads"] = p.get("downloads", 0) + 1
-            p["total_sales"] = p.get("total_sales", 0) + float(product["price"])
-    save_digital_products(products_data)
-
-    download_url = f"/download/product/{product_id}"
-    return render_template(
-        "payment_success.html",
-        product=product,
-        order_id=session_id,
-        download_url=download_url,
-        logo_path=LOGO_PATH,
-        logo_height=LOGO_HEIGHT,
-        footer_text=FOOTER_TEXT,
-    )
-
-
-@payments_bp.route("/stripe/webhook", methods=["POST"])
-def stripe_webhook():
-    if not STRIPE_ENABLED:
-        abort(404)
-
-    try:
-        import stripe
-        stripe.api_key = STRIPE_SECRET_KEY
-    except ImportError:
-        abort(500)
-
-    payload = request.get_data()
-    sig_header = request.headers.get("Stripe-Signature")
-
-    try:
-        event = stripe.Webhook.construct_event(payload, sig_header, STRIPE_WEBHOOK_SECRET)
-    except Exception:
-        abort(400)
-
-    if event["type"] == "checkout.session.completed":
-        session = event["data"]["object"]
-        product_id = session.get("metadata", {}).get("product_id")
-        if product_id:
-            product = get_product_by_id(product_id)
-            if product:
-                products_data = load_digital_pr
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+let spots = 87;
+function updateCounter() {
+    document.getElementById('spotsLeft').textContent = spots;
+    document.getElementById('spotsLeft2'
