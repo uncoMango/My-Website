@@ -19,7 +19,7 @@
     "kingdom_wealth": {
       "title": "Kingdom Wealth",
       "hero_image": "/static/images/scottsdale-mint-ATq9BSFebRE-unsplash.jpg",
-      "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom operates on stewardship, not ownership.\r\n\r\n### Core Principles\r\n\r\n**Source vs. Resource** - God is your Source.\r\n\r\n**[FREE Kingdom Keys \u2192](/kingdom_keys)**\r\n\r\n**[FREE Kingdom Booklets \u2192](/free_booklets)**\r\n\r\n**[Complete Kingdom Series \u2192](/call_to_repentance)**\r\n\r\n**[Myron Golden Training \u2192](/myron-golden)**",
+      "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom operates on stewardship, not ownership.\r\n\r\n### Core Principles\r\n\r\n**Source vs. Resource** - God is your Source.\r\n\r\n**[FREE Kingdom Keys →](/kingdom_keys)**\r\n\r\n**[FREE Kingdom Booklets →](/free_booklets)**\r\n\r\n**[Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n**[Myron Golden Training →](/myron-golden)**",
       "product_url": ""
     },
     "call_to_repentance": {
@@ -32,7 +32,7 @@
     "pastor_planners": {
       "title": "Pastor Planners - Tools for Ministry Excellence",
       "hero_image": "https://i.imgur.com/tWnn5UY.png",
-      "body_md": "## Organize Your Ministry with Purpose and Prayer\r\n\r\nEffective ministry requires both spiritual sensitivity and practical organization. Our Pastor Planners combine beautiful design with functional tools to help you lead with excellence and peace.\r\n\r\n### Features of Our Ministry Planning System\r\n\r\n**Sermon Planning Sections** - Map out your preaching calendar with space for themes, scriptures, and prayer requests.\r\n\r\n**Prayer and Pastoral Care** - Dedicated sections for tracking prayer requests, hospital visits, counseling sessions, and follow-up care.\r\n\r\n**Meeting and Event Coordination** - Organize board meetings, committee sessions, special events, and outreach activities.\r\n\r\n**Personal Spiritual Disciplines** - Maintain your own spiritual health with guided sections for daily devotions and sabbath planning.\r\n\r\n### Available in Multiple Pacific Islander Languages\r\n\r\n**Ke Kauoha La Haku (Hawaiian Edition 2026)**\r\n\ud83d\udcd6 [Get on Amazon](https://a.co/d/gatnNET) | \ud83d\udcb3 [Get on Gumroad](https://uncomango.gumroad.com/l/ulrmu)\r\n\r\n**Tusi Fuataiaga a le Faifeau (Samoan Enhanced Edition 2026)**\r\n\ud83d\udcd6 [Get on Amazon](https://a.co/d/gs0WRPh) | \ud83d\udcb3 [Get on Gumroad](https://uncomango.gumroad.com/l/ubzevn)\r\n\r\nOrder your Pastor Planner today and experience the peace that comes from organized, prayer-centered ministry leadership."
+      "body_md": "## Organize Your Ministry with Purpose and Prayer\r\n\r\nEffective ministry requires both spiritual sensitivity and practical organization. Our Pastor Planners combine beautiful design with functional tools to help you lead with excellence and peace.\r\n\r\n### Features of Our Ministry Planning System\r\n\r\n**Sermon Planning Sections** - Map out your preaching calendar with space for themes, scriptures, and prayer requests.\r\n\r\n**Prayer and Pastoral Care** - Dedicated sections for tracking prayer requests, hospital visits, counseling sessions, and follow-up care.\r\n\r\n**Meeting and Event Coordination** - Organize board meetings, committee sessions, special events, and outreach activities.\r\n\r\n**Personal Spiritual Disciplines** - Maintain your own spiritual health with guided sections for daily devotions and sabbath planning.\r\n\r\n### Available in Multiple Pacific Islander Languages\r\n\r\n**Ke Kauoha La Haku (Hawaiian Edition 2026)**\r\n📖 [Get on Amazon](https://a.co/d/gatnNET) | 💳 [Get on Gumroad](https://uncomango.gumroad.com/l/ulrmu)\r\n\r\n**Tusi Fuataiaga a le Faifeau (Samoan Enhanced Edition 2026)**\r\n📖 [Get on Amazon](https://a.co/d/gs0WRPh) | 💳 [Get on Gumroad](https://uncomango.gumroad.com/l/ubzevn)\r\n\r\nOrder your Pastor Planner today and experience the peace that comes from organized, prayer-centered ministry leadership."
     },
     "nahenahe_voice": {
       "title": "The Nahenahe Voice of Nahono'opi'ilani - Musical Legacy",
@@ -44,33 +44,75 @@
         "/static/covers/cover3.jpg"
       ],
       "product_links": [
-        {"name": "Amazon Music", "url": "https://music.amazon.com/search/nahenahe%20voice", "icon": "\ud83d\udecd"},
-        {"name": "Apple Music", "url": "https://music.apple.com/us/search?term=nahenahe%20voice", "icon": "\ud83c\udf4e"},
-        {"name": "Spotify", "url": "https://open.spotify.com/search/nahenahe%20voice", "icon": "\ud83c\udfa7"}
+        {
+          "name": "Amazon Music",
+          "url": "https://music.amazon.com/search/nahenahe%20voice",
+          "icon": "🛍"
+        },
+        {
+          "name": "Apple Music",
+          "url": "https://music.apple.com/us/search?term=nahenahe%20voice",
+          "icon": "🍎"
+        },
+        {
+          "name": "Spotify",
+          "url": "https://open.spotify.com/search/nahenahe%20voice",
+          "icon": "🎧"
+        }
       ]
     },
     "free_booklets": {
       "title": "FREE Booklets",
       "hero_image": "https://i.imgur.com/wmHEyDo.png",
-      "body_md": "## \ud83c\udf81 FREE Kingdom Booklets\r\n\r\nDownload all 6:",
+      "body_md": "## 🎁 FREE Kingdom Booklets\r\n\r\nDownload all 6:",
       "products": [
-        {"title": "Kingdom Wealth Principles", "download": "/download/booklet1"},
-        {"title": "Kingdom Wealth for Couples", "download": "/download/booklet2"},
-        {"title": "Kingdom Wellness Principles", "download": "/download/booklet3"},
-        {"title": "Kingdom Wellness for Couples", "download": "/download/booklet4"},
-        {"title": "Kingdom Living Principles", "download": "/download/booklet5"},
-        {"title": "Kingdom Living for Couples", "download": "/download/booklet6"}
+        {
+          "title": "Kingdom Wealth Principles",
+          "download": "/download/booklet1"
+        },
+        {
+          "title": "Kingdom Wealth for Couples",
+          "download": "/download/booklet2"
+        },
+        {
+          "title": "Kingdom Wellness Principles",
+          "download": "/download/booklet3"
+        },
+        {
+          "title": "Kingdom Wellness for Couples",
+          "download": "/download/booklet4"
+        },
+        {
+          "title": "Kingdom Living Principles",
+          "download": "/download/booklet5"
+        },
+        {
+          "title": "Kingdom Living for Couples",
+          "download": "/download/booklet6"
+        }
       ]
     },
     "kingdom_keys": {
       "title": "FREE Kingdom Keys Booklets",
       "hero_image": "https://i.imgur.com/wmHEyDo.png",
-      "body_md": "## \ud83c\udf3a FREE Kingdom Keys \ud83c\udf3a\r\n\r\nAfter 30 years of biblical study.\r\n\r\n**[Browse Complete Kingdom Series \u2192](/call_to_repentance)**",
+      "body_md": "## 🌺 FREE Kingdom Keys 🌺\r\n\r\nAfter 30 years of biblical study.\r\n\r\n**[Browse Complete Kingdom Series →](/call_to_repentance)**",
       "products": [
-        {"title": "7 Scriptures Kingdom Inside You", "download": "/download/pamphlet1"},
-        {"title": "Kingdom Healing in 10 Minutes", "download": "/download/pamphlet2"},
-        {"title": "5 Kingdom Prayers", "download": "/download/pamphlet3"},
-        {"title": "Kingdom Wealth Verses", "download": "/download/pamphlet4"}
+        {
+          "title": "7 Scriptures Kingdom Inside You",
+          "download": "/download/pamphlet1"
+        },
+        {
+          "title": "Kingdom Healing in 10 Minutes",
+          "download": "/download/pamphlet2"
+        },
+        {
+          "title": "5 Kingdom Prayers",
+          "download": "/download/pamphlet3"
+        },
+        {
+          "title": "Kingdom Wealth Verses",
+          "download": "/download/pamphlet4"
+        }
       ]
     }
   }
