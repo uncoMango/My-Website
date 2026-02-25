@@ -1,16 +1,8 @@
 # blueprints/downloads.py
-# =========================================================
-# All free PDF download routes.
-# Add new pamphlets or booklets here by following the
-# existing pattern - just add a new route and filename.
-# =========================================================
-
 from flask import Blueprint, send_file, abort
 from config import BASE
 
 downloads_bp = Blueprint("downloads", __name__)
-
-# ----- PAMPHLETS (Kingdom Keys) -----
 
 @downloads_bp.route("/download/pamphlet1")
 def pamphlet1():
@@ -27,8 +19,6 @@ def pamphlet3():
 @downloads_bp.route("/download/pamphlet4")
 def pamphlet4():
     return _send(BASE / "Kingdom_Keys_4_Kingdom_Wealth.pdf")
-
-# ----- BOOKLETS (Free Booklets) -----
 
 @downloads_bp.route("/download/booklet1")
 def booklet1():
@@ -54,7 +44,9 @@ def booklet5():
 def booklet6():
     return _send(BASE / "Free_Booklet_6_Kingdom_Living_Couples.pdf")
 
-# ----- STATIC COVERS -----
+@downloads_bp.route("/download/aloha_wellness_freebie")
+def aloha_wellness_freebie():
+    return _send(BASE / "static" / "aloha_wellness_freebie_short.pdf")
 
 @downloads_bp.route("/static/covers/<filename>")
 def serve_cover(filename):
@@ -63,11 +55,7 @@ def serve_cover(filename):
         return send_file(cover_path, mimetype="image/jpeg")
     abort(404)
 
-
-# ----- HELPER -----
-
 def _send(path):
-    """Send a file as a download, 404 if it doesn't exist."""
     if not path.exists():
         abort(404)
     return send_file(path, mimetype="application/pdf", as_attachment=True)
