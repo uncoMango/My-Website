@@ -44,7 +44,7 @@ def myron_golden_page():
         footer_text=FOOTER_TEXT,
     )
 
-@pages_bp.route("/aloha-wellness-funnel")
+@pages_bp.route("/aloha-wellness")
 def aloha_wellness_funnel():
     return render_template("aloha_wellness_funnel.html")
 
