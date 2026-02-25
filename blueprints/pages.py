@@ -44,7 +44,7 @@ def myron_golden_page():
         footer_text=FOOTER_TEXT,
     )
 
-@pages_bp.route("/aloha-wellness-funnel")
+@pages_bp.route("/aloha-wellness-funnel", strict_slashes=False)
 def aloha_wellness_funnel():
     data = load_content()
     nav_items = get_nav_items(data)
