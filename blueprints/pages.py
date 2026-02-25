@@ -10,6 +10,21 @@ pages_bp = Blueprint("pages", __name__)
 def md_to_html(md_text):
     return markdown.markdown(md_text or "", extensions=["extra", "nl2br"])
 
+from flask import render_template, send_from_directory
+
+# 1. THE LANDING PAGE
+@pages_bp.route("/aloha-wellness-funnel")
+def aloha_wellness_funnel():
+    # We use render_template directly here because your HTML 
+    # already has its own <head>, <style>, and <body> tags.
+    return render_template("aloha_wellness_funnel.html")
+
+# 2. THE FREEBIE DOWNLOAD
+@pages_bp.route("/download/aloha_wellness_freebie")
+def download_aloha_wellness_freebie():
+    # This delivers the PDF from your static folder
+    return send_from_directory('static', 'aloha_wellness_freebie_short.pdf', as_attachment=True)
+
 def render_page(page_id, data):
     pages = data.get("pages", {})
     if page_id not in pages:
