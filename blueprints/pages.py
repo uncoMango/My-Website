@@ -44,21 +44,16 @@ def myron_golden_page():
         footer_text=FOOTER_TEXT,
     )
 
-# 1. THE LANDING PAGE (Only one definition here)
+# 1. THE LANDING PAGE (Clean & Standalone)
 @pages_bp.route("/aloha-wellness-funnel")
 def aloha_wellness_funnel():
-    data = load_content()
-    return render_template(
-        "aloha_wellness_funnel.html",
-        nav_items=get_nav_items(data),
-        logo_path=LOGO_PATH,
-        logo_height=LOGO_HEIGHT,
-        footer_text=FOOTER_TEXT
-    )
+    # We render the template DIRECTLY. No data, no nav_items.
+    return render_template("aloha_wellness_funnel.html")
 
-# 2. THE FREEBIE DOWNLOAD
+# 2. THE FREEBIE DOWNLOAD (Points to your static folder)
 @pages_bp.route("/download/aloha_wellness_freebie")
 def download_aloha_wellness_freebie():
+    # This pulls 'aloha_wellness_freebie_short.pdf' from your /static folder
     return send_from_directory('static', 'aloha_wellness_freebie_short.pdf', as_attachment=True)
 
 @pages_bp.route("/sitemap.xml")
