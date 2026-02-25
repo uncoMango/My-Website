@@ -1,7 +1,7 @@
-# blueprints/pages.py
+
 import markdown
 from datetime import datetime
-from flask import Blueprint, abort, render_template, Response
+from flask import Blueprint, abort, render_template, Response, send_from_directory
 from content import load_content, get_nav_items
 from config import LOGO_PATH, LOGO_HEIGHT, FOOTER_TEXT
 
@@ -9,21 +9,6 @@ pages_bp = Blueprint("pages", __name__)
 
 def md_to_html(md_text):
     return markdown.markdown(md_text or "", extensions=["extra", "nl2br"])
-
-from flask import render_template, send_from_directory
-
-# 1. THE LANDING PAGE
-@pages_bp.route("/aloha-wellness-funnel")
-def aloha_wellness_funnel():
-    # We use render_template directly here because your HTML 
-    # already has its own <head>, <style>, and <body> tags.
-    return render_template("aloha_wellness_funnel.html")
-
-# 2. THE FREEBIE DOWNLOAD
-@pages_bp.route("/download/aloha_wellness_freebie")
-def download_aloha_wellness_freebie():
-    # This delivers the PDF from your static folder
-    return send_from_directory('static', 'aloha_wellness_freebie_short.pdf', as_attachment=True)
 
 def render_page(page_id, data):
     pages = data.get("pages", {})
@@ -59,11 +44,10 @@ def myron_golden_page():
         footer_text=FOOTER_TEXT,
     )
 
+# 1. THE LANDING PAGE (Only one definition here)
 @pages_bp.route("/aloha-wellness-funnel")
 def aloha_wellness_funnel():
     data = load_content()
-    # We use render_template instead of render_page if you want a custom layout,
-    # but we MUST pass the shared variables (nav, logo, footer).
     return render_template(
         "aloha_wellness_funnel.html",
         nav_items=get_nav_items(data),
@@ -72,20 +56,24 @@ def aloha_wellness_funnel():
         footer_text=FOOTER_TEXT
     )
 
+# 2. THE FREEBIE DOWNLOAD
+@pages_bp.route("/download/aloha_wellness_freebie")
+def download_aloha_wellness_freebie():
+    return send_from_directory('static', 'aloha_wellness_freebie_short.pdf', as_attachment=True)
+
 @pages_bp.route("/sitemap.xml")
 def sitemap():
     pages = [
-        ("/",                       "1.0", "weekly"),
-        ("/kingdom_wealth",         "0.9", "weekly"),
-        ("/free_booklets",          "0.9", "weekly"),
-        ("/kingdom_keys",           "0.9", "weekly"),
-        ("/call_to_repentance",     "0.9", "weekly"),
-        ("/aloha-wellness-funnel",  "0.9", "weekly"),
-        ("/pastor_planners",        "0.8", "monthly"),
-        ("/nahenahe_voice",         "0.8", "monthly"),
-        ("/aloha-wellness-funnel",  "0.9", "weekly"),
-        ("/aloha-wellness-buy",     "0.7", "monthly"),
-        ("/myron-golden",           "0.8", "weekly"),
+        ("/",                        "1.0", "weekly"),
+        ("/kingdom_wealth",          "0.9", "weekly"),
+        ("/free_booklets",           "0.9", "weekly"),
+        ("/kingdom_keys",            "0.9", "weekly"),
+        ("/call_to_repentance",      "0.8", "weekly"),
+        ("/aloha-wellness-funnel",   "0.9", "weekly"),
+        ("/pastor_planners",         "0.8", "monthly"),
+        ("/nahenahe_voice",          "0.8", "monthly"),
+        ("/aloha-wellness-buy",      "0.7", "monthly"),
+        ("/myron-golden",            "0.8", "weekly"),
     ]
     base_url = "https://keaupuniakeakua.faith"
     today = datetime.now().strftime("%Y-%m-%d")
