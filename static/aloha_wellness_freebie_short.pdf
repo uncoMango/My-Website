@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aloha Wellness — The Hawaiian Secret to Losing Weight Without Dieting</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #2d6a4f;
+            --gold: #d4a017;
+            --cream: #fdf8f0;
+            --dark: #1a1a1a;
+            --red: #c0392b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background: var(--cream);
+            color: var(--dark);
+            line-height: 1.7;
+        }
+
+        /* ── TOP BAR ── */
+        .top-bar {
+            background: var(--red);
+            color: white;
+            text-align: center;
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            background: linear-gradient(160deg, #0a3d23 0%, #1b5e3b 50%, #0a3d23 100%);
+            padding: 60px 20px 70px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .hero-tag {
+            display: inline-block;
+            background: rgba(212,160,23,0.2);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.4rem);
+            color: white;
+            line-height: 1.2;
+            max-width: 780px;
+            margin: 0 auto 20px;
+        }
+
+        .hero h1 em { color: var(--gold); font-style: italic; }
+
+        .hero-sub {
+            font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+            color: rgba(255,255,255,0.85);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            font-weight: 300;
+        }
+
+        .hero-sub strong { color: white; font-weight: 700; }
+
+        /* ── FREE BOOKLET SECTION ── */
+        .freebie-section {
+            background: white;
+            padding: 60px 24px;
+            border-bottom: 3px solid var(--gold);
+        }
+
+        .freebie-inner {
+            max-width: 560px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .freebie-badge {
+            display: inline-block;
+            background: var(--gold);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 5px 16px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        .freebie-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 3.5vw, 2rem);
+            color: var(--dark);
+            line-height: 1.3;
+            margin-bottom: 12px;
+        }
+
+        .freebie-section .sub {
+            font-size: 1.05rem;
+            color: #555;
+            margin-bottom: 24px;
+        }
+
+        .freebie-promises {
+            list-style: none;
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto 28px;
+        }
+
+        .freebie-promises li {
+            font-size: 0.95rem;
+            color: #444;
+            padding: 6px 0 6px 28px;
+            position: relative;
+        }
+
+        .freebie-promises li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        .freebie-btn {
+            display: inline-block;
+            padding: 18px 40px;
+            background: linear-gradient(135deg, var(--green), #1b5e3b);
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 10px;
+            letter-spacing: 0.02em;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .freebie-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(45,106,79,0.35);
+        }
+
+        .freebie-note {
+            margin-top: 14px;
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        /* ── SECTION BRIDGE ── */
+        .bridge-line {
+            text-align: center;
+            padding: 32px 24px 16px;
+            font-size: 0.95rem;
+            color: #888;
+            letter-spacing: 0.04em;
+        }
+
+        /* ── STORY SECTION ── */
+        .story {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        .story p {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .story .intro-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--green);
+            margin-bottom: 28px;
+        }
+
+        .story blockquote {
+            border-left: 4px solid var(--gold);
+            padding: 16px 24px;
+            margin: 30px 0;
+            background: rgba(212,160,23,0.07);
+            border-radius: 0 8px 8px 0;
+            font-size: 1.15rem;
+            font-style: italic;
+            color: #444;
+        }
+
+        /* ── RESULT BOX ── */
+        .result-box {
+            background: var(--green);
+            color: white;
+            text-align: center;
+            padding: 40px 24px;
+        }
+
+        .result-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            max-width: 600px;
+            margin: 0 auto 20px;
+        }
+
+        .result-stat { text-align: center; }
+
+        .result-stat .num {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--gold);
+            display: block;
+            line-height: 1;
+        }
+
+        .result-stat .label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-top: 4px;
+        }
+
+        .result-box p {
+            font-size: 1.05rem;
+            color: rgba(255,255,255,0.9);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* ── WHAT IF ── */
+        .what-if {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 60px 24px;
+            text-align: center;
+        }
+
+        .what-if h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.7rem, 4vw, 2.4rem);
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+
+        .what-if p { font-size: 1.1rem; color: #444; margin-bottom: 16px; }
+
+        /* ── OFFER BOX ── */
+        .offer-section { background: var(--dark); padding: 60px 24px; }
+
+        .offer-box {
+            max-width: 560px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        .offer-header {
+            background: var(--green);
+            padding: 28px 32px;
+            text-align: center;
+        }
+
+        .offer-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 6px;
+        }
+
+        .offer-header p { color: rgba(255,255,255,0.8); font-size: 0.95rem; }
+
+        .offer-body { padding: 32px; text-align: center; }
+
+        .price-row { margin-bottom: 20px; }
+
+        .price-original { font-size: 1.1rem; color: #999; text-decoration: line-through; }
+
+        .price-new {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: var(--green);
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .price-save {
+            display: inline-block;
+            background: var(--red);
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        .spots-bar {
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 14px 20px;
+            margin-bottom: 24px;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        .spots-bar strong { color: var(--red); }
+
+        .cta-btn {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #2d6a4f, #1b5e3b);
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 10px;
+            text-align: center;
+            letter-spacing: 0.02em;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 12px;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(45,106,79,0.4);
+        }
+
+        .cta-btn.secondary {
+            background: #f0f0f0;
+            color: var(--dark);
+            font-size: 1rem;
+            padding: 16px;
+        }
+
+        .guarantee { margin-top: 20px; font-size: 0.85rem; color: #888; }
+
+        /* ── WHAT'S INSIDE ── */
+        .inside { max-width: 720px; margin: 0 auto; padding: 60px 24px; }
+
+        .inside h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            text-align: center;
+            margin-bottom: 36px;
+            color: var(--dark);
+        }
+
+        .inside-list { list-style: none; }
+
+        .inside-list li {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+            color: #333;
+        }
+
+        .inside-list li::before { content: '🌿'; flex-shrink: 0; margin-top: 2px; }
+
+        /* ── AUTHOR ── */
+        .author { background: #f7f3ec; padding: 60px 24px; text-align: center; }
+
+        .author-inner { max-width: 620px; margin: 0 auto; }
+
+        .author h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 16px; }
+
+        .author p { font-size: 1.05rem; color: #444; margin-bottom: 14px; }
+
+        /* ── FINAL CTA ── */
+        .final-cta {
+            background: linear-gradient(160deg, #0a3d23, #1b5e3b);
+            padding: 70px 24px;
+            text-align: center;
+        }
+
+        .final-cta h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .final-cta p {
+            color: rgba(255,255,255,0.85);
+            font-size: 1.1rem;
+            max-width: 560px;
+            margin: 0 auto 36px;
+        }
+
+        .final-cta .cta-btn { max-width: 480px; margin: 0 auto 12px; font-size: 1.25rem; padding: 22px; }
+
+        .final-spots { color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 16px; }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--dark);
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            padding: 24px;
+            font-size: 0.85rem;
+        }
+
+        /* ── GOLD DIVIDER ── */
+        .divider {
+            text-align: center;
+            padding: 10px 0;
+            font-size: 1.5rem;
+            letter-spacing: 0.3em;
+            color: var(--gold);
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 480px) {
+            .result-grid { gap: 24px; }
+            .result-stat .num { font-size: 2.4rem; }
+            .offer-body { padding: 24px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOP URGENCY BAR -->
+<div class="top-bar">
+    🔥 Founding Member Price — First 100 Copies Only &nbsp;|&nbsp; <span id="spots-top">87</span> spots remaining at $23.50
+</div>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-tag">🌺 From Molokaʻi, Hawaiʻi</div>
+    <h1>Are You Tired of Trying Everything…<br>and Still Can't <em>Lose the Weight?</em></h1>
+    <p class="hero-sub">What if the problem was never <strong>what</strong> you're eating — but <strong>when?</strong></p>
+</section>
+
+<!-- FREE BOOKLET -->
+<section class="freebie-section">
+    <div class="freebie-inner">
+        <div class="freebie-badge">🌺 Free Gift — No Signup Required</div>
+        <h2>Before You Buy Anything —<br>Get the Free Guide First</h2>
+        <p class="sub">Download <em>Why Every Diet You've Tried Has Failed You</em> — a free guide from Kahu Phil that gives you the first piece of the Aloha Wellness method right now.</p>
+        <ul class="freebie-promises">
+            <li>The real reason diets don't work — and never will</li>
+            <li>3 things you can change today at no cost</li>
+            <li>The "healthy" habit that is quietly working against you</li>
+            <li>The Paniolo and Kingdom principles behind the method</li>
+        </ul>
+        <a href="/download/aloha_wellness_freebie" class="freebie-btn">
+            🌿 Download the Free Guide Now
+        </a>
+        <p class="freebie-note">Instant PDF download — no signup, no email required 🌺</p>
+    </div>
+</section>
+
+<p class="bridge-line">── Already read it? Keep scrolling for the full book ──</p>
+
+<!-- STORY -->
+<section class="story">
+    <p class="intro-name">Aloha. I'm Kahu Phil Stephens — a 67-year-old pastor and Paniolo from Molokaʻi.</p>
+
+    <p>I know what it feels like to be stuck. To try every diet, every plan, every "system" — and still look in the mirror and see the same frustration staring back.</p>
+
+    <p>At my worst, I was carrying 54 extra pounds and wearing a size 42 waist. I was tired. Embarrassed. Done with the cycle of trying and failing.</p>
+
+    <blockquote>"What finally worked came from the most unexpected place — 30 years riding the ranches of Hawaiʻi and a deep study of what Jesus actually taught about the Kingdom of God. When those two worlds collided… the weight just left."</blockquote>
+
+    <p>It wasn't a diet. It wasn't a program. It was a revelation — one rooted in Kingdom principles I'd been studying in the original Greek and Hebrew for three decades, confirmed by a life lived on horseback across the ranches of Molokaʻi, Maui, the Big Island, and Colorado.</p>
+
+    <p>I didn't count a single calorie. I didn't step foot in a gym. I didn't starve. I simply applied what I discovered — and 54 pounds left my body naturally. My waist went from 42 to 34. My energy came back. My knees stopped aching.</p>
+
+    <p>And I've kept it off — because this isn't a diet. It's a Kingdom principle that works with the body God designed.</p>
+
+    <p>I wrote it all down in <strong><em>Aloha Wellness</em></strong> — so you can experience the same thing.</p>
+</section>
+
+<!-- RESULT STATS -->
+<section class="result-box">
+    <div class="result-grid">
+        <div class="result-stat">
+            <span class="num">54</span>
+            <span class="label">Pounds Released</span>
+        </div>
+        <div class="result-stat">
+            <span class="num">42→34</span>
+            <span class="label">Waist Size</span>
+        </div>
+        <div class="result-stat">
+            <span class="num">0</span>
+            <span class="label">Diets, Starving, or Gyms</span>
+        </div>
+    </div>
+    <p>No pills. No meal plans. No willpower battles. Just one simple shift in <em>when</em> you eat — and your body does the rest.</p>
+</section>
+
+<div class="divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+<!-- WHAT IF -->
+<section class="what-if">
+    <h2>What If You Could Stop Fighting Your Body — And Start Working With It?</h2>
+    <p>The diet industry wants you to believe weight loss is complicated. It isn't. Your body already knows how to be healthy. It just needs you to stop overriding its signals.</p>
+    <p>The ancient Hawaiian way of eating wasn't about restriction — it was about <em>pono</em>. Rightness. Balance. Eating in harmony with your body's natural rhythm.</p>
+    <p>That's what Aloha Wellness teaches. And it works whether you live in Hawaiʻi or anywhere on earth.</p>
+</section>
+
+<!-- MAIN OFFER BOX -->
+<section class="offer-section">
+    <div class="offer-box">
+        <div class="offer-header">
+            <h2>🌺 Aloha Wellness</h2>
+            <p>The Hawaiian Guide to Natural Weight Loss — No Dieting Required</p>
+        </div>
+        <div class="offer-body">
+            <div class="price-row">
+                <div class="price-original">Regular price $47</div>
+                <div class="price-new">$23.50</div>
+                <div><span class="price-save">YOU SAVE 50%</span></div>
+            </div>
+            <div class="spots-bar">
+                🔥 <strong>Founding Member Offer:</strong> <span id="spots-mid">87</span> of 100 spots remaining at this price
+            </div>
+            <a href="/checkout/prod_aloha_wellness" class="cta-btn">
+                🌺 Yes — Show Me How &nbsp;→&nbsp; Get Aloha Wellness for $23.50
+            </a>
+            <a href="/checkout/prod_aloha_wellness" class="cta-btn secondary">
+                💳 Pay with Card or PayPal
+            </a>
+            <p class="guarantee">🔒 Secure checkout &nbsp;|&nbsp; Instant digital delivery &nbsp;|&nbsp; Made with Aloha in Molokaʻi</p>
+        </div>
+    </div>
+</section>
+
+<!-- WHAT'S INSIDE -->
+<section class="inside">
+    <h2>What You'll Discover Inside Aloha Wellness</h2>
+    <ul class="inside-list">
+        <li>The one shift in <em>when</em> you eat that made Kahu Phil lose 54 pounds — without changing a single food</li>
+        <li>How to hear your body's true hunger signals again (most of us have forgotten how)</li>
+        <li>The Hawaiian concept of <em>pono</em> — and why it's the missing key in every weight loss plan</li>
+        <li>Why dieting actually makes your body hold onto weight — and what to do instead</li>
+        <li>Simple daily practices rooted in Hawaiian wisdom that bring your body back into balance</li>
+        <li>How a 67-year-old Paniolo from Molokaʻi went from a 42 to a 34 waist — and has kept it off</li>
+    </ul>
+</section>
+
+<!-- AUTHOR -->
+<section class="author">
+    <div class="author-inner">
+        <h2>About Kahu Phil</h2>
+        <p>Kahu Phil Stephens is a pastor, author, and Paniolo (Hawaiian cowboy) who has spent 30 years riding the ranches of Molokaʻi, Maui, the Big Island, and Colorado. He serves a community of 7,000 on Molokaʻi — many living below the poverty line — and has spent decades studying Scripture in original Greek and Hebrew.</p>
+        <p>His wellness journey was born from necessity and rooted in his Hawaiian heritage. At 67, he is living proof that the body knows how to heal — when we stop getting in the way.</p>
+        <p><em>"I don't teach theory. I teach what worked for me, grounded in the wisdom of my kūpuna and the Word of God."</em></p>
+    </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+    <h2>Your Body Already Knows the Way.<br>Let Aloha Wellness Show You How to Listen.</h2>
+    <p>Stop fighting. Stop starving. Stop the cycle. For less than the price of two meals, you can have the simple, proven Hawaiian approach that helped Kahu Phil release 54 pounds — naturally and permanently.</p>
+    <a href="/checkout/prod_aloha_wellness" class="cta-btn">
+        🌺 Get Aloha Wellness Now — $23.50
+    </a>
+    <p class="final-spots">⚠️ Founding Member price ends when the first 100 copies are claimed.<br><span id="spots-bottom">87</span> spots remaining.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>© 2026 Ke Aupuni O Ke Akua Press &nbsp;|&nbsp; Pastor Phil Stephens, Molokaʻi, Hawaiʻi &nbsp;|&nbsp; Made with Aloha 🌺</p>
+    <p style="margin-top:8px;">Questions? Contact us through <a href="/" style="color:rgba(255,255,255,0.6);">keaupuniakeakua.faith</a></p>
+</footer>
+
+</body>
+</html>
