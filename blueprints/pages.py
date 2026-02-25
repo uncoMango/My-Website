@@ -1,7 +1,7 @@
-
+# blueprints/pages.py
 import markdown
 from datetime import datetime
-from flask import Blueprint, abort, render_template, Response, send_from_directory
+from flask import Blueprint, abort, render_template, Response
 from content import load_content, get_nav_items
 from config import LOGO_PATH, LOGO_HEIGHT, FOOTER_TEXT
 
@@ -44,31 +44,24 @@ def myron_golden_page():
         footer_text=FOOTER_TEXT,
     )
 
-# 1. THE LANDING PAGE (Clean & Standalone)
 @pages_bp.route("/aloha-wellness-funnel")
 def aloha_wellness_funnel():
-    # We render the template DIRECTLY. No data, no nav_items.
     return render_template("aloha_wellness_funnel.html")
-
-# 2. THE FREEBIE DOWNLOAD (Points to your static folder)
-@pages_bp.route("/download/aloha_wellness_freebie")
-def download_aloha_wellness_freebie():
-    # This pulls 'aloha_wellness_freebie_short.pdf' from your /static folder
-    return send_from_directory('static', 'aloha_wellness_freebie_short.pdf', as_attachment=True)
 
 @pages_bp.route("/sitemap.xml")
 def sitemap():
     pages = [
-        ("/",                        "1.0", "weekly"),
-        ("/kingdom_wealth",          "0.9", "weekly"),
-        ("/free_booklets",           "0.9", "weekly"),
-        ("/kingdom_keys",            "0.9", "weekly"),
-        ("/call_to_repentance",      "0.8", "weekly"),
-        ("/aloha-wellness-funnel",   "0.9", "weekly"),
-        ("/pastor_planners",         "0.8", "monthly"),
-        ("/nahenahe_voice",          "0.8", "monthly"),
-        ("/aloha-wellness-buy",      "0.7", "monthly"),
-        ("/myron-golden",            "0.8", "weekly"),
+        ("/",                       "1.0", "weekly"),
+        ("/kingdom_wealth",         "0.9", "weekly"),
+        ("/free_booklets",          "0.9", "weekly"),
+        ("/kingdom_keys",           "0.9", "weekly"),
+        ("/call_to_repentance",     "0.9", "weekly"),
+        ("/aloha_wellness",         "0.9", "weekly"),
+        ("/pastor_planners",        "0.8", "monthly"),
+        ("/nahenahe_voice",         "0.8", "monthly"),
+        ("/aloha-wellness-funnel",  "0.9", "weekly"),
+        ("/aloha-wellness-buy",     "0.7", "monthly"),
+        ("/myron-golden",           "0.8", "weekly"),
     ]
     base_url = "https://keaupuniakeakua.faith"
     today = datetime.now().strftime("%Y-%m-%d")
