@@ -46,7 +46,16 @@ def myron_golden_page():
 
 @pages_bp.route("/aloha-wellness-funnel")
 def aloha_wellness_funnel():
-    return render_template("aloha_wellness_funnel.html")
+    data = load_content()
+    # We use render_template instead of render_page if you want a custom layout,
+    # but we MUST pass the shared variables (nav, logo, footer).
+    return render_template(
+        "aloha_wellness_funnel.html",
+        nav_items=get_nav_items(data),
+        logo_path=LOGO_PATH,
+        logo_height=LOGO_HEIGHT,
+        footer_text=FOOTER_TEXT
+    )
 
 @pages_bp.route("/sitemap.xml")
 def sitemap():
@@ -56,7 +65,7 @@ def sitemap():
         ("/free_booklets",          "0.9", "weekly"),
         ("/kingdom_keys",           "0.9", "weekly"),
         ("/call_to_repentance",     "0.9", "weekly"),
-        ("/aloha_wellness",         "0.9", "weekly"),
+        ("/aloha-wellness-funnel",  "0.9", "weekly"),
         ("/pastor_planners",        "0.8", "monthly"),
         ("/nahenahe_voice",         "0.8", "monthly"),
         ("/aloha-wellness-funnel",  "0.9", "weekly"),
