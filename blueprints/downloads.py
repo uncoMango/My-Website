@@ -46,7 +46,7 @@ def booklet6():
 
 @downloads_bp.route("/download/aloha_wellness_freebie")
 def aloha_wellness_freebie():
-    return _send(BASE / "static" / "aloha_wellness_freebie_short.pdf")
+    return _send(BASE / "static" / "Aloha_Wellness_Free_Guide.pdf")
 
 @downloads_bp.route("/static/covers/<filename>")
 def serve_cover(filename):
