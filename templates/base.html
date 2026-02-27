@@ -38,7 +38,7 @@
                 <a href="#" class="dropdown-toggle" onclick="event.preventDefault();this.parentElement.classList.toggle('open');">More ▾</a>
                 <ul class="dropdown-menu">
                     {% for item in nav_items %}
-                    {% if item.slug not in ['home','aloha_wellness','kingdom_wealth','partner'] %}
+                    {% if item.slug != 'home' and item.slug != 'aloha_wellness' and item.slug != 'kingdom_wealth' and item.slug != 'partner' %}
                     <li><a href="{{ item.url }}">{{ item.title }}</a></li>
                     {% endif %}
                     {% endfor %}
