@@ -30,9 +30,20 @@
             <span></span><span></span><span></span>
         </div>
         <ul class="nav-menu" id="navMenu">
-            {% for item in nav_items %}
-            <li><a href="{{ item.url }}">{{ item.title }}</a></li>
-            {% endfor %}
+            <li><a href="/">Home</a></li>
+            <li><a href="/aloha_wellness">Wellness</a></li>
+            <li><a href="/kingdom_wealth">Wealth</a></li>
+            <li><a href="/partner">Partner</a></li>
+            <li class="nav-dropdown">
+                <a href="#" class="dropdown-toggle" onclick="event.preventDefault();this.parentElement.classList.toggle('open');">More ▾</a>
+                <ul class="dropdown-menu">
+                    {% for item in nav_items %}
+                    {% if item.slug not in ['home','aloha_wellness','kingdom_wealth','partner'] %}
+                    <li><a href="{{ item.url }}">{{ item.title }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </li>
         </ul>
     </div>
 </nav>
@@ -48,10 +59,14 @@ function toggleMenu() {
     document.getElementById('navMenu').classList.toggle('active');
 }
 document.addEventListener('click', function(e) {
-    const nav = document.querySelector('.nav-container');
-    const menu = document.getElementById('navMenu');
+    var nav = document.querySelector('.nav-container');
+    var menu = document.getElementById('navMenu');
     if (nav && menu && !nav.contains(e.target) && menu.classList.contains('active')) {
         menu.classList.remove('active');
+    }
+    var dropdown = document.querySelector('.nav-dropdown');
+    if (dropdown && !dropdown.contains(e.target)) {
+        dropdown.classList.remove('open');
     }
 });
 </script>

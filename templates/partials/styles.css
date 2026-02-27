@@ -31,21 +31,36 @@ body {
     padding: 0.5rem 2rem; background: none !important;
 }
 .nav-menu {
-    display: flex; flex-wrap: wrap; list-style: none; gap: 0.6rem;
-    background: none; margin: 0; padding: 0;
+    display: flex; list-style: none; gap: 1.2rem;
+    background: none; margin: 0; padding: 0; align-items: center;
 }
+.nav-menu > li { position: relative; }
 .nav-menu a {
     background: transparent !important;
     text-decoration: none; color: white; font-weight: 600;
-    padding: 0.3rem 0.6rem; font-size: 0.95rem;
+    padding: 0.5rem 0.8rem; font-size: 1.1rem;
     font-family: 'Georgia', serif;
     text-shadow: 2px 2px 6px rgba(0,0,0,1);
     border-radius: 6px; transition: all 0.3s ease;
     white-space: nowrap;
 }
 .nav-menu a:hover { background: var(--accent-teal) !important; color: white; }
+.nav-dropdown .dropdown-menu {
+    display: none; position: absolute; top: 100%; right: 0;
+    list-style: none; margin: 0.4rem 0 0; padding: 0.5rem 0;
+    background: rgba(0,0,0,0.9); border-radius: 8px; min-width: 220px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+.nav-dropdown.open .dropdown-menu { display: block; }
+.nav-dropdown .dropdown-menu li { border-bottom: 1px solid rgba(255,255,255,0.08); }
+.nav-dropdown .dropdown-menu li:last-child { border-bottom: none; }
+.nav-dropdown .dropdown-menu a {
+    display: block; padding: 0.7rem 1.5rem; font-size: 1rem;
+    border-radius: 0;
+}
+.nav-dropdown .dropdown-menu a:hover { background: rgba(95,158,160,0.3) !important; }
 .hamburger { display: none; flex-direction: column; cursor: pointer; padding: 0.5rem; }
-.hamburger span { width: 25px; height: 3px; background: #2c3e50; margin: 3px 0; transition: 0.3s; }
+.hamburger span { width: 25px; height: 3px; background: white; margin: 3px 0; transition: 0.3s; }
 
 .hero {
     height: 100vh; min-height: 600px;
@@ -100,9 +115,11 @@ body {
 
 @media (max-width: 768px) {
     .hamburger { display: flex; }
-    .nav-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: rgba(0,0,0,0.85) !important; flex-direction: column; gap: 0; padding: 0.5rem 0; }
+    .nav-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: rgba(0,0,0,0.9) !important; flex-direction: column; gap: 0; padding: 0.5rem 0; }
     .nav-menu.active { display: flex; }
-    .nav-menu a { background: transparent !important; padding: 1rem 2rem; border-radius: 0; }
+    .nav-menu a { background: transparent !important; padding: 1rem 2rem; border-radius: 0; font-size: 1.05rem; }
+    .nav-dropdown .dropdown-menu { position: static; background: rgba(255,255,255,0.05) !important; box-shadow: none; border-radius: 0; min-width: 0; margin: 0; }
+    .nav-dropdown .dropdown-menu a { padding-left: 3rem; }
     .nav-container { padding: 0 1rem; }
     .hero { height: 45vh; min-height: 300px; }
     .container { position: relative; height: auto; margin-top: 0; padding: 0 1rem 2rem; transform: none; left: 0; }
