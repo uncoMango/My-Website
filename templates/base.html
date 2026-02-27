@@ -26,16 +26,17 @@
 <nav class="site-nav" style="background:transparent !important;">
     <div class="nav-container" style="background:transparent !important;">
         <a href="/"><img src="{{ logo_path }}" alt="Logo" style="height:{{ logo_height }};width:auto;"></a>
-        <div class="hamburger" onclick="toggleMenu()">
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
             <span></span><span></span><span></span>
         </div>
-        <ul class="nav-menu" id="navMenu">
-            {% for item in nav_items %}
-            <li><a href="{{ item.url }}">{{ item.title }}</a></li>
-            {% endfor %}
-        </ul>
     </div>
 </nav>
+<div class="nav-overlay" id="navOverlay" onclick="toggleMenu()"></div>
+<ul class="nav-menu" id="navMenu">
+    {% for item in nav_items %}
+    <li><a href="{{ item.url }}">{{ item.title }}</a></li>
+    {% endfor %}
+</ul>
 
 {% block content %}{% endblock %}
 
@@ -45,15 +46,13 @@
 
 <script>
 function toggleMenu() {
-    document.getElementById('navMenu').classList.toggle('active');
+    var menu = document.getElementById('navMenu');
+    var overlay = document.getElementById('navOverlay');
+    var hamburger = document.getElementById('hamburger');
+    menu.classList.toggle('active');
+    overlay.classList.toggle('active');
+    hamburger.classList.toggle('open');
 }
-document.addEventListener('click', function(e) {
-    const nav = document.querySelector('.nav-container');
-    const menu = document.getElementById('navMenu');
-    if (nav && menu && !nav.contains(e.target) && menu.classList.contains('active')) {
-        menu.classList.remove('active');
-    }
-});
 </script>
 {% block extra_scripts %}{% endblock %}
 </body>
