@@ -3,7 +3,7 @@ import markdown
 from datetime import datetime
 from flask import Blueprint, abort, render_template, Response
 from content import load_content, get_nav_items
-from config import LOGO_PATH, LOGO_HEIGHT, FOOTER_TEXT
+from config import LOGO_PATH, LOGO_HEIGHT, FOOTER_TEXT, PAYPAL_CLIENT_ID, STRIPE_ENABLED, STRIPE_PUBLISHABLE_KEY
 
 pages_bp = Blueprint("pages", __name__)
 
@@ -54,6 +54,9 @@ def partner_page():
         logo_path=LOGO_PATH,
         logo_height=LOGO_HEIGHT,
         footer_text=FOOTER_TEXT,
+        paypal_client_id=PAYPAL_CLIENT_ID,
+        stripe_enabled=STRIPE_ENABLED,
+        stripe_publishable_key=STRIPE_PUBLISHABLE_KEY if STRIPE_ENABLED else "",
     )
 
 @pages_bp.route("/aloha-wellness")
