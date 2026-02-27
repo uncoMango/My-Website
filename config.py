@@ -28,12 +28,12 @@ ORDER = [
 ]
 
 # ----- ADMIN -----
-ADMIN_PASSWORD = os.environ["ADMIN_PASSWORD"]
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 # ----- PAYPAL -----
 # Live credentials (already active)
-PAYPAL_CLIENT_ID = os.environ["PAYPAL_CLIENT_ID"]
-PAYPAL_CLIENT_SECRET = os.environ["PAYPAL_CLIENT_SECRET"]
+PAYPAL_CLIENT_ID = os.environ.get("PAYPAL_CLIENT_ID", "")
+PAYPAL_CLIENT_SECRET = os.environ.get("PAYPAL_CLIENT_SECRET", "")
 PAYPAL_BASE_URL = "https://api-m.paypal.com"
 PAYPAL_RETURN_URL = "https://keaupuniakeakua.faith/paypal/success"
 PAYPAL_CANCEL_URL = "https://keaupuniakeakua.faith/paypal/cancel"
@@ -50,10 +50,11 @@ STRIPE_ENABLED = os.environ.get("STRIPE_ENABLED", "false").lower() == "true"
 KIT_FORM_URL = "https://app.kit.com/forms/8979853/subscriptions"
 
 # ----- SMTP (for subscriber notifications) -----
-SMTP_HOST = os.environ["SMTP_HOST"]
-SMTP_PORT = int(os.environ["SMTP_PORT"])
-SMTP_USER = os.environ["SMTP_USER"]
-SMTP_PASS = os.environ["SMTP_PASS"]
+# Optional — email notifications are skipped if these are not set.
+SMTP_HOST = os.environ.get("SMTP_HOST", "")
+SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
+SMTP_USER = os.environ.get("SMTP_USER", "")
+SMTP_PASS = os.environ.get("SMTP_PASS", "")
 NOTIFY_EMAIL = "kahuphil@keaupuni.faith"
 
 # ----- SITE INFO -----
