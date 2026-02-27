@@ -1,0 +1,194 @@
+{# templates/partner.html - Partner & Donate page #}
+{% extends "base.html" %}
+{% block title %}Partner With Us - Ke Aupuni O Ke Akua{% endblock %}
+
+{% block extra_styles %}
+.partner-hero {
+    height: 50vh; min-height: 350px;
+    background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(44,62,80,0.8)),
+                url('/static/images/output-onlinepngtools.png') center/contain no-repeat,
+                linear-gradient(135deg, #1a1a2e, #16213e);
+    display: flex; align-items: center; justify-content: center; text-align: center;
+}
+.partner-hero h1 {
+    color: white; font-size: 3rem; font-family: 'Georgia', serif;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.9);
+}
+.partner-hero p {
+    color: rgba(255,255,255,0.9); font-size: 1.3rem; margin-top: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+.partner-container {
+    max-width: 1100px; margin: 0 auto; padding: 3rem 2rem;
+}
+.partner-intro {
+    text-align: center; margin-bottom: 3rem; color: white;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}
+.partner-intro h2 { font-size: 2rem; margin-bottom: 1rem; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); }
+.partner-intro p { font-size: 1.1rem; line-height: 1.8; max-width: 750px; margin: 0 auto; }
+
+.tiers-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem; margin-bottom: 3rem;
+}
+.tier-card {
+    background: rgba(0,0,0,0.45); border-radius: 16px;
+    padding: 2.5rem 2rem; text-align: center;
+    border: 1px solid rgba(212,175,55,0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.tier-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(212,175,55,0.2);
+}
+.tier-badge {
+    display: inline-block; padding: 0.4rem 1.2rem;
+    background: linear-gradient(135deg, #d4af37, #b8960c);
+    color: white; border-radius: 20px; font-size: 0.85rem;
+    font-weight: bold; text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
+.tier-card h3 {
+    color: white; font-size: 1.5rem; margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    font-family: 'Georgia', serif;
+}
+.tier-price {
+    color: #d4af37; font-size: 1.4rem; font-weight: bold;
+    margin-bottom: 1.5rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}
+.tier-card ul {
+    list-style: none; padding: 0; margin: 0; text-align: left;
+}
+.tier-card li {
+    color: rgba(255,255,255,0.9); padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.95rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+.tier-card li:last-child { border-bottom: none; }
+.tier-card li::before { content: "\2713\0020"; color: #d4af37; font-weight: bold; }
+
+.contact-section {
+    background: rgba(0,0,0,0.45); border-radius: 16px;
+    padding: 3rem 2rem; text-align: center;
+    border: 1px solid rgba(95,158,160,0.3);
+    max-width: 700px; margin: 0 auto;
+}
+.contact-section h2 {
+    color: white; font-size: 2rem; margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+}
+.contact-section p {
+    color: rgba(255,255,255,0.9); font-size: 1.1rem; line-height: 1.8;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7); margin-bottom: 1rem;
+}
+.contact-email {
+    display: inline-block; padding: 1rem 2rem;
+    background: linear-gradient(135deg, #5f9ea0, #4a8b8e);
+    color: white; text-decoration: none; border-radius: 8px;
+    font-weight: bold; font-size: 1.1rem; margin-top: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(95,158,160,0.3);
+}
+.contact-email:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(95,158,160,0.4);
+}
+
+@media (max-width: 768px) {
+    .partner-hero { height: 35vh; min-height: 250px; }
+    .partner-hero h1 { font-size: 2rem; }
+    .partner-hero p { font-size: 1.1rem; }
+    .partner-container { padding: 2rem 1rem; }
+    .tiers-grid { grid-template-columns: 1fr; }
+    .tier-card { padding: 2rem 1.5rem; }
+}
+{% endblock %}
+
+{% block content %}
+<div class="partner-hero">
+    <div>
+        <h1>Partner With Us</h1>
+        <p>Support the Kingdom mission from Moloka'i to the world</p>
+    </div>
+</div>
+
+<div class="partner-container">
+    <div class="partner-intro">
+        <h2>Become a Partner of Ke Aupuni O Ke Akua</h2>
+        <p>Your generous partnership helps spread the Kingdom message, produce free resources,
+           and support ministry work across the Hawaiian Islands and beyond.
+           Every gift makes a difference in advancing the Kingdom of God.</p>
+    </div>
+
+    <div class="tiers-grid">
+        <!-- Tier 1 -->
+        <div class="tier-card">
+            <span class="tier-badge">Tier 1</span>
+            <h3>Aloha Partner</h3>
+            <div class="tier-price">$25 &ndash; $50/mo</div>
+            <ul>
+                <li>Monthly Kingdom newsletter</li>
+                <li>Access to free digital booklets</li>
+                <li>Prayer support from Kahu Phil</li>
+                <li>Name listed on Partner Wall of Aloha</li>
+            </ul>
+        </div>
+
+        <!-- Tier 2 -->
+        <div class="tier-card">
+            <span class="tier-badge">Tier 2</span>
+            <h3>Kingdom Partner</h3>
+            <div class="tier-price">$100 &ndash; $250/mo</div>
+            <ul>
+                <li>Everything in Aloha Partner</li>
+                <li>Exclusive Kingdom teaching recordings</li>
+                <li>Signed copy of The Call to Repentance</li>
+                <li>Quarterly video call with Kahu Phil</li>
+            </ul>
+        </div>
+
+        <!-- Tier 3 -->
+        <div class="tier-card">
+            <span class="tier-badge">Tier 3</span>
+            <h3>Legacy Partner</h3>
+            <div class="tier-price">$250 &ndash; $400/mo</div>
+            <ul>
+                <li>Everything in Kingdom Partner</li>
+                <li>Complete Kingdom Series (all 5 volumes)</li>
+                <li>Nahenahe Voice CD signed by Kahu Phil</li>
+                <li>Monthly one-on-one Kingdom coaching call</li>
+                <li>Name featured in published works</li>
+            </ul>
+        </div>
+
+        <!-- Tier 4 -->
+        <div class="tier-card">
+            <span class="tier-badge">Tier 4</span>
+            <h3>Covenant Partner</h3>
+            <div class="tier-price">$450 &ndash; $750/mo</div>
+            <ul>
+                <li>Everything in Legacy Partner</li>
+                <li>Private retreat invitation on Moloka'i</li>
+                <li>All future books and resources free</li>
+                <li>Weekly personal prayer and mentorship</li>
+                <li>Advisory role in ministry direction</li>
+                <li>VIP access to all live events</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="contact-section">
+        <h2>Ready to Partner?</h2>
+        <p>We would love to hear from you. Reach out to Kahu Phil directly
+           to discuss partnership, ask questions, or begin your journey
+           as a Kingdom partner.</p>
+        <p><strong>Kahu Phil Stephens</strong><br>
+           Ke Aupuni O Ke Akua &mdash; Moloka'i, Hawai'i</p>
+        <a href="mailto:kahuphil@keaupuni.faith" class="contact-email">
+            kahuphil@keaupuni.faith
+        </a>
+    </div>
+</div>
+{% endblock %}

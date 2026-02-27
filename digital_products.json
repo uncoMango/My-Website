@@ -12,6 +12,45 @@
       "active": true,
       "downloads": 0,
       "total_sales": 0
+    },
+    {
+      "id": "prod_kingdom_booklet1",
+      "name": "The Kingdom Is Here",
+      "description": "A powerful booklet introducing the revolutionary Kingdom message that Jesus actually preached. Discover what it means to live under the reign and rule of God right now.",
+      "price": 0.00,
+      "category": "booklet",
+      "filename": "",
+      "file_path": "",
+      "cover_image": "",
+      "active": true,
+      "downloads": 0,
+      "total_sales": 0
+    },
+    {
+      "id": "prod_kingdom_booklet2",
+      "name": "Kingdom Wealth",
+      "description": "Unlock the biblical principles of stewardship and economic increase. Learn how the Kingdom operates on stewardship, not ownership, and how these principles apply to your finances, work, and legacy.",
+      "price": 0.00,
+      "category": "booklet",
+      "filename": "",
+      "file_path": "",
+      "cover_image": "",
+      "active": true,
+      "downloads": 0,
+      "total_sales": 0
+    },
+    {
+      "id": "prod_nahenahe_cd",
+      "name": "Nahenahe Voice CD",
+      "description": "Live recording at the historic Molokai Ranch Lodge year 2000, a 5-star property now abandoned. This recording cannot be made again.",
+      "price": 15.00,
+      "category": "music",
+      "filename": "",
+      "file_path": "",
+      "cover_image": "",
+      "active": true,
+      "downloads": 0,
+      "total_sales": 0
     }
   ]
 }

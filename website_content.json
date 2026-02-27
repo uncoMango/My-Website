@@ -7,7 +7,8 @@
     "call_to_repentance",
     "aloha_wellness",
     "pastor_planners",
-    "nahenahe_voice"
+    "nahenahe_voice",
+    "partner"
   ],
   "pages": {
     "home": {
@@ -123,6 +124,11 @@
           "download": "/download/pamphlet4"
         }
       ]
+    },
+    "partner": {
+      "title": "Partner With Us",
+      "hero_image": "",
+      "body_md": ""
     }
   }
 }

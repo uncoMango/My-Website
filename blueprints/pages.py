@@ -44,6 +44,18 @@ def myron_golden_page():
         footer_text=FOOTER_TEXT,
     )
 
+@pages_bp.route("/partner")
+def partner_page():
+    data = load_content()
+    nav_items = get_nav_items(data)
+    return render_template(
+        "partner.html",
+        nav_items=nav_items,
+        logo_path=LOGO_PATH,
+        logo_height=LOGO_HEIGHT,
+        footer_text=FOOTER_TEXT,
+    )
+
 @pages_bp.route("/aloha-wellness")
 def aloha_wellness_funnel():
     return render_template("aloha_wellness_funnel.html")
@@ -62,6 +74,7 @@ def sitemap():
         ("/aloha-wellness-funnel",  "0.9", "weekly"),
         ("/aloha-wellness-buy",     "0.7", "monthly"),
         ("/myron-golden",           "0.8", "weekly"),
+        ("/partner",                "0.9", "monthly"),
     ]
     base_url = "https://keaupuniakeakua.faith"
     today = datetime.now().strftime("%Y-%m-%d")

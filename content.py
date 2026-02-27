@@ -89,6 +89,11 @@ DEFAULT_PAGES = {
                 {"title": "Kingdom Wealth Verses", "download": "/download/pamphlet4"},
             ],
         },
+        "partner": {
+            "title": "Partner With Us",
+            "hero_image": "",
+            "body_md": "",
+        },
     },
 }
 
