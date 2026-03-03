@@ -4,6 +4,7 @@
 # Access at /kahu
 # =========================================================
 
+import re
 from flask import Blueprint, abort, redirect, render_template, request
 from content import load_content, save_content, get_nav_items
 from config import ORDER
@@ -11,11 +12,41 @@ from config import ORDER
 admin_bp = Blueprint("admin", __name__)
 
 
-@admin_bp.route("/kahu")
+def _youtube_to_embed(url):
+    """Convert any YouTube share/watch URL to an embed URL."""
+    url = url.strip()
+    # youtu.be/ID
+    m = re.search(r'youtu\.be/([A-Za-z0-9_-]{11})', url)
+    if m:
+        return f"https://www.youtube.com/embed/{m.group(1)}"
+    # youtube.com/watch?v=ID
+    m = re.search(r'[?&]v=([A-Za-z0-9_-]{11})', url)
+    if m:
+        return f"https://www.youtube.com/embed/{m.group(1)}"
+    # already an embed URL — return as-is
+    m = re.search(r'youtube\.com/embed/([A-Za-z0-9_-]{11})', url)
+    if m:
+        return url
+    return url
+
+
+@admin_bp.route("/kahu", methods=["GET", "POST"])
 def admin_panel():
     data = load_content()
+    if request.method == "POST":
+        raw_url = request.form.get("funnel_youtube_url", "").strip()
+        if raw_url:
+            data["funnel_youtube_url"] = _youtube_to_embed(raw_url)
+        elif "funnel_youtube_url" in data:
+            del data["funnel_youtube_url"]
+        save_content(data)
+        return redirect("/kahu")
     pages = data.get("pages", {})
-    return render_template("admin/panel.html", pages=pages)
+    return render_template(
+        "admin/panel.html",
+        pages=pages,
+        funnel_youtube_url=data.get("funnel_youtube_url", "https://www.youtube.com/embed/O_-J8t0NHLc"),
+    )
 
 
 @admin_bp.route("/admin/edit/<page_id>", methods=["GET", "POST"])
@@ -76,7 +107,8 @@ def edit_page(page_id):
         elif "product_links" in page:
             del page["product_links"]
 
-        save_content({"pages": pages, "order": data.get("order", ORDER)})
+        data["pages"] = pages
+        save_content(data)
         return redirect("/kahu")
 
     page = pages[page_id]

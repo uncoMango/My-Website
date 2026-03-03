@@ -15,6 +15,7 @@ from config import DATA_FILE, PRODUCTS_FILE, ORDER
 # ---------------------------------------------------------
 
 DEFAULT_PAGES = {
+    "funnel_youtube_url": "https://www.youtube.com/embed/O_-J8t0NHLc",
     "order": ORDER,
     "pages": {
         "home": {

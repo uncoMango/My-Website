@@ -61,7 +61,9 @@ def partner_page():
 
 @pages_bp.route("/aloha-wellness")
 def aloha_wellness_funnel():
-    return render_template("aloha_wellness_funnel.html")
+    data = load_content()
+    youtube_embed_url = data.get("funnel_youtube_url", "https://www.youtube.com/embed/O_-J8t0NHLc")
+    return render_template("aloha_wellness_funnel.html", youtube_embed_url=youtube_embed_url)
 
 @pages_bp.route("/sitemap.xml")
 def sitemap():
