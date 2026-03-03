@@ -85,6 +85,64 @@
 
         .hero-sub strong { color: white; font-weight: 700; }
 
+        /* ── YOUTUBE TEACHING SECTION ── */
+        .youtube-section {
+            background: var(--dark);
+            padding: 56px 24px;
+            text-align: center;
+        }
+
+        .youtube-inner {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .youtube-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 3.5vw, 2rem);
+            color: var(--gold);
+            margin-bottom: 28px;
+            line-height: 1.3;
+        }
+
+        .youtube-embed {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+            margin-bottom: 24px;
+        }
+
+        .youtube-embed iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .youtube-channel-link {
+            display: inline-block;
+            color: var(--gold);
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            border: 2px solid var(--gold);
+            padding: 10px 26px;
+            border-radius: 30px;
+            letter-spacing: 0.03em;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .youtube-channel-link:hover {
+            background: var(--gold);
+            color: var(--dark);
+        }
+
         /* ── FREE BOOKLET SECTION ── */
         .freebie-section {
             background: white;
@@ -163,6 +221,42 @@
         .freebie-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(45,106,79,0.35);
+        }
+
+        .freebie-form {
+            margin-top: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .freebie-form input[type="email"] {
+            width: 100%;
+            max-width: 380px;
+            padding: 14px 18px;
+            font-size: 1rem;
+            font-family: 'Lato', sans-serif;
+            border: 2px solid var(--green);
+            border-radius: 10px;
+            background: var(--cream);
+            color: var(--dark);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .freebie-form input[type="email"]:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.25);
+        }
+
+        .freebie-form input[type="email"]::placeholder {
+            color: #999;
+        }
+
+        .freebie-form .freebie-btn {
+            border: none;
+            cursor: pointer;
         }
 
         .freebie-note {
@@ -465,10 +559,28 @@
     <p class="hero-sub">What if the problem was never <strong>what</strong> you're eating — but <strong>when?</strong></p>
 </section>
 
+<!-- YOUTUBE TEACHING -->
+<section class="youtube-section">
+    <div class="youtube-inner">
+        <h2>This Week's Kingdom Wellness Teaching</h2>
+        <div class="youtube-embed">
+            <iframe
+                src="https://www.youtube.com/embed/leuWQVDGZB8"
+                title="Kingdom Wellness Teaching"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+            </iframe>
+        </div>
+        <a class="youtube-channel-link" href="https://www.youtube.com/@keaupuniokeakua" target="_blank" rel="noopener">
+            ▶ Visit Our YouTube Channel for More Teachings
+        </a>
+    </div>
+</section>
+
 <!-- FREE BOOKLET -->
 <section class="freebie-section">
     <div class="freebie-inner">
-        <div class="freebie-badge">🌺 Free Gift — No Signup Required</div>
+        <div class="freebie-badge">🌺 Free Gift</div>
         <h2>Before You Buy Anything —<br>Get the Free Guide First</h2>
         <p class="sub">Download <em>Why Every Diet You've Tried Has Failed You</em> — a free guide from Kahu Phil that gives you the first piece of the Aloha Wellness method right now.</p>
         <ul class="freebie-promises">
@@ -477,11 +589,14 @@
             <li>The "healthy" habit that is quietly working against you</li>
             <li>The Paniolo and Kingdom principles behind the method</li>
         </ul>
-        <a href="/download/aloha_wellness_freebie" class="freebie-btn">
-            🌿 Download the Free Guide Now
-        </a>
-        <p style="color:#b8860b; font-style:italic; margin-top:12px; font-size:0.9rem;">📥 Your guide will open or download. Save it, then scroll back here to get the full book.</p>
-        <p class="freebie-note">Instant PDF download — no signup, no email required 🌺</p>
+        <form action="/download/aloha_wellness_freebie" method="POST" class="freebie-form">
+            <input type="email" name="email" required placeholder="Enter your email address">
+            <button type="submit" class="freebie-btn">
+                🌿 Get the Free Guide Now
+            </button>
+        </form>
+        <p style="color:#b8860b; font-style:italic; margin-top:12px; font-size:0.9rem;">📥 Your guide will download instantly after you enter your email.</p>
+        <p class="freebie-note">Instant PDF download 🌺</p>
     </div>
 </section>
 
