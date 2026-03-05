@@ -33,16 +33,8 @@ def home():
     return render_page("home", data)
 
 @pages_bp.route("/myron-golden")
-def myron_golden_page():
-    data = load_content()
-    nav_items = get_nav_items(data)
-    return render_template(
-        "myron_golden.html",
-        nav_items=nav_items,
-        logo_path=LOGO_PATH,
-        logo_height=LOGO_HEIGHT,
-        footer_text=FOOTER_TEXT,
-    )
+def myron_golden():
+    return render_template("myron_golden_funnel.html")
 
 @pages_bp.route("/partner")
 def partner_page():
