@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Fund Your Mission Without a 9-to-5 | Kahu Phil Stephens</title>
+    <meta name="description" content="Kingdom entrepreneur Kahu Phil Stephens shares the Myron Golden system that changed how he funds his mission on Molokaʻi. 6 resources. One blueprint.">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green-deep: #0a3d23;
+            --green-mid: #1b5e3b;
+            --green-light: #2d6a4f;
+            --gold: #c9a84c;
+            --gold-light: #e8c96a;
+            --cream: #fdf8f0;
+            --dark: #1a1a1a;
+            --red: #c0392b;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background: var(--cream);
+            color: var(--dark);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ── URGENCY BAR ── */
+        .urgency-bar {
+            background: var(--red);
+            color: white;
+            text-align: center;
+            padding: 11px 20px;
+            font-size: 0.92rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            background: linear-gradient(160deg, var(--green-deep) 0%, var(--green-mid) 55%, var(--green-deep) 100%);
+            padding: 64px 24px 72px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 0; right: 0;
+            height: 70px;
+            background: var(--cream);
+            clip-path: ellipse(55% 100% at 50% 100%);
+        }
+
+        .hero-eyebrow {
+            display: inline-block;
+            background: rgba(201,168,76,0.18);
+            border: 1px solid var(--gold);
+            color: var(--gold-light);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            padding: 6px 18px;
+            border-radius: 40px;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            color: white;
+            line-height: 1.2;
+            max-width: 780px;
+            margin: 0 auto 20px;
+        }
+
+        .hero h1 em {
+            color: var(--gold-light);
+            font-style: italic;
+        }
+
+        .hero-sub {
+            color: rgba(255,255,255,0.82);
+            font-size: clamp(1rem, 2.5vw, 1.18rem);
+            max-width: 620px;
+            margin: 0 auto 36px;
+            font-weight: 300;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            color: var(--green-deep);
+            font-weight: 700;
+            font-size: 1.05rem;
+            padding: 16px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            letter-spacing: 0.03em;
+            box-shadow: 0 6px 24px rgba(201,168,76,0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 32px rgba(201,168,76,0.55);
+        }
+
+        /* ── CONTAINER ── */
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ── STORY SECTION ── */
+        .story {
+            padding: 72px 24px 60px;
+            max-width: 740px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+
+        .story h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            color: var(--green-deep);
+            line-height: 1.3;
+            margin-bottom: 24px;
+        }
+
+        .story p {
+            font-size: 1.05rem;
+            color: #3a3a3a;
+            margin-bottom: 18px;
+        }
+
+        .story p strong {
+            color: var(--green-deep);
+        }
+
+        .pull-quote {
+            border-left: 4px solid var(--gold);
+            padding: 16px 24px;
+            margin: 32px 0;
+            background: rgba(201,168,76,0.07);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .pull-quote p {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.15rem;
+            color: var(--green-deep);
+            margin: 0;
+        }
+
+        /* ── DIVIDER ── */
+        .divider {
+            text-align: center;
+            color: var(--gold);
+            font-size: 1.4rem;
+            letter-spacing: 0.4em;
+            margin: 8px 0;
+            opacity: 0.6;
+        }
+
+        /* ── RESOURCES SECTION ── */
+        .resources {
+            background: linear-gradient(180deg, #f4efe4 0%, var(--cream) 100%);
+            padding: 72px 24px 80px;
+        }
+
+        .resources-header {
+            text-align: center;
+            max-width: 680px;
+            margin: 0 auto 52px;
+        }
+
+        .resources-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.7rem, 4vw, 2.4rem);
+            color: var(--green-deep);
+            line-height: 1.25;
+            margin-bottom: 14px;
+        }
+
+        .resources-header p {
+            color: #555;
+            font-size: 1.05rem;
+        }
+
+        /* ── RESOURCE CARD ── */
+        .resource-grid {
+            max-width: 860px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .resource-card {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid rgba(201,168,76,0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 90px 1fr;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+
+        .resource-card:hover {
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+
+        .card-step {
+            background: linear-gradient(160deg, var(--green-deep), var(--green-mid));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 10px;
+            gap: 8px;
+        }
+
+        .step-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--gold-light);
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .step-tag {
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+        }
+
+        .card-body {
+            padding: 22px 28px 22px 24px;
+        }
+
+        .card-category {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 6px;
+        }
+
+        .card-body h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            color: var(--green-deep);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .card-body p {
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 16px;
+            line-height: 1.65;
+        }
+
+        .card-link {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--green-light), var(--green-mid));
+            color: white;
+            font-weight: 700;
+            font-size: 0.88rem;
+            padding: 10px 22px;
+            border-radius: 40px;
+            text-decoration: none;
+            letter-spacing: 0.03em;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        .card-link:hover {
+            opacity: 0.88;
+            transform: translateY(-1px);
+        }
+
+        /* entry-level gold style for the two books */
+        .card-link.entry {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--green-deep);
+        }
+
+        /* ── ABOUT ── */
+        .about {
+            padding: 72px 24px;
+            max-width: 740px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-badge {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 2rem;
+        }
+
+        .about h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 3.5vw, 2rem);
+            color: var(--green-deep);
+            margin-bottom: 20px;
+        }
+
+        .about p {
+            font-size: 1.02rem;
+            color: #444;
+            margin-bottom: 16px;
+        }
+
+        /* ── FINAL CTA ── */
+        .final-cta {
+            background: linear-gradient(160deg, var(--green-deep) 0%, var(--green-mid) 100%);
+            padding: 72px 24px;
+            text-align: center;
+        }
+
+        .final-cta h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.7rem, 4vw, 2.4rem);
+            color: white;
+            max-width: 680px;
+            margin: 0 auto 16px;
+            line-height: 1.25;
+        }
+
+        .final-cta h2 em {
+            color: var(--gold-light);
+            font-style: italic;
+        }
+
+        .final-cta p {
+            color: rgba(255,255,255,0.8);
+            font-size: 1.05rem;
+            max-width: 560px;
+            margin: 0 auto 36px;
+        }
+
+        .final-cta a {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--green-deep);
+            font-weight: 700;
+            font-size: 1.05rem;
+            padding: 16px 44px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 6px 24px rgba(201,168,76,0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .final-cta a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 32px rgba(201,168,76,0.55);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--green-deep);
+            color: rgba(255,255,255,0.55);
+            text-align: center;
+            padding: 28px 20px;
+            font-size: 0.85rem;
+            line-height: 1.8;
+        }
+
+        footer a { color: rgba(255,255,255,0.5); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 580px) {
+            .resource-card {
+                grid-template-columns: 68px 1fr;
+            }
+            .step-num { font-size: 1.5rem; }
+            .card-body { padding: 18px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- URGENCY BAR -->
+<div class="urgency-bar">
+    These 6 resources changed how I fund my mission — and they can do the same for you.
+</div>
+
+<!-- HERO -->
+<section class="hero">
+    <span class="hero-eyebrow">Kingdom Business | Molokaʻi, Hawaiʻi</span>
+    <h1>How to Fund Your Mission<br><em>Without a 9-to-5</em></h1>
+    <p class="hero-sub">Stop struggling to resource your calling. The man who taught me — Myron Golden — built a system rooted in Scripture and proven in the marketplace. Here is where to start.</p>
+    <a href="#resources" class="hero-cta">Show Me the Resources</a>
+</section>
+
+<!-- STORY -->
+<section class="story">
+    <p class="section-label">From Kahu Phil</p>
+    <h2>A Pastor on Molokaʻi Needed a War Chest. Here Is What I Found.</h2>
+
+    <p>I am 67 years old. I have been a pastor on Molokaʻi for eight years, serving a community of about 7,000 people — many of them struggling to make ends meet. I have 54 volumes of Kingdom theology to publish, a wellness mission to fund, and a ranch that does not pay ministry bills.</p>
+
+    <p>I knew the vision was from God. I did not know how to fund it.</p>
+
+    <div class="pull-quote">
+        <p>"The Kingdom of Heaven is like a treasure hidden in a field — which a man found and covered up. Then in his joy he goes and sells all that he has and buys that field." — Matthew 13:44</p>
+    </div>
+
+    <p>That is when I found Myron Golden. He is a businessman, a Bible teacher, and one of the clearest thinkers I have encountered on the connection between Kingdom principles and economic reality. He does not separate Sunday from Monday. <strong>He teaches that creating value, making offers, and building wealth is a form of stewardship — not a compromise of faith.</strong></p>
+
+    <p>I went through his materials. I applied what I could. And I began to see a path — not to personal riches, but to a <em>war chest</em> for the work God has called me to do.</p>
+
+    <p>These are the six resources I recommend. I have listed them in the order I would start if I were beginning again — from the entry point to the full system.</p>
+</section>
+
+<div class="divider">— ✦ —</div>
+
+<!-- RESOURCES -->
+<section class="resources" id="resources">
+    <div class="resources-header">
+        <p class="section-label">The Six Resources</p>
+        <h2>Start Here. Follow the Path. Fund the Vision.</h2>
+        <p>Each resource builds on the one before. Start at Step 1 if you are new to this. Jump in wherever you are ready.</p>
+    </div>
+
+    <div class="resource-grid">
+
+        <!-- 1: Trash Man to Cash Man -->
+        <div class="resource-card">
+            <div class="card-step">
+                <span class="step-num">1</span>
+                <span class="step-tag">The Mindset</span>
+            </div>
+            <div class="card-body">
+                <p class="card-category">Entry Point — Book</p>
+                <h3>Trash Man to Cash Man</h3>
+                <p>This is where the mind shift begins. Myron's own story — from poverty to wealth — is the foundation. If you have ever believed that money and faith cannot coexist, this book dismantles that lie. Start here.</p>
+                <a href="https://www.trashmantocashman.com/tmcm-book?affiliate_id=4319525" class="card-link entry" target="_blank" rel="noopener">Get the Book →</a>
+            </div>
+        </div>
+
+        <!-- 2: Boss Moves -->
+        <div class="resource-card">
+            <div class="card-step">
+                <span class="step-num">2</span>
+                <span class="step-tag">The Strategy</span>
+            </div>
+            <div class="card-body">
+                <p class="card-category">Entry Point — Book</p>
+                <h3>Boss Moves</h3>
+                <p>Once your mind is right, your strategy must follow. Boss Moves teaches you how to think like a Kingdom entrepreneur — not reactive, but intentional. The moves you make in business reflect the posture of your heart.</p>
+                <a href="https://www.bossmovesbook.com/bossmoves?affiliate_id=4319525" class="card-link entry" target="_blank" rel="noopener">Get the Book →</a>
+            </div>
+        </div>
+
+        <!-- 3: Make More Offers -->
+        <div class="resource-card">
+            <div class="card-step">
+                <span class="step-num">3</span>
+                <span class="step-tag">The Engine</span>
+            </div>
+            <div class="card-body">
+                <p class="card-category">Challenge</p>
+                <h3>Make More Offers Challenge</h3>
+                <p>This changed how I think about income. Most people wait for opportunities. Myron teaches you to create them — by making more offers, more often, with more confidence. This is the engine that drives the whole system. Do not skip it.</p>
+                <a href="https://www.makemoreofferschallenge.com/mmoc?affiliate_id=4319525" class="card-link" target="_blank" rel="noopener">Join the Challenge →</a>
+            </div>
+        </div>
+
+        <!-- 4: Mind Over Money -->
+        <div class="resource-card">
+            <div class="card-step">
+                <span class="step-num">4</span>
+                <span class="step-tag">The Roots</span>
+            </div>
+            <div class="card-body">
+                <p class="card-category">Mastery Program</p>
+                <h3>Mind Over Money Mastery</h3>
+                <p>You can know all the right strategies and still self-sabotage. This program goes deeper — into the beliefs and patterns that keep people broke even when they know better. For me, this was the most personally revealing material in the whole system.</p>
+                <a href="https://www.mindovermoneymastery.com/momm?affiliate_id=4319525" class="card-link" target="_blank" rel="noopener">Begin the Mastery →</a>
+            </div>
+        </div>
+
+        <!-- 5: Offer Mastery Live -->
+        <div class="resource-card">
+            <div class="card-step">
+                <span class="step-num">5</span>
+                <span class="step-tag">The Scale</span>
+            </div>
+            <div class="card-body">
+                <p class="card-category">Live Event</p>
+                <h3>Offer Mastery Live</h3>
+                <p>Three days with Myron himself, learning how to build offers that generate real income — at $2,000, $5,000, $10,000 and beyond. If you are ready to move from survival to scale, this event is where it happens. I consider this the turning point in the whole value ladder.</p>
+                <a href="https://www.offermasterylive.com/offer-mastery-livevetfk4nn?affiliate_id=4319525" class="card-link" target="_blank" rel="noopener">Reserve Your Seat →</a>
+            </div>
+        </div>
+
+        <!-- 6: Golden OPS -->
+        <div class="resource-card">
+            <div class="card-step">
+                <span class="step-num">6</span>
+                <span class="step-tag">The System</span>
+            </div>
+            <div class="card-body">
+                <p class="card-category">Full Program</p>
+                <h3>Golden OPS</h3>
+                <p>This is the complete operating system for a Kingdom business — lead generation, sales conversion, product delivery, and automated growth. Golden OPS is not for beginners. But if you have walked the path above, you will be ready for it. This is where a mission becomes a movement.</p>
+                <a href="https://www.mygoldenops.com/golden-opsm1y8y7bx?affiliate_id=4319525" class="card-link" target="_blank" rel="noopener">Build the System →</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about">
+    <div class="about-badge">🌺</div>
+    <h2>About Kahu Phil Stephens</h2>
+    <p>I am a pastor, a Paniolo, and a publisher living on Molokaʻi, Hawaiʻi. Over 30 years working cattle across Molokaʻi, Maui, the Big Island, and Colorado taught me to observe — animals, land, seasons, and people. Eight years of pastoral ministry and 30 years of studying Scripture in original Greek and Hebrew gave me the theological foundation.</p>
+    <p>I am not a business guru. I am a Kahu trying to fund a 54-volume Kingdom theology series, a wellness mission, and a community press with limited resources on a small island. Myron Golden's system gave me the language and the tools to do that pono — rightly, honorably, and effectively.</p>
+    <p>I share these links as an affiliate. If you purchase through them, I receive a commission that goes directly into funding this mission. I would not point you there if I did not believe in the work.</p>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+    <h2>Your Mission Deserves a <em>War Chest.</em><br>Here Is How to Build One.</h2>
+    <p>Start with the books. Follow the path. The resources are waiting — and so is the work God has called you to.</p>
+    <a href="#resources">Show Me Where to Start</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>© 2026 Ke Aupuni O Ke Akua Press &nbsp;|&nbsp; Kahu Phil Stephens, Molokaʻi, Hawaiʻi</p>
+    <p>Affiliate Disclosure: Links on this page are affiliate links. I may earn a commission if you purchase, at no extra cost to you.</p>
+    <p style="margin-top:8px;"><a href="/">keaupuniakeakua.faith</a></p>
+</footer>
+
+</body>
+</html>

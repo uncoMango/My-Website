@@ -5,7 +5,11 @@
 
 {% extends "base.html" %}
 
-{% block title %}{{ page.title }}{% endblock %}
+{% block title %}{{ page.title }} | Ke Aupuni O Ke Akua{% endblock %}
+{% if page.meta_description %}{% block meta_description %}{{ page.meta_description }}{% endblock %}{% endif %}
+{% if page.meta_keywords %}{% block meta_keywords %}{{ page.meta_keywords }}{% endblock %}{% endif %}
+{% if page.og_title %}{% block og_title %}{{ page.og_title }}{% endblock %}{% endif %}
+{% if page.og_description %}{% block og_description %}{{ page.og_description }}{% endblock %}{% endif %}
 
 {% block content %}
 <header class="hero" style="background-image: url('{{ page.hero_image }}');">
