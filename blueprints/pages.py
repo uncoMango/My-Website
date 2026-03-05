@@ -1,4 +1,4 @@
-# blueprints/pages.py
+﻿# blueprints/pages.py
 import markdown
 from datetime import datetime
 from flask import Blueprint, abort, render_template, Response
@@ -34,7 +34,14 @@ def home():
 
 @pages_bp.route("/myron-golden")
 def myron_golden():
-    return render_template("myron_golden_funnel.html")
+    data = load_content()
+    return render_template(
+        "myron_golden_funnel.html",
+        mg_hero_headline=data.get("mg_hero_headline", "How to Fund Your Mission Without a 9-to-5"),
+        mg_hero_sub=data.get("mg_hero_sub", "Stop struggling to resource your calling. The man who taught me — Myron Golden — built a system rooted in Scripture and proven in the marketplace. Here is where to start."),
+        mg_story_headline=data.get("mg_story_headline", "A Pastor on Molokai Needed a War Chest. Here Is What I Found."),
+        mg_story_body=data.get("mg_story_body", "I am 67 years old. I have been a pastor on Molokai for eight years, serving a community of about 7,000 people. I have 54 volumes of Kingdom theology to publish, a wellness mission to fund, and a ranch that does not pay ministry bills. I knew the vision was from God. I did not know how to fund it. That is when I found Myron Golden."),
+    )
 
 @pages_bp.route("/partner")
 def partner_page():

@@ -1,10 +1,10 @@
-{# templates/admin/panel.html #}
+﻿{# templates/admin/panel.html #}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel – Ke Aupuni O Ke Akua</title>
+    <title>Admin Panel â€“ Ke Aupuni O Ke Akua</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:system-ui,sans-serif; background:linear-gradient(135deg,#667eea,#764ba2); min-height:100vh; padding:2rem; }
@@ -34,23 +34,43 @@
 </head>
 <body>
 <div class="container">
-    <h1>🌺 Admin Panel</h1>
+    <h1>ðŸŒº Admin Panel</h1>
     <p class="subtitle">Manage your website content</p>
 
     <div class="settings-section">
-        <h2>📺 Weekly YouTube Video — Aloha Wellness Funnel</h2>
+        <h2>ðŸ“º Weekly YouTube Video â€” Aloha Wellness Funnel</h2>
         <p>Paste any YouTube link below and click Save. The video on <strong>/aloha-wellness</strong> will update immediately.</p>
         <form method="POST" action="/kahu">
             <label for="funnel_youtube_url">YouTube Video URL</label>
             <input type="text" id="funnel_youtube_url" name="funnel_youtube_url"
                    value="{{ funnel_youtube_url }}"
                    placeholder="https://youtu.be/... or https://www.youtube.com/watch?v=...">
-            <p class="hint">Accepted: youtu.be/ID &nbsp;·&nbsp; youtube.com/watch?v=ID &nbsp;·&nbsp; youtube.com/embed/ID</p>
+            <p class="hint">Accepted: youtu.be/ID &nbsp;Â·&nbsp; youtube.com/watch?v=ID &nbsp;Â·&nbsp; youtube.com/embed/ID</p>
             <br>
-            <button type="submit" class="btn btn-primary">💾 Save Video</button>
+            <button type="submit" class="btn btn-primary">ðŸ’¾ Save Video</button>
         </form>
     </div>
 
+
+    <div class="settings-section">
+        <h2>Myron Golden Funnel — Hero &amp; Story Text</h2>
+        <p>Edit the headline and story on <strong>/myron-golden</strong>. Changes go live immediately after saving.</p>
+        <form method="POST" action="/kahu">
+            <label for="mg_hero_headline">Hero Headline</label>
+            <input type="text" id="mg_hero_headline" name="mg_hero_headline" value="{{ mg_hero_headline }}">
+            <br><br>
+            <label for="mg_hero_sub">Hero Subheadline</label>
+            <input type="text" id="mg_hero_sub" name="mg_hero_sub" value="{{ mg_hero_sub }}">
+            <br><br>
+            <label for="mg_story_headline">Story Section Headline</label>
+            <input type="text" id="mg_story_headline" name="mg_story_headline" value="{{ mg_story_headline }}">
+            <br><br>
+            <label for="mg_story_body">Story Body Text</label>
+            <textarea name="mg_story_body" id="mg_story_body" rows="6" style="width:100%;padding:0.6rem 0.9rem;border:2px solid #ced4da;border-radius:8px;font-size:0.95rem;font-family:system-ui,sans-serif;">{{ mg_story_body }}</textarea>
+            <br><br>
+            <button type="submit" class="btn btn-primary">Save Myron Golden Text</button>
+        </form>
+    </div>
     <div class="page-list">
         {% for page_id, page_data in pages.items() %}
         <div class="page-card">
@@ -68,15 +88,16 @@
                 <div><strong>Gallery:</strong> {{ page_data.gallery_images | length }} images</div>
                 {% endif %}
             </div>
-            <a href="/admin/edit/{{ page_id }}" class="btn btn-primary">✏️ Edit Page</a>
+            <a href="/admin/edit/{{ page_id }}" class="btn btn-primary">âœï¸ Edit Page</a>
         </div>
         {% endfor %}
     </div>
 
     <div class="actions">
-        <a href="/admin/products" class="btn btn-primary">💰 Manage Digital Products</a>
-        <a href="/" class="btn btn-secondary">← Back to Website</a>
+        <a href="/admin/products" class="btn btn-primary">ðŸ’° Manage Digital Products</a>
+        <a href="/" class="btn btn-secondary">â† Back to Website</a>
     </div>
 </div>
 </body>
 </html>
+
