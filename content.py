@@ -1,4 +1,4 @@
-# content.py
+﻿# content.py
 # =========================================================
 # Handles reading and writing website_content.json
 # and digital_products.json.
@@ -21,20 +21,20 @@ DEFAULT_PAGES = {
         "home": {
             "title": "Ke Aupuni O Ke Akua - The Kingdom of God",
             "hero_image": "/static/images/molokai_coast.jpg",
-            "body_md": "## Welcome to Ke Aupuni O Ke Akua - The Kingdom of God\r\n\r\nMahalo for visiting. This site is dedicated to rediscovering the revolutionary Kingdom message that Jesus actually preached, which is often missed in modern religious traditions.\r\n\r\n### Our Mission: Kingdom, Not Religion\r\nJesus's central focus was the Kingdom of God—the reign and rule of God breaking into the human experience here and now. Our resources aim to guide you into a deeper understanding of Kingdom principles, citizenship, and authority, moving you from religious performance into authentic, transformative living.\r\n\r\n**Start your journey today by exploring 'The Call to Repentance' series in the navigation.**\r\n\r\n### What Jesus Actually Taught\r\n\r\n**Kingdom Principles Over Religious Rules** - Discover how Jesus consistently chose kingdom living over religious compliance.\r\n\r\n**Repentance as Transformation** - Move beyond feeling sorry for sins to understanding a complete transformation of mind, heart, and lifestyle.\r\n\r\n**Heaven on Earth** - Learn how the Kingdom of God is meant to manifest in our daily lives, relationships, and communities right now.",
+            "body_md": "## Welcome to Ke Aupuni O Ke Akua - The Kingdom of God\r\n\r\nMahalo for visiting. This site is dedicated to rediscovering the revolutionary Kingdom message that Jesus actually preached, which is often missed in modern religious traditions.\r\n\r\n### Our Mission: Kingdom, Not Religion\r\nJesus's central focus was the Kingdom of Godâ€”the reign and rule of God breaking into the human experience here and now. Our resources aim to guide you into a deeper understanding of Kingdom principles, citizenship, and authority, moving you from religious performance into authentic, transformative living.\r\n\r\n**Start your journey today by exploring 'The Call to Repentance' series in the navigation.**\r\n\r\n### What Jesus Actually Taught\r\n\r\n**Kingdom Principles Over Religious Rules** - Discover how Jesus consistently chose kingdom living over religious compliance.\r\n\r\n**Repentance as Transformation** - Move beyond feeling sorry for sins to understanding a complete transformation of mind, heart, and lifestyle.\r\n\r\n**Heaven on Earth** - Learn how the Kingdom of God is meant to manifest in our daily lives, relationships, and communities right now.",
             "product_url": "https://amzn.to/3FfH9ep",
             "gumroad_url": "https://keaupuni.gumroad.com",
         },
         "kingdom_wealth": {
             "title": "Kingdom Wealth",
             "hero_image": "/static/images/scottsdale-mint-ATq9BSFebRE-unsplash.jpg",
-            "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom operates on stewardship, not ownership.\r\n\r\n### Core Principles\r\n\r\n**Source vs. Resource** - God is your Source.\r\n\r\n**[FREE Kingdom Keys →](/kingdom_keys)**\r\n\r\n**[FREE Kingdom Booklets →](/free_booklets)**\r\n\r\n**[Complete Kingdom Series →](/call_to_repentance)**\r\n\r\n**[Myron Golden Training →](/myron-golden)**",
+            "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom operates on stewardship, not ownership.\r\n\r\n### Core Principles\r\n\r\n**Source vs. Resource** - God is your Source.\r\n\r\n**[FREE Kingdom Keys â†’](/kingdom_keys)**\r\n\r\n**[FREE Kingdom Booklets â†’](/free_booklets)**\r\n\r\n**[Complete Kingdom Series â†’](/call_to_repentance)**\r\n\r\n**[Myron Golden Training â†’](/myron-golden)**",
             "product_url": "",
         },
         "aloha_wellness": {
             "title": "Aloha Wellness - Island Health & Healing",
             "hero_image": "/static/images/ulu_kalo_mango.jpg",
-            "body_md": "## Aloha Wellness - The Sacred Art of How You Eat\r\n\r\nDiscover the life-changing power of **how** you eat, not just what you eat. This groundbreaking wellness book combines cutting-edge scientific research with ancient Hawaiian mana'o (wisdom) to transform your relationship with food and nourishment.\r\n\r\n### Beyond Diet Culture - A Hawaiian Perspective\r\n\r\nTraditional Hawaiian culture understood something modern society has forgotten: eating is a sacred act that connects us to the land, our ancestors, and our own spiritual well-being. This book bridges that ancient wisdom with contemporary nutritional science.\r\n\r\n### Revolutionary Approach: How, Not What\r\n\r\n**Mindful Consumption** - Learn the scientific basis for how mindful eating practices affect digestion, metabolism, and overall health.\r\n\r\n**Cultural Eating Wisdom** - Discover how Hawaiian ancestors approached meals as community ceremonies, gratitude practices, and spiritual connections.\r\n\r\n**Stress and Digestion** - Research-backed insights into how your emotional state during meals affects nutrient absorption and digestive health.\r\n\r\n**Rhythm and Timing** - Ancient Hawaiian understanding of eating in harmony with natural rhythms, supported by modern chronobiology research.\r\n\r\n### Hawaiian Mana'o (Wisdom Principles)\r\n\r\n**Ho'oponopono with Food** - Making right relationships with nourishment and healing food-related guilt or shame.\r\n\r\n**Aloha 'Āina** - Love of the land extends to gratitude for the food it provides and mindful consumption practices.\r\n\r\n**Lōkahi** - Finding unity and balance in your relationship with food, body, and spirit.\r\n\r\n**Mālama** - Caring for your body as a sacred temple through conscious eating practices.\r\n\r\nTransform your health from the inside out by changing not what you eat, but how you approach the sacred act of nourishment.",
+            "body_md": "## Aloha Wellness - The Sacred Art of How You Eat\r\n\r\nDiscover the life-changing power of **how** you eat, not just what you eat. This groundbreaking wellness book combines cutting-edge scientific research with ancient Hawaiian mana'o (wisdom) to transform your relationship with food and nourishment.\r\n\r\n### Beyond Diet Culture - A Hawaiian Perspective\r\n\r\nTraditional Hawaiian culture understood something modern society has forgotten: eating is a sacred act that connects us to the land, our ancestors, and our own spiritual well-being. This book bridges that ancient wisdom with contemporary nutritional science.\r\n\r\n### Revolutionary Approach: How, Not What\r\n\r\n**Mindful Consumption** - Learn the scientific basis for how mindful eating practices affect digestion, metabolism, and overall health.\r\n\r\n**Cultural Eating Wisdom** - Discover how Hawaiian ancestors approached meals as community ceremonies, gratitude practices, and spiritual connections.\r\n\r\n**Stress and Digestion** - Research-backed insights into how your emotional state during meals affects nutrient absorption and digestive health.\r\n\r\n**Rhythm and Timing** - Ancient Hawaiian understanding of eating in harmony with natural rhythms, supported by modern chronobiology research.\r\n\r\n### Hawaiian Mana'o (Wisdom Principles)\r\n\r\n**Ho'oponopono with Food** - Making right relationships with nourishment and healing food-related guilt or shame.\r\n\r\n**Aloha 'Ä€ina** - Love of the land extends to gratitude for the food it provides and mindful consumption practices.\r\n\r\n**LÅkahi** - Finding unity and balance in your relationship with food, body, and spirit.\r\n\r\n**MÄlama** - Caring for your body as a sacred temple through conscious eating practices.\r\n\r\nTransform your health from the inside out by changing not what you eat, but how you approach the sacred act of nourishment.",
             "product_url": "",
             "gumroad_url": "",
             "direct_buy_url": "/checkout/prod_aloha_wellness",
@@ -48,8 +48,7 @@ DEFAULT_PAGES = {
         },
         "pastor_planners": {
             "title": "Pastor Planners - Tools for Ministry Excellence",
-            "hero_image": "/static/images/sunlight_bursting.jpg",
-            "body_md": "## Organize Your Ministry with Purpose and Prayer\r\n\r\nEffective ministry requires both spiritual sensitivity and practical organization.\r\n\r\n### Available in Multiple Pacific Islander Languages\r\n\r\n**Ke Kauoha La Haku (Hawaiian Edition 2026)**\r\n📖 [Get on Amazon](https://a.co/d/gatnNET) | 💳 [Get on Gumroad](https://uncomango.gumroad.com/l/ulrmu)\r\n\r\n**Tusi Fuataiaga a le Faifeau (Samoan Enhanced Edition 2026)**\r\n📖 [Get on Amazon](https://a.co/d/gs0WRPh) | 💳 [Get on Gumroad](https://uncomango.gumroad.com/l/ubzevn)",
+            "hero_image": "/static/images/paniolo_phil.jpg",\r\n            "body_md": "## Organize Your Ministry with Purpose and Prayer\r\n\r\nEffective ministry requires both spiritual sensitivity and practical organization.\r\n\r\n### Available in Multiple Pacific Islander Languages\r\n\r\n**Ke Kauoha La Haku (Hawaiian Edition 2026)**\r\nðŸ“– [Get on Amazon](https://a.co/d/gatnNET) | ðŸ’³ [Get on Gumroad](https://uncomango.gumroad.com/l/ulrmu)\r\n\r\n**Tusi Fuataiaga a le Faifeau (Samoan Enhanced Edition 2026)**\r\nðŸ“– [Get on Amazon](https://a.co/d/gs0WRPh) | ðŸ’³ [Get on Gumroad](https://uncomango.gumroad.com/l/ubzevn)",
         },
         "nahenahe_voice": {
             "title": "The Nahenahe Voice of Nahono'opi'ilani - Musical Legacy",
@@ -61,15 +60,15 @@ DEFAULT_PAGES = {
                 "/static/images/legacy-album/arena_cover.jpg",
             ],
             "product_links": [
-                {"name": "Amazon Music", "url": "https://music.amazon.com/search/nahenahe%20voice", "icon": "🛒"},
-                {"name": "Apple Music", "url": "https://music.apple.com/us/search?term=nahenahe%20voice", "icon": "🍎"},
-                {"name": "Spotify", "url": "https://open.spotify.com/search/nahenahe%20voice", "icon": "🎧"},
+                {"name": "Amazon Music", "url": "https://music.amazon.com/search/nahenahe%20voice", "icon": "ðŸ›’"},
+                {"name": "Apple Music", "url": "https://music.apple.com/us/search?term=nahenahe%20voice", "icon": "ðŸŽ"},
+                {"name": "Spotify", "url": "https://open.spotify.com/search/nahenahe%20voice", "icon": "ðŸŽ§"},
             ],
         },
         "free_booklets": {
             "title": "FREE Booklets",
             "hero_image": "/static/images/taro_field_1.jpg",
-            "body_md": "## 🎁 FREE Kingdom Booklets\r\n\r\nDownload all 6:",
+            "body_md": "## ðŸŽ FREE Kingdom Booklets\r\n\r\nDownload all 6:",
             "products": [
                 {"title": "Kingdom Wealth Principles", "download": "/download/booklet1"},
                 {"title": "Kingdom Wealth for Couples", "download": "/download/booklet2"},
@@ -82,7 +81,7 @@ DEFAULT_PAGES = {
         "kingdom_keys": {
             "title": "FREE Kingdom Keys Booklets",
             "hero_image": "/static/images/taro_field_2.jpg",
-            "body_md": "## 🌺 FREE Kingdom Keys 🌺\r\n\r\nAfter 30 years of biblical study.\r\n\r\n**[Browse Complete Kingdom Series →](/call_to_repentance)**",
+            "body_md": "## ðŸŒº FREE Kingdom Keys ðŸŒº\r\n\r\nAfter 30 years of biblical study.\r\n\r\n**[Browse Complete Kingdom Series â†’](/call_to_repentance)**",
             "products": [
                 {"title": "7 Scriptures Kingdom Inside You", "download": "/download/pamphlet1"},
                 {"title": "Kingdom Healing in 10 Minutes", "download": "/download/pamphlet2"},
@@ -166,3 +165,4 @@ def get_product_by_id(product_id):
     return next(
         (p for p in products_data["products"] if p["id"] == product_id), None
     )
+
