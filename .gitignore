@@ -1,0 +1,4 @@
+email_subscribers.json
+__pycache__/
+*.pyc
+.env
