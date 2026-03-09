@@ -66,20 +66,22 @@ def aloha_wellness_funnel():
 
 @pages_bp.route("/sitemap.xml")
 def sitemap():
-    xml = '''<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://keaupuniakeakua.faith/</loc><priority>1.0</priority></url>
-  <url><loc>https://keaupuniakeakua.faith/aloha-wellness</loc><priority>0.9</priority></url>
-  <url><loc>https://keaupuniakeakua.faith/kingdom_wealth</loc><priority>0.8</priority></url>
-  <url><loc>https://keaupuniakeakua.faith/call_to_repentance</loc><priority>0.8</priority></url>
-  <url><loc>https://keaupuniakeakua.faith/pastor_planners</loc><priority>0.7</priority></url>
-  <url><loc>https://keaupuniakeakua.faith/nahenahe_voice</loc><priority>0.7</priority></url>
-  <url><loc>https://keaupuniakeakua.faith/free_booklets</loc><priority>0.7</priority></url>
-  <url><loc>https://keaupuniakeakua.faith/kingdom_keys</loc><priority>0.7</priority></url>
-  <url><loc>https://keaupuniakeakua.faith/partner</loc><priority>0.6</priority></url>
-  <url><loc>https://keaupuniakeakua.faith/myron-golden</loc><priority>0.6</priority></url>
-</urlset>'''
-    return Response(xml, mimetype='application/xml', headers={'Content-Type': 'application/xml; charset=utf-8'})
+    lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        '<url><loc>https://keaupuniakeakua.faith/</loc><priority>1.0</priority></url>',
+        '<url><loc>https://keaupuniakeakua.faith/aloha-wellness</loc><priority>0.9</priority></url>',
+        '<url><loc>https://keaupuniakeakua.faith/kingdom_wealth</loc><priority>0.8</priority></url>',
+        '<url><loc>https://keaupuniakeakua.faith/call_to_repentance</loc><priority>0.8</priority></url>',
+        '<url><loc>https://keaupuniakeakua.faith/pastor_planners</loc><priority>0.7</priority></url>',
+        '<url><loc>https://keaupuniakeakua.faith/nahenahe_voice</loc><priority>0.7</priority></url>',
+        '<url><loc>https://keaupuniakeakua.faith/free_booklets</loc><priority>0.7</priority></url>',
+        '<url><loc>https://keaupuniakeakua.faith/kingdom_keys</loc><priority>0.7</priority></url>',
+        '<url><loc>https://keaupuniakeakua.faith/partner</loc><priority>0.6</priority></url>',
+        '<url><loc>https://keaupuniakeakua.faith/myron-golden</loc><priority>0.6</priority></url>',
+        '</urlset>'
+    ]
+    return Response('\n'.join(lines), mimetype='application/xml')
 
 @pages_bp.route("/robots.txt")
 def robots():
