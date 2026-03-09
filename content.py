@@ -11,7 +11,6 @@ from config import DATA_FILE, PRODUCTS_FILE, ORDER
 
 # ---------------------------------------------------------
 # DEFAULT PAGE CONTENT
-# This is used only if website_content.json doesn't exist.
 # ---------------------------------------------------------
 
 DEFAULT_PAGES = {
@@ -21,40 +20,40 @@ DEFAULT_PAGES = {
         "home": {
             "title": "Ke Aupuni O Ke Akua - The Kingdom of God",
             "hero_image": "/static/images/molokai_coast.jpg",
-            "body_md": "## Welcome to Ke Aupuni O Ke Akua\r\n\r\nMahalo for visiting.",
+            "body_md": "## What If Everything You Were Taught About Christianity Was Missing the Most Important Part?\r\n\r\nJesus mentioned the Kingdom of God **53 times**. He mentioned \"church\" **twice**.\r\n\r\nThere's a reason for that - and it changes everything.\r\n\r\n---\r\n\r\nI'm **Kahu Phil Stephens** - a pastor, Paniolo, and 30-year student of Scripture in the original Greek and Hebrew, writing to you from Moloka'i, Hawai'i.\r\n\r\nAfter three decades of study, I made a discovery that turned my faith upside down - in the best way. Jesus didn't come to start a religion. He came to establish a **Kingdom**. And that Kingdom has three dimensions that touch every part of your life.\r\n\r\n---\r\n\r\n### The Three Pillars of Ke Aupuni O Ke Akua\r\n\r\n**The Kingdom of God** - Rediscover what Jesus actually preached. Not church. Not religion. The revolutionary Kingdom message that transforms your mind, your identity, and your purpose.\r\n\r\n**[Explore the Kingdom Series](/call_to_repentance)**\r\n\r\n---\r\n\r\n**Kingdom Wellness** - Your body is not a burden. It is a temple - and the Kingdom has a design for it. Discover how a Paniolo pastor from Moloka'i lost 54 pounds without dieting, through a revelation rooted in Scripture and confirmed by a life on horseback.\r\n\r\n**[Discover Aloha Wellness](/aloha_wellness)**\r\n\r\n---\r\n\r\n**Kingdom Wealth** - The Kingdom operates on stewardship, not ownership. Learn the biblical principles of increase that most churches never teach.\r\n\r\n**[Learn Kingdom Wealth](/kingdom_wealth)**\r\n\r\n---\r\n\r\n### Start Here - FREE\r\n\r\nNot sure where to begin? Start with our **FREE Kingdom Keys** - short, powerful booklets drawn from 30 years of studying Scripture in the original Greek and Hebrew.\r\n\r\n**[Get Your FREE Kingdom Keys](/kingdom_keys)**\r\n\r\n*Aloha. You are in the right place.*",
             "product_url": "https://amzn.to/3FfH9ep",
             "gumroad_url": "https://keaupuni.gumroad.com",
         },
         "kingdom_wealth": {
             "title": "Kingdom Wealth",
             "hero_image": "/static/images/scottsdale-mint-ATq9BSFebRE-unsplash.jpg",
-            "body_md": "## Biblical Stewardship & Economic Increase",
+            "body_md": "## Biblical Stewardship & Economic Increase\r\n\r\nThe Kingdom operates on stewardship, not ownership.\r\n\r\n### Core Principles\r\n\r\n**Source vs. Resource** - God is your Source.\r\n\r\n**[FREE Kingdom Keys](/kingdom_keys)**\r\n\r\n**[FREE Kingdom Booklets](/free_booklets)**\r\n\r\n**[Complete Kingdom Series](/call_to_repentance)**\r\n\r\n**[Myron Golden Training](/myron-golden)**",
             "product_url": "",
         },
         "aloha_wellness": {
             "title": "Aloha Wellness - Island Health & Healing",
             "hero_image": "/static/images/ulu_kalo_mango.jpg",
-            "body_md": "## Aloha Wellness",
-            "product_url": "",
-            "gumroad_url": "",
+            "body_md": "## Aloha Wellness - The Sacred Art of How You Eat\r\n\r\nDiscover the life-changing power of **how** you eat, not just what you eat.",
+            "product_url": "https://a.co/d/6YrcnQp",
+            "gumroad_url": "https://keaupuni.gumroad.com/l/aloha-wellness",
             "direct_buy_url": "/checkout/prod_aloha_wellness",
         },
         "call_to_repentance": {
             "title": "The Call to Repentance - The Kingdom Series",
             "hero_image": "/static/images/sunlight_bursting.jpg",
-            "body_md": "## The Call to Repentance",
+            "body_md": "## The Call to Repentance\r\n\r\nRediscover the revolutionary Kingdom message that Jesus actually preached.",
             "product_url": "https://a.co/d/fgbAVMs",
             "gumroad_url": "https://keaupuni.gumroad.com/l/call-to-repentance",
         },
         "pastor_planners": {
             "title": "Pastor Planners - Tools for Ministry Excellence",
             "hero_image": "/static/images/paniolo_phil.jpg",
-            "body_md": "## Organize Your Ministry with Purpose and Prayer",
+            "body_md": "## Organize Your Ministry with Purpose and Prayer\r\n\r\n### Available in Multiple Pacific Islander Languages\r\n\r\n**Ke Kauoha La Haku (Hawaiian Edition 2026)**\r\n[Get on Amazon](https://a.co/d/gatnNET) | [Get on Gumroad](https://uncomango.gumroad.com/l/ulrmu)\r\n\r\n**Tusi Fuataiaga a le Faifeau (Samoan Enhanced Edition 2026)**\r\n[Get on Amazon](https://a.co/d/gs0WRPh) | [Get on Gumroad](https://uncomango.gumroad.com/l/ubzevn)",
         },
         "nahenahe_voice": {
             "title": "The Nahenahe Voice of Nahono'opi'ilani - Musical Legacy",
             "hero_image": "/static/images/molokai_ranch.jpg",
-            "body_md": "## The Nahenahe Voice - Live from Molokai Ranch Lodge",
+            "body_md": "## The Nahenahe Voice - Live from Molokai Ranch Lodge\r\n\r\nExperience the soul-stirring sounds of authentic Hawaiian music captured live at the historic Molokai Ranch Lodge in the year 2000.",
             "gallery_images": [
                 "/static/images/legacy-album/LeAnne_cover.jpg",
                 "/static/images/legacy-album/Phil_ukulele-cover.jpg",
@@ -69,7 +68,7 @@ DEFAULT_PAGES = {
         "free_booklets": {
             "title": "FREE Booklets",
             "hero_image": "/static/images/taro_field_1.jpg",
-            "body_md": "## FREE Kingdom Booklets",
+            "body_md": "## FREE Kingdom Booklets\r\n\r\nDownload all 6:",
             "products": [
                 {"title": "Kingdom Wealth Principles", "download": "/download/booklet1"},
                 {"title": "Kingdom Wealth for Couples", "download": "/download/booklet2"},
@@ -82,7 +81,7 @@ DEFAULT_PAGES = {
         "kingdom_keys": {
             "title": "FREE Kingdom Keys Booklets",
             "hero_image": "/static/images/taro_field_2.jpg",
-            "body_md": "## FREE Kingdom Keys",
+            "body_md": "## FREE Kingdom Keys\r\n\r\nAfter 30 years of biblical study.\r\n\r\n**[Browse Complete Kingdom Series](/call_to_repentance)**",
             "products": [
                 {"title": "7 Scriptures Kingdom Inside You", "download": "/download/pamphlet1"},
                 {"title": "Kingdom Healing in 10 Minutes", "download": "/download/pamphlet2"},
@@ -102,12 +101,35 @@ DEFAULT_PAGES = {
 # WEBSITE CONTENT HELPERS
 # ---------------------------------------------------------
 
+def _deep_merge(base, override):
+    """Merge override into base. Override wins for scalar values.
+    For dicts, recurse. For lists, override wins entirely."""
+    result = dict(base)
+    for key, val in override.items():
+        if key in result and isinstance(result[key], dict) and isinstance(val, dict):
+            result[key] = _deep_merge(result[key], val)
+        else:
+            result[key] = val
+    return result
+
+
 def load_content():
-    """Load pages from JSON, create defaults if missing."""
+    """Load pages from JSON on disk. If missing keys exist in DEFAULT_PAGES,
+    fill them in so Render disk staleness never hides content."""
     if DATA_FILE.exists():
         try:
             with open(DATA_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
+                disk_data = json.load(f)
+            # Merge defaults under disk data so disk wins for text,
+            # but defaults fill any missing keys (like gallery_images)
+            merged_pages = {}
+            default_pages = DEFAULT_PAGES.get("pages", {})
+            disk_pages = disk_data.get("pages", {})
+            for slug, default_page in default_pages.items():
+                disk_page = disk_pages.get(slug, {})
+                merged_pages[slug] = _deep_merge(default_page, disk_page)
+            disk_data["pages"] = merged_pages
+            return disk_data
         except Exception:
             pass
     data = DEFAULT_PAGES.copy()
