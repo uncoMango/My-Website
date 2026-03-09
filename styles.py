@@ -1,4 +1,4 @@
-# styles.py
+﻿# styles.py
 # =========================================================
 # Shared CSS for all public-facing pages.
 # Kept here so it's easy to update site-wide appearance.
@@ -17,7 +17,7 @@ ENHANCED_STYLE = """
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: 'Georgia', 'Times New Roman', serif;
+    font-family: 'Noto Serif', 'Georgia', 'Times New Roman', serif;
     line-height: 1.6;
     color: white;
     background: transparent;
@@ -63,7 +63,7 @@ body {
     font-weight: 600;
     padding: 0.4rem 1rem;
     font-size: 1.3rem;
-    font-family: 'Georgia', serif;
+    font-family: 'Noto Serif', 'Georgia', serif;
     text-shadow: 2px 2px 6px rgba(0,0,0,1);
     border-radius: 6px;
     transition: all 0.3s ease;

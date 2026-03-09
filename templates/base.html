@@ -1,4 +1,4 @@
-{# templates/base.html
+﻿{# templates/base.html
    Shared layout used by all public pages.
    Child templates fill in the 'content' block. #}
 <!DOCTYPE html>
@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Ke Aupuni O Ke Akua{% endblock %}</title>
     <meta name="google-site-verification" content="ba5d8e311152a3a0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-V2NY3MEWKB"></script>
     <script>
@@ -35,7 +37,7 @@
             <li><a href="/kingdom_wealth">Wealth</a></li>
             <li><a href="/partner">Partner</a></li>
             <li class="nav-dropdown">
-                <a href="#" class="dropdown-toggle" onclick="event.preventDefault();this.parentElement.classList.toggle('open');">More ▾</a>
+                <a href="#" class="dropdown-toggle" onclick="event.preventDefault();this.parentElement.classList.toggle('open');">More â–¾</a>
                 <ul class="dropdown-menu">
                     {% for item in nav_items %}
                     {% if item.slug != 'home' and item.slug != 'aloha_wellness' and item.slug != 'kingdom_wealth' and item.slug != 'partner' %}
