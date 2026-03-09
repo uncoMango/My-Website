@@ -41,7 +41,7 @@ DEFAULT_PAGES = {
         },
         "call_to_repentance": {
             "title": "The Call to Repentance - The Kingdom Series",
-            "hero_image": "/static/images/bible_scroll.jpg",
+            "hero_image": "/static/images/sunlight_bursting.jpg",
             "body_md": "## The Call to Repentance - Rediscovering Jesus's Kingdom Message\r\n\r\nStep beyond religious tradition and rediscover the revolutionary Kingdom message that Jesus actually preached.\r\n\r\n### Volume 1: The Foundation\r\n![Volume 1 Cover](https://via.placeholder.com/300x450/4A90E2/FFFFFF?text=Volume+1)\r\nUnderstanding what the Kingdom of God actually is.\r\n\r\n### Volume 2: Kingdom Citizenship\r\n![Volume 2 Cover](https://via.placeholder.com/300x450/50C878/FFFFFF?text=Volume+2)\r\nWhat it means to be a citizen of God's kingdom.\r\n\r\n### Volume 3: Kingdom Economics\r\n![Volume 3 Cover](https://via.placeholder.com/300x450/FFB347/FFFFFF?text=Volume+3)\r\nHow kingdom principles transform our relationship with money.\r\n\r\n### Volume 4: Kingdom Relationships\r\n![Volume 4 Cover](https://via.placeholder.com/300x450/FF6B6B/FFFFFF?text=Volume+4)\r\nLove, forgiveness, and community the way Jesus intended.\r\n\r\n### Volume 5: Kingdom Authority\r\n![Volume 5 Cover](https://via.placeholder.com/300x450/9B59B6/FFFFFF?text=Volume+5)\r\nWalking in the supernatural power Jesus demonstrated.\r\n\r\n*\"Repent, for the kingdom of heaven has come near.\" - Matthew 4:17*",
             "product_url": "https://a.co/d/fgbAVMs",
             "gumroad_url": "https://keaupuni.gumroad.com/l/call-to-repentance",

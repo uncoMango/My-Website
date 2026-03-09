@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://keaupuniakeakua.faith/sitemap.xml
