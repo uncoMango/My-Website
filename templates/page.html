@@ -1,6 +1,7 @@
-{# templates/page.html #}
+﻿{# templates/page.html #}
 {% extends "base.html" %}
 {% block title %}{{ page.title }}{% endblock %}
+{% block meta_description %}{{ page.get("meta_description", "Ke Aupuni O Ke Akua - Kingdom ministry from Molokai, Hawaii by Native Hawaiian Pastor Kahu Phil Stephens.") }}{% endblock %}
 {% block content %}
 <header class="hero" style="background-image: url('{{ page.hero_image }}');">
     <div class="hero-overlay"></div>
@@ -12,7 +13,7 @@
 
         {% if page.gallery_images %}
         <div class="gallery-section">
-            <h2>📸 Album Covers</h2>
+            <h2>ðŸ“¸ Album Covers</h2>
             <div class="gallery-grid">
                 {% for image in page.gallery_images %}
                 <div class="gallery-item"><img src="{{ image }}" alt="Cover" loading="lazy"></div>
@@ -23,7 +24,7 @@
 
         {% if page.product_links %}
         <div class="buy-section">
-            <h2>🎵 Stream Our Music</h2>
+            <h2>ðŸŽµ Stream Our Music</h2>
             <div class="music-buttons">
                 {% for link in page.product_links %}
                 <a href="{{ link.url }}" target="_blank" class="music-button">{{ link.icon }} {{ link.name }}</a>
@@ -34,13 +35,13 @@
 
         {% if page.get("products") %}
         <div class="products-section" style="margin: 3rem 0;">
-            <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">📚 Available Resources</h2>
+            <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">ðŸ“š Available Resources</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
                 {% for product in page.products %}
                 <div style="background: rgba(0,0,0,0.5); padding: 2rem; border-radius: 12px; text-align: center;">
                     <h3 style="color: white; font-size: 1.1rem; margin-bottom: 1rem;">{{ product.title }}</h3>
                     {% if product.get('download') %}
-                    <a href="{{ product.download }}" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #d4af37, #b8960c); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">📥 FREE Download</a>
+                    <a href="{{ product.download }}" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #d4af37, #b8960c); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">ðŸ“¥ FREE Download</a>
                     {% endif %}
                 </div>
                 {% endfor %}
@@ -50,11 +51,11 @@
 
         <div class="buy-section">
             {% if page.direct_buy_url %}
-            <a href="/checkout/prod_aloha_wellness" class="buy-button" style="background: linear-gradient(135deg, #635bff, #5246e5); font-size: 1.1rem; padding: 1rem 2rem;">💳 Pay with Credit / Debit Card</a>
-            <a href="/checkout/prod_aloha_wellness" class="buy-button" style="background: linear-gradient(135deg, #0070ba, #003087); font-size: 1.1rem; padding: 1rem 2rem;">🅿️ Pay with PayPal</a>
+            <a href="/checkout/prod_aloha_wellness" class="buy-button" style="background: linear-gradient(135deg, #635bff, #5246e5); font-size: 1.1rem; padding: 1rem 2rem;">ðŸ’³ Pay with Credit / Debit Card</a>
+            <a href="/checkout/prod_aloha_wellness" class="buy-button" style="background: linear-gradient(135deg, #0070ba, #003087); font-size: 1.1rem; padding: 1rem 2rem;">ðŸ…¿ï¸ Pay with PayPal</a>
             {% endif %}
             {% if page.product_url %}
-            <a href="{{ page.product_url }}" target="_blank" class="buy-button">🛒 Buy on Amazon</a>
+            <a href="{{ page.product_url }}" target="_blank" class="buy-button">ðŸ›’ Buy on Amazon</a>
             {% endif %}
         </div>
     </article>
