@@ -72,6 +72,10 @@ def sitemap():
 def robots():
     return send_from_directory('static', 'robots.txt', mimetype='text/plain')
 
+@pages_bp.route("/BingSiteAuth.xml")
+def bing_verify():
+    return send_from_directory('static', 'BingSiteAuth.xml', mimetype='application/xml')
+
 @pages_bp.route("/<page_id>")
 def page(page_id):
     if page_id in ("admin", "product", "checkout", "download", "paypal", "stripe", "kahu"):
