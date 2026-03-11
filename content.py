@@ -114,14 +114,12 @@ def _deep_merge(base, override):
 
 
 def load_content():
-    """Load pages from JSON on disk. If missing keys exist in DEFAULT_PAGES,
-    fill them in so Render disk staleness never hides content."""
+    """Load pages from the project-directory JSON file. Never writes to disk.
+    Falls back to DEFAULT_PAGES if the file is missing or unreadable."""
     if DATA_FILE.exists():
         try:
             with open(DATA_FILE, "r", encoding="utf-8") as f:
                 disk_data = json.load(f)
-            # Merge defaults under disk data so disk wins for text,
-            # but defaults fill any missing keys (like gallery_images)
             merged_pages = {}
             default_pages = DEFAULT_PAGES.get("pages", {})
             disk_pages = disk_data.get("pages", {})
@@ -132,9 +130,7 @@ def load_content():
             return disk_data
         except Exception:
             pass
-    data = DEFAULT_PAGES.copy()
-    save_content(data)
-    return data
+    return DEFAULT_PAGES.copy()
 
 
 def save_content(data):
