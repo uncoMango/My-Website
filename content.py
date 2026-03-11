@@ -114,30 +114,11 @@ def _deep_merge(base, override):
 
 
 def load_content():
-    """Load pages from the project-directory JSON file. Never writes to disk.
-    Falls back to DEFAULT_PAGES if the file is missing or unreadable."""
-    if DATA_FILE.exists():
-        try:
-            with open(DATA_FILE, "r", encoding="utf-8") as f:
-                disk_data = json.load(f)
-            merged_pages = {}
-            default_pages = DEFAULT_PAGES.get("pages", {})
-            disk_pages = disk_data.get("pages", {})
-            for slug, default_page in default_pages.items():
-                disk_page = disk_pages.get(slug, {})
-                merged_pages[slug] = _deep_merge(default_page, disk_page)
-            disk_data["pages"] = merged_pages
-            return disk_data
-        except Exception:
-            pass
-    return DEFAULT_PAGES.copy()
+    return DEFAULT_PAGES
 
 
 def save_content(data):
-    """Save pages to JSON."""
-    DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+    pass
 
 
 def get_nav_items(data):
