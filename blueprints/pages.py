@@ -64,13 +64,52 @@ def aloha_wellness_funnel():
     youtube_embed_url = data.get("funnel_youtube_url", "https://www.youtube.com/embed/O_-J8t0NHLc")
     return render_template("aloha_wellness_funnel.html", youtube_embed_url=youtube_embed_url)
 
+# ===== SITEMAP AND ROBOTS.TXT FOR GOOGLE/BING INDEXING =====
+
 @pages_bp.route("/sitemap.xml")
 def sitemap():
-    return send_from_directory('static', 'sitemap.xml', mimetype='application/xml')
+    """XML sitemap so Google and Bing can find and index all pages."""
+    pages = [
+        ("/",                   "1.0", "weekly"),
+        ("/kingdom_wealth",     "0.9", "weekly"),
+        ("/free_booklets",      "0.9", "weekly"),
+        ("/kingdom_keys",       "0.9", "weekly"),
+        ("/call_to_repentance", "0.9", "weekly"),
+        ("/aloha-wellness",     "0.9", "weekly"),
+        ("/pastor_planners",    "0.8", "monthly"),
+        ("/nahenahe_voice",     "0.8", "monthly"),
+        ("/myron-golden",       "0.8", "weekly"),
+    ]
+    base_url = "https://keaupuniakeakua.faith"
+    today = datetime.now().strftime("%Y-%m-%d")
+    xml = ['<?xml version="1.0" encoding="UTF-8"?>']
+    xml.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
+    for path, priority, freq in pages:
+        xml.append("  <url>")
+        xml.append(f"    <loc>{base_url}{path}</loc>")
+        xml.append(f"    <lastmod>{today}</lastmod>")
+        xml.append(f"    <changefreq>{freq}</changefreq>")
+        xml.append(f"    <priority>{priority}</priority>")
+        xml.append("  </url>")
+    xml.append("</urlset>")
+    return Response("\n".join(xml), mimetype="application/xml")
+
 
 @pages_bp.route("/robots.txt")
 def robots():
-    return send_from_directory('static', 'robots.txt', mimetype='text/plain')
+    """Robots.txt tells search engines how to crawl the site."""
+    content = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "Disallow: /kahu\n"
+        "Disallow: /admin\n"
+        "\n"
+        "Sitemap: https://keaupuniakeakua.faith/sitemap.xml\n"
+    )
+    return Response(content, mimetype="text/plain")
+
+
+# ===== END SITEMAP SECTION =====
 
 @pages_bp.route("/BingSiteAuth.xml")
 def bing_verify():
