@@ -47,7 +47,7 @@ DEFAULT_PAGES = {
         },
         "pastor_planners": {
             "title": "Pastor Planners - Tools for Ministry Excellence",
-            "hero_image": "/static/images/paniolo_phil.jpg",
+            "hero_image": "/static/images/bible_scroll.jpg",
             "body_md": "## Organize Your Ministry with Purpose and Prayer\r\n\r\n### Available in Multiple Pacific Islander Languages\r\n\r\n**Ke Kauoha La Haku (Hawaiian Edition 2026)**\r\n[Get on Amazon](https://a.co/d/gatnNET) | [Get on Gumroad](https://uncomango.gumroad.com/l/ulrmu)\r\n\r\n**Tusi Fuataiaga a le Faifeau (Samoan Enhanced Edition 2026)**\r\n[Get on Amazon](https://a.co/d/gs0WRPh) | [Get on Gumroad](https://uncomango.gumroad.com/l/ubzevn)",
         },
         "nahenahe_voice": {
