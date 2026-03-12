@@ -50,9 +50,9 @@ DEFAULT_PAGES = {
                 "/static/images/legacy-album/arena_cover.jpg",
             ],
             "product_links": [
-                {"name": "Amazon Music", "url": "https://music.amazon.com/search/nahenahe%20voice", "icon": "??"},
-                {"name": "Apple Music", "url": "https://music.apple.com/us/search?term=nahenahe%20voice", "icon": "??"},
-                {"name": "Spotify", "url": "https://open.spotify.com/search/nahenahe%20voice", "icon": "??"},
+                {"name": "Amazon Music", "url": "https://music.amazon.com/search/nahenahe%20voice", "icon": ""},
+                {"name": "Apple Music", "url": "https://music.apple.com/us/search?term=nahenahe%20voice", "icon": ""},
+                {"name": "Spotify", "url": "https://open.spotify.com/search/nahenahe%20voice", "icon": ""},
             ],
         },
         "free_booklets": {

@@ -58,17 +58,17 @@
         {
           "name": "Amazon Music",
           "url": "https://music.amazon.com/search/nahenahe%20voice",
-          "icon": "🎵"
+          "icon": ""
         },
         {
           "name": "Apple Music",
           "url": "https://music.apple.com/us/search?term=nahenahe%20voice",
-          "icon": "🎵"
+          "icon": ""
         },
         {
           "name": "Spotify",
           "url": "https://open.spotify.com/search/nahenahe%20voice",
-          "icon": "🎵"
+          "icon": ""
         }
       ]
     },
