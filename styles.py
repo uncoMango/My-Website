@@ -17,7 +17,7 @@ ENHANCED_STYLE = """
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: 'Noto Serif', 'Georgia', 'Times New Roman', serif;
+    font-family: 'Noto Sans', 'Arial', 'Helvetica', sans-serif;
     line-height: 1.6;
     color: white;
     background: transparent;
@@ -63,7 +63,7 @@ body {
     font-weight: 600;
     padding: 0.4rem 1rem;
     font-size: 1.3rem;
-    font-family: 'Noto Serif', 'Georgia', serif;
+    font-family: 'Noto Sans', 'Arial', 'Helvetica', sans-serif;
     text-shadow: 2px 2px 6px rgba(0,0,0,1);
     border-radius: 6px;
     transition: all 0.3s ease;
