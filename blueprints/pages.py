@@ -25,6 +25,7 @@ def render_page(page_id, data):
         logo_path=LOGO_PATH,
         logo_height=LOGO_HEIGHT,
         footer_text=FOOTER_TEXT,
+        founding_reader_remaining=data.get("founding_reader_remaining", 100),
     )
 
 @pages_bp.route("/")

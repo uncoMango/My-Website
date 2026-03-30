@@ -44,6 +44,11 @@ def admin_panel():
             if value:
                 data[field] = value
 
+        # Founding Reader remaining count
+        founding_raw = request.form.get("founding_reader_remaining", "").strip()
+        if founding_raw.isdigit():
+            data["founding_reader_remaining"] = int(founding_raw)
+
         save_content(data)
         return redirect("/kahu")
 
@@ -51,6 +56,7 @@ def admin_panel():
     return render_template(
         "admin/panel.html",
         pages=pages,
+        founding_reader_remaining=data.get("founding_reader_remaining", 100),
         funnel_youtube_url=data.get("funnel_youtube_url", "https://www.youtube.com/embed/O_-J8t0NHLc"),
         mg_hero_headline=data.get("mg_hero_headline", "How to Fund Your Mission Without a 9-to-5"),
         mg_hero_sub=data.get("mg_hero_sub", "Stop struggling to resource your calling. The man who taught me — Myron Golden — built a system rooted in Scripture and proven in the marketplace. Here is where to start."),

@@ -37,8 +37,23 @@
     <h1>ðŸŒº Admin Panel</h1>
     <p class="subtitle">Manage your website content</p>
 
-    <div class="settings-section">
-        <h2>ðŸ“º Weekly YouTube Video â€” Aloha Wellness Funnel</h2>
+    <div class=”settings-section” style=”background:#fff5f0;border-color:#e67e22;”>
+        <h2>Founding Reader Count &#8212; Aloha Wellness Offer</h2>
+        <p>Update how many of the 100 founding reader copies remain. This number shows live on the Aloha Wellness page.</p>
+        <form method=”POST” action=”/kahu”>
+            <label for=”founding_reader_remaining”>Copies Remaining (out of 100)</label>
+            <input type=”text” id=”founding_reader_remaining” name=”founding_reader_remaining”
+                   value=”{{ founding_reader_remaining }}”
+                   placeholder=”e.g. 87”
+                   style=”width:120px;”>
+            <p class=”hint”>Enter the number of copies still available. Decrease this as sales come in.</p>
+            <br>
+            <button type=”submit” class=”btn btn-primary”>Save Count</button>
+        </form>
+    </div>
+
+    <div class=”settings-section”>
+        <h2>Weekly YouTube Video &#8212; Aloha Wellness Funnel</h2>
         <p>Paste any YouTube link below and click Save. The video on <strong>/aloha-wellness</strong> will update immediately.</p>
         <form method="POST" action="/kahu">
             <label for="funnel_youtube_url">YouTube Video URL</label>

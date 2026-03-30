@@ -11,8 +11,10 @@
 
 import json
 import base64
+import smtplib
 import urllib.request
 import urllib.parse
+from email.mime.text import MIMEText
 
 from flask import Blueprint, abort, redirect, render_template, request, url_for
 from content import load_digital_products, save_digital_products, get_product_by_id
@@ -30,9 +32,41 @@ from config import (
     LOGO_HEIGHT,
     FOOTER_TEXT,
     SITE_DOMAIN,
+    SMTP_HOST,
+    SMTP_PORT,
+    SMTP_USER,
+    SMTP_PASS,
+    NOTIFY_EMAIL,
 )
 
 payments_bp = Blueprint("payments", __name__)
+
+
+# =========================================================
+# EMAIL NOTIFICATION HELPER
+# =========================================================
+
+def _send_sale_notification(product_name, amount, order_id):
+    """Send a sale notification email to the admin. Silently skipped if SMTP is not configured."""
+    if not (SMTP_HOST and SMTP_USER and SMTP_PASS):
+        return
+    try:
+        msg = MIMEText(
+            f"New sale received!\n\n"
+            f"Product: {product_name}\n"
+            f"Amount: ${amount:.2f}\n"
+            f"Order ID: {order_id}\n\n"
+            f"Log in to the admin panel to update the Founding Reader count if needed."
+        )
+        msg["Subject"] = f"Sale: {product_name} — ${amount:.2f}"
+        msg["From"] = SMTP_USER
+        msg["To"] = NOTIFY_EMAIL
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SMTP_USER, SMTP_PASS)
+            server.sendmail(SMTP_USER, [NOTIFY_EMAIL], msg.as_string())
+    except Exception:
+        pass  # Never fail the payment flow due to email errors
 
 
 # =========================================================
@@ -102,6 +136,8 @@ def paypal_success():
             p["downloads"] = p.get("downloads", 0) + 1
             p["total_sales"] = p.get("total_sales", 0) + float(product["price"])
     save_digital_products(products_data)
+
+    _send_sale_notification(product["name"], float(product["price"]), order_id)
 
     download_url = f"/download/product/{product_id}"
     return render_template(
@@ -195,6 +231,8 @@ def stripe_success():
             p["total_sales"] = p.get("total_sales", 0) + float(product["price"])
     save_digital_products(products_data)
 
+    _send_sale_notification(product["name"], float(product["price"]), session_id)
+
     download_url = f"/download/product/{product_id}"
     return render_template(
         "payment_success.html",
@@ -232,4 +270,12 @@ def stripe_webhook():
         if product_id:
             product = get_product_by_id(product_id)
             if product:
-                products_data = load_digital_pr
+                products_data = load_digital_products()
+                for p in products_data["products"]:
+                    if p["id"] == product_id:
+                        p["downloads"] = p.get("downloads", 0) + 1
+                        p["total_sales"] = p.get("total_sales", 0) + float(product["price"])
+                save_digital_products(products_data)
+                _send_sale_notification(product["name"], float(product["price"]), session.get("id", ""))
+
+    return ("", 200)
