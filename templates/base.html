@@ -65,19 +65,13 @@
         </div>
         <ul class="nav-menu" id="navMenu">
             <li><a href="/">Home</a></li>
-            <li><a href="/aloha_wellness">Wellness</a></li>
-            <li><a href="/kingdom_wealth">Wealth</a></li>
-            <li><a href="/partner">Partner</a></li>
-            <li class="nav-dropdown">
-                <a href="#" class="dropdown-toggle" onclick="event.preventDefault();this.parentElement.classList.toggle('open');">More &#9662;</a>
-                <ul class="dropdown-menu">
-                    {% for item in nav_items %}
-                    {% if item.slug != 'home' and item.slug != 'aloha_wellness' and item.slug != 'kingdom_wealth' and item.slug != 'partner' %}
-                    <li><a href="{{ item.url }}">{{ item.title }}</a></li>
-                    {% endif %}
-                    {% endfor %}
-                </ul>
-            </li>
+            <li><a href="/aloha_wellness">Keaupuni Health</a></li>
+            <li><a href="/kingdom_wealth">Keaupuni Wealth</a></li>
+            <li><a href="/call_to_repentance">Bible Truth</a></li>
+            <li><a href="/nahenahe_voice">Music</a></li>
+            <li><a href="/pastor_planners">Keaupuni Planners</a></li>
+            <li><a href="/kingdom_keys">Free Booklets</a></li>
+            <li><a href="/partner">Ministry Support</a></li>
         </ul>
     </div>
 </nav>
