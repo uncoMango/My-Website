@@ -11,7 +11,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: 'Georgia', 'Times New Roman', serif;
+    font-family: 'Noto Sans', 'Noto Sans JP', 'Noto Sans Hebrew', sans-serif;
     line-height: 1.6;
     color: white;
     background: transparent;
@@ -39,7 +39,7 @@ body {
     background: transparent !important;
     text-decoration: none; color: white; font-weight: 600;
     padding: 0.5rem 0.8rem; font-size: 1.1rem;
-    font-family: 'Georgia', serif;
+    font-family: 'Noto Sans', sans-serif;
     text-shadow: 2px 2px 6px rgba(0,0,0,1);
     border-radius: 6px; transition: all 0.3s ease;
     white-space: nowrap;
