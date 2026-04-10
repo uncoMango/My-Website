@@ -27,18 +27,18 @@ body {
 }
 .nav-container {
     max-width: 1200px; margin: 0 auto;
-    display: flex; align-items: center;
+    display: flex; align-items: center; justify-content: center;
     padding: 0.5rem 2rem; background: none !important;
 }
 .nav-menu {
-    display: flex; list-style: none; gap: 1.2rem;
+    display: flex; list-style: none; gap: 0.4rem;
     background: none; margin: 0; padding: 0; align-items: center;
 }
 .nav-menu > li { position: relative; }
 .nav-menu a {
     background: transparent !important;
     text-decoration: none; color: white; font-weight: 600;
-    padding: 0.5rem 0.8rem; font-size: 1.1rem;
+    padding: 0.4rem 0.5rem; font-size: 1.3rem;
     font-family: 'Noto Sans', sans-serif;
     text-shadow: 2px 2px 6px rgba(0,0,0,1);
     border-radius: 6px; transition: all 0.3s ease;
@@ -75,19 +75,19 @@ body {
 .hero h1 { display: none; }
 
 .container {
-    max-width: 1000px; margin: 0 auto; padding: 2rem;
+    max-width: 1500px; margin: 0 auto; padding: 2rem;
     position: absolute; top: 0; left: 50%; transform: translateX(-50%);
     width: 100%; height: 100vh; overflow-y: auto; z-index: 3;
 }
 .content-card {
     background: rgba(0,0,0,0.25); border: none;
-    padding: 3rem 2rem; box-shadow: none;
-    margin-top: 25vh; padding-top: 4rem; color: white;
+    padding: 3rem 5rem; box-shadow: none;
+    margin-top: 25vh; padding-top: 4rem; color: white; text-align: center;
 }
-.content-card h2 { color: white; margin-bottom: 1rem; font-size: 2.2rem; text-shadow: 3px 3px 6px rgba(0,0,0,0.9); }
-.content-card h3 { color: white; margin: 2rem 0 1rem; font-size: 1.6rem; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
+.content-card h2 { color: white; margin-bottom: 1rem; font-size: 2.2rem; text-shadow: 3px 3px 6px rgba(0,0,0,0.9); text-align: center; }
+.content-card h3 { color: white; margin: 2rem 0 1rem; font-size: 1.6rem; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); text-align: center; }
 .content-card a { color: #FFD700; text-decoration: underline; font-weight: 600; }
-.content-card p { margin-bottom: 1.5rem; font-size: 1.1rem; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); line-height: 1.8; }
+.content-card p { margin-bottom: 1.5rem; font-size: 1.2rem; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); line-height: 1.8; text-align: center; }
 .content-card strong { color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
 .content-card li { color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); line-height: 1.8; }
 .content-card img { max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: block; }
