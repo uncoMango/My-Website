@@ -80,9 +80,9 @@ DEFAULT_PAGES = {
             ],
         },
         "partner": {
-            "title": "Partner With Us",
+            "title": "Support the Ministry",
             "hero_image": "/static/images/helping_hands.jpg",
-            "body_md": "",
+            "body_md": "## Partner With Ke Aupuni O Ke Akua Press\r\n\r\nKahu Phil Stephens has served the community of Moloka'i and the Pacific for decades — as a pastor, a Paniolo, a land rights advocate, and a Kingdom teacher. This ministry runs on faith, kuleana, and the generous support of those who believe in what God is doing here.\r\n\r\nA word about **Kokua** — the true Hawaiian meaning of this word is not simply \"help for free.\" Kokua means to give at no cost to yourself — a selfless act of Kingdom generosity. When you support this ministry, you are practicing true Kokua in the Kingdom sense. Mahalo nui loa.\r\n\r\n---\r\n\r\n### Why Partner With Us?\r\n\r\nEvery dollar that comes into this ministry goes directly to:\r\n\r\n- Publishing Kingdom theology resources in Hawaiian, Samoan, Tongan, and other Pacific languages\r\n- Making FREE booklets and Kingdom Keys available to anyone who needs them\r\n- Supporting the community of Moloka'i through land rights advocacy and pastoral care\r\n- Expanding the reach of Kingdom Health, Kingdom Wealth, and Bible Truth teaching\r\n\r\n---\r\n\r\n### Ways to Partner\r\n\r\n**Aloha Partner** — Any amount. Every seed matters in the Kingdom.\r\n\r\n**Kingdom Partner** — Monthly support that keeps the ministry moving forward.\r\n\r\n**Covenant Partner** — A deeper commitment to see this work established across the Pacific.\r\n\r\n---\r\n\r\n### How to Give\r\n\r\nUse the secure form below to sow into this ministry. Your generosity is a Kingdom investment — not just into a ministry, but into the lives of the people of Moloka'i and the Pacific.\r\n\r\n*Mahalo nui loa. The Kingdom of God advances because of people like you.*",
         },
     },
 }
