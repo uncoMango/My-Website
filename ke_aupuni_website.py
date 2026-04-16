@@ -13,6 +13,42 @@ DATA_FILE = BASE / "website_content.json"
 
 # ===== DIGITAL PRODUCTS SETUP =====
 from datetime import datetime
+import smtplib
+import ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+# ============================================
+# EMAIL NOTIFICATIONS — Namecheap PrivateEmail SMTP
+# ============================================
+NOTIFY_EMAIL = "kahuphil@keaupuni.faith"
+SMTP_HOST = os.environ.get("SMTP_HOST", "mail.privateemail.com")
+SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
+SMTP_USER = os.environ.get("SMTP_USER", "")
+SMTP_PASS = os.environ.get("SMTP_PASS", "")
+
+def send_notification_email(subject, body_html):
+    """Send admin notification email via Namecheap PrivateEmail SMTP."""
+    if not SMTP_USER or not SMTP_PASS:
+        app.logger.error("SMTP_USER or SMTP_PASS env vars not set — cannot send notification email")
+        return False
+    try:
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = subject
+        msg["From"] = SMTP_USER
+        msg["To"] = NOTIFY_EMAIL
+        msg.attach(MIMEText(body_html, "html"))
+        ctx = ssl.create_default_context()
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+            server.ehlo()
+            server.starttls(context=ctx)
+            server.login(SMTP_USER, SMTP_PASS)
+            server.sendmail(SMTP_USER, NOTIFY_EMAIL, msg.as_string())
+        app.logger.info("Notification email sent: %s", subject)
+        return True
+    except Exception as exc:
+        app.logger.error("Email send failed: %s", exc)
+        return False
 from werkzeug.utils import secure_filename
 
 PRODUCTS_FILE = BASE / "digital_products.json"
@@ -383,6 +419,67 @@ body {
     }
 }
 
+.signup-section {
+    background: rgba(95, 158, 160, 0.15);
+    border: 1px solid rgba(95, 158, 160, 0.4);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.signup-section h3 {
+    color: white;
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}
+
+.signup-section p {
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.signup-form {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.signup-input {
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    min-width: 180px;
+    flex: 1;
+    max-width: 240px;
+}
+
+.signup-btn {
+    background: var(--accent-warm);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.signup-btn:hover {
+    background: #c4954a;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .signup-input { max-width: 100%; width: 100%; }
+    .signup-btn { width: 100%; }
+}
+
 .footer {
     text-align: center;
     padding: 2rem;
@@ -697,8 +794,18 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
                 {% endif %}
             </div>
         </article>
+
+        <section class="signup-section">
+            <h3>Stay Connected with Kingdom Updates</h3>
+            <p>Join our mailing list for new teachings and releases.</p>
+            <form class="signup-form" method="POST" action="/subscribe">
+                <input class="signup-input" type="text" name="name" placeholder="Your Name" required>
+                <input class="signup-input" type="email" name="email" placeholder="Your Email" required>
+                <button class="signup-btn" type="submit">Subscribe</button>
+            </form>
+        </section>
     </main>
-    
+
     <footer class="footer">
         <p>© 2025 Ke Aupuni O Ke Akua. All rights reserved. Made with aloha in Hawaiʻi.</p>
     </footer>
@@ -816,8 +923,9 @@ def sitemap():
 def robots():
     """Robots.txt tells Google how to crawl your site."""
     content = "User-agent: *\nAllow: /\nDisallow: /kahu\nDisallow: /admin\n\nSitemap: https://keaupuniakeakua.faith/sitemap.xml\n"
-    return Response(content, mimetype="text/plain") 
-    @app.route("/<page_id>")
+    return Response(content, mimetype="text/plain")
+
+@app.route("/<page_id>")
 def page(page_id):
     data = load_content()
     pages = data.get("pages", data)
@@ -2660,7 +2768,28 @@ def paypal_success():
     product["downloads"] = product.get("downloads", 0) + 1
     product["total_sales"] = product.get("total_sales", 0) + float(product["price"])
     save_digital_products(products_data)
-    
+
+    # Send purchase notification email
+    ts = datetime.now().strftime("%B %d, %Y at %I:%M %p")
+    notif_subject = f"New PayPal Purchase: {product['name']} — ${product['price']}"
+    notif_body = f"""
+    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+        <h2 style="color:#5f9ea0">New PayPal Purchase</h2>
+        <table style="border-collapse:collapse;width:100%">
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>Product</strong></td>
+                <td style="padding:8px;border:1px solid #ddd">{product['name']}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>Amount</strong></td>
+                <td style="padding:8px;border:1px solid #ddd">USD ${product['price']}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>PayPal Order ID</strong></td>
+                <td style="padding:8px;border:1px solid #ddd">{order_id}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>Date / Time</strong></td>
+                <td style="padding:8px;border:1px solid #ddd">{ts}</td></tr>
+        </table>
+        <p style="margin-top:1rem;color:#666">Note: buyer name and email are available in your PayPal dashboard.</p>
+    </div>
+    """
+    send_notification_email(notif_subject, notif_body)
+
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2987,6 +3116,124 @@ def aloha_wellness_thankyou():
 @app.route("/product/prod_20260219054130")
 def old_product_redirect():
     return redirect("/aloha-wellness-buy", code=301)
+
+# ============================================
+# EMAIL SIGNUP
+# ============================================
+
+@app.route("/subscribe", methods=["POST"])
+def subscribe():
+    """Handle newsletter signup and notify admin."""
+    name = request.form.get("name", "").strip()
+    email = request.form.get("email", "").strip()
+    if not name or not email:
+        return "Name and email are required.", 400
+
+    ts = datetime.now().strftime("%B %d, %Y at %I:%M %p")
+    subject = f"New Subscriber: {name} <{email}>"
+    body = f"""
+    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+        <h2 style="color:#5f9ea0">New Email Signup</h2>
+        <table style="border-collapse:collapse;width:100%">
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>Name</strong></td>
+                <td style="padding:8px;border:1px solid #ddd">{name}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>Email</strong></td>
+                <td style="padding:8px;border:1px solid #ddd">{email}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>Date</strong></td>
+                <td style="padding:8px;border:1px solid #ddd">{ts}</td></tr>
+        </table>
+    </div>
+    """
+    send_notification_email(subject, body)
+
+    return render_template_string("""<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Thank You</title>
+<style>
+body{font-family:Georgia,serif;background:#f8f5f0;display:flex;align-items:center;
+     justify-content:center;min-height:100vh;margin:0}
+.card{background:white;padding:3rem;border-radius:12px;
+      box-shadow:0 4px 20px rgba(0,0,0,.1);text-align:center;max-width:480px}
+h2{color:#5f9ea0} a{color:#5f9ea0}
+</style></head>
+<body><div class="card">
+<h2>Thank You, {{ name }}!</h2>
+<p>You are now subscribed to Kingdom updates from Ke Aupuni O Ke Akua.</p>
+<p style="margin-top:2rem"><a href="/">&#8592; Return to site</a></p>
+</div></body></html>""", name=name)
+
+
+# ============================================
+# STRIPE PURCHASE NOTIFICATION
+# ============================================
+
+try:
+    import stripe as _stripe
+    _STRIPE_OK = True
+except ImportError:
+    _stripe = None
+    _STRIPE_OK = False
+
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
+STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET", "")
+if _STRIPE_OK and STRIPE_SECRET_KEY:
+    _stripe.api_key = STRIPE_SECRET_KEY
+
+
+@app.route("/webhook/stripe", methods=["POST"])
+def stripe_webhook():
+    """Receive Stripe webhook and send purchase notification email."""
+    if not _STRIPE_OK:
+        app.logger.error("stripe package not installed")
+        return "stripe package unavailable", 500
+
+    payload = request.get_data()
+    sig_header = request.headers.get("Stripe-Signature", "")
+
+    if not STRIPE_WEBHOOK_SECRET:
+        app.logger.error("STRIPE_WEBHOOK_SECRET not set")
+        return "webhook secret not configured", 500
+
+    try:
+        event = _stripe.Webhook.construct_event(payload, sig_header, STRIPE_WEBHOOK_SECRET)
+    except ValueError:
+        return "Invalid payload", 400
+    except _stripe.error.SignatureVerificationError:
+        return "Invalid signature", 400
+
+    if event["type"] == "checkout.session.completed":
+        session = event["data"]["object"]
+        details = session.get("customer_details") or {}
+        buyer_name = details.get("name") or "Unknown"
+        buyer_email = details.get("email") or "Unknown"
+        amount_cents = session.get("amount_total") or 0
+        currency = (session.get("currency") or "usd").upper()
+        amount = amount_cents / 100
+        meta = session.get("metadata") or {}
+        product = meta.get("product_name") or session.get("description") or "Product"
+        ts = datetime.now().strftime("%B %d, %Y at %I:%M %p")
+
+        subject = f"New Stripe Purchase: {buyer_name} — {currency} ${amount:.2f}"
+        body = f"""
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+            <h2 style="color:#5f9ea0">New Stripe Purchase</h2>
+            <table style="border-collapse:collapse;width:100%">
+                <tr><td style="padding:8px;border:1px solid #ddd"><strong>Buyer Name</strong></td>
+                    <td style="padding:8px;border:1px solid #ddd">{buyer_name}</td></tr>
+                <tr><td style="padding:8px;border:1px solid #ddd"><strong>Buyer Email</strong></td>
+                    <td style="padding:8px;border:1px solid #ddd">{buyer_email}</td></tr>
+                <tr><td style="padding:8px;border:1px solid #ddd"><strong>Product</strong></td>
+                    <td style="padding:8px;border:1px solid #ddd">{product}</td></tr>
+                <tr><td style="padding:8px;border:1px solid #ddd"><strong>Amount</strong></td>
+                    <td style="padding:8px;border:1px solid #ddd">{currency} ${amount:.2f}</td></tr>
+                <tr><td style="padding:8px;border:1px solid #ddd"><strong>Date / Time</strong></td>
+                    <td style="padding:8px;border:1px solid #ddd">{ts}</td></tr>
+            </table>
+        </div>
+        """
+        send_notification_email(subject, body)
+
+    return "", 200
+
 
 if __name__ == "__main__":
     if not DATA_FILE.exists():
