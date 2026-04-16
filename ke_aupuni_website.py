@@ -2928,6 +2928,85 @@ def paypal_success():
     
     return html
 
+@app.route("/paypal/partner-success")
+def paypal_partner_success():
+    """Handle successful PayPal partner/donation payment and send admin notification."""
+    order_id  = request.args.get("orderID", "")
+    name      = request.args.get("name", "").strip()
+    email     = request.args.get("email", "").strip()
+    address   = request.args.get("address", "").strip()
+    tier      = request.args.get("tier", "").strip()
+    amount    = request.args.get("amount", "").strip()
+
+    if not order_id:
+        abort(400)
+
+    # Send partner notification email
+    ts = datetime.now().strftime("%B %d, %Y at %I:%M %p")
+    notif_subject = f"New Partner Payment: {tier} — ${amount}"
+    notif_body = f"""
+    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+        <h2 style="color:#5f9ea0">New PayPal Partner Payment</h2>
+        <table style="border-collapse:collapse;width:100%">
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>Name</strong></td>
+                <td style="padding:8px;border:1px solid #ddd">{name}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>Email</strong></td>
+                <td style="padding:8px;border:1px solid #ddd">{email}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>Mailing Address</strong></td>
+                <td style="padding:8px;border:1px solid #ddd">{address}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>Tier Selected</strong></td>
+                <td style="padding:8px;border:1px solid #ddd">{tier}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>Amount Paid</strong></td>
+                <td style="padding:8px;border:1px solid #ddd">USD ${amount}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>PayPal Order ID</strong></td>
+                <td style="padding:8px;border:1px solid #ddd">{order_id}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>Date / Time</strong></td>
+                <td style="padding:8px;border:1px solid #ddd">{ts}</td></tr>
+        </table>
+    </div>
+    """
+    send_notification_email(notif_subject, notif_body)
+
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahalo! Partnership Received</title>
+    <style>
+        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+        body {{ font-family: system-ui, sans-serif; background: linear-gradient(135deg,#667eea,#764ba2); min-height: 100vh; padding: 2rem; display: flex; align-items: center; justify-content: center; }}
+        .container {{ max-width: 600px; width: 100%; background: white; border-radius: 16px; padding: 3rem 2rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; }}
+        h1 {{ color: #2c3e50; font-size: 2rem; margin-bottom: 1rem; }}
+        .subtitle {{ color: #6c757d; margin-bottom: 2rem; font-size: 1.1rem; }}
+        .message {{ background: #e8f4f8; border-left: 4px solid #3498db; padding: 1.5rem; border-radius: 8px; text-align: left; margin-bottom: 2rem; color: #2c3e50; line-height: 1.6; }}
+        .order-info {{ color: #6c757d; font-size: 0.85rem; margin-top: 1rem; }}
+        .home-link {{ display: inline-block; margin-top: 1.5rem; color: #6c757d; text-decoration: none; }}
+        .home-link:hover {{ color: #2c3e50; }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mahalo! Partnership Received!</h1>
+        <p class="subtitle">Thank you for your generous gift, {name}!</p>
+        <div class="message">
+            <p><strong>Aloha {name},</strong></p>
+            <br>
+            <p>Mahalo nui for your <strong>{tier}</strong> partnership gift of <strong>${amount}</strong>. Your support makes a real difference in advancing the Kingdom of God from Moloka'i to the world.</p>
+            <br>
+            <p>Kahu Phil will be in touch soon at <strong>{email}</strong>.</p>
+            <br>
+            <p>A hui hou,<br><strong>Kahu Phil Stephens</strong><br>Moloka'i, Hawai'i</p>
+        </div>
+        <div class="order-info">Order ID: {order_id}</div>
+        <a href="/" class="home-link">← Return to Ke Aupuni O Ke Akua</a>
+    </div>
+</body>
+</html>"""
+
+    return html
+
+
 @app.route("/paypal/cancel")
 def paypal_cancel():
     """Handle cancelled PayPal payment"""

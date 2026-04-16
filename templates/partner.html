@@ -266,9 +266,9 @@
                     <input type="hidden" name="partner_name" value="">
                     <input type="hidden" name="partner_email" value="">
                     <input type="hidden" name="partner_address" value="">
-                    <button type="submit" class="tier-btn-stripe">💳 Pay with Card &ndash; $25</button>
+                    <button type="submit" class="tier-btn-stripe">Pay with Card &ndash; $25</button>
                 </form>
-                <button class="tier-btn-paypal" onclick="payWithPayPal('Aloha Partner', '25.00')">🅿️ PayPal &ndash; $25</button>
+                <button class="tier-btn-paypal" onclick="payWithPayPal('Aloha Partner', '25.00')">PayPal &ndash; $25</button>
             </div>
         </div>
 
@@ -288,9 +288,9 @@
                     <input type="hidden" name="partner_name" value="">
                     <input type="hidden" name="partner_email" value="">
                     <input type="hidden" name="partner_address" value="">
-                    <button type="submit" class="tier-btn-stripe">💳 Pay with Card &ndash; $100</button>
+                    <button type="submit" class="tier-btn-stripe">Pay with Card &ndash; $100</button>
                 </form>
-                <button class="tier-btn-paypal" onclick="payWithPayPal('Kingdom Partner', '100.00')">🅿️ PayPal &ndash; $100</button>
+                <button class="tier-btn-paypal" onclick="payWithPayPal('Kingdom Partner', '100.00')">PayPal &ndash; $100</button>
             </div>
         </div>
 
@@ -311,9 +311,9 @@
                     <input type="hidden" name="partner_name" value="">
                     <input type="hidden" name="partner_email" value="">
                     <input type="hidden" name="partner_address" value="">
-                    <button type="submit" class="tier-btn-stripe">💳 Pay with Card &ndash; $250</button>
+                    <button type="submit" class="tier-btn-stripe">Pay with Card &ndash; $250</button>
                 </form>
-                <button class="tier-btn-paypal" onclick="payWithPayPal('Legacy Partner', '250.00')">🅿️ PayPal &ndash; $250</button>
+                <button class="tier-btn-paypal" onclick="payWithPayPal('Legacy Partner', '250.00')">PayPal &ndash; $250</button>
             </div>
         </div>
 
@@ -335,9 +335,9 @@
                     <input type="hidden" name="partner_name" value="">
                     <input type="hidden" name="partner_email" value="">
                     <input type="hidden" name="partner_address" value="">
-                    <button type="submit" class="tier-btn-stripe">💳 Pay with Card &ndash; $450</button>
+                    <button type="submit" class="tier-btn-stripe">Pay with Card &ndash; $450</button>
                 </form>
-                <button class="tier-btn-paypal" onclick="payWithPayPal('Covenant Partner', '450.00')">🅿️ PayPal &ndash; $450</button>
+                <button class="tier-btn-paypal" onclick="payWithPayPal('Covenant Partner', '450.00')">PayPal &ndash; $450</button>
             </div>
         </div>
     </div>
@@ -352,9 +352,9 @@
                 <input type="hidden" name="partner_name" value="">
                 <input type="hidden" name="partner_email" value="">
                 <input type="hidden" name="partner_address" value="">
-                <button type="submit" class="tier-btn-stripe">💳 Pay with Card &ndash; $15</button>
+                <button type="submit" class="tier-btn-stripe">Pay with Card &ndash; $15</button>
             </form>
-            <button class="tier-btn-paypal" onclick="payWithPayPal('Nahenahe Voice CD', '15.00')">🅿️ PayPal &ndash; $15</button>
+            <button class="tier-btn-paypal" onclick="payWithPayPal('Nahenahe Voice CD', '15.00')">PayPal &ndash; $15</button>
         </div>
     </div>
 
@@ -364,11 +364,11 @@
         <div class="free-dl-grid">
             <div class="free-dl-card">
                 <h3>The Kingdom Is Here</h3>
-                <a href="/download/kingdom_is_here" class="free-dl-btn">📥 Free Download</a>
+                <a href="/download/kingdom_is_here" class="free-dl-btn">Free Download</a>
             </div>
             <div class="free-dl-card">
                 <h3>Kingdom Wealth</h3>
-                <a href="/download/kingdom_wealth_booklet" class="free-dl-btn">📥 Free Download</a>
+                <a href="/download/kingdom_wealth_booklet" class="free-dl-btn">Free Download</a>
             </div>
         </div>
     </div>
@@ -427,8 +427,13 @@ function payWithPayPal(itemName, amount) {
         },
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(details) {
-                alert('Mahalo, ' + name + '! Your ' + itemName + ' payment was successful. Kahu Phil will be in touch at ' + email + '.');
-                window.location.href = '/partner';
+                window.location.href = '/paypal/partner-success'
+                    + '?orderID=' + encodeURIComponent(data.orderID)
+                    + '&name=' + encodeURIComponent(name)
+                    + '&email=' + encodeURIComponent(email)
+                    + '&address=' + encodeURIComponent(address)
+                    + '&tier=' + encodeURIComponent(itemName)
+                    + '&amount=' + encodeURIComponent(amount);
             });
         },
         onError: function(err) {
