@@ -14,6 +14,7 @@ import base64
 import smtplib
 import urllib.request
 import urllib.parse
+from datetime import datetime, timezone
 from email.mime.text import MIMEText
 
 from flask import Blueprint, abort, redirect, render_template, request, url_for
@@ -46,17 +47,20 @@ payments_bp = Blueprint("payments", __name__)
 # EMAIL NOTIFICATION HELPER
 # =========================================================
 
-def _send_sale_notification(product_name, amount, order_id):
+def _send_sale_notification(product_name, amount, order_id, buyer_name="", buyer_email=""):
     """Send a sale notification email to the admin. Silently skipped if SMTP is not configured."""
     if not (SMTP_HOST and SMTP_USER and SMTP_PASS):
         return
     try:
+        now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
         msg = MIMEText(
             f"New sale received!\n\n"
-            f"Product: {product_name}\n"
-            f"Amount: ${amount:.2f}\n"
-            f"Order ID: {order_id}\n\n"
-            f"Log in to the admin panel to update the Founding Reader count if needed."
+            f"Buyer Name:  {buyer_name or '(not available)'}\n"
+            f"Buyer Email: {buyer_email or '(not available)'}\n"
+            f"Product:     {product_name}\n"
+            f"Amount:      ${amount:.2f}\n"
+            f"Order ID:    {order_id}\n"
+            f"Date/Time:   {now}\n"
         )
         msg["Subject"] = f"Sale: {product_name} — ${amount:.2f}"
         msg["From"] = SMTP_USER
@@ -112,6 +116,16 @@ def _get_paypal_token():
         return json.loads(resp.read().decode())["access_token"]
 
 
+def _get_paypal_order(order_id, token):
+    """Retrieve a PayPal order to obtain payer name and email."""
+    req = urllib.request.Request(
+        f"{PAYPAL_BASE_URL}/v2/checkout/orders/{order_id}",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    with urllib.request.urlopen(req) as resp:
+        return json.loads(resp.read().decode())
+
+
 # =========================================================
 # PAYPAL SUCCESS
 # Called after customer approves payment in PayPal popup.
@@ -137,7 +151,21 @@ def paypal_success():
             p["total_sales"] = p.get("total_sales", 0) + float(product["price"])
     save_digital_products(products_data)
 
-    _send_sale_notification(product["name"], float(product["price"]), order_id)
+    # Retrieve buyer info from PayPal order details
+    buyer_name = ""
+    buyer_email = ""
+    try:
+        token = _get_paypal_token()
+        order_details = _get_paypal_order(order_id, token)
+        payer = order_details.get("payer", {})
+        given = payer.get("name", {}).get("given_name", "")
+        surname = payer.get("name", {}).get("surname", "")
+        buyer_name = f"{given} {surname}".strip()
+        buyer_email = payer.get("email_address", "")
+    except Exception:
+        pass
+
+    _send_sale_notification(product["name"], float(product["price"]), order_id, buyer_name, buyer_email)
 
     download_url = f"/download/product/{product_id}"
     return render_template(
@@ -231,7 +259,10 @@ def stripe_success():
             p["total_sales"] = p.get("total_sales", 0) + float(product["price"])
     save_digital_products(products_data)
 
-    _send_sale_notification(product["name"], float(product["price"]), session_id)
+    customer_details = session.customer_details or {}
+    buyer_name = getattr(customer_details, "name", None) or ""
+    buyer_email = getattr(customer_details, "email", None) or ""
+    _send_sale_notification(product["name"], float(product["price"]), session_id, buyer_name, buyer_email)
 
     download_url = f"/download/product/{product_id}"
     return render_template(
@@ -276,6 +307,12 @@ def stripe_webhook():
                         p["downloads"] = p.get("downloads", 0) + 1
                         p["total_sales"] = p.get("total_sales", 0) + float(product["price"])
                 save_digital_products(products_data)
-                _send_sale_notification(product["name"], float(product["price"]), session.get("id", ""))
+                customer_details = session.get("customer_details") or {}
+                buyer_name = customer_details.get("name") or ""
+                buyer_email = customer_details.get("email") or ""
+                _send_sale_notification(
+                    product["name"], float(product["price"]), session.get("id", ""),
+                    buyer_name, buyer_email,
+                )
 
     return ("", 200)
