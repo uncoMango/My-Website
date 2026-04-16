@@ -67,7 +67,7 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>🌺 Complete Your Purchase</h1>
+        <h1>Complete Your Purchase</h1>
         <p style="color:#6c757d;">Ke Aupuni O Ke Akua Press</p>
     </div>
 
@@ -76,7 +76,7 @@
             <div class="product-name">{{ product.name }}</div>
             <div class="product-type">Digital Ebook – Instant Download</div>
         </div>
-        <div class="product-price">${{ product.price }}</div>
+        <div class="product-price">${{ "%.2f"|format(product.price) }}</div>
     </div>
 
     <ul class="features">
@@ -89,14 +89,14 @@
     {% if stripe_enabled %}
     <!-- STRIPE - Preferred Option -->
     <div class="stripe-section">
-        <div class="stripe-section-label">⭐ Recommended</div>
+        <div class="stripe-section-label">Recommended</div>
         <div class="stripe-section-msg">
             Join our Wellness Community! Use Credit/Debit below to receive automatic email updates.
         </div>
         <form action="/stripe/create-session/{{ product.id }}" method="POST">
-            <button type="submit" class="stripe-btn">💳 Pay with Credit / Debit Card</button>
+            <button type="submit" class="stripe-btn">Pay with Credit / Debit Card</button>
         </form>
-        <div class="secure-badge">🔒 Secure checkout powered by Stripe</div>
+        <div class="secure-badge">Secure checkout powered by Stripe</div>
     </div>
     {% endif %}
 
@@ -106,7 +106,7 @@
             Or, use your trusted PayPal account for a familiar checkout.
         </div>
         <div id="paypal-button-container"></div>
-        <div class="secure-badge">🔒 Secure checkout powered by PayPal</div>
+        <div class="secure-badge">Secure checkout powered by PayPal</div>
         <p style="text-align:center; margin-top:0.5rem; color:#6c757d; font-size:0.85rem;">
             No PayPal account needed – credit &amp; debit cards accepted
         </p>
@@ -121,7 +121,7 @@ paypal.Buttons({
     createOrder: function(data, actions) {
         return actions.order.create({
             purchase_units: [{
-                amount: { value: '{{ product.price }}' },
+                amount: { value: '{{ "%.2f"|format(product.price) }}' },
                 description: '{{ product.name }}'
             }]
         });
