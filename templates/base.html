@@ -78,6 +78,15 @@
 
 {% block content %}{% endblock %}
 
+<section class="signup-strip">
+    <h2>Stay Connected</h2>
+    <form method="POST" action="/subscribe">
+        <input type="text" name="first_name" placeholder="First Name" required>
+        <input type="email" name="email" placeholder="Email address" required>
+        <button type="submit">Join the Kingdom Community</button>
+    </form>
+</section>
+
 <footer class="footer">
     <p>{{ footer_text }}</p>
 </footer>

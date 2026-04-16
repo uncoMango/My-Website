@@ -4,7 +4,7 @@ import smtplib
 import threading
 from datetime import datetime, timezone
 from email.mime.text import MIMEText
-from flask import Blueprint, send_file, abort, request
+from flask import Blueprint, send_file, abort, request, redirect, render_template_string
 from config import BASE, EMAILS_FILE, SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, NOTIFY_EMAIL
 
 downloads_bp = Blueprint("downloads", __name__)
@@ -76,14 +76,16 @@ def aloha_wellness_freebie():
     return _send(BASE / "static" / "Aloha_Wellness_Free_Guide.pdf")
 
 
-def _notify_new_subscriber(email):
+def _notify_new_subscriber(email, name=""):
     try:
+        name_line = f"Name:  {name}\n" if name else ""
         msg = MIMEText(
-            f"New Aloha Wellness subscriber:\n\n"
+            f"New subscriber:\n\n"
+            f"{name_line}"
             f"Email: {email}\n"
-            f"Time: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}\n"
+            f"Time:  {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}\n"
         )
-        msg["Subject"] = f"New Subscriber: {email}"
+        msg["Subject"] = f"New Subscriber: {name + ' — ' if name else ''}{email}"
         msg["From"] = SMTP_USER
         msg["To"] = NOTIFY_EMAIL
         with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
@@ -91,7 +93,52 @@ def _notify_new_subscriber(email):
             server.login(SMTP_USER, SMTP_PASS)
             server.send_message(msg)
     except Exception:
-        pass  # Don't break the download if email fails
+        pass  # Don't break the response if email fails
+
+
+@downloads_bp.route("/subscribe", methods=["POST"])
+def subscribe():
+    first_name = request.form.get("first_name", "").strip()
+    email = request.form.get("email", "").strip().lower()
+    if not email:
+        return redirect(request.referrer or "/")
+
+    subscribers = []
+    if EMAILS_FILE.exists():
+        try:
+            subscribers = json.loads(EMAILS_FILE.read_text())
+        except Exception:
+            pass
+    if not any(s["email"] == email for s in subscribers):
+        subscribers.append({
+            "first_name": first_name,
+            "email": email,
+            "source": "footer_signup",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        })
+        EMAILS_FILE.write_text(json.dumps(subscribers, indent=2))
+        threading.Thread(target=_notify_new_subscriber, args=(email, first_name)).start()
+
+    return render_template_string("""<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><title>Mahalo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans',sans-serif;background:#1a1a2e;color:white;
+     min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem}
+.card{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+      border-radius:12px;padding:3rem 2.5rem;text-align:center;max-width:480px;width:100%}
+h1{font-size:1.8rem;margin-bottom:1rem;color:#5f9ea0}
+p{line-height:1.7;margin-bottom:1.5rem;color:rgba(255,255,255,0.85)}
+a{color:#5f9ea0;text-decoration:none;font-weight:700}
+a:hover{text-decoration:underline}
+</style></head>
+<body><div class="card">
+<h1>Mahalo{% if name %}, {{ name }}{% endif %}!</h1>
+<p>You are now connected with Ke Aupuni O Ke Akua. Watch your inbox for Kingdom teachings and updates.</p>
+<a href="/">Return to site</a>
+</div></body></html>""", name=first_name)
 
 @downloads_bp.route("/static/covers/<filename>")
 def serve_cover(filename):

@@ -111,6 +111,60 @@ body {
 .gallery-item:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.7); }
 .gallery-item img { width: 100%; height: auto; display: block; }
 
+.signup-strip {
+    background: rgba(0,0,0,0.55);
+    padding: 3rem 2rem;
+    text-align: center;
+}
+.signup-strip h2 {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 1.5rem;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+}
+.signup-strip form {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 680px;
+    margin: 0 auto;
+}
+.signup-strip input {
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: 'Noto Sans', sans-serif;
+    flex: 1;
+    min-width: 180px;
+    max-width: 230px;
+    background: rgba(255,255,255,0.95);
+    color: #2c3e50;
+}
+.signup-strip input::placeholder { color: #888; }
+.signup-strip button {
+    background: var(--accent-teal);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: 'Noto Sans', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+}
+.signup-strip button:hover { background: #4a8b8e; }
+
+@media (max-width: 600px) {
+    .signup-strip input { max-width: 100%; width: 100%; }
+    .signup-strip button { width: 100%; }
+}
+
 .footer { text-align: center; padding: 2rem; color: white; background: none; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); margin-top: 2rem; }
 
 @media (max-width: 768px) {
