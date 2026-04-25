@@ -59,6 +59,10 @@ def partner_page():
         stripe_publishable_key=STRIPE_PUBLISHABLE_KEY if STRIPE_ENABLED else "",
     )
 
+@pages_bp.route("/kingdom-study")
+def kingdom_study():
+    return render_template("kingdom_study.html")
+
 @pages_bp.route("/aloha-wellness")
 def aloha_wellness_funnel():
     data = load_content()
@@ -80,6 +84,7 @@ def sitemap():
         ("/pastor_planners",    "0.8", "monthly"),
         ("/nahenahe_voice",     "0.8", "monthly"),
         ("/myron-golden",       "0.8", "weekly"),
+        ("/kingdom-study",      "0.9", "weekly"),
     ]
     base_url = "https://keaupuniakeakua.faith"
     today = datetime.now().strftime("%Y-%m-%d")

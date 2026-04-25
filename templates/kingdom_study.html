@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kingdom Study Tools — Original Hebrew and Greek Word Studies</title>
+    <meta name="description" content="73 original-language word studies by Kahu Phil Stephens. Understand what Scripture actually says in Hebrew and Greek — beginning with Matthew 6:33.">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:       #0d0d10;
+            --bg-card:  #16161c;
+            --bg-raised:#1e1e28;
+            --gold:     #c9a842;
+            --gold-dim: rgba(201,168,66,0.18);
+            --gold-line:rgba(201,168,66,0.35);
+            --text:     #e8e4d8;
+            --text-dim: rgba(232,228,216,0.6);
+            --text-faint:rgba(232,228,216,0.38);
+            --white:    #ffffff;
+            --accent:   #7b9fbf;
+            --rule:     rgba(255,255,255,0.08);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── UTILITIES ── */
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .gold { color: var(--gold); }
+
+        hr.rule {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 0;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            padding: 80px 24px 72px;
+            text-align: center;
+            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,66,0.07) 0%, transparent 70%);
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .hero-eyebrow {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid var(--gold-line);
+            padding: 5px 16px;
+            border-radius: 2px;
+            margin-bottom: 28px;
+        }
+
+        .hero h1 {
+            font-family: 'Noto Serif', serif;
+            font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+            color: var(--white);
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+            margin-bottom: 22px;
+        }
+
+        .hero-sub {
+            font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+            color: var(--text-dim);
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 300;
+            line-height: 1.75;
+        }
+
+        .hero-sub strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* ── SECTION LABELS ── */
+        .section-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-faint);
+            margin-bottom: 10px;
+        }
+
+        /* ── FREE PREVIEW ── */
+        .preview-section {
+            padding: 72px 24px;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .preview-intro {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .preview-intro h2 {
+            font-family: 'Noto Serif', serif;
+            font-size: clamp(1.5rem, 3.5vw, 2rem);
+            color: var(--white);
+            margin-bottom: 12px;
+        }
+
+        .preview-intro p {
+            color: var(--text-dim);
+            font-size: 1.05rem;
+            max-width: 540px;
+            margin: 0 auto;
+        }
+
+        /* Scripture verse display */
+        .verse-block {
+            background: var(--bg-card);
+            border: 1px solid var(--rule);
+            border-left: 3px solid var(--gold);
+            border-radius: 4px;
+            padding: 28px 32px;
+            margin-bottom: 32px;
+        }
+
+        .verse-ref {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .verse-text {
+            font-family: 'Noto Serif', serif;
+            font-size: 1.2rem;
+            color: var(--white);
+            line-height: 1.65;
+            font-style: italic;
+        }
+
+        .verse-text .highlight {
+            color: var(--gold);
+            font-style: italic;
+            font-weight: 700;
+            text-decoration: underline;
+            text-decoration-color: var(--gold-line);
+            text-underline-offset: 3px;
+        }
+
+        /* Word study card */
+        .word-card {
+            background: var(--bg-raised);
+            border: 1px solid rgba(201,168,66,0.22);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .word-card-header {
+            background: linear-gradient(135deg, rgba(201,168,66,0.12), rgba(201,168,66,0.05));
+            border-bottom: 1px solid rgba(201,168,66,0.18);
+            padding: 24px 32px;
+            display: flex;
+            align-items: baseline;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .word-greek {
+            font-family: 'Noto Serif', serif;
+            font-size: 2.6rem;
+            color: var(--gold);
+            line-height: 1;
+            font-weight: 700;
+        }
+
+        .word-transliteration {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            font-style: italic;
+        }
+
+        .word-card-body {
+            padding: 28px 32px;
+            display: grid;
+            gap: 24px;
+        }
+
+        .word-field-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-faint);
+            margin-bottom: 6px;
+        }
+
+        .word-field-value {
+            font-size: 1rem;
+            color: var(--text);
+            line-height: 1.65;
+        }
+
+        .word-field-value strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .grammar-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chip {
+            background: var(--bg-card);
+            border: 1px solid var(--rule);
+            border-radius: 2px;
+            padding: 3px 10px;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            font-family: 'Noto Sans', sans-serif;
+        }
+
+        .kingdom-insight {
+            background: var(--gold-dim);
+            border: 1px solid var(--gold-line);
+            border-radius: 4px;
+            padding: 18px 22px;
+        }
+
+        .kingdom-insight .word-field-label {
+            color: var(--gold);
+        }
+
+        .kingdom-insight .word-field-value {
+            color: var(--text);
+        }
+
+        /* ── WHAT'S INCLUDED ── */
+        .included-section {
+            padding: 72px 24px;
+            border-bottom: 1px solid var(--rule);
+            background: linear-gradient(180deg, var(--bg) 0%, rgba(13,13,16,0.5) 100%);
+        }
+
+        .included-section h2 {
+            font-family: 'Noto Serif', serif;
+            font-size: clamp(1.5rem, 3.5vw, 2rem);
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+
+        .included-count {
+            font-size: 1rem;
+            color: var(--text-dim);
+            margin-bottom: 40px;
+        }
+
+        .category-group {
+            margin-bottom: 32px;
+        }
+
+        .category-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            border-bottom: 1px solid var(--gold-line);
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+        }
+
+        .word-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .word-item {
+            background: var(--bg-card);
+            border: 1px solid var(--rule);
+            border-radius: 3px;
+            padding: 10px 14px;
+        }
+
+        .word-item .greek-small {
+            font-family: 'Noto Serif', serif;
+            font-size: 1rem;
+            color: var(--gold);
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .word-item .gloss {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+        }
+
+        /* ── OFFER ── */
+        .offer-section {
+            padding: 72px 24px;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .offer-box {
+            background: var(--bg-card);
+            border: 1px solid rgba(201,168,66,0.25);
+            border-radius: 8px;
+            overflow: hidden;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        .offer-header {
+            background: linear-gradient(135deg, rgba(201,168,66,0.14), rgba(201,168,66,0.06));
+            border-bottom: 1px solid rgba(201,168,66,0.2);
+            padding: 32px 36px;
+            text-align: center;
+        }
+
+        .offer-header h2 {
+            font-family: 'Noto Serif', serif;
+            font-size: 1.55rem;
+            color: var(--white);
+            margin-bottom: 6px;
+        }
+
+        .offer-header p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        .offer-body {
+            padding: 36px;
+            text-align: center;
+        }
+
+        .price-display {
+            margin-bottom: 28px;
+        }
+
+        .price-amount {
+            font-family: 'Noto Serif', serif;
+            font-size: 4rem;
+            color: var(--gold);
+            font-weight: 700;
+            line-height: 1;
+            display: block;
+        }
+
+        .price-descriptor {
+            font-size: 0.9rem;
+            color: var(--text-faint);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-top: 6px;
+        }
+
+        .offer-includes {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 32px;
+        }
+
+        .offer-includes li {
+            padding: 8px 0 8px 24px;
+            position: relative;
+            font-size: 0.95rem;
+            color: var(--text-dim);
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .offer-includes li:last-child { border-bottom: none; }
+
+        .offer-includes li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 14px;
+            width: 8px;
+            height: 8px;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            background: var(--gold-dim);
+        }
+
+        .buy-btn {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            background: var(--gold);
+            color: #0d0d10;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 4px;
+            text-align: center;
+            letter-spacing: 0.04em;
+            transition: background 0.18s, transform 0.18s;
+            font-family: 'Noto Sans', sans-serif;
+        }
+
+        .buy-btn:hover {
+            background: #d4b24a;
+            transform: translateY(-2px);
+        }
+
+        .secure-note {
+            margin-top: 14px;
+            font-size: 0.82rem;
+            color: var(--text-faint);
+            letter-spacing: 0.03em;
+        }
+
+        /* ── CREDIBILITY ── */
+        .credibility-section {
+            padding: 72px 24px;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .credibility-section h2 {
+            font-family: 'Noto Serif', serif;
+            font-size: clamp(1.4rem, 3vw, 1.8rem);
+            color: var(--white);
+            margin-bottom: 24px;
+        }
+
+        .credibility-section p {
+            font-size: 1.05rem;
+            color: var(--text-dim);
+            margin-bottom: 16px;
+            line-height: 1.75;
+        }
+
+        .credential-list {
+            list-style: none;
+            margin-top: 24px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .credential-list li {
+            padding: 14px 18px 14px 44px;
+            background: var(--bg-card);
+            border: 1px solid var(--rule);
+            border-radius: 3px;
+            position: relative;
+            font-size: 0.95rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        .credential-list li::before {
+            content: '';
+            position: absolute;
+            left: 18px;
+            top: 18px;
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            border-radius: 50%;
+        }
+
+        .credential-list li strong {
+            color: var(--text);
+            display: block;
+            font-size: 0.83rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 2px;
+        }
+
+        /* ── FINAL CTA ── */
+        .final-cta {
+            padding: 80px 24px;
+            text-align: center;
+            background: radial-gradient(ellipse 80% 50% at 50% 100%, rgba(201,168,66,0.06) 0%, transparent 70%);
+        }
+
+        .final-cta h2 {
+            font-family: 'Noto Serif', serif;
+            font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+            color: var(--white);
+            margin-bottom: 14px;
+            line-height: 1.3;
+        }
+
+        .final-cta p {
+            color: var(--text-dim);
+            font-size: 1.05rem;
+            max-width: 520px;
+            margin: 0 auto 36px;
+        }
+
+        .final-cta .buy-btn {
+            max-width: 420px;
+            margin: 0 auto;
+            font-size: 1.15rem;
+            padding: 22px;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid var(--rule);
+            padding: 28px 24px;
+            text-align: center;
+            font-size: 0.82rem;
+            color: var(--text-faint);
+        }
+
+        footer a {
+            color: var(--text-faint);
+            text-decoration: none;
+        }
+
+        footer a:hover { color: var(--gold); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 600px) {
+            .word-card-header { padding: 20px 20px; }
+            .word-card-body { padding: 20px 20px; }
+            .verse-block { padding: 20px 20px; }
+            .offer-body { padding: 24px 20px; }
+            .word-list { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 380px) {
+            .word-list { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-eyebrow">Original Hebrew and Greek Word Studies</div>
+    <h1>Kingdom Study Tools</h1>
+    <p class="hero-sub">
+        73 original-language word studies that show you <strong>what Scripture actually says</strong> —
+        not the surface translation, but the full weight of every word as it was written
+        in Hebrew and Greek.
+    </p>
+</section>
+
+<hr class="rule">
+
+<!-- FREE PREVIEW -->
+<section class="preview-section">
+    <div class="container">
+        <div class="preview-intro">
+            <p class="section-label">Free Preview</p>
+            <h2>See One Study for Yourself</h2>
+            <p>Below is a complete word study from the collection — Matthew 6:33, the word translated "seek."</p>
+        </div>
+
+        <div class="verse-block">
+            <div class="verse-ref">Matthew 6:33 — Greek New Testament</div>
+            <p class="verse-text">
+                "But <span class="highlight">seek</span> first the kingdom of God
+                and his righteousness, and all these things will be added to you."
+            </p>
+        </div>
+
+        <div class="word-card">
+            <div class="word-card-header">
+                <span class="word-greek">ζητέω</span>
+                <span class="word-transliteration">zēteō</span>
+            </div>
+            <div class="word-card-body">
+
+                <div>
+                    <p class="word-field-label">English Gloss</p>
+                    <p class="word-field-value">to seek, search for, strive after, crave, desire with urgency</p>
+                </div>
+
+                <div>
+                    <p class="word-field-label">Grammar</p>
+                    <div class="grammar-chips">
+                        <span class="chip">Verb</span>
+                        <span class="chip">Present Active Imperative</span>
+                        <span class="chip">2nd Person Plural</span>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="word-field-label">What the Grammar Tells You</p>
+                    <p class="word-field-value">
+                        The present active imperative in Greek does not describe a one-time decision.
+                        It commands <strong>continuous, ongoing action</strong> — something you keep doing.
+                        A more literal rendering: <em>"Keep on craving. Keep on pursuing. Make this your constant direction."</em>
+                        The command is not "find the Kingdom once." It is "let your seeking never stop."
+                    </p>
+                </div>
+
+                <div>
+                    <p class="word-field-label">Classical and Koine Usage</p>
+                    <p class="word-field-value">
+                        In classical Greek, <em>zēteō</em> was used for a hunter pursuing prey and a scholar
+                        investigating a problem. Both images carry intensity of focus, not casual glancing.
+                        In the Septuagint (the Greek Old Testament), the same word translates the Hebrew
+                        <em>darash</em> — to inquire earnestly, to resort to, to seek with all one's weight.
+                        The word assumes that what you are seeking is worth your whole attention.
+                    </p>
+                </div>
+
+                <div class="kingdom-insight">
+                    <p class="word-field-label">Kingdom Meaning</p>
+                    <p class="word-field-value">
+                        Jesus is not giving advice about priorities on a list. He is describing a way of being.
+                        <em>Zēteō</em> in this verse governs everything else in the sentence —
+                        the Kingdom, His righteousness, and the provision that follows.
+                        The person who is "seeking first" is someone whose whole orientation has
+                        shifted toward the Kingdom. They are not adding the Kingdom to their life.
+                        They have made it the source from which their life flows.
+                        This is why the "all these things" are <em>added</em> — they are not chased.
+                        They come to the one who is already running in the right direction.
+                    </p>
+                </div>
+
+                <div>
+                    <p class="word-field-label">Related Words in This Collection</p>
+                    <p class="word-field-value">
+                        <em>basileia</em> (kingdom / reign), <em>dikaiosyne</em> (righteousness / covenant status),
+                        <em>proton</em> (first / of first rank) — all three appear in this verse and
+                        each has its own full study in the collection.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="rule">
+
+<!-- WHAT'S INCLUDED -->
+<section class="included-section">
+    <div class="container">
+        <p class="section-label">The Full Collection</p>
+        <h2>73 Word Studies Across Both Testaments</h2>
+        <p class="included-count">
+            Every study follows the same format: gloss, grammar, classical usage, Septuagint or New Testament context,
+            and a full Kingdom meaning section that explains what the word unlocks in your reading of Scripture.
+        </p>
+
+        <div class="category-group">
+            <p class="category-title">Kingdom and Reign — Greek</p>
+            <div class="word-list">
+                <div class="word-item"><span class="greek-small">βασιλεία</span><span class="gloss">basileia — kingdom, reign, dominion</span></div>
+                <div class="word-item"><span class="greek-small">βασιλεύς</span><span class="gloss">basileus — king</span></div>
+                <div class="word-item"><span class="greek-small">ζητέω</span><span class="gloss">zēteō — seek, crave</span></div>
+                <div class="word-item"><span class="greek-small">δικαιοσύνη</span><span class="gloss">dikaiosyne — righteousness</span></div>
+                <div class="word-item"><span class="greek-small">ἐκκλησία</span><span class="gloss">ekklesia — assembly, called-out</span></div>
+                <div class="word-item"><span class="greek-small">εἰρήνη</span><span class="gloss">eirene — peace, wholeness</span></div>
+            </div>
+        </div>
+
+        <div class="category-group">
+            <p class="category-title">Covenant and Promise — Hebrew</p>
+            <div class="word-list">
+                <div class="word-item"><span class="greek-small">מַלְכוּת</span><span class="gloss">malkut — kingdom, sovereignty</span></div>
+                <div class="word-item"><span class="greek-small">בְּרִית</span><span class="gloss">berit — covenant, binding agreement</span></div>
+                <div class="word-item"><span class="greek-small">שָׁלוֹם</span><span class="gloss">shalom — peace, completeness</span></div>
+                <div class="word-item"><span class="greek-small">חֶסֶד</span><span class="gloss">hesed — loyal love, covenant faithfulness</span></div>
+                <div class="word-item"><span class="greek-small">צְדָקָה</span><span class="gloss">tzedaqah — righteousness, right relationship</span></div>
+                <div class="word-item"><span class="greek-small">אֱמוּנָה</span><span class="gloss">emunah — faithfulness, firm trust</span></div>
+            </div>
+        </div>
+
+        <div class="category-group">
+            <p class="category-title">Salvation, Redemption, and Life — Greek and Hebrew</p>
+            <div class="word-list">
+                <div class="word-item"><span class="greek-small">σωτηρία</span><span class="gloss">soteria — salvation, deliverance</span></div>
+                <div class="word-item"><span class="greek-small">ζωή</span><span class="gloss">zoe — life, the life of God</span></div>
+                <div class="word-item"><span class="greek-small">χάρις</span><span class="gloss">charis — grace, gift, favor</span></div>
+                <div class="word-item"><span class="greek-small">λύτρον</span><span class="gloss">lytron — ransom, redemption price</span></div>
+                <div class="word-item"><span class="greek-small">נֶפֶשׁ</span><span class="gloss">nefesh — soul, living being</span></div>
+                <div class="word-item"><span class="greek-small">גָּאַל</span><span class="gloss">ga'al — redeem, restore to kin</span></div>
+            </div>
+        </div>
+
+        <p style="color: var(--text-faint); font-size: 0.9rem; margin-top: 20px;">
+            Plus 49 additional studies across prayer, authority, repentance, the Spirit, and the life of the Kingdom community.
+        </p>
+    </div>
+</section>
+
+<hr class="rule">
+
+<!-- OFFER -->
+<section class="offer-section">
+    <div class="container">
+        <div class="offer-box">
+            <div class="offer-header">
+                <h2>Kingdom Study Tools</h2>
+                <p>Complete collection — 73 original-language word studies</p>
+            </div>
+            <div class="offer-body">
+                <div class="price-display">
+                    <span class="price-amount">$97</span>
+                    <span class="price-descriptor">One-time — yours permanently</span>
+                </div>
+                <ul class="offer-includes">
+                    <li>73 full word studies in Hebrew and Greek</li>
+                    <li>Grammar explanation written for non-specialists</li>
+                    <li>Kingdom meaning section on every word</li>
+                    <li>Cross-references to related words in the collection</li>
+                    <li>Permanent access — no subscription</li>
+                </ul>
+                <a href="https://scripture-app.onrender.com/unlock" class="buy-btn">
+                    Unlock the Full Collection &mdash; $97
+                </a>
+                <p class="secure-note">Secure checkout &nbsp;&middot;&nbsp; Instant access &nbsp;&middot;&nbsp; One-time payment</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="rule">
+
+<!-- CREDIBILITY -->
+<section class="credibility-section">
+    <div class="container">
+        <p class="section-label">About the Author</p>
+        <h2>Kahu Phil Stephens</h2>
+        <p>
+            These studies come from 30 years of working in original Hebrew and Greek — not as an academic
+            exercise but as the daily practice of a pastor who needed to know what the text actually said.
+            Every word in this collection has been studied in context, compared across the testaments, and
+            tested against the lived experience of pastoral ministry.
+        </p>
+        <p>
+            The goal throughout is not to impress with scholarship but to hand you a tool that changes
+            how you read the Bible. When you know what <em>zēteō</em> means in Matthew 6:33, that verse
+            never reads the same way again.
+        </p>
+
+        <ul class="credential-list">
+            <li>
+                <strong>Heritage</strong>
+                Native Hawaiian — from the traditions and whakapapa of the islands where these convictions were formed
+            </li>
+            <li>
+                <strong>Education</strong>
+                Kamehameha Schools graduate — the institution founded to serve the Hawaiian people
+            </li>
+            <li>
+                <strong>Biblical Languages</strong>
+                30 years of study in original Hebrew and Greek — reading the Scriptures as they were written
+            </li>
+            <li>
+                <strong>Pastoral Ministry</strong>
+                8 years as a pastor on Molokaʻi, serving a community of approximately 7,000 people,
+                many of them living in one of the most rural and underserved counties in the United States
+            </li>
+        </ul>
+    </div>
+</section>
+
+<hr class="rule">
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+    <div class="container">
+        <h2>Read the Bible the way it was written.</h2>
+        <p>
+            The English text is a door. The original languages are the room.
+            These 73 studies hand you the key.
+        </p>
+        <a href="https://scripture-app.onrender.com/unlock" class="buy-btn">
+            Unlock the Full Collection &mdash; $97
+        </a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>
+        &copy; 2026 Ke Aupuni O Ke Akua Press &nbsp;&middot;&nbsp;
+        Kahu Phil Stephens, Molokaʻi, Hawaiʻi &nbsp;&middot;&nbsp;
+        <a href="/">keaupuniakeakua.faith</a>
+    </p>
+</footer>
+
+</body>
+</html>
