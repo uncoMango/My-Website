@@ -77,6 +77,13 @@ def aloha_wellness_freebie():
 
 
 def _notify_new_subscriber(email, name=""):
+    if not all([SMTP_HOST, SMTP_USER, SMTP_PASS]):
+        print(
+            f"[subscribe] SMTP not configured — skipping notification for {email}. "
+            "Set SMTP_HOST, SMTP_USER, SMTP_PASS in Render environment.",
+            flush=True,
+        )
+        return
     try:
         name_line = f"Name:  {name}\n" if name else ""
         msg = MIMEText(
@@ -92,8 +99,8 @@ def _notify_new_subscriber(email, name=""):
             server.starttls()
             server.login(SMTP_USER, SMTP_PASS)
             server.send_message(msg)
-    except Exception:
-        pass  # Don't break the response if email fails
+    except Exception as e:
+        print(f"[subscribe] Email notification failed for {email}: {e}", flush=True)
 
 
 @downloads_bp.route("/thank-you")
