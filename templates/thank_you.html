@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Mahalo — Ke Aupuni O Ke Akua{% endblock %}
+
+{% block meta_description %}You are now connected to Ke Aupuni O Ke Akua.{% endblock %}
+
+{% block content %}
+<div class="content-card" style="max-width:560px;margin:5rem auto;text-align:center;padding:3rem 2.5rem;">
+    <h1 style="font-size:2.2rem;margin-bottom:1rem;">Mahalo{% if name %}, {{ name }}{% endif %}!</h1>
+    <h2 style="font-size:1.2rem;font-weight:400;color:rgba(255,255,255,0.75);margin-bottom:1.5rem;">
+        You are now connected to Ke Aupuni O Ke Akua.
+    </h2>
+    <p style="line-height:1.8;color:rgba(255,255,255,0.85);margin-bottom:2.5rem;">
+        Watch your inbox. What is coming is not just information — it is invitation.
+    </p>
+    <a href="/" class="buy-button">Return Home</a>
+</div>
+{% endblock %}
