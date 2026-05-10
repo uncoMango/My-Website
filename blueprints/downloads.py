@@ -53,9 +53,7 @@ else:
 # ---------------------------------------------------------------------------
 
 def _notify_new_subscriber(email, name=""):
-    print(f"[notify] Attempting notification email → {NOTIFY_EMAIL}  (subscriber: {email})", flush=True)
     if not all([SMTP_HOST, SMTP_USER, SMTP_PASS]):
-        print("[notify] SMTP not configured — set SMTP_HOST, SMTP_USER, SMTP_PASS in Render environment.", flush=True)
         return
     try:
         name_line = f"Name:  {name}\n" if name else ""
@@ -69,21 +67,17 @@ def _notify_new_subscriber(email, name=""):
         msg["Subject"] = f"New Subscriber: {name + ' — ' if name else ''}{email}"
         msg["From"] = "kahuphil@keaupuni.faith"
         msg["To"] = NOTIFY_EMAIL
-        print(f"[notify] Connecting to SMTP {SMTP_HOST}:{SMTP_PORT}", flush=True)
         with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
             server.starttls()
             server.login(SMTP_USER, SMTP_PASS)
-            print("[notify] SMTP login success", flush=True)
             server.send_message(msg)
-            print(f"[notify] Notification sent to {NOTIFY_EMAIL}", flush=True)
+        print(f"[notify] Notification sent to {NOTIFY_EMAIL}", flush=True)
     except Exception as e:
         print(f"[notify] FAILED for {email}: {e}", flush=True)
 
 
 def _send_welcome_email(email, name=""):
-    print(f"[welcome] Attempting welcome email → {email}", flush=True)
     if not all([SMTP_HOST, SMTP_USER, SMTP_PASS]):
-        print("[welcome] SMTP not configured — skipping welcome email.", flush=True)
         return
     try:
         greeting = name if name else "friend"
@@ -105,13 +99,11 @@ def _send_welcome_email(email, name=""):
         msg["Subject"] = "You are connected — Ke Aupuni O Ke Akua"
         msg["From"] = "kahuphil@keaupuni.faith"
         msg["To"] = email
-        print(f"[welcome] Connecting to SMTP {SMTP_HOST}:{SMTP_PORT}", flush=True)
         with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
             server.starttls()
             server.login(SMTP_USER, SMTP_PASS)
-            print("[welcome] SMTP login success", flush=True)
             server.send_message(msg)
-            print(f"[welcome] Welcome email sent to {email}", flush=True)
+        print(f"[welcome] Welcome email sent to {email}", flush=True)
     except Exception as e:
         print(f"[welcome] FAILED for {email}: {e}", flush=True)
 
@@ -121,35 +113,25 @@ def _send_welcome_email(email, name=""):
 # ---------------------------------------------------------------------------
 
 def _append_to_sheet(name, email, timestamp):
-    print(f"[sheets] >>> _append_to_sheet called for {email}", flush=True)
     creds_json = os.environ.get("GOOGLE_CREDENTIALS_JSON", "")
     if not creds_json:
-        print("[sheets] GOOGLE_CREDENTIALS_JSON is empty/missing — skipping.", flush=True)
-        return
-    print(f"[sheets] Credentials string found ({len(creds_json)} chars) — parsing JSON", flush=True)
-    try:
-        creds_dict = json.loads(creds_json)
-        print(f"[sheets] Credentials parsed OK, project={creds_dict.get('project_id', '?')}", flush=True)
-    except Exception as e:
-        print(f"[sheets] FAILED to parse GOOGLE_CREDENTIALS_JSON: {e}", flush=True)
         return
     try:
-        import gspread
         from google.oauth2.service_account import Credentials
+        import gspread
 
-        scopes = [
-            "https://www.googleapis.com/auth/spreadsheets",
-            "https://www.googleapis.com/auth/drive",
-        ]
-        creds = Credentials.from_service_account_info(creds_dict, scopes=scopes)
-        print("[sheets] Credentials object created — authorizing gspread client", flush=True)
+        creds = Credentials.from_service_account_info(
+            json.loads(creds_json),
+            scopes=[
+                "https://www.googleapis.com/auth/spreadsheets",
+                "https://www.googleapis.com/auth/drive",
+            ],
+        )
         client = gspread.authorize(creds)
-        print("[sheets] gspread authorized — opening sheet 'Ke Aupuni Leads'", flush=True)
         sheet = client.open("Ke Aupuni Leads").sheet1
-        print("[sheets] Sheet opened — appending row", flush=True)
         row = [name, email, "Website Signup", timestamp]
         sheet.append_row(row)
-        print(f"[sheets] SUCCESS — row appended: {row}", flush=True)
+        print(f"[sheets] Row appended for {email}", flush=True)
     except Exception as e:
         print(f"[sheets] FAILED for {email}: {type(e).__name__}: {e}", flush=True)
 
@@ -168,10 +150,7 @@ def subscribe():
     print(f"[subscribe] New signup attempt — email={email} name={first_name}", flush=True)
 
     subscribers = _load_subscribers()
-    # if any(s["email"] == email for s in subscribers):
-    #     print(f"[subscribe] Duplicate — {email} already in subscribers.json", flush=True)
-    # else:
-    if True:
+    if not any(s["email"] == email for s in subscribers):
         subscribers.append({
             "first_name": first_name,
             "email": email,
