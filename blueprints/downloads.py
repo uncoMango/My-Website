@@ -1,7 +1,6 @@
 # blueprints/downloads.py
 import json
 import smtplib
-import threading
 from datetime import datetime, timezone
 from email.mime.text import MIMEText
 from flask import Blueprint, send_file, abort, request, redirect, render_template, render_template_string
@@ -72,16 +71,14 @@ def aloha_wellness_freebie():
                     "timestamp": datetime.now(timezone.utc).isoformat(),
                 })
                 EMAILS_FILE.write_text(json.dumps(subscribers, indent=2))
-                threading.Thread(target=_notify_new_subscriber, args=(email,)).start()
+                _notify_new_subscriber(email)
     return _send(BASE / "static" / "Aloha_Wellness_Free_Guide.pdf")
 
 
 def _send_welcome_email(email, name=""):
+    print(f"[welcome] Attempting welcome email to: {email}", flush=True)
     if not all([SMTP_HOST, SMTP_USER, SMTP_PASS]):
-        print(
-            f"[subscribe] SMTP not configured — skipping welcome email for {email}.",
-            flush=True,
-        )
+        print(f"[welcome] SMTP not configured — skipping welcome email for {email}.", flush=True)
         return
     try:
         greeting = name if name else "friend"
@@ -96,18 +93,22 @@ def _send_welcome_email(email, name=""):
         msg["Subject"] = "You are connected — Ke Aupuni O Ke Akua"
         msg["From"] = "kahuphil@keaupuni.faith"
         msg["To"] = email
+        print(f"[welcome] Connecting to SMTP {SMTP_HOST}:{SMTP_PORT}", flush=True)
         with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
             server.starttls()
             server.login(SMTP_USER, SMTP_PASS)
+            print(f"[welcome] SMTP login success", flush=True)
             server.send_message(msg)
+            print(f"[welcome] Welcome email sent to {email}", flush=True)
     except Exception as e:
-        print(f"[subscribe] Welcome email failed for {email}: {e}", flush=True)
+        print(f"[welcome] Welcome email FAILED for {email}: {e}", flush=True)
 
 
 def _notify_new_subscriber(email, name=""):
+    print(f"[notify] Attempting notification email to: {NOTIFY_EMAIL} (subscriber: {email})", flush=True)
     if not all([SMTP_HOST, SMTP_USER, SMTP_PASS]):
         print(
-            f"[subscribe] SMTP not configured — skipping notification for {email}. "
+            f"[notify] SMTP not configured — skipping notification for {email}. "
             "Set SMTP_HOST, SMTP_USER, SMTP_PASS in Render environment.",
             flush=True,
         )
@@ -123,12 +124,15 @@ def _notify_new_subscriber(email, name=""):
         msg["Subject"] = f"New Subscriber: {name + ' — ' if name else ''}{email}"
         msg["From"] = SMTP_USER
         msg["To"] = NOTIFY_EMAIL
+        print(f"[notify] Connecting to SMTP {SMTP_HOST}:{SMTP_PORT}", flush=True)
         with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
             server.starttls()
             server.login(SMTP_USER, SMTP_PASS)
+            print(f"[notify] SMTP login success", flush=True)
             server.send_message(msg)
+            print(f"[notify] Notification email sent to {NOTIFY_EMAIL}", flush=True)
     except Exception as e:
-        print(f"[subscribe] Email notification failed for {email}: {e}", flush=True)
+        print(f"[notify] Notification email FAILED for {email}: {e}", flush=True)
 
 
 @downloads_bp.route("/thank-you")
@@ -158,8 +162,8 @@ def subscribe():
             "timestamp": datetime.now(timezone.utc).isoformat(),
         })
         EMAILS_FILE.write_text(json.dumps(subscribers, indent=2))
-        threading.Thread(target=_notify_new_subscriber, args=(email, first_name)).start()
-        threading.Thread(target=_send_welcome_email, args=(email, first_name)).start()
+        _notify_new_subscriber(email, first_name)
+        _send_welcome_email(email, first_name)
 
     from urllib.parse import quote
     return redirect(f"/thank-you?name={quote(first_name)}")
