@@ -2,11 +2,158 @@
 import json
 import smtplib
 from datetime import datetime, timezone
+from urllib.parse import quote
 from email.mime.text import MIMEText
-from flask import Blueprint, send_file, abort, request, redirect, render_template, render_template_string
-from config import BASE, EMAILS_FILE, SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, NOTIFY_EMAIL
+from flask import Blueprint, send_file, abort, request, redirect, render_template
+from config import BASE, EMAILS_FILE, SUBSCRIBERS_FILE, SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, NOTIFY_EMAIL
 
 downloads_bp = Blueprint("downloads", __name__)
+
+# ---------------------------------------------------------------------------
+# Subscriber storage helpers
+# ---------------------------------------------------------------------------
+
+def _load_subscribers():
+    if not SUBSCRIBERS_FILE.exists():
+        SUBSCRIBERS_FILE.parent.mkdir(parents=True, exist_ok=True)
+        SUBSCRIBERS_FILE.write_text("[]")
+        print("[subscribers] data/subscribers.json did not exist — created empty file.", flush=True)
+        return []
+    try:
+        return json.loads(SUBSCRIBERS_FILE.read_text())
+    except Exception as e:
+        print(f"[subscribers] Failed to load {SUBSCRIBERS_FILE}: {e}", flush=True)
+        return []
+
+
+def _save_subscribers(subscribers):
+    SUBSCRIBERS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    SUBSCRIBERS_FILE.write_text(json.dumps(subscribers, indent=2))
+
+
+# Print stored subscribers on startup so we can verify data is persisting.
+_startup_subs = _load_subscribers()
+print(f"[subscribers] {len(_startup_subs)} subscriber(s) on startup:", flush=True)
+for _s in _startup_subs:
+    print(f"  - {_s.get('email', '?')}  name={_s.get('first_name', '')}", flush=True)
+if not _startup_subs:
+    print("[subscribers] (none stored yet)", flush=True)
+
+
+# ---------------------------------------------------------------------------
+# Email helpers — run synchronously so every step appears in Render logs
+# ---------------------------------------------------------------------------
+
+def _notify_new_subscriber(email, name=""):
+    print(f"[notify] Attempting notification email → {NOTIFY_EMAIL}  (subscriber: {email})", flush=True)
+    if not all([SMTP_HOST, SMTP_USER, SMTP_PASS]):
+        print("[notify] SMTP not configured — set SMTP_HOST, SMTP_USER, SMTP_PASS in Render environment.", flush=True)
+        return
+    try:
+        name_line = f"Name:  {name}\n" if name else ""
+        body = (
+            f"New subscriber:\n\n"
+            f"{name_line}"
+            f"Email: {email}\n"
+            f"Time:  {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}\n"
+        )
+        msg = MIMEText(body)
+        msg["Subject"] = f"New Subscriber: {name + ' — ' if name else ''}{email}"
+        msg["From"] = "kahuphil@keaupuni.faith"
+        msg["To"] = NOTIFY_EMAIL
+        print(f"[notify] Connecting to SMTP {SMTP_HOST}:{SMTP_PORT}", flush=True)
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SMTP_USER, SMTP_PASS)
+            print("[notify] SMTP login success", flush=True)
+            server.send_message(msg)
+            print(f"[notify] Notification sent to {NOTIFY_EMAIL}", flush=True)
+    except Exception as e:
+        print(f"[notify] FAILED for {email}: {e}", flush=True)
+
+
+def _send_welcome_email(email, name=""):
+    print(f"[welcome] Attempting welcome email → {email}", flush=True)
+    if not all([SMTP_HOST, SMTP_USER, SMTP_PASS]):
+        print("[welcome] SMTP not configured — skipping welcome email.", flush=True)
+        return
+    try:
+        greeting = name if name else "friend"
+        body = (
+            f"Aloha {greeting},\n\n"
+            "You are now connected to Ke Aupuni O Ke Akua Press.\n\n"
+            "Watch your inbox. What is coming is not just information — it is invitation.\n\n"
+            "Kahu Phil Stephens\n"
+            "keaupuniakeakua.faith"
+        )
+        msg = MIMEText(body)
+        msg["Subject"] = "You are connected — Ke Aupuni O Ke Akua"
+        msg["From"] = "kahuphil@keaupuni.faith"
+        msg["To"] = email
+        print(f"[welcome] Connecting to SMTP {SMTP_HOST}:{SMTP_PORT}", flush=True)
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SMTP_USER, SMTP_PASS)
+            print("[welcome] SMTP login success", flush=True)
+            server.send_message(msg)
+            print(f"[welcome] Welcome email sent to {email}", flush=True)
+    except Exception as e:
+        print(f"[welcome] FAILED for {email}: {e}", flush=True)
+
+
+# ---------------------------------------------------------------------------
+# Routes
+# ---------------------------------------------------------------------------
+
+@downloads_bp.route("/subscribe", methods=["POST"])
+def subscribe():
+    first_name = request.form.get("first_name", "").strip()
+    email = request.form.get("email", "").strip().lower()
+    if not email:
+        return redirect(request.referrer or "/")
+
+    print(f"[subscribe] New signup attempt — email={email} name={first_name}", flush=True)
+
+    subscribers = _load_subscribers()
+    if any(s["email"] == email for s in subscribers):
+        print(f"[subscribe] Duplicate — {email} already in subscribers.json", flush=True)
+    else:
+        subscribers.append({
+            "first_name": first_name,
+            "email": email,
+            "source": "footer_signup",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        })
+        _save_subscribers(subscribers)
+        print(f"[subscribe] Saved — {len(subscribers)} total subscriber(s)", flush=True)
+        _notify_new_subscriber(email, first_name)
+        _send_welcome_email(email, first_name)
+
+    return redirect(f"/thank-you?name={quote(first_name)}")
+
+
+@downloads_bp.route("/thank-you")
+def thank_you():
+    name = request.args.get("name", "").strip()
+    return render_template("thank_you.html", name=name)
+
+
+@downloads_bp.route("/download/aloha_wellness_freebie", methods=["GET", "POST"])
+def aloha_wellness_freebie():
+    if request.method == "POST":
+        email = request.form.get("email", "").strip().lower()
+        if email:
+            subscribers = _load_subscribers()
+            if not any(s["email"] == email for s in subscribers):
+                subscribers.append({
+                    "email": email,
+                    "source": "aloha_wellness",
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                })
+                _save_subscribers(subscribers)
+                _notify_new_subscriber(email)
+    return _send(BASE / "static" / "Aloha_Wellness_Free_Guide.pdf")
+
 
 @downloads_bp.route("/download/pamphlet1")
 def pamphlet1():
@@ -56,124 +203,13 @@ def kingdom_is_here():
 def kingdom_wealth_booklet():
     return _send(BASE / "Kingdom_Wealth_Booklet2.pdf")
 
-@downloads_bp.route("/download/aloha_wellness_freebie", methods=["GET", "POST"])
-def aloha_wellness_freebie():
-    if request.method == "POST":
-        email = request.form.get("email", "").strip().lower()
-        if email:
-            subscribers = []
-            if EMAILS_FILE.exists():
-                subscribers = json.loads(EMAILS_FILE.read_text())
-            if not any(s["email"] == email for s in subscribers):
-                subscribers.append({
-                    "email": email,
-                    "source": "aloha_wellness",
-                    "timestamp": datetime.now(timezone.utc).isoformat(),
-                })
-                EMAILS_FILE.write_text(json.dumps(subscribers, indent=2))
-                _notify_new_subscriber(email)
-    return _send(BASE / "static" / "Aloha_Wellness_Free_Guide.pdf")
-
-
-def _send_welcome_email(email, name=""):
-    print(f"[welcome] Attempting welcome email to: {email}", flush=True)
-    if not all([SMTP_HOST, SMTP_USER, SMTP_PASS]):
-        print(f"[welcome] SMTP not configured — skipping welcome email for {email}.", flush=True)
-        return
-    try:
-        greeting = name if name else "friend"
-        body = (
-            f"Aloha {greeting},\n\n"
-            "You are now connected to Ke Aupuni O Ke Akua Press.\n\n"
-            "Watch your inbox. What is coming is not just information — it is invitation.\n\n"
-            "Kahu Phil Stephens\n"
-            "keaupuniakeakua.faith"
-        )
-        msg = MIMEText(body)
-        msg["Subject"] = "You are connected — Ke Aupuni O Ke Akua"
-        msg["From"] = "kahuphil@keaupuni.faith"
-        msg["To"] = email
-        print(f"[welcome] Connecting to SMTP {SMTP_HOST}:{SMTP_PORT}", flush=True)
-        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
-            server.starttls()
-            server.login(SMTP_USER, SMTP_PASS)
-            print(f"[welcome] SMTP login success", flush=True)
-            server.send_message(msg)
-            print(f"[welcome] Welcome email sent to {email}", flush=True)
-    except Exception as e:
-        print(f"[welcome] Welcome email FAILED for {email}: {e}", flush=True)
-
-
-def _notify_new_subscriber(email, name=""):
-    print(f"[notify] Attempting notification email to: {NOTIFY_EMAIL} (subscriber: {email})", flush=True)
-    if not all([SMTP_HOST, SMTP_USER, SMTP_PASS]):
-        print(
-            f"[notify] SMTP not configured — skipping notification for {email}. "
-            "Set SMTP_HOST, SMTP_USER, SMTP_PASS in Render environment.",
-            flush=True,
-        )
-        return
-    try:
-        name_line = f"Name:  {name}\n" if name else ""
-        msg = MIMEText(
-            f"New subscriber:\n\n"
-            f"{name_line}"
-            f"Email: {email}\n"
-            f"Time:  {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}\n"
-        )
-        msg["Subject"] = f"New Subscriber: {name + ' — ' if name else ''}{email}"
-        msg["From"] = SMTP_USER
-        msg["To"] = NOTIFY_EMAIL
-        print(f"[notify] Connecting to SMTP {SMTP_HOST}:{SMTP_PORT}", flush=True)
-        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
-            server.starttls()
-            server.login(SMTP_USER, SMTP_PASS)
-            print(f"[notify] SMTP login success", flush=True)
-            server.send_message(msg)
-            print(f"[notify] Notification email sent to {NOTIFY_EMAIL}", flush=True)
-    except Exception as e:
-        print(f"[notify] Notification email FAILED for {email}: {e}", flush=True)
-
-
-@downloads_bp.route("/thank-you")
-def thank_you():
-    name = request.args.get("name", "").strip()
-    return render_template("thank_you.html", name=name)
-
-
-@downloads_bp.route("/subscribe", methods=["POST"])
-def subscribe():
-    first_name = request.form.get("first_name", "").strip()
-    email = request.form.get("email", "").strip().lower()
-    if not email:
-        return redirect(request.referrer or "/")
-
-    subscribers = []
-    if EMAILS_FILE.exists():
-        try:
-            subscribers = json.loads(EMAILS_FILE.read_text())
-        except Exception:
-            pass
-    if not any(s["email"] == email for s in subscribers):
-        subscribers.append({
-            "first_name": first_name,
-            "email": email,
-            "source": "footer_signup",
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        })
-        EMAILS_FILE.write_text(json.dumps(subscribers, indent=2))
-        _notify_new_subscriber(email, first_name)
-        _send_welcome_email(email, first_name)
-
-    from urllib.parse import quote
-    return redirect(f"/thank-you?name={quote(first_name)}")
-
 @downloads_bp.route("/static/covers/<filename>")
 def serve_cover(filename):
     cover_path = BASE / filename
     if cover_path.exists():
         return send_file(cover_path, mimetype="image/jpeg")
     abort(404)
+
 
 def _send(path):
     if not path.exists():

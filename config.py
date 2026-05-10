@@ -13,6 +13,7 @@ DATA_FILE = BASE / "website_content.json"
 PRODUCTS_FILE = BASE / "digital_products.json"
 PRODUCTS_FOLDER = BASE / "digital_products"
 EMAILS_FILE = BASE / "email_subscribers.json"
+SUBSCRIBERS_FILE = BASE / "data" / "subscribers.json"
 
 # ----- PAGE ORDER (controls nav menu order) -----
 ORDER = [
