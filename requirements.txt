@@ -2,5 +2,7 @@ flask
 markdown
 werkzeug
 gunicorn
+gspread
+google-auth
 # Uncomment the line below after you activate Stripe in config.py:
 stripe

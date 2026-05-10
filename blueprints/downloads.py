@@ -1,5 +1,6 @@
 # blueprints/downloads.py
 import json
+import os
 import smtplib
 from datetime import datetime, timezone
 from urllib.parse import quote
@@ -109,6 +110,34 @@ def _send_welcome_email(email, name=""):
 
 
 # ---------------------------------------------------------------------------
+# Google Sheets integration
+# ---------------------------------------------------------------------------
+
+def _append_to_sheet(name, email, timestamp):
+    print(f"[sheets] Attempting to append row for {email}", flush=True)
+    creds_json = os.environ.get("GOOGLE_CREDENTIALS_JSON", "")
+    if not creds_json:
+        print("[sheets] GOOGLE_CREDENTIALS_JSON not set — skipping sheet append.", flush=True)
+        return
+    try:
+        import gspread
+        from google.oauth2.service_account import Credentials
+
+        creds_dict = json.loads(creds_json)
+        scopes = ["https://www.googleapis.com/auth/spreadsheets"]
+        creds = Credentials.from_service_account_info(creds_dict, scopes=scopes)
+        client = gspread.authorize(creds)
+        print("[sheets] Authenticated with Google", flush=True)
+
+        sheet = client.open("Ke Aupuni Leads").sheet1
+        row = [name, email, "Website Signup", timestamp]
+        sheet.append_row(row)
+        print(f"[sheets] Row appended: {row}", flush=True)
+    except Exception as e:
+        print(f"[sheets] FAILED for {email}: {e}", flush=True)
+
+
+# ---------------------------------------------------------------------------
 # Routes
 # ---------------------------------------------------------------------------
 
@@ -133,6 +162,7 @@ def subscribe():
         })
         _save_subscribers(subscribers)
         print(f"[subscribe] Saved — {len(subscribers)} total subscriber(s)", flush=True)
+        _append_to_sheet(first_name, email, datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"))
         _notify_new_subscriber(email, first_name)
         _send_welcome_email(email, first_name)
 
