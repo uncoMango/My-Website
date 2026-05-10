@@ -165,9 +165,10 @@ def subscribe():
     print(f"[subscribe] New signup attempt — email={email} name={first_name}", flush=True)
 
     subscribers = _load_subscribers()
-    if any(s["email"] == email for s in subscribers):
-        print(f"[subscribe] Duplicate — {email} already in subscribers.json", flush=True)
-    else:
+    # if any(s["email"] == email for s in subscribers):
+    #     print(f"[subscribe] Duplicate — {email} already in subscribers.json", flush=True)
+    # else:
+    if True:
         subscribers.append({
             "first_name": first_name,
             "email": email,
