@@ -40,6 +40,13 @@ for _s in _startup_subs:
 if not _startup_subs:
     print("[subscribers] (none stored yet)", flush=True)
 
+# Check for Google credentials at startup so misconfiguration is visible immediately.
+_gc = os.environ.get("GOOGLE_CREDENTIALS_JSON", "")
+if _gc:
+    print(f"[sheets] GOOGLE_CREDENTIALS_JSON found at startup ({len(_gc)} chars)", flush=True)
+else:
+    print("[sheets] GOOGLE_CREDENTIALS_JSON NOT SET at startup — sheet append will be skipped", flush=True)
+
 
 # ---------------------------------------------------------------------------
 # Email helpers — run synchronously so every step appears in Render logs
@@ -114,27 +121,34 @@ def _send_welcome_email(email, name=""):
 # ---------------------------------------------------------------------------
 
 def _append_to_sheet(name, email, timestamp):
-    print(f"[sheets] Attempting to append row for {email}", flush=True)
+    print(f"[sheets] >>> _append_to_sheet called for {email}", flush=True)
     creds_json = os.environ.get("GOOGLE_CREDENTIALS_JSON", "")
     if not creds_json:
-        print("[sheets] GOOGLE_CREDENTIALS_JSON not set — skipping sheet append.", flush=True)
+        print("[sheets] GOOGLE_CREDENTIALS_JSON is empty/missing — skipping.", flush=True)
+        return
+    print(f"[sheets] Credentials string found ({len(creds_json)} chars) — parsing JSON", flush=True)
+    try:
+        creds_dict = json.loads(creds_json)
+        print(f"[sheets] Credentials parsed OK, project={creds_dict.get('project_id', '?')}", flush=True)
+    except Exception as e:
+        print(f"[sheets] FAILED to parse GOOGLE_CREDENTIALS_JSON: {e}", flush=True)
         return
     try:
         import gspread
         from google.oauth2.service_account import Credentials
 
-        creds_dict = json.loads(creds_json)
         scopes = ["https://www.googleapis.com/auth/spreadsheets"]
         creds = Credentials.from_service_account_info(creds_dict, scopes=scopes)
+        print("[sheets] Credentials object created — authorizing gspread client", flush=True)
         client = gspread.authorize(creds)
-        print("[sheets] Authenticated with Google", flush=True)
-
+        print("[sheets] gspread authorized — opening sheet 'Ke Aupuni Leads'", flush=True)
         sheet = client.open("Ke Aupuni Leads").sheet1
+        print("[sheets] Sheet opened — appending row", flush=True)
         row = [name, email, "Website Signup", timestamp]
         sheet.append_row(row)
-        print(f"[sheets] Row appended: {row}", flush=True)
+        print(f"[sheets] SUCCESS — row appended: {row}", flush=True)
     except Exception as e:
-        print(f"[sheets] FAILED for {email}: {e}", flush=True)
+        print(f"[sheets] FAILED for {email}: {type(e).__name__}: {e}", flush=True)
 
 
 # ---------------------------------------------------------------------------
