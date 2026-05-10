@@ -79,14 +79,21 @@ def _send_welcome_email(email, name=""):
         return
     try:
         greeting = name if name else "friend"
-        body = (
-            f"Aloha {greeting},\n\n"
-            "You are now connected to Ke Aupuni O Ke Akua Press.\n\n"
-            "Watch your inbox. What is coming is not just information — it is invitation.\n\n"
-            "Kahu Phil Stephens\n"
-            "keaupuniakeakua.faith"
-        )
-        msg = MIMEText(body)
+        body = f"""<!DOCTYPE html>
+<html>
+<body style="margin:0;padding:0;background:#1a1a1a;font-family:Georgia,serif;color:#f0ece3;">
+<div style="max-width:560px;margin:40px auto;padding:40px;background:#2a2a2a;border-radius:8px;">
+<h1 style="font-size:1.6rem;color:#d4a853;margin-bottom:0.5rem;">Ke Aupuni O Ke Akua Press</h1>
+<hr style="border:none;border-top:1px solid rgba(255,255,255,0.15);margin:1.5rem 0;">
+<p style="font-size:1.1rem;">Aloha {greeting},</p>
+<p style="line-height:1.8;">You are now connected to Ke Aupuni O Ke Akua Press.</p>
+<p style="line-height:1.8;">Watch your inbox. What is coming is not just information — it is invitation.</p>
+<hr style="border:none;border-top:1px solid rgba(255,255,255,0.15);margin:1.5rem 0;">
+<p style="color:rgba(255,255,255,0.6);font-size:0.9rem;">Kahu Phil Stephens<br>keaupuniakeakua.faith</p>
+</div>
+</body>
+</html>"""
+        msg = MIMEText(body, "html")
         msg["Subject"] = "You are connected — Ke Aupuni O Ke Akua"
         msg["From"] = "kahuphil@keaupuni.faith"
         msg["To"] = email
