@@ -76,6 +76,34 @@ def aloha_wellness_freebie():
     return _send(BASE / "static" / "Aloha_Wellness_Free_Guide.pdf")
 
 
+def _send_welcome_email(email, name=""):
+    if not all([SMTP_HOST, SMTP_USER, SMTP_PASS]):
+        print(
+            f"[subscribe] SMTP not configured — skipping welcome email for {email}.",
+            flush=True,
+        )
+        return
+    try:
+        greeting = name if name else "friend"
+        body = (
+            f"Aloha {greeting},\n\n"
+            "You are now connected to Ke Aupuni O Ke Akua Press.\n\n"
+            "Watch your inbox. What is coming is not just information — it is invitation.\n\n"
+            "Kahu Phil Stephens\n"
+            "keaupuniakeakua.faith"
+        )
+        msg = MIMEText(body)
+        msg["Subject"] = "You are connected — Ke Aupuni O Ke Akua"
+        msg["From"] = "kahuphil@keaupuni.faith"
+        msg["To"] = email
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SMTP_USER, SMTP_PASS)
+            server.send_message(msg)
+    except Exception as e:
+        print(f"[subscribe] Welcome email failed for {email}: {e}", flush=True)
+
+
 def _notify_new_subscriber(email, name=""):
     if not all([SMTP_HOST, SMTP_USER, SMTP_PASS]):
         print(
@@ -131,6 +159,7 @@ def subscribe():
         })
         EMAILS_FILE.write_text(json.dumps(subscribers, indent=2))
         threading.Thread(target=_notify_new_subscriber, args=(email, first_name)).start()
+        threading.Thread(target=_send_welcome_email, args=(email, first_name)).start()
 
     from urllib.parse import quote
     return redirect(f"/thank-you?name={quote(first_name)}")
