@@ -253,7 +253,7 @@ _SEO_PAGES = {
             "### Go Deeper with Aloha Wellness\n\n"
             "Kahu Phil Stephens explores these principles in full in the **Aloha Wellness** book — including the practical framework he uses daily on Molokaʻi.\n\n"
             "---\n\n"
-            "[**Read Aloha Wellness — The Kingdom Approach to Health →**](/aloha-wellness)"
+            "[**Read Aloha Wellness — The Kingdom Approach to Health →**](/aloha_wellness)"
         ),
     },
     ("wellness", "ancestral-eating-patterns"): {
@@ -288,7 +288,138 @@ _SEO_PAGES = {
             "### Begin the Return\n\n"
             "The **Aloha Wellness** book is Kahu Phil's invitation to make that return — rooted in Scripture, informed by Hawaiian ancestral wisdom, and practical for life today.\n\n"
             "---\n\n"
-            "[**Read Aloha Wellness — The Kingdom Approach to Health →**](/aloha-wellness)"
+            "[**Read Aloha Wellness — The Kingdom Approach to Health →**](/aloha_wellness)"
+        ),
+    },
+    ("wellness", "why-modern-health-advice-feels-confusing"): {
+        "title": "Why Modern Health Advice Feels So Confusing",
+        "meta_description": "Modern health advice often contradicts itself, leaving people frustrated and uncertain. This page explores why modern health systems feel confusing and what a simpler, more grounded understanding of wellness looks like.",
+        "hero_image": "/static/images/taro_root.jpg",
+        "body_md": (
+            "## Why Modern Health Advice Feels So Confusing\n\n"
+            "### The Experience Most People Have Today\n\n"
+            "Most people trying to improve their health eventually hit the same wall.\n\n"
+            "They start with one system. They hear conflicting advice from another. They read studies that say opposite things. They try multiple approaches and end up more uncertain than when they started.\n\n"
+            "This is not a personal failure. It is a structural one.\n\n"
+            "---\n\n"
+            "### Why the Advice Keeps Changing\n\n"
+            "Health advice does not change because the body changes. It changes because:\n\n"
+            "- Different studies measure different outcomes over different time periods\n"
+            "- Commercial interests fund and shape research priorities\n"
+            "- Short-term findings get treated as long-term conclusions\n"
+            "- Institutions compete for authority over what counts as healthy\n\n"
+            "The result is a system that produces contradictions faster than it produces clarity.\n\n"
+            "---\n\n"
+            "### The Missing Foundation\n\n"
+            "Modern health systems tend to focus on isolated factors:\n\n"
+            "- Calories in and out\n"
+            "- Macronutrient ratios\n"
+            "- Specific supplements or food categories\n\n"
+            "What they often leave out:\n\n"
+            "- Lifestyle and daily rhythm\n"
+            "- Stress and recovery\n"
+            "- Consistency over time\n"
+            "- The relationship between eating and living\n\n"
+            "The body is not a machine that responds only to inputs. It is a living system that responds to patterns.\n\n"
+            "---\n\n"
+            "### What Traditional and Ancestral Systems Show\n\n"
+            "Hawaiian and Polynesian cultures built health into the fabric of daily life — not as a separate project, but as a natural result of how people worked, ate, and rested.\n\n"
+            "Food was tied to:\n\n"
+            "- Physical labor and energy needs\n"
+            "- What the land and sea provided in season\n"
+            "- Natural rhythms of day and activity\n\n"
+            "There were no conflicting systems to navigate. There was simply alignment between the body, the land, and the life being lived.\n\n"
+            "---\n\n"
+            "### Why This Creates Confusion\n\n"
+            "When there is no stable foundation, people cycle through systems:\n\n"
+            "- Try one approach\n"
+            "- It works briefly or not at all\n"
+            "- Switch to the next promising method\n"
+            "- Repeat\n\n"
+            "Each cycle reinforces the belief that the problem is personal — that the right system just has not been found yet.\n\n"
+            "But the problem is not the person. It is the absence of a unified framework for understanding the body in the first place.\n\n"
+            "---\n\n"
+            "### The Aloha Wellness Perspective\n\n"
+            "Aloha Wellness does not offer another system to follow. It offers a different way of understanding health altogether.\n\n"
+            "Built on four principles:\n\n"
+            "- **Awareness** over control\n"
+            "- **Rhythm** over rigidity\n"
+            "- **Stewardship** over restriction\n"
+            "- **Simplicity** over complexity\n\n"
+            "These principles do not change with the next study. They are grounded in Scripture, confirmed by ancestral Hawaiian wisdom, and sustainable in real everyday life.\n\n"
+            "---\n\n"
+            "### The Invitation\n\n"
+            "If health advice has felt confusing, the answer is not to find better advice.\n\n"
+            "It is to build a foundation that does not depend on constantly changing advice in the first place.\n\n"
+            "That foundation exists. It is simpler than most systems suggest.\n\n"
+            "[**Free Aloha Wellness Guide →**](/download/aloha_wellness_freebie)\n\n"
+            "[**Aloha Wellness Book →**](/aloha_wellness)\n\n"
+            "---\n\n"
+            "[**Related: Why Diets Fail Long-Term →**](/wellness/why-diets-fail)\n\n"
+            "[**Related: Is Three Meals a Day Necessary? →**](/wellness/three-meals-a-day-necessary)"
+        ),
+    },
+    ("wellness", "why-your-body-resists-diets"): {
+        "title": "Why Your Body Resists Diets and Restrictive Eating",
+        "meta_description": "Many people struggle because their body resists restrictive diets. This page explains why this happens and introduces a more natural, sustainable approach to eating and wellness.",
+        "hero_image": "/static/images/food_basket.jpg",
+        "body_md": (
+            "## Why Your Body Resists Diets and Restrictive Eating\n\n"
+            "### The Common Experience\n\n"
+            "Most people begin a diet with real motivation and discipline. For a while it holds.\n\n"
+            "Then something shifts:\n\n"
+            "- Cravings intensify instead of fading\n"
+            "- Energy drops and focus becomes harder to sustain\n"
+            "- Consistency breaks down despite genuine effort\n\n"
+            "This pattern repeats across different diets and different attempts. The frustration is real. So is the question: why does this keep happening?\n\n"
+            "---\n\n"
+            "### Why Willpower Alone Fails\n\n"
+            "Willpower is a mental resource. It is not a biological long-term strategy.\n\n"
+            "The body does not respond to intention. It responds to signals — stress, restriction, perceived scarcity. When those signals are present, the body activates protective responses regardless of what the mind has decided.\n\n"
+            "This is not a character flaw. It is how the body is designed to function.\n\n"
+            "---\n\n"
+            "### The Body's Protective Response\n\n"
+            "When caloric intake drops significantly or food is restricted, the body reads this as a threat:\n\n"
+            "- Hunger signals increase to drive food-seeking behavior\n"
+            "- Metabolism slows to conserve energy\n"
+            "- Cravings intensify, particularly for calorie-dense foods\n\n"
+            "These responses are not failure. They are biology working exactly as it was designed — protecting the body against scarcity.\n\n"
+            "Restriction-based diets activate this system. The harder the restriction, the stronger the response.\n\n"
+            "---\n\n"
+            "### Why Diet Systems Miss This\n\n"
+            "Most diet systems are built around control:\n\n"
+            "- Control what you eat\n"
+            "- Control how much\n"
+            "- Control when\n\n"
+            "They focus on compliance rather than on how the body actually adapts over time. Short-term results are mistaken for sustainable solutions. When the body's protective response eventually overcomes the control system, it looks like personal failure — but the design of the system itself was the problem.\n\n"
+            "---\n\n"
+            "### A More Natural Pattern\n\n"
+            "Traditional eating patterns — including those of Hawaiian and Polynesian cultures — were not built around rigid control.\n\n"
+            "They were shaped by:\n\n"
+            "- Natural hunger and satiety rhythms\n"
+            "- Physical activity and real energy demands\n"
+            "- Food availability tied to land, season, and community\n\n"
+            "There was no system to comply with. There was alignment — between the body, the food, and the life being lived. That alignment is what produced sustained health across generations.\n\n"
+            "---\n\n"
+            "### The Aloha Wellness Perspective\n\n"
+            "Aloha Wellness is not a new control system. It is a return to a different relationship with the body altogether.\n\n"
+            "Built on four shifts:\n\n"
+            "- **Listening** to the body instead of overriding it\n"
+            "- **Rhythm** over rules\n"
+            "- **Consistency** over restriction\n"
+            "- **Stewardship** over control\n\n"
+            "These are not tactics. They are principles rooted in Scripture and confirmed by the lived experience of cultures that maintained health without modern diet systems.\n\n"
+            "---\n\n"
+            "### The Transition\n\n"
+            "The goal is not to find a diet that works well enough to endure.\n\n"
+            "The goal is to stop needing the diet framework at all — by understanding how the body actually functions and learning to work with it instead of against it.\n\n"
+            "That shift is available. And it is simpler than most systems suggest.\n\n"
+            "[**Free Aloha Wellness Guide →**](/download/aloha_wellness_freebie)\n\n"
+            "[**Aloha Wellness Book →**](/aloha_wellness)\n\n"
+            "---\n\n"
+            "[**Related: Why Diets Fail Long-Term →**](/wellness/why-diets-fail)\n\n"
+            "[**Related: Is Three Meals a Day Necessary? →**](/wellness/three-meals-a-day-necessary)\n\n"
+            "[**Related: Why Modern Health Advice Feels So Confusing →**](/wellness/why-modern-health-advice-feels-confusing)"
         ),
     },
     ("kingdom", "what-is-the-kingdom-of-god"): {
@@ -446,7 +577,7 @@ def sitemap():
         ("/free_booklets",      "0.9", "weekly"),
         ("/kingdom_keys",       "0.9", "weekly"),
         ("/call_to_repentance", "0.9", "weekly"),
-        ("/aloha-wellness",     "0.9", "weekly"),
+        ("/aloha_wellness",     "0.9", "weekly"),
         ("/pastor_planners",    "0.8", "monthly"),
         ("/nahenahe_voice",     "0.8", "monthly"),
         ("/myron-golden",       "0.8", "weekly"),
@@ -454,8 +585,10 @@ def sitemap():
         ("/wellness/why-diets-fail",               "0.8", "monthly"),
         ("/wellness/lose-weight-without-dieting",  "0.8", "monthly"),
         ("/wellness/three-meals-a-day-necessary",  "0.8", "monthly"),
-        ("/wellness/ancestral-eating-patterns",    "0.8", "monthly"),
-        ("/kingdom/what-is-the-kingdom-of-god",    "0.8", "monthly"),
+        ("/wellness/ancestral-eating-patterns",              "0.8", "monthly"),
+        ("/wellness/why-modern-health-advice-feels-confusing", "0.8", "monthly"),
+        ("/wellness/why-your-body-resists-diets",            "0.8", "monthly"),
+        ("/kingdom/what-is-the-kingdom-of-god",              "0.8", "monthly"),
         ("/kingdom/jesus-kingdom-message",         "0.8", "monthly"),
         ("/wealth/biblical-stewardship-principles","0.8", "monthly"),
     ]
