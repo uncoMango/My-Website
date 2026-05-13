@@ -69,6 +69,98 @@ def aloha_wellness_funnel():
     youtube_embed_url = data.get("funnel_youtube_url", "https://www.youtube.com/embed/O_-J8t0NHLc")
     return render_template("aloha_wellness_funnel.html", youtube_embed_url=youtube_embed_url)
 
+_ECOSYSTEM_PAGE = {
+    "title": "Ke Aupuni O Ke Akua | Wellness, Scripture Insight, and Kingdom Living",
+    "meta_description": "Explore the Ke Aupuni O Ke Akua ecosystem: wellness teaching, Scripture language insight tools, and Kingdom-centered living frameworks that connect body, understanding, and purpose.",
+    "body_md": (
+        "## The Ke Aupuni O Ke Akua Ecosystem\n\n"
+        "### A Connected Platform Under One Foundation\n\n"
+        "Ke Aupuni O Ke Akua is not a collection of separate topics. It is a connected ecosystem of understanding — built around one core principle: that clarity in language shapes understanding, and understanding shapes life decisions.\n\n"
+        "Each section of this platform addresses a different dimension of that principle. Together, they form a framework for how to live with stability, clarity, and purpose.\n\n"
+        "---\n\n"
+        "### Three Core Pillars\n\n"
+        "---\n\n"
+        "#### Wellness — Rhythm and Stewardship of the Body\n\n"
+        "Most approaches to health focus on control: restrict intake, force outcomes, follow a temporary system until it collapses.\n\n"
+        "The wellness teaching at Ke Aupuni O Ke Akua takes a different approach. It draws from Hawaiian ancestral eating patterns and Scripture-based stewardship principles to help people understand how the body was actually designed to function — through rhythm, awareness, and alignment rather than restriction.\n\n"
+        "Health is not something imposed on the body. It is something restored to it.\n\n"
+        "[**Why Diets Fail Long-Term →**](/wellness/why-diets-fail)\n\n"
+        "[**Is Three Meals a Day Necessary? →**](/wellness/three-meals-a-day-necessary)\n\n"
+        "[**What Actually Works Instead of Dieting →**](/wellness/what-actually-works-instead-of-dieting)\n\n"
+        "---\n\n"
+        "#### Scripture Language Insight Tool — Meaning and Original Language Clarity\n\n"
+        "Most readers of Scripture encounter a translation — a carefully rendered text that makes the original accessible. But translation by necessity compresses meaning. Words in Hebrew and Greek carry layers of nuance that a single English word cannot always hold.\n\n"
+        "The Scripture Language Insight Tool was built to make original Hebrew and Greek word meaning accessible without requiring seminary training. Input a word or verse. See the original term. Understand the meaning, usage, and relational context that the source language carried.\n\n"
+        "This does not change Scripture. It opens it.\n\n"
+        "[**Use the Scripture Language Insight Tool →**](/scripture-tools/hebrew-greek-meaning-tool)\n\n"
+        "[**Why Translations Create Gaps →**](/scripture-tools/translation-gap-in-scripture)\n\n"
+        "[**What Changes With Original Language Understanding →**](/scripture-tools/original-language-meaning)\n\n"
+        "---\n\n"
+        "#### Kingdom — Identity, Purpose, and Alignment\n\n"
+        "Kingdom teaching at Ke Aupuni O Ke Akua is not abstract theology. It is a practical framework for how to live — how to understand identity, steward resources, apply biblical wisdom, and align daily decisions with purpose.\n\n"
+        "This section draws from original language Scripture study, Hawaiian cultural wisdom, and decades of pastoral experience on Molokaʻi.\n\n"
+        "[**Kingdom Teaching →**](/kingdom)\n\n"
+        "---\n\n"
+        "### How Everything Connects\n\n"
+        "These three pillars are not separate categories. They are expressions of the same principle applied to different areas of life.\n\n"
+        "**Wellness** addresses how you relate to the body — your physical rhythms, food, rest, and the habits that either support or undermine health over time.\n\n"
+        "**Scripture Language Insight** addresses how you understand language — specifically the gap between what was written in the original text and what most readers encounter in translation. Clarity here affects how Scripture is interpreted and applied.\n\n"
+        "**Kingdom** addresses how you understand life direction — your identity, purpose, and the framework through which you make decisions.\n\n"
+        "The core principle that ties all three together:\n\n"
+        "> Clarity in language shapes understanding, and understanding shapes life decisions.\n\n"
+        "When you understand your body more clearly, you make better decisions about health.\n"
+        "When you understand Scripture's original language more clearly, you understand intent more accurately.\n"
+        "When you understand Kingdom principles more clearly, you move through life with more alignment and less confusion.\n\n"
+        "---\n\n"
+        "### Where to Begin\n\n"
+        "**If you are struggling with health or physical patterns:**\n\n"
+        "The Wellness section is the starting point. Begin with why most diet approaches fail structurally — not because of personal weakness, but because of system design.\n\n"
+        "[**Start with Wellness →**](/wellness/why-diets-fail)\n\n"
+        "---\n\n"
+        "**If you are struggling with Scripture understanding or translation confusion:**\n\n"
+        "The Scripture Tools section is where to begin. Start with why translations create meaning gaps, then use the insight tool to explore original language words.\n\n"
+        "[**Start with Scripture Tools →**](/scripture-tools/translation-gap-in-scripture)\n\n"
+        "---\n\n"
+        "**If you are searching for meaning, direction, or life purpose:**\n\n"
+        "The Kingdom section addresses those questions from a biblical and ancestral framework — without abstraction or pressure.\n\n"
+        "[**Start with Kingdom Teaching →**](/kingdom)\n\n"
+        "---\n\n"
+        "### Why This Ecosystem Exists\n\n"
+        "Ke Aupuni O Ke Akua is a Kingdom ministry based on Molokaʻi, Hawaii, led by Kahu Phil Stephens — a Native Hawaiian pastor, Paniolo, and lifelong student of Scripture.\n\n"
+        "This platform exists to unify the teaching across all three areas under one coherent framework:\n\n"
+        "- Wellness teaching grounded in ancestral patterns and biblical stewardship\n"
+        "- Scripture language tools that restore access to original meaning\n"
+        "- Kingdom principles that give life direction and purpose\n\n"
+        "Each section supports the others. A person who understands their body better is more present for learning. A person who understands Scripture more clearly is better equipped to apply Kingdom principles. A person living in alignment with Kingdom identity has a stable foundation for all other decisions.\n\n"
+        "This is not a content library. It is a structured framework for understanding — built for long-term clarity, not short-term motivation.\n\n"
+        "---\n\n"
+        "### Begin Where You Are\n\n"
+        "There is no required starting point. Begin with the section that addresses the question you are carrying right now.\n\n"
+        "The framework will hold regardless of where you enter.\n\n"
+        "[**Wellness: Body Rhythm and Stewardship →**](/wellness/why-diets-fail)\n\n"
+        "[**Scripture Tools: Original Language Meaning →**](/scripture-tools/hebrew-greek-meaning-tool)\n\n"
+        "[**Kingdom: Identity and Life Direction →**](/kingdom)"
+    ),
+}
+
+@pages_bp.route("/ecosystem")
+def ecosystem():
+    data = load_content()
+    nav_items = get_nav_items(data)
+    page = dict(_ECOSYSTEM_PAGE)
+    page["hero_image"] = data.get("pages", {}).get("home", {}).get("hero_image", "/static/images/taro_root.jpg")
+    return render_template(
+        "page.html",
+        page=page,
+        nav_items=nav_items,
+        body_html=md_to_html(page["body_md"]),
+        current_page="ecosystem",
+        logo_path=LOGO_PATH,
+        logo_height=LOGO_HEIGHT,
+        footer_text=FOOTER_TEXT,
+        founding_reader_remaining=data.get("founding_reader_remaining", 100),
+    )
+
 # ===== SEO ENTRY SUB-PAGES =====
 
 _SEO_PAGES = {
