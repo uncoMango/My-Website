@@ -54,7 +54,7 @@
 
     <div class=”settings-section”>
         <h2>Weekly YouTube Video &#8212; Aloha Wellness Funnel</h2>
-        <p>Paste any YouTube link below and click Save. The video on <strong>/aloha-wellness</strong> will update immediately.</p>
+        <p>Paste any YouTube link below and click Save. The video on <strong>/aloha_wellness</strong> will update immediately.</p>
         <form method="POST" action="/kahu">
             <label for="funnel_youtube_url">YouTube Video URL</label>
             <input type="text" id="funnel_youtube_url" name="funnel_youtube_url"
@@ -86,6 +86,34 @@
             <button type="submit" class="btn btn-primary">Save Myron Golden Text</button>
         </form>
     </div>
+    <div class="settings-section" style="background:#f0fff4;border-color:#27ae60;">
+        <h2>Site Sitemap &#8212; All Public Pages</h2>
+        <p>Quick reference for every published URL on this site.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:0.35rem;font-size:0.875rem;font-family:monospace;">
+            <a href="/" target="_blank" style="color:#27ae60;">/</a>
+            <a href="/aloha_wellness" target="_blank" style="color:#27ae60;">/aloha_wellness</a>
+            <a href="/kingdom_wealth" target="_blank" style="color:#27ae60;">/kingdom_wealth</a>
+            <a href="/call_to_repentance" target="_blank" style="color:#27ae60;">/call_to_repentance</a>
+            <a href="/nahenahe_voice" target="_blank" style="color:#27ae60;">/nahenahe_voice</a>
+            <a href="/pastor_planners" target="_blank" style="color:#27ae60;">/pastor_planners</a>
+            <a href="/free_booklets" target="_blank" style="color:#27ae60;">/free_booklets</a>
+            <a href="/kingdom_keys" target="_blank" style="color:#27ae60;">/kingdom_keys</a>
+            <a href="/partner" target="_blank" style="color:#27ae60;">/partner</a>
+            <a href="/ecosystem" target="_blank" style="color:#27ae60;font-weight:700;">/ecosystem</a>
+            <a href="/kingdom-study" target="_blank" style="color:#27ae60;">/kingdom-study</a>
+            <a href="/myron-golden" target="_blank" style="color:#27ae60;">/myron-golden</a>
+            <a href="/aloha-wellness" target="_blank" style="color:#27ae60;">/aloha-wellness</a>
+            <a href="/wellness/why-diets-fail" target="_blank" style="color:#27ae60;">/wellness/why-diets-fail</a>
+            <a href="/wellness/lose-weight-without-dieting" target="_blank" style="color:#27ae60;">/wellness/lose-weight-without-dieting</a>
+            <a href="/wellness/three-meals-a-day-necessary" target="_blank" style="color:#27ae60;">/wellness/three-meals-a-day-necessary</a>
+            <a href="/wellness/ancestral-eating-patterns" target="_blank" style="color:#27ae60;">/wellness/ancestral-eating-patterns</a>
+            <a href="/wellness/why-modern-health-advice-feels-confusing" target="_blank" style="color:#27ae60;">/wellness/why-modern-health-advice-feels-confusing</a>
+            <a href="/scripture-tools/translation-gap-in-scripture" target="_blank" style="color:#27ae60;">/scripture-tools/translation-gap-in-scripture</a>
+            <a href="/scripture-tools/original-language-meaning" target="_blank" style="color:#27ae60;">/scripture-tools/original-language-meaning</a>
+            <a href="/scripture-tools/hebrew-greek-meaning-tool" target="_blank" style="color:#27ae60;">/scripture-tools/hebrew-greek-meaning-tool</a>
+        </div>
+    </div>
+
     <div class="page-list">
         {% for page_id, page_data in pages.items() %}
         <div class="page-card">
