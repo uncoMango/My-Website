@@ -22,6 +22,8 @@
         .btn-primary:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(102,126,234,0.4); }
         .btn-secondary { background:#6c757d; color:white; }
         .btn-secondary:hover { background:#5a6268; }
+        .btn-danger { background:#e74c3c; color:white; }
+        .btn-danger:hover { background:#c0392b; }
         .actions { margin-top:2rem; padding-top:2rem; border-top:2px solid #e9ecef; display:flex; gap:1rem; flex-wrap:wrap; }
         .settings-section { background:#f0f4ff; border:2px solid #667eea; border-radius:12px; padding:1.5rem; margin-bottom:2rem; }
         .settings-section h2 { color:#2c3e50; font-size:1.1rem; margin-bottom:0.25rem; }
@@ -131,7 +133,8 @@
                 <div><strong>Gallery:</strong> {{ page_data.gallery_images | length }} images</div>
                 {% endif %}
             </div>
-            <a href="/admin/edit/{{ page_id }}" class="btn btn-primary">âœï¸ Edit Page</a>
+            <a href="/admin/edit/{{ page_id }}" class="btn btn-primary">Edit Page</a>
+            <form method="POST" action="/admin/delete-page/{{ page_id }}" style="display:inline;" onsubmit="return confirm('Delete page \&quot;{{ page_id }}\&quot; from website_content.json? This cannot be undone.');"><button type="submit" class="btn btn-danger">Delete Entry</button></form>
         </div>
         {% endfor %}
     </div>

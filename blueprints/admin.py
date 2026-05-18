@@ -65,6 +65,17 @@ def admin_panel():
     )
 
 
+@admin_bp.route("/admin/delete-page/<page_id>", methods=["POST"])
+def delete_page(page_id):
+    data = load_content()
+    pages = data.get("pages", {})
+    if page_id in pages:
+        del pages[page_id]
+        data["pages"] = pages
+        save_content(data)
+    return redirect("/kahu")
+
+
 @admin_bp.route("/admin/edit/<page_id>", methods=["GET", "POST"])
 def edit_page(page_id):
     data = load_content()
