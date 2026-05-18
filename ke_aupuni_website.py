@@ -91,7 +91,7 @@ DEFAULT_PAGES = {
         "pastor_planners": {
             "title": "Pastor Planners - Tools for Ministry Excellence",
             "hero_image": "https://i.imgur.com/tWnn5UY.png",
-            "body_md": "## Organize Your Ministry with Purpose and Prayer\r\n\r\nEffective ministry requires both spiritual sensitivity and practical organization. Our Pastor Planners combine beautiful design with functional tools to help you lead with excellence and peace.\r\n\r\n### Features of Our Ministry Planning System\r\n\r\n**Sermon Planning Sections** - Map out your preaching calendar with space for themes, scriptures, and prayer requests. Plan seasonal series and track the spiritual journey of your congregation.\r\n\r\n**Prayer and Pastoral Care** - Dedicated sections for tracking prayer requests, hospital visits, counseling sessions, and follow-up care. Never let a member of your flock slip through the cracks.\r\n\r\n**Meeting and Event Coordination** - Organize board meetings, committee sessions, special events, and outreach activities with integrated calendars and checklists.\r\n\r\n**Personal Spiritual Disciplines** - Maintain your own spiritual health with guided sections for daily devotions, sabbath planning, and personal growth goals.\r\n\r\n### Why Pastors Love Our Planners\r\n\r\n**Hawaiian-Inspired Design** - Beautiful layouts featuring island imagery and scripture verses that bring peace to your planning time.\r\n\r\n**Flexible Formatting** - Works for churches of all sizes and denominations, with customizable sections for your unique ministry context.\r\n\r\n**Durable Construction** - High-quality materials that withstand daily use throughout the church year.\r\n\r\n**Spiritual Focus** - More than just organization - designed to keep your heart centered on God's calling throughout your busy ministry schedule.\r\n\r\n### Available in Multiple Pacific Islander Languages\r\n\r\n**Ke Kauoha La Haku (Hawaiian Edition 2026)**\r\n📖 [Get on Amazon](https://a.co/d/gatnNET) | 💳 [Get on Gumroad](https://uncomango.gumroad.com/l/ulrmu)\r\n\r\n**Tusi Fuataiaga a le Faifeau (Samoan Enhanced Edition 2026)**\r\n📖 [Get on Amazon](https://a.co/d/gs0WRPh) | 💳 [Get on Gumroad](https://uncomango.gumroad.com/l/ubzevn)\r\n\r\nOrder your Pastor Planner today and experience the peace that comes from organized, prayer-centered ministry leadership."
+            "body_md": "## Organize Your Ministry with Purpose and Prayer\r\n\r\nEffective ministry requires both spiritual sensitivity and practical organization. Our Pastor Planners combine beautiful design with functional tools to help you lead with excellence and peace.\r\n\r\n### Features of Our Ministry Planning System\r\n\r\n**Sermon Planning Sections** - Map out your preaching calendar with space for themes, scriptures, and prayer requests. Plan seasonal series and track the spiritual journey of your congregation.\r\n\r\n**Prayer and Pastoral Care** - Dedicated sections for tracking prayer requests, hospital visits, counseling sessions, and follow-up care. Never let a member of your flock slip through the cracks.\r\n\r\n**Meeting and Event Coordination** - Organize board meetings, committee sessions, special events, and outreach activities with integrated calendars and checklists.\r\n\r\n**Personal Spiritual Disciplines** - Maintain your own spiritual health with guided sections for daily devotions, sabbath planning, and personal growth goals.\r\n\r\n### Why Pastors Love Our Planners\r\n\r\n**Hawaiian-Inspired Design** - Beautiful layouts featuring island imagery and scripture verses that bring peace to your planning time.\r\n\r\n**Flexible Formatting** - Works for churches of all sizes and denominations, with customizable sections for your unique ministry context.\r\n\r\n**Durable Construction** - High-quality materials that withstand daily use throughout the church year.\r\n\r\n**Spiritual Focus** - More than just organization - designed to keep your heart centered on God's calling throughout your busy ministry schedule.\r\n\r\n### Available in Multiple Pacific Islander Languages\r\n\r\n**Ke Kauoha La Haku (Hawaiian Edition 2026)**\r\n[Get on Amazon](https://a.co/d/gatnNET) | [Get on Gumroad](https://uncomango.gumroad.com/l/ulrmu)\r\n\r\n**Tusi Fuataiaga a le Faifeau (Samoan Enhanced Edition 2026)**\r\n[Get on Amazon](https://a.co/d/gs0WRPh) | [Get on Gumroad](https://uncomango.gumroad.com/l/ubzevn)\r\n\r\nOrder your Pastor Planner today and experience the peace that comes from organized, prayer-centered ministry leadership."
         },
         "nahenahe_voice": {
             "title": "The Nahenahe Voice of Nahono'opi'ilani - Musical Legacy",
@@ -106,24 +106,24 @@ DEFAULT_PAGES = {
                 {
                     "name": "Amazon Music",
                     "url": "https://music.amazon.com/search/nahenahe%20voice",
-                    "icon": "🛒"
+                    "icon": ""
                 },
                 {
                     "name": "Apple Music",
                     "url": "https://music.apple.com/us/search?term=nahenahe%20voice",
-                    "icon": "🍎"
+                    "icon": ""
                 },
                 {
                     "name": "Spotify",
                     "url": "https://open.spotify.com/search/nahenahe%20voice",
-                    "icon": "🎧"
+                    "icon": ""
                 }
             ]
         },
         "free_booklets": {
             "title": "FREE Booklets",
             "hero_image": "https://i.imgur.com/wmHEyDo.png",
-            "body_md": "## 🎁 FREE Kingdom Booklets\r\n\r\nDownload all 6:",
+            "body_md": "## FREE Kingdom Booklets\r\n\r\nDownload all 6:",
             "products": [
                 {"title": "Kingdom Wealth Principles", "download": "/download/booklet1"},
                 {"title": "Kingdom Wealth for Couples", "download": "/download/booklet2"},
@@ -136,7 +136,7 @@ DEFAULT_PAGES = {
         "kingdom_keys": {
             "title": "FREE Kingdom Keys Booklets",
             "hero_image": "https://i.imgur.com/wmHEyDo.png",
-            "body_md": "## 🌺 FREE Kingdom Keys 🌺\r\n\r\nAfter 30 years of biblical study.\r\n\r\n**[Browse Complete Kingdom Series →](/call_to_repentance)**",
+            "body_md": "## FREE Kingdom Keys\r\n\r\nAfter 30 years of biblical study.\r\n\r\n**[Browse Complete Kingdom Series →](/call_to_repentance)**",
             "products": [
                 {"title": "7 Scriptures Kingdom Inside You", "download": "/download/pamphlet1"},
                 {"title": "Kingdom Healing in 10 Minutes", "download": "/download/pamphlet2"},
@@ -676,7 +676,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             
             {% if page.gallery_images %}
             <div class="gallery-section">
-                <h2>📸 Album Covers</h2>
+                <h2>Album Covers</h2>
                 <div class="gallery-grid">
                     {% for image in page.gallery_images %}
                     <div class="gallery-item">
@@ -690,7 +690,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             {% if page.product_links %}
             {% if page.get("products") %}
             <div class="products-section" style="margin: 3rem 0;">
-                <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">📚 Available Resources</h2>
+                <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">Available Resources</h2>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
                     {% for product in page.products %}
                     <div style="background: rgba(0,0,0,0.5); padding: 2rem; border-radius: 12px; text-align: center;">
@@ -700,13 +700,13 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
                         <h3 style="color: white; font-size: 1.1rem; margin-bottom: 1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">{{ product.title }}</h3>
                         <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
                             {% if product.get('download') %}
-                            <a href="{{ product.download }}" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #d4af37, #b8960c); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">📥 FREE Download</a>
+                            <a href="{{ product.download }}" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #d4af37, #b8960c); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">FREE Download</a>
                             {% endif %}
                             {% if product.amazon %}
-                            <a href="{{ product.amazon }}" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #5f9ea0, #4a8b8e); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">🛒 Amazon</a>
+                            <a href="{{ product.amazon }}" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #5f9ea0, #4a8b8e); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">Amazon</a>
                             {% endif %}
                             {% if product.gumroad %}
-                            <a href="{{ product.gumroad }}" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #FF90E8, #FFA500); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">💳 Gumroad</a>
+                            <a href="{{ product.gumroad }}" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #FF90E8, #FFA500); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">Gumroad</a>
                             {% endif %}
                         </div>
                     </div>
@@ -716,7 +716,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             {% endif %}
             
             <div class="buy-section">
-                <h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">🎵 Stream Our Music</h2>
+                <h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">Stream Our Music</h2>
                 <div class="music-buttons">
                     {% for link in page.product_links %}
                     <a href="{{ link.url }}" target="_blank" class="music-button">
@@ -729,7 +729,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             
             {% if page.product_images %}
             <div class="product-gallery" style="margin: 3rem 0;">
-                <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">📚 Available Products</h2>
+                <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">Available Products</h2>
                 <div class="gallery-grid">
                     {% for img in page.product_images %}
                     <div class="gallery-item">
@@ -742,14 +742,14 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             
             {% if page.podcast_embed %}
             <div class="podcast-section" style="margin: 2rem 0; padding: 2rem; background: rgba(0,0,0,0.3); border-radius: 8px;">
-                <h2 style="color: white; text-align: center; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">🎙️ Listen to Our Podcast</h2>
+                <h2 style="color: white; text-align: center; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">️ Listen to Our Podcast</h2>
                 {{ page.podcast_embed|safe }}
             </div>
             {% endif %}
             
             {% if page.get("products") %}
             <div class="products-section" style="margin: 3rem 0;">
-                <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">📚 Available Resources</h2>
+                <h2 style="color: white; text-align: center; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">Available Resources</h2>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
                     {% for product in page.products %}
                     <div style="background: rgba(0,0,0,0.5); padding: 2rem; border-radius: 12px; text-align: center;">
@@ -759,13 +759,13 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
                         <h3 style="color: white; font-size: 1.1rem; margin-bottom: 1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">{{ product.title }}</h3>
                         <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
                             {% if product.get('download') %}
-                            <a href="{{ product.download }}" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #d4af37, #b8960c); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">📥 FREE Download</a>
+                            <a href="{{ product.download }}" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #d4af37, #b8960c); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">FREE Download</a>
                             {% endif %}
                             {% if product.amazon %}
-                            <a href="{{ product.amazon }}" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #5f9ea0, #4a8b8e); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">🛒 Amazon</a>
+                            <a href="{{ product.amazon }}" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #5f9ea0, #4a8b8e); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">Amazon</a>
                             {% endif %}
                             {% if product.gumroad %}
-                            <a href="{{ product.gumroad }}" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #FF90E8, #FFA500); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">💳 Gumroad</a>
+                            <a href="{{ product.gumroad }}" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #FF90E8, #FFA500); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">Gumroad</a>
                             {% endif %}
                         </div>
                     </div>
@@ -777,19 +777,19 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
             <div class="buy-section">
                 {% if page.direct_buy_url %}
                 <a href="{{ page.direct_buy_url }}" class="buy-button" style="background: linear-gradient(135deg, #28a745, #218838); font-size: 1.2rem; padding: 1rem 2rem;">
-                    🌺 Instant Access - $47
+                    Instant Access - $47
                 </a>
                 {% endif %}
                 
                 {% if page.product_url %}
                 <a href="{{ page.product_url }}" target="_blank" class="buy-button">
-                    🛒 Buy on Amazon
+                    Buy on Amazon
                 </a>
                 {% endif %}
                 
                 {% if page.gumroad_url %}
                 <a href="{{ page.gumroad_url }}" target="_blank" class="buy-button" style="background: linear-gradient(135deg, #FF90E8, #FFA500);">
-                    💳 Buy on Gumroad
+                    Buy on Gumroad
                 </a>
                 {% endif %}
             </div>
@@ -955,7 +955,7 @@ body { font-family: Georgia, serif; background: linear-gradient(135deg, #1a4a3a 
 .price { font-size: 2.2rem; color: #28a745; font-weight: bold; }
 .features { list-style: none; margin-bottom: 1.5rem; }
 .features li { padding: 0.5rem 0; border-bottom: 1px solid #e9ecef; color: #495057; font-size: 0.95rem; }
-.features li:before { content: "✓ "; color: #28a745; font-weight: bold; }
+.features li:before { content: "-"; color: #28a745; font-weight: bold; }
 .secure { text-align: center; color: #6c757d; font-size: 0.85rem; margin-top: 1rem; }
 #paypal-button-container { margin: 1rem 0; }
 .back { display: block; text-align: center; margin-top: 1.5rem; color: #6c757d; text-decoration: none; font-size: 0.9rem; }
@@ -965,7 +965,7 @@ body { font-family: Georgia, serif; background: linear-gradient(135deg, #1a4a3a 
 <body>
 <div class="container">
 <div class="header">
-<h1>🌺 Aloha Wellness</h1>
+<h1>Aloha Wellness</h1>
 <p>Island-Inspired Natural Weight Management</p>
 <p style="margin-top:0.5rem; font-size:0.9rem;">By Kahu Phil Stephens — Molokaʻi, Hawaiʻi</p>
 </div>
@@ -985,7 +985,7 @@ body { font-family: Georgia, serif; background: linear-gradient(135deg, #1a4a3a 
 <li>Full lifetime access</li>
 </ul>
 <div id="paypal-button-container"></div>
-<div class="secure">🔒 Secure checkout powered by PayPal<br>Credit and debit cards accepted — no PayPal account needed</div>
+<div class="secure">Secure checkout powered by PayPal<br>Credit and debit cards accepted — no PayPal account needed</div>
 <a href="/aloha_wellness" class="back">← Back to Aloha Wellness page</a>
 </div>
 </div>
@@ -1044,7 +1044,7 @@ p { color: #495057; line-height: 1.7; margin-bottom: 1.5rem; }
 </head>
 <body>
 <div class="container">
-<div class="icon">🌺</div>
+<div class="icon"></div>
 <h1>Mahalo! Payment Received!</h1>
 <div class="message">
 <strong>Your purchase is confirmed.</strong><br><br>
@@ -1113,8 +1113,8 @@ def download_booklet6():
 
     
     port = int(os.environ.get("PORT", 5000))
-    print("🌺 Starting Ke Aupuni O Ke Akua website...")
-    print(f"🌊 Visit: http://localhost:{port}")
+    print("Starting Ke Aupuni O Ke Akua website...")
+    print(f"Visit: http://localhost:{port}")
     print("=" * 50)
     app.run(host="0.0.0.0", port=port, debug=True)
 
@@ -1268,7 +1268,7 @@ def admin_panel():
 </head>
 <body>
     <div class="container">
-        <h1>🌺 Admin Panel</h1>
+        <h1>Admin Panel</h1>
         <p class="subtitle">Manage your website content</p>
         
         <div class="page-list">
@@ -1304,7 +1304,7 @@ def admin_panel():
         
         admin_html += f"""
                 </div>
-                <a href="/admin/edit/{page_id}" class="edit-btn">✏️ Edit Page</a>
+                <a href="/admin/edit/{page_id}" class="edit-btn">️ Edit Page</a>
             </div>
 """
     
@@ -1312,7 +1312,7 @@ def admin_panel():
         </div>
         
         <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #e9ecef;">
-            <a href="/admin/products" class="edit-btn" style="display: inline-block; margin-right: 1rem;">💰 Manage Digital Products</a>
+            <a href="/admin/products" class="edit-btn" style="display: inline-block; margin-right: 1rem;">Manage Digital Products</a>
             <a href="/" class="back-btn" style="display: inline-block;">← Back to Website</a>
         </div>
     </div>
@@ -1524,7 +1524,7 @@ def edit_page(page_id):
 </head>
 <body>
     <div class="container">
-        <h1>✏️ Edit Page</h1>
+        <h1>️ Edit Page</h1>
         <p class="subtitle">{page['title']}</p>
         
         <form method="POST">
@@ -1546,7 +1546,7 @@ def edit_page(page_id):
             </div>
             
             <div class="form-group">
-                <label for="direct_buy_url">🌺 Direct Buy URL (Your Website Checkout)</label>
+                <label for="direct_buy_url">Direct Buy URL (Your Website Checkout)</label>
                 <input type="text" id="direct_buy_url" name="direct_buy_url" value="{page.get('direct_buy_url', '')}">
                 <div class="help-text">Paste your product checkout URL here - e.g. /checkout/prod_20260216123456 - This shows the green "Instant Access - $47" button on your page!</div>
             </div>
@@ -1584,11 +1584,11 @@ def edit_page(page_id):
             <div class="form-group">
                 <label for="product_links">Music Platform Links (Optional - Format: Name|URL|Icon)</label>
                 <textarea id="product_links" name="product_links" style="min-height: 100px;">{links_str}</textarea>
-                <div class="help-text">Example: Amazon Music|https://music.amazon.com/...|🛒</div>
+                <div class="help-text">Example: Amazon Music|https://music.amazon.com/...|</div>
             </div>
             
             <div class="btn-group">
-                <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
                 <a href="/kahu" class="btn btn-secondary">← Cancel</a>
             </div>
         </form>
@@ -1869,13 +1869,13 @@ def admin_products():
 </head>
 <body>
     <div class="container">
-        <h1>💰 Digital Products Manager</h1>
+        <h1>Digital Products Manager</h1>
         <p class="subtitle">Sell your ebooks, planners, and digital downloads directly from your website</p>
         
         <div class="actions">
-            <button class="btn btn-primary" onclick="openAddModal()">➕ Add New Product</button>
+            <button class="btn btn-primary" onclick="openAddModal()">Add New Product</button>
             <a href="/kahu" class="btn btn-secondary">← Back to Admin</a>
-            <a href="/" class="btn btn-secondary">🏠 View Website</a>
+            <a href="/" class="btn btn-secondary">View Website</a>
         </div>
 """
     
@@ -1900,9 +1900,9 @@ def admin_products():
                     <div><strong>Product ID:</strong> {product['id']}</div>
                 </div>
                 <div class="product-actions">
-                    <a href="/product/{product['id']}" class="btn btn-sm btn-primary" target="_blank">👁️ View Sales Page</a>
-                    <button class="btn btn-sm btn-success" onclick="editProduct('{product['id']}')">✏️ Edit</button>
-                    <button class="btn btn-sm btn-danger" onclick="deleteProduct('{product['id']}')">🗑️ Delete</button>
+                    <a href="/product/{product['id']}" class="btn btn-sm btn-primary" target="_blank">️ View Sales Page</a>
+                    <button class="btn btn-sm btn-success" onclick="editProduct('{product['id']}')">️ Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteProduct('{product['id']}')">️ Delete</button>
                 </div>
             </div>
             """
@@ -1910,7 +1910,7 @@ def admin_products():
     else:
         html += """
         <div class="empty-state">
-            <h3>📦 No Products Yet</h3>
+            <h3>No Products Yet</h3>
             <p>Start selling by adding your first digital product!</p>
             <p style="margin-top: 1rem;">Click "Add New Product" above to get started.</p>
         </div>
@@ -1922,39 +1922,39 @@ def admin_products():
     <div id="addModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeAddModal()">&times;</span>
-            <h2>➕ Add New Product</h2>
+            <h2>Add New Product</h2>
             <form id="addProductForm" action="/admin/products/add" method="POST" enctype="multipart/form-data">
                 
                 <div class="form-group">
-                    <label for="name">📌 Product Name *</label>
+                    <label for="name">Product Name *</label>
                     <input type="text" id="name" name="name" required placeholder="e.g., Aloha Wellness: Island-Inspired Natural Weight Management">
                     <div class="file-info">The title customers will see on the sales page</div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="description">📝 Description *</label>
+                    <label for="description">Description *</label>
                     <textarea id="description" name="description" required style="min-height: 150px;" placeholder="Describe what customers will get, what problems it solves, and why they need it...">A respectful integration of Hawaiian wisdom and modern science for sustainable health. Discover the Four Pillars of Aloha Wellness - Malama, Pono, Ohana, and Aloha - and how they transform your relationship with food, your body, and your health. Written by Kahu Phil Stephens from Molokai, this cutting-edge book combines ancient Hawaiian cultural wisdom with evidence-based nutritional science for lasting, sustainable wellness.</textarea>
                     <div class="file-info">This appears on your sales page. Be descriptive - sell the transformation!</div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="price">💰 Price (USD) *</label>
+                    <label for="price">Price (USD) *</label>
                     <input type="number" id="price" name="price" step="0.01" min="0" required value="47.00">
                     <div class="file-info">Your price is $47.00 - customers pay this via PayPal</div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="file">📁 Product File * (The actual ebook customers will download)</label>
+                    <label for="file">Product File * (The actual ebook customers will download)</label>
                     <input type="file" id="file" name="file" required accept=".pdf,.epub,.zip,.html">
                     <div class="file-info">
-                        ✅ Upload your <strong>aloha_wellness_ebook_COMPLETE.html</strong> file here<br>
-                        📌 Find it in your Downloads folder from this session<br>
-                        📋 Accepted formats: PDF, HTML, EPUB, ZIP (max 50MB)
+                        Upload your <strong>aloha_wellness_ebook_COMPLETE.html</strong> file here<br>
+                        Find it in your Downloads folder from this session<br>
+                        Accepted formats: PDF, HTML, EPUB, ZIP (max 50MB)
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="category">🏷️ Category</label>
+                    <label for="category">️ Category</label>
                     <select id="category" name="category">
                         <option value="ebook" selected>Ebook</option>
                         <option value="planner">Planner</option>
@@ -1965,14 +1965,14 @@ def admin_products():
                 </div>
                 
                 <div class="form-group">
-                    <label for="cover_image">🖼️ Cover Image URL (optional but recommended!)</label>
+                    <label for="cover_image">️ Cover Image URL (optional but recommended!)</label>
                     <input type="url" id="cover_image" name="cover_image" value="https://i.imgur.com/xGeWW3Q.jpeg" placeholder="https://i.imgur.com/...">
                     <div class="file-info">Pre-filled with your Aloha Wellness image. Change if needed.</div>
                 </div>
                 
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" onclick="closeAddModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">🌺 Add Product & Start Selling!</button>
+                    <button type="submit" class="btn btn-primary">Add Product & Start Selling!</button>
                 </div>
             </form>
         </div>
@@ -2376,7 +2376,7 @@ def product_page(product_id):
         }}
         
         .features li:before {{
-            content: "✓ ";
+            content: "-";
             color: #28a745;
             font-weight: bold;
             margin-right: 0.5rem;
@@ -2421,7 +2421,7 @@ def product_page(product_id):
                 <div class="price">${product['price']}</div>
                 
                 <a href="mailto:kahuphil@keaupuni.faith?subject=Purchase: {product['name']}&body=I would like to purchase {product['name']} for ${product['price']}. Please send me payment instructions." class="buy-button">
-                    📧 Email to Purchase
+                    Email to Purchase
                 </a>
                 <p style="text-align: center; margin-top: 1rem; color: #6c757d; font-size: 0.9rem;">
                     Click to email for payment instructions (PayPal, Venmo, or Zelle)
@@ -2629,7 +2629,7 @@ def checkout_page(product_id):
         }}
         
         .features li:before {{
-            content: "✓ ";
+            content: "-";
             color: #28a745;
             font-weight: bold;
         }}
@@ -2675,7 +2675,7 @@ def checkout_page(product_id):
 <body>
     <div class="container">
         <div class="header">
-            <h1>🌺 Complete Your Purchase</h1>
+            <h1>Complete Your Purchase</h1>
             <p style="color: #6c757d;">Ke Aupuni O Ke Akua Press</p>
         </div>
         
@@ -2697,7 +2697,7 @@ def checkout_page(product_id):
         <div class="paypal-section">
             <div id="paypal-button-container"></div>
             <div class="secure-badge">
-                🔒 Secure checkout powered by PayPal
+                Secure checkout powered by PayPal
             </div>
             <p>You don't need a PayPal account - credit and debit cards accepted</p>
         </div>
@@ -2890,7 +2890,7 @@ def paypal_success():
 </head>
 <body>
     <div class="container">
-        <div class="success-icon">🌺</div>
+        <div class="success-icon"></div>
         <h1>Mahalo! Payment Received!</h1>
         <p class="subtitle">Your copy of <strong>{product['name']}</strong> is ready!</p>
         
@@ -2907,7 +2907,7 @@ def paypal_success():
             <br>
             <p>If you have any questions, email me at <strong>kahuphil@keaupuni.faith</strong></p>
             <br>
-            <p>A hui hou,<br><strong>Kahu Phil Stephens</strong><br>Molokaʻi, Hawaiʻi 🌺</p>
+            <p>A hui hou,<br><strong>Kahu Phil Stephens</strong><br>Molokaʻi, Hawaiʻi</p>
         </div>
         
         <div class="order-info">Order ID: {order_id}</div>
@@ -3053,7 +3053,7 @@ def paypal_cancel():
 </head>
 <body>
     <div class="container">
-        <h1>No worries! 🌺</h1>
+        <h1>No worries!</h1>
         <p>Your payment was cancelled. No charge was made.</p>
         <p>Whenever you're ready, the book will be here waiting for you.</p>
         <a href="/" class="btn">← Back to Website</a>
@@ -3086,7 +3086,7 @@ body { font-family: Georgia, serif; background: linear-gradient(135deg, #1a4a3a 
 .price { font-size: 2.2rem; color: #28a745; font-weight: bold; }
 .features { list-style: none; margin-bottom: 1.5rem; }
 .features li { padding: 0.5rem 0; border-bottom: 1px solid #e9ecef; color: #495057; font-size: 0.95rem; }
-.features li:before { content: "✓ "; color: #28a745; font-weight: bold; }
+.features li:before { content: "-"; color: #28a745; font-weight: bold; }
 .secure { text-align: center; color: #6c757d; font-size: 0.85rem; margin-top: 1rem; }
 #paypal-button-container { margin: 1rem 0; }
 .back { display: block; text-align: center; margin-top: 1.5rem; color: #6c757d; text-decoration: none; font-size: 0.9rem; }
@@ -3095,7 +3095,7 @@ body { font-family: Georgia, serif; background: linear-gradient(135deg, #1a4a3a 
 <body>
 <div class="container">
 <div class="header">
-<h1>🌺 Aloha Wellness</h1>
+<h1>Aloha Wellness</h1>
 <p>Island-Inspired Natural Weight Management</p>
 <p style="margin-top:0.5rem; font-size:0.9rem;">By Kahu Phil Stephens — Molokaʻi, Hawaiʻi</p>
 </div>
@@ -3115,7 +3115,7 @@ body { font-family: Georgia, serif; background: linear-gradient(135deg, #1a4a3a 
 <li>Full lifetime access</li>
 </ul>
 <div id="paypal-button-container"></div>
-<div class="secure">🔒 Secure checkout powered by PayPal<br>Credit and debit cards accepted — no PayPal account needed</div>
+<div class="secure">Secure checkout powered by PayPal<br>Credit and debit cards accepted — no PayPal account needed</div>
 <a href="/aloha_wellness" class="back">← Back to Aloha Wellness page</a>
 </div>
 </div>
@@ -3168,7 +3168,7 @@ p { color: #495057; line-height: 1.7; margin-bottom: 1.5rem; }
 </head>
 <body>
 <div class="container">
-<div class="icon">🌺</div>
+<div class="icon"></div>
 <h1>Mahalo! Payment Received!</h1>
 <div class="message">
 <strong>Your purchase is confirmed.</strong><br><br>

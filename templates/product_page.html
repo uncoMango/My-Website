@@ -20,7 +20,7 @@
         .buy-button:hover { background:#218838; transform:translateY(-2px); box-shadow:0 6px 20px rgba(40,167,69,0.4); }
         .features { list-style:none; margin-bottom:2rem; }
         .features li { padding:0.5rem 0; border-bottom:1px solid #e9ecef; }
-        .features li:before { content:"✓ "; color:#28a745; font-weight:bold; }
+        .features li:before { content:"-"; color:#28a745; font-weight:bold; }
         @media (max-width:768px) {
             .product-content { grid-template-columns:1fr; }
             .product-header h1 { font-size:1.75rem; }
@@ -50,7 +50,7 @@
                 <li>No DRM – yours forever</li>
             </ul>
             <div class="price">${{ product.price }}</div>
-            <a href="/checkout/{{ product.id }}" class="buy-button">🌺 Buy Now – ${{ product.price }}</a>
+            <a href="/checkout/{{ product.id }}" class="buy-button">Buy Now – ${{ product.price }}</a>
         </div>
     </div>
 </div>

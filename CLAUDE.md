@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Emoji Policy
+
+**NO emoji characters anywhere in this project** — not in templates, not in Python files, not in HTML, not in content. Never add emoji unless explicitly instructed by Kahu Phil.
+
 ## Project Overview
 
 Flask web application for Ke Aupuni O Ke Akua, a Hawaiian Kingdom ministry website. Deployed on Render.com at `keaupuniakeakua.faith`.

@@ -48,13 +48,13 @@
 </head>
 <body>
 <div class="container">
-    <h1>💰 Digital Products Manager</h1>
+    <h1>Digital Products Manager</h1>
     <p class="subtitle">Sell your ebooks, planners, and digital downloads directly from your website</p>
 
     <div class="actions">
-        <button class="btn btn-primary" onclick="openAddModal()">➕ Add New Product</button>
+        <button class="btn btn-primary" onclick="openAddModal()">Add New Product</button>
         <a href="/kahu" class="btn btn-secondary">← Back to Admin</a>
-        <a href="/" class="btn btn-secondary">🏠 View Website</a>
+        <a href="/" class="btn btn-secondary">View Website</a>
     </div>
 
     {% if products %}
@@ -78,16 +78,16 @@
                 <div><strong>Product ID:</strong> {{ product.id }}</div>
             </div>
             <div class="product-actions">
-                <a href="/product/{{ product.id }}" class="btn btn-sm btn-primary" target="_blank">👁️ View Sales Page</a>
-                <a href="/admin/products/edit/{{ product.id }}" class="btn btn-sm btn-success">✏️ Edit</a>
-                <button class="btn btn-sm btn-danger" onclick="deleteProduct('{{ product.id }}')">🗑️ Delete</button>
+                <a href="/product/{{ product.id }}" class="btn btn-sm btn-primary" target="_blank">️ View Sales Page</a>
+                <a href="/admin/products/edit/{{ product.id }}" class="btn btn-sm btn-success">️ Edit</a>
+                <button class="btn btn-sm btn-danger" onclick="deleteProduct('{{ product.id }}')">️ Delete</button>
             </div>
         </div>
         {% endfor %}
     </div>
     {% else %}
     <div class="empty-state">
-        <h3>📦 No Products Yet</h3>
+        <h3>No Products Yet</h3>
         <p>Start selling by adding your first digital product!</p>
         <p style="margin-top:1rem;">Click "Add New Product" above to get started.</p>
     </div>
@@ -97,27 +97,27 @@
 <div id="addModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeAddModal()">&times;</span>
-        <h2>➕ Add New Product</h2>
+        <h2>Add New Product</h2>
         <form id="addProductForm" action="/admin/products/add" method="POST" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="name">📌 Product Name *</label>
+                <label for="name">Product Name *</label>
                 <input type="text" id="name" name="name" required placeholder="e.g., Aloha Wellness">
             </div>
             <div class="form-group">
-                <label for="description">📝 Description *</label>
+                <label for="description">Description *</label>
                 <textarea id="description" name="description" required style="min-height:150px;" placeholder="Describe what customers will get..."></textarea>
             </div>
             <div class="form-group">
-                <label for="price">💰 Price (USD) *</label>
+                <label for="price">Price (USD) *</label>
                 <input type="number" id="price" name="price" step="0.01" min="0" required value="47.00">
             </div>
             <div class="form-group">
-                <label for="file">📁 Product File * (the file customers download)</label>
+                <label for="file">Product File * (the file customers download)</label>
                 <input type="file" id="file" name="file" required accept=".pdf,.epub,.zip,.html">
                 <div class="file-info">Accepted: PDF, HTML, EPUB, ZIP (max 50MB)</div>
             </div>
             <div class="form-group">
-                <label for="category">🏷️ Category</label>
+                <label for="category">️ Category</label>
                 <select id="category" name="category">
                     <option value="ebook" selected>Ebook</option>
                     <option value="planner">Planner</option>
@@ -127,12 +127,12 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="cover_image">🖼️ Cover Image URL (optional)</label>
+                <label for="cover_image">️ Cover Image URL (optional)</label>
                 <input type="url" id="cover_image" name="cover_image" placeholder="https://i.imgur.com/...">
             </div>
             <div class="form-actions">
                 <button type="button" class="btn btn-secondary" onclick="closeAddModal()">Cancel</button>
-                <button type="submit" class="btn btn-primary">🌺 Add Product</button>
+                <button type="submit" class="btn btn-primary">Add Product</button>
             </div>
         </form>
     </div>
