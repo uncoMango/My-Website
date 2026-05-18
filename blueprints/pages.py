@@ -780,6 +780,207 @@ _SEO_PAGES = {
             "[**Aloha Wellness Book →**](/aloha_wellness)"
         ),
     },
+    ("wellness", "eating-when-hungry"): {
+        "title": "Eating When Hungry Instead of Eating by Schedule | Ke Aupuni O Ke Akua",
+        "meta_description": "Discover the difference between eating by true hunger and eating by artificial schedule. Explore wellness rhythm, stewardship, and ancestral patterns.",
+        "hero_image": "/static/images/ulu_kalo_mango.jpg",
+        "body_md": (
+            "## Eating When Hungry — Returning to the Body's Natural Rhythm\n\n"
+            "### A Question Worth Asking\n\n"
+            "When did you last eat because you were genuinely hungry — not because the clock said it was time, not because food was available, not because habit called it a meal hour?\n\n"
+            "For most people in modern culture, the distinction barely registers. Eating has been organized around schedule, convenience, and social convention rather than around the body's actual signals. Breakfast arrives because it is breakfast time. Lunch follows the workday break. Dinner comes with the evening hour. True hunger — the body's own signal that nourishment is needed — often plays a smaller role than the calendar does.\n\n"
+            "---\n\n"
+            "### What Creation Reveals\n\n"
+            "Observe any animal living outside a human-imposed feeding routine. It eats when its body signals hunger, stops when satisfied, and rests between meals. It does not eat at fixed intervals because the clock demands it. It does not consume beyond what its energy requires.\n\n"
+            "This pattern is not primitive. It is extraordinarily functional. Creatures maintained this rhythm long before modern agriculture organized human life around scheduled mealtimes. Creation itself demonstrates that hunger is a reliable signal — and that trusting it may be more intelligent than overriding it with a schedule.\n\n"
+            "---\n\n"
+            "### How Ancestral Cultures Lived Differently\n\n"
+            "The people of Molokaʻi and across the Hawaiian Islands did not organize their eating around a corporate meal schedule. Their eating was shaped by physical labor, by what the land and sea provided in season, and by the rhythm of the day and the demands of the work being done.\n\n"
+            "They were not counting meals. They were responding to hunger — real hunger, earned through activity, satisfied through nourishment, and allowed to return naturally before eating again.\n\n"
+            "The result was a lean and capable people. Not because they followed a wellness system, but because they lived in alignment with how the body was designed to function. That alignment produced health without programs, without tracking, without the anxiety that most modern eating culture creates.\n\n"
+            "---\n\n"
+            "### The Confusion Constant Eating Can Create\n\n"
+            "When food is available at every hour and eating is tied to schedule rather than hunger, the body's natural signaling can become harder to read. The signals that once communicated true need become difficult to distinguish from habit, boredom, stress, or simple availability.\n\n"
+            "Kahu Phil Stephens began observing this in his own life on Molokaʻi — noticing that eating by schedule often meant eating before genuine hunger arrived. The shift came not from a diet program but from a simple question: am I actually hungry, or is it simply time?\n\n"
+            "That question, asked consistently and honestly, began to restore a different relationship with food. One built on awareness rather than routine.\n\n"
+            "---\n\n"
+            "### This Is Not About Restriction\n\n"
+            "Eating when hungry is not starvation. It is not extreme fasting. It is not a system requiring tracking or measuring. It is not a diet at all in the modern sense.\n\n"
+            "It is the opposite of restriction — it is trust. Trust that the body will signal when it needs nourishment. Trust that waiting for real hunger is not dangerous but natural. Trust that stopping when satisfied rather than when the plate is empty is sufficient.\n\n"
+            "Rhythm and awareness guide this approach. Rules do not.\n\n"
+            "---\n\n"
+            "### Stewardship of the Temple\n\n"
+            "From a Kingdom perspective, how you eat is a stewardship question. The body is a gift entrusted to your care. Stewarding that gift faithfully means paying attention to what it actually needs — not simply feeding it according to cultural convention or commercial habit.\n\n"
+            "Stewardship requires discernment. In this case, discernment begins with learning to distinguish genuine hunger from the noise of modern food culture. That distinction, once recovered, opens a quieter and more sustainable path to physical wellbeing.\n\n"
+            "---\n\n"
+            "[**Explore the Wellness Ecosystem →**](/ecosystem)\n\n"
+            "[**Ancestral Eating Patterns →**](/wellness/ancestral-eating-patterns)\n\n"
+            "[**Is Three Meals a Day Necessary? →**](/wellness/three-meals-a-day-necessary)\n\n"
+            "[**Scripture Study Tools →**](/scripture-tools)\n\n"
+            "---\n\n"
+            "If this teaching is helping you, consider supporting the mission.\n\n"
+            "[**Support the Ministry →**](/support)"
+        ),
+    },
+    ("wellness", "the-rotten-fencepost-principle"): {
+        "title": "The Rotten Fencepost Principle and Modern Wellness Confusion | Ke Aupuni O Ke Akua",
+        "meta_description": "Why do so many modern health systems fail people? Explore the Rotten Fencepost Principle and how broken foundations affect wellness understanding.",
+        "hero_image": "/static/images/taro_root.jpg",
+        "body_md": (
+            "## The Rotten Fencepost Principle — When the Foundation Is Off\n\n"
+            "### The Principle\n\n"
+            "On a ranch, a fencepost set crooked does not stay crooked alone. Every wire, every rail, every post attached to it inherits the lean. By the time you have run a hundred yards of fence, the whole line is off — and finding the source of the problem requires going back, past all the later posts, to the one that started the drift.\n\n"
+            "A rotten fencepost does the same thing. It looks stable. The wire holds. The fence seems to stand. But the foundation is compromised, and eventually everything it supports will lean with it.\n\n"
+            "Kahu Phil Stephens learned this lesson working cattle on the land of Molokaʻi. And it applies directly to how modern wellness culture has been built.\n\n"
+            "---\n\n"
+            "### How Small Misunderstandings Create Widespread Confusion\n\n"
+            "When the foundational assumptions of a system are flawed, every conclusion built on those assumptions inherits the error. This is not visible immediately. The system may appear to function for years before the drift becomes obvious.\n\n"
+            "Modern wellness has built many structures on foundations that were never fully examined. The three-meals-a-day model was not developed from observation of the body's natural rhythms. The calorie-counting framework was built on mechanical assumptions about human metabolism that later research has repeatedly complicated. The diet industry runs on the premise that willpower and the right system are all that separate people from health — an assumption that decades of failure rates have not dislodged.\n\n"
+            "The posts look stable. But something in the foundation has never been right.\n\n"
+            "---\n\n"
+            "### When Marketing Replaces Wisdom\n\n"
+            "Part of what makes the fencepost problem persistent is that modern culture rewards new systems rather than examined foundations. A new diet, a new program, a new framework — each one offers a fresh start without requiring a return to the original misalignment.\n\n"
+            "Marketing accelerates this. The next system is always more sophisticated, more targeted, more scientifically branded than the last. But if the foundational assumptions remain unexamined, the new post leans in the same direction as the old one.\n\n"
+            "Wisdom, by contrast, is patient. It does not chase novelty. It goes back to the fence line and asks where the first post was set — and whether it was set correctly.\n\n"
+            "---\n\n"
+            "### What Creation and Simplicity Teach\n\n"
+            "The natural world does not overcomplicate wellness. Animals maintain health through rhythm, movement, rest, and eating in alignment with genuine need. The complexity comes not from the body's design but from the systems humans impose on top of it.\n\n"
+            "Hawaiian ancestral life was not simple because it lacked sophistication. It was grounded because it was rooted in the actual requirements of life on the land — physical work, food from the soil and sea, rest aligned with the rhythms of the day. Those foundations held for generations precisely because they were not built on assumptions that needed to be revised every decade.\n\n"
+            "---\n\n"
+            "### Stewardship Requires Questioning Foundations\n\n"
+            "Kingdom stewardship is not passive. It does not accept inherited systems without examination. It asks whether the foundation is sound — whether the first post was set correctly — before extending the fence line further.\n\n"
+            "Applied to wellness, this means asking not only which diet or program to follow, but whether the framework that produces diets and programs is itself trustworthy. And if it is not, where to go instead.\n\n"
+            "The path back is not more complexity. It is return — to simpler foundations, older wisdom, and the kind of alignment that does not require constant revision.\n\n"
+            "---\n\n"
+            "[**Explore the Wellness Ecosystem →**](/ecosystem)\n\n"
+            "[**Why Modern Health Advice Feels Confusing →**](/wellness/why-modern-health-advice-feels-confusing)\n\n"
+            "[**Eating When Hungry →**](/wellness/eating-when-hungry)\n\n"
+            "[**What Is the Kingdom of God? →**](/kingdom/what-is-the-kingdom-of-god)\n\n"
+            "---\n\n"
+            "Continue learning through the wellness and Kingdom ecosystem.\n\n"
+            "[**Support the Ministry →**](/support)"
+        ),
+    },
+    ("wellness", "kupuna-wisdom-and-modern-health"): {
+        "title": "Kupuna Wisdom and Modern Health | Ke Aupuni O Ke Akua",
+        "meta_description": "Explore how Hawaiian kupuna wisdom, stewardship, simplicity, and rhythm can help modern people rethink wellness and health.",
+        "hero_image": "/static/images/breadfruit.jpg",
+        "body_md": (
+            "## Kupuna Wisdom and Modern Health\n\n"
+            "### What the Elders Knew\n\n"
+            "Kupuna — the Hawaiian word for elders, grandparents, and those who carry ancestral knowledge — were not wellness experts in the modern sense. They had no degrees in nutrition or fitness science. They did not publish protocols or sell programs.\n\n"
+            "What they had was something that modern wellness culture consistently struggles to replicate: a way of living that kept people healthy across generations, not through intervention but through alignment.\n\n"
+            "Their wisdom was practical and grounded. It emerged from a deep relationship with the land, the sea, and the rhythms of creation. And it included principles that modern health research is only now beginning to rediscover.\n\n"
+            "---\n\n"
+            "### Living in Rhythm With Life\n\n"
+            "The foundation of kupuna wisdom was not a set of rules. It was a relationship — with the land, with the seasons, with the body's natural cycles, and with the community that sustained daily life.\n\n"
+            "Eating followed the rhythms of what the land and sea provided. Movement was not separate from life — it was life, built into the labor of farming, fishing, and building. Rest came with the darkness. Work came with the light. The body was not managed. It was lived in.\n\n"
+            "This is not nostalgia. It is a recognition that the body was designed to function within rhythms — and that health tends to follow when those rhythms are honored rather than overridden.\n\n"
+            "---\n\n"
+            "### When Modern Systems Disconnect People From Stewardship\n\n"
+            "Modern wellness culture, despite its sophistication, often moves people further from natural stewardship rather than closer to it. Programs create dependency on external structure. Tracking systems replace internal awareness. The focus on isolated variables can crowd out the simpler, more durable question of how to live in alignment with how the body was made.\n\n"
+            "Kupuna wisdom did not fragment wellness into components. It understood health as a result of how life was lived as a whole — the food, the work, the rest, the relationships, the spiritual grounding, and the relationship with the land.\n\n"
+            "When one piece of that whole is addressed in isolation, the results tend to be partial and temporary. When the whole is addressed, something more lasting becomes possible.\n\n"
+            "---\n\n"
+            "### Wellness Includes More Than the Physical\n\n"
+            "The elders understood that the body does not exist in isolation from the soul, the mind, and the community. Wellness that addresses only the physical while ignoring the emotional and spiritual dimensions of a person will always be incomplete.\n\n"
+            "Hawaiian tradition held that mana — spiritual strength and vitality — was connected to how a person lived in relationship: with the Creator, with the land, with their family, and with their own kuleana, their responsibility and purpose. A person disconnected from those relationships was understood to be vulnerable in ways that no amount of physical attention could fully address.\n\n"
+            "True wellness, in the kupuna understanding, was never only about the body. It was about the whole person living in right relationship with life.\n\n"
+            "---\n\n"
+            "### Simplicity and Sustainability\n\n"
+            "The most durable health practices are the ones simple enough to continue indefinitely. Kupuna wisdom was sustainable across generations not because it was unchanging, but because it was built on foundations that do not require constant revision — the body's natural hunger rhythms, physical work, rest, whole food from the land, and spiritual grounding.\n\n"
+            "Modern wellness culture tends to move in the opposite direction: more complexity, more tracking, more interventions. Each new system promises more than the last. Most cannot be sustained for a year, let alone a generation.\n\n"
+            "The path toward lasting wellness may not be forward into greater complexity. It may be back — toward the simpler, more grounded understanding of health that the kupuna carried and practiced.\n\n"
+            "---\n\n"
+            "[**Explore the Wellness Ecosystem →**](/ecosystem)\n\n"
+            "[**Ancestral Eating Patterns →**](/wellness/ancestral-eating-patterns)\n\n"
+            "[**The Rotten Fencepost Principle →**](/wellness/the-rotten-fencepost-principle)\n\n"
+            "[**Scripture Study Tools →**](/scripture-tools)\n\n"
+            "---\n\n"
+            "Explore the broader ecosystem and teachings.\n\n"
+            "[**Support the Ministry →**](/support)"
+        ),
+    },
+    ("kingdom", "understanding-scripture-through-original-words"): {
+        "title": "Understanding Scripture Through Original Hebrew and Greek Words | Ke Aupuni O Ke Akua",
+        "meta_description": "Learn why understanding original Hebrew and Greek words can deepen Scripture study without changing the Bible itself.",
+        "hero_image": "/static/images/bible_scroll.jpg",
+        "body_md": (
+            "## Understanding Scripture Through Original Hebrew and Greek Words\n\n"
+            "### Reading Is Not the Same as Understanding\n\n"
+            "There is a difference between reading a text and understanding what it actually says. That difference becomes most significant when the text was written in a language other than the one you are reading.\n\n"
+            "Scripture was written in Hebrew, Aramaic, and Greek. What most readers encounter today is a translation — a careful, scholarly rendering produced centuries after the original, in a language whose relationship to the source text is never fully transparent.\n\n"
+            "A translation gives access to the text. It does not give direct access to the words themselves.\n\n"
+            "---\n\n"
+            "### What Ancient Language Carried\n\n"
+            "Words in ancient Hebrew and Greek were not thin containers for simple ideas. They carried layered meaning rooted in culture, history, covenant relationship, and the structure of the language itself.\n\n"
+            "The Hebrew word most often translated as \"know\" does not describe intellectual awareness alone. It describes intimate relationship, direct experience, and the kind of understanding that comes from covenant connection. When Scripture says that God knew a person, or that a person knew God, the depth of that word in the original language far exceeds what the English rendering conveys.\n\n"
+            "The Greek vocabulary of the New Testament carried similar precision. Words for love, time, peace, righteousness, and power each had specific ranges of meaning that the Greek-speaking world understood — ranges that a single English translation word often cannot fully hold.\n\n"
+            "When those words are flattened into single English equivalents, something is compressed. The text remains. The depth is reduced.\n\n"
+            "---\n\n"
+            "### Cultural and Governmental Context\n\n"
+            "Ancient Hebrew developed within a culture shaped by covenant relationship — between a people and their God, between families and the land, between generations and the promises made to them. That covenantal framework colors every word. Law, justice, righteousness, and blessing all carry dimensions of covenant meaning that a reader unfamiliar with that world will miss.\n\n"
+            "Greek, particularly the Koine Greek of the New Testament era, was shaped by the governmental and philosophical world of the first century. Words like *basileia* (kingdom), *ekklesia* (assembly), and *kurios* (lord) carried specific governmental weight that Greek-speaking listeners understood immediately — weight that modern translations often reduce to religious language stripped of its original force.\n\n"
+            "Understanding what those words meant in their original context is not an academic exercise. It changes how the text is heard.\n\n"
+            "---\n\n"
+            "### The Goal Is Clarity, Not Revision\n\n"
+            "Studying original language meaning is not about rewriting Scripture or producing new doctrine. The text is not being changed. The original words are not being replaced.\n\n"
+            "The goal is to see more clearly what is already there — to recover the dimension of meaning that translation, by necessity, had to compress. Faithful translation is a gift. Original language study is a companion to that gift, not a rejection of it.\n\n"
+            "Approaching the text with humility is essential. The purpose is deeper understanding of what was written, not the construction of alternative readings. The original words are the foundation. Understanding them more fully serves the text.\n\n"
+            "---\n\n"
+            "### Language Shapes Understanding\n\n"
+            "Every language frames reality in a particular way. The categories available in Hebrew are not the same categories available in modern English. Concepts that ancient Israelites held in a single word sometimes require paragraphs to unpack in Western thought — and those paragraphs can still miss something.\n\n"
+            "When readers understand which original word is behind the English rendering they are reading, they gain access to the frame. They begin to see not just what the translation chose to say, but what the original writer actually expressed.\n\n"
+            "That shift in understanding does not diminish the translated text. It adds light to it.\n\n"
+            "---\n\n"
+            "[**Scripture Study Tools →**](/scripture-tools)\n\n"
+            "[**Explore the Kingdom Ecosystem →**](/ecosystem)\n\n"
+            "[**What Is the Kingdom of God? →**](/kingdom/what-is-the-kingdom-of-god)\n\n"
+            "[**The Kingdom Message of Jesus →**](/kingdom/jesus-kingdom-message)\n\n"
+            "---\n\n"
+            "Explore the Scripture study tools and Kingdom ecosystem.\n\n"
+            "[**Support the Ministry →**](/support)"
+        ),
+    },
+    ("kingdom", "stewardship-in-the-kingdom-of-god"): {
+        "title": "Stewardship in the Kingdom of God | Ke Aupuni O Ke Akua",
+        "meta_description": "Discover how stewardship, responsibility, and service connect to the message of the Kingdom of God.",
+        "hero_image": "/static/images/sunlight_bursting.jpg",
+        "body_md": (
+            "## Stewardship in the Kingdom of God\n\n"
+            "### A Practical Kingdom\n\n"
+            "Much of what passes for Kingdom theology is theoretical — a framework for understanding church structure or doctrinal categories. The Kingdom is discussed as a concept and preached as a future destination.\n\n"
+            "But the Kingdom message of Jesus was radically practical. It was concerned with how people lived now — how they related to one another, how they used their resources, how they treated those in need, how they stewarded what had been entrusted to them. Stewardship was not a footnote to the Kingdom message. It was central to it.\n\n"
+            "---\n\n"
+            "### What Stewardship Actually Means\n\n"
+            "Stewardship is not ownership. It is the faithful management of something entrusted to you by another.\n\n"
+            "In the Kingdom of God, this principle applies to everything. The earth belongs to God — human beings are stewards of it. Resources belong to the King — citizens of the Kingdom are managers of what has been placed in their care. The body is a gift from the Creator — the one who receives it is responsible for its care.\n\n"
+            "This reframes the question from what do I have to how well am I managing what has been given to me. The shift is not subtle. It changes the entire orientation of life — from accumulation and control to faithfulness and fruitfulness.\n\n"
+            "---\n\n"
+            "### Stewardship Extends Across All of Life\n\n"
+            "The scope of stewardship in the Kingdom is not limited to money or material resources. Jesus addressed the stewardship of time, of talent, of relationships, of truth, of physical health, and of calling.\n\n"
+            "The Parable of the Talents was not a lesson in investment strategy. It was a statement about what faithfulness looks like across every domain of life entrusted to Kingdom citizens. The servants who multiplied what they were given were commended not for their technique but for their faithfulness to the trust. The servant who buried his gift out of fear was not rebuked for failure to produce — he was rebuked for failure to steward.\n\n"
+            "Fear produces inaction. Faithful stewardship produces fruitfulness. And fruitfulness, in the Kingdom economy, is the measure of faithfulness.\n\n"
+            "---\n\n"
+            "### The Kingdom Is Not Merely Theoretical\n\n"
+            "The message of stewardship lands differently when it is understood as a Kingdom principle rather than a religious obligation. Religious obligation produces compliance — doing the minimum required to satisfy the requirement. Kingdom stewardship produces engagement — the genuine desire to manage well what the King has entrusted, because the relationship with the King makes faithfulness worthwhile.\n\n"
+            "Service and responsibility matter in the Kingdom because citizens carry the King's authority and represent the King's character. Stewardship is therefore not merely personal management. It is a form of service — to the King, to the community, and to the generation that will receive what is built or neglected.\n\n"
+            "Wisdom in this context does not elevate the one who possesses it. It serves those who need it.\n\n"
+            "---\n\n"
+            "### The Body as a Stewardship Priority\n\n"
+            "Stewardship includes the physical body — something the Kingdom message addresses directly and something that wellness teachings rooted in Scripture take seriously.\n\n"
+            "The body is not incidental to Kingdom life. It is the vessel through which Kingdom citizens work, serve, build, and love. Neglecting the body is a stewardship failure in the same way that neglecting a resource or a talent is. Caring for it wisely is an act of faithfulness.\n\n"
+            "This is why the wellness dimension of Kingdom teaching is not separate from the theological dimension. They arise from the same root: the understanding that everything entrusted to you is the King's, and that faithful management of all of it — resources, relationships, body, mind, and community — is what Kingdom citizenship looks like in practice.\n\n"
+            "---\n\n"
+            "[**Explore the Kingdom Ecosystem →**](/ecosystem)\n\n"
+            "[**What Is the Kingdom of God? →**](/kingdom/what-is-the-kingdom-of-god)\n\n"
+            "[**Biblical Stewardship Principles →**](/wealth/biblical-stewardship-principles)\n\n"
+            "[**Scripture Study Tools →**](/scripture-tools)\n\n"
+            "---\n\n"
+            "Continue exploring the Kingdom ecosystem and teachings.\n\n"
+            "[**Support the Ministry →**](/support)"
+        ),
+    },
 }
 
 
@@ -828,6 +1029,11 @@ def sitemap():
         ("/kingdom/what-is-the-kingdom-of-god",              "0.8", "monthly"),
         ("/kingdom/jesus-kingdom-message",         "0.8", "monthly"),
         ("/wealth/biblical-stewardship-principles","0.8", "monthly"),
+        ("/wellness/eating-when-hungry",                              "0.8", "weekly"),
+        ("/wellness/the-rotten-fencepost-principle",                  "0.8", "weekly"),
+        ("/wellness/kupuna-wisdom-and-modern-health",                 "0.8", "weekly"),
+        ("/kingdom/understanding-scripture-through-original-words",   "0.8", "weekly"),
+        ("/kingdom/stewardship-in-the-kingdom-of-god",               "0.8", "weekly"),
     ]
     base_url = "https://keaupuniakeakua.faith"
     today = datetime.now().strftime("%Y-%m-%d")
