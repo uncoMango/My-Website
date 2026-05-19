@@ -942,6 +942,47 @@ _SEO_PAGES = {
             "[**Support the Ministry →**](/support)"
         ),
     },
+    ("wellness", "god-never-told-adam-when-to-eat"): {
+        "title": "God Never Told Adam When to Eat — And That Changes Everything",
+        "meta_description": "In Genesis, God gave mankind everything to eat — but never a schedule. Explore what creation itself teaches us about hunger, rhythm, and wellness stewardship.",
+        "hero_image": "/static/images/taro_root.jpg",
+        "body_md": (
+            "## God Never Told Adam When to Eat — And That Changes Everything\n\n"
+            "### Abundance Without a Schedule\n\n"
+            "In the opening chapters of Genesis, God provided abundantly. Every tree, every fruit, every living thing was given for nourishment. But something is missing from that provision — and that missing piece may be one of the most important wellness insights in all of Scripture.\n\n"
+            "God never told Adam and Eve when to eat. He never told them how much.\n\n"
+            "There is no schedule in the garden. No breakfast, lunch, and dinner. No portioned plate. No clock on the wall telling them it was time. Just abundance, awareness, and the freedom to live in rhythm with their own bodies and with creation.\n\n"
+            "---\n\n"
+            "### What Creation Itself Teaches\n\n"
+            "Look at the rest of creation and you will see the same pattern. Animals do not eat by schedule. Birds do not set alarms. Fish do not count calories. Every living thing — from the largest animal to the smallest insect, from the tallest tree to the smallest plant — consumes only what it needs, when it needs it. Creation itself is the teacher.\n\n"
+            "This is not a minor detail. It is a consistent pattern written into the fabric of how life was designed to function. The body's hunger signals are not obstacles to manage. They are a form of wisdom — the same wisdom that guides every other living creature toward nourishment without needing a program to follow.\n\n"
+            "---\n\n"
+            "### What Changed When Modern Life Arrived\n\n"
+            "Something changed when modern life arrived. Schedules were built around work shifts, industrial routines, and marketing systems that told people when to be hungry. Three meals a day became a cultural rule rather than a natural rhythm. And quietly, over generations, people stopped listening to their bodies and started listening to the clock.\n\n"
+            "The three-meal structure did not emerge from Scripture. It did not come from ancestral Hawaiian wisdom or from any ancient understanding of how the body functions. It came from industrialization — factory workers needing to eat on a fixed schedule tied to shift breaks.\n\n"
+            "Before that structure was imposed, human beings ate differently. They ate when genuinely hungry, in amounts that matched their activity, from food available in the season. There was rhythm — not schedule.\n\n"
+            "---\n\n"
+            "### Returning to Simplicity\n\n"
+            "This is not about extreme dieting or skipping meals to suffer. This is about returning to something simpler — the awareness that your body was designed with wisdom, and that wisdom does not need a schedule to function.\n\n"
+            "Eating when hungry rather than eating by clock is not deprivation. It is trust. Trust that the body will signal genuine need. Trust that waiting for real hunger is natural rather than dangerous. Trust that stopping when satisfied is sufficient.\n\n"
+            "Creation modeled this from the beginning. The garden demonstrated it. The ancestral peoples who lived closest to the land understood it in practice across generations.\n\n"
+            "---\n\n"
+            "### Kingdom Stewardship Begins With Listening\n\n"
+            "Kingdom health begins with stewardship. And stewardship begins with listening — to creation, to your body, and to the One who designed both.\n\n"
+            "The body is not the enemy. It is a gift entrusted to your care. Stewarding that gift faithfully means paying attention to what it actually needs — not simply feeding it according to a schedule someone else designed for a different era and a different way of life.\n\n"
+            "What God placed in the garden was not just food. It was a demonstration of how life was meant to be lived — with awareness, with rhythm, and with the freedom to respond to real need rather than artificial demand.\n\n"
+            "---\n\n"
+            "[**Is Three Meals a Day Necessary? →**](/wellness/three-meals-a-day-necessary)\n\n"
+            "[**Ancestral Eating Patterns →**](/wellness/ancestral-eating-patterns)\n\n"
+            "[**Eating When Hungry →**](/wellness/eating-when-hungry)\n\n"
+            "[**What Is the Kingdom of God? →**](/kingdom/what-is-the-kingdom-of-god)\n\n"
+            "[**Explore the Ke Aupuni Ecosystem →**](/ecosystem)\n\n"
+            "---\n\n"
+            "If this teaching is helping you see wellness differently, explore the full Aloha Wellness teaching or support this ministry so these resources can keep reaching people who need them.\n\n"
+            "[**Aloha Wellness Book →**](/aloha_wellness)\n\n"
+            "[**Support the Ministry →**](/support)"
+        ),
+    },
     ("kingdom", "stewardship-in-the-kingdom-of-god"): {
         "title": "Stewardship in the Kingdom of God | Ke Aupuni O Ke Akua",
         "meta_description": "Discover how stewardship, responsibility, and service connect to the message of the Kingdom of God.",
@@ -1034,6 +1075,7 @@ def sitemap():
         ("/wellness/kupuna-wisdom-and-modern-health",                 "0.8", "weekly"),
         ("/kingdom/understanding-scripture-through-original-words",   "0.8", "weekly"),
         ("/kingdom/stewardship-in-the-kingdom-of-god",               "0.8", "weekly"),
+        ("/wellness/god-never-told-adam-when-to-eat",                 "0.8", "weekly"),
     ]
     base_url = "https://keaupuniakeakua.faith"
     today = datetime.now().strftime("%Y-%m-%d")
