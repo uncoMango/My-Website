@@ -2,6 +2,7 @@
 import json
 import os
 import smtplib
+import threading
 from datetime import datetime, timezone
 from urllib.parse import quote
 from email.mime.text import MIMEText
@@ -108,6 +109,66 @@ def _send_welcome_email(email, name=""):
         print(f"[welcome] FAILED for {email}: {e}", flush=True)
 
 
+def _send_followup_day3(email, name=""):
+    if not all([SMTP_HOST, SMTP_USER, SMTP_PASS]):
+        return
+    try:
+        greeting = name if name else "friend"
+        body = (
+            f"Aloha {greeting},\n\n"
+            "I have been thinking about you since you joined our community.\n\n"
+            "The Kingdom of God is not a distant destination — it is the present reality "
+            "you were created to walk in. Every step you take in faith is already Kingdom ground.\n\n"
+            "Keep going. You are not alone in this.\n\n"
+            "Mahalo for being here.\n\n"
+            "Kahu Phil Stephens\n"
+            "keaupuniakeakua.faith"
+        )
+        msg = MIMEText(body, "plain")
+        msg["Subject"] = "A word for you — Ke Aupuni O Ke Akua"
+        msg["From"] = "kahuphil@keaupuni.faith"
+        msg["To"] = email
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SMTP_USER, SMTP_PASS)
+            server.send_message(msg)
+        print(f"[followup-day3] Day-3 email sent to {email}", flush=True)
+    except Exception as e:
+        print(f"[followup-day3] FAILED for {email}: {e}", flush=True)
+
+
+def _send_followup_day7(email, name=""):
+    if not all([SMTP_HOST, SMTP_USER, SMTP_PASS]):
+        return
+    try:
+        greeting = name if name else "friend"
+        body = (
+            f"Aloha {greeting},\n\n"
+            "A week ago you connected with Ke Aupuni O Ke Akua — and I want to share "
+            "something that has been close to my heart.\n\n"
+            "I wrote Aloha Wellness because I believe the body, the spirit, and the Kingdom "
+            "are not separate things. True wellness flows from living under the reign of God — "
+            "eating, resting, and moving in covenant rhythm rather than the world's anxious pace.\n\n"
+            "If that resonates with you, I would love for you to take a look:\n\n"
+            "https://keaupuniakeakua.faith/aloha-wellness\n\n"
+            "No pressure. Just an invitation.\n\n"
+            "Mahalo for walking this road with us.\n\n"
+            "Kahu Phil Stephens\n"
+            "keaupuniakeakua.faith"
+        )
+        msg = MIMEText(body, "plain")
+        msg["Subject"] = "Wellness from the inside out — Aloha Wellness"
+        msg["From"] = "kahuphil@keaupuni.faith"
+        msg["To"] = email
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SMTP_USER, SMTP_PASS)
+            server.send_message(msg)
+        print(f"[followup-day7] Day-7 email sent to {email}", flush=True)
+    except Exception as e:
+        print(f"[followup-day7] FAILED for {email}: {e}", flush=True)
+
+
 # ---------------------------------------------------------------------------
 # Google Sheets integration
 # ---------------------------------------------------------------------------
@@ -142,6 +203,9 @@ def _append_to_sheet(name, email, timestamp):
 
 @downloads_bp.route("/subscribe", methods=["POST"])
 def subscribe():
+    if request.form.get("website"):
+        return redirect("/")
+
     first_name = request.form.get("first_name", "").strip()
     email = request.form.get("email", "").strip().lower()
     if not email:
@@ -162,6 +226,9 @@ def subscribe():
         _append_to_sheet(first_name, email, datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"))
         _notify_new_subscriber(email, first_name)
         _send_welcome_email(email, first_name)
+        threading.Timer(3 * 24 * 3600, _send_followup_day3, args=[email, first_name]).start()
+        threading.Timer(7 * 24 * 3600, _send_followup_day7, args=[email, first_name]).start()
+        print(f"[followup] Scheduled day-3 and day-7 emails for {email}", flush=True)
 
     return redirect(f"/thank-you?name={quote(first_name)}")
 
@@ -175,6 +242,8 @@ def thank_you():
 @downloads_bp.route("/download/aloha_wellness_freebie", methods=["GET", "POST"])
 def aloha_wellness_freebie():
     if request.method == "POST":
+        if request.form.get("website"):
+            return redirect("/")
         email = request.form.get("email", "").strip().lower()
         if email:
             subscribers = _load_subscribers()
