@@ -9,8 +9,10 @@ from blueprints.downloads import downloads_bp
 from blueprints.products import products_bp
 from blueprints.payments import payments_bp
 from blueprints.admin import admin_bp
+from limiter import limiter
 
 app = Flask(__name__)
+limiter.init_app(app)
 
 # Initialize on startup (works with gunicorn too)
 PRODUCTS_FOLDER.mkdir(exist_ok=True)

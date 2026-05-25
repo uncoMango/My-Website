@@ -8,6 +8,7 @@ from urllib.parse import quote
 from email.mime.text import MIMEText
 from flask import Blueprint, send_file, abort, request, redirect, render_template
 from config import BASE, EMAILS_FILE, SUBSCRIBERS_FILE, SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, NOTIFY_EMAIL
+from limiter import limiter
 
 downloads_bp = Blueprint("downloads", __name__)
 
@@ -201,15 +202,28 @@ def _append_to_sheet(name, email, timestamp):
 # Routes
 # ---------------------------------------------------------------------------
 
+def _valid_email(email):
+    if "@" not in email:
+        return False
+    domain = email.split("@", 1)[1]
+    return "." in domain and not domain.endswith(".")
+
+
+@downloads_bp.app_errorhandler(429)
+def ratelimit_exceeded(e):
+    return redirect("/")
+
+
 @downloads_bp.route("/subscribe", methods=["POST"])
+@limiter.limit("3 per hour")
 def subscribe():
     if request.form.get("website"):
         return redirect("/")
 
     first_name = request.form.get("first_name", "").strip()
     email = request.form.get("email", "").strip().lower()
-    if not email:
-        return redirect(request.referrer or "/")
+    if not email or not _valid_email(email):
+        return redirect("/")
 
     print(f"[subscribe] New signup attempt — email={email} name={first_name}", flush=True)
 
@@ -240,11 +254,14 @@ def thank_you():
 
 
 @downloads_bp.route("/download/aloha_wellness_freebie", methods=["GET", "POST"])
+@limiter.limit("3 per hour")
 def aloha_wellness_freebie():
     if request.method == "POST":
         if request.form.get("website"):
             return redirect("/")
         email = request.form.get("email", "").strip().lower()
+        if email and not _valid_email(email):
+            return redirect("/")
         if email:
             subscribers = _load_subscribers()
             if not any(s["email"] == email for s in subscribers):

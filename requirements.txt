@@ -4,5 +4,6 @@ werkzeug
 gunicorn
 gspread
 google-auth
+flask-limiter
 # Uncomment the line below after you activate Stripe in config.py:
 stripe
