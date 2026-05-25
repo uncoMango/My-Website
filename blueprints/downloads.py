@@ -12,6 +12,30 @@ from limiter import limiter
 
 downloads_bp = Blueprint("downloads", __name__)
 
+_DISPOSABLE_DOMAINS = {
+    "mailinator.com", "guerrillamail.com", "tempmail.com", "throwaway.email",
+    "fakeinbox.com", "trashmail.com", "yopmail.com", "sharklasers.com",
+    "spam4.me", "boun.cr",
+}
+
+
+def _valid_email(email):
+    if len(email) < 6:
+        return False
+    if "@" not in email:
+        return False
+    local, domain = email.split("@", 1)
+    if "." not in domain or domain.endswith("."):
+        return False
+    if domain.lower() in _DISPOSABLE_DOMAINS:
+        return False
+    if local.isdigit():
+        return False
+    if len(local) >= 6 and not any(c in "aeiou" for c in local.lower()):
+        return False
+    return True
+
+
 # ---------------------------------------------------------------------------
 # Subscriber storage helpers
 # ---------------------------------------------------------------------------
@@ -41,6 +65,13 @@ for _s in _startup_subs:
     print(f"  - {_s.get('email', '?')}  name={_s.get('first_name', '')}", flush=True)
 if not _startup_subs:
     print("[subscribers] (none stored yet)", flush=True)
+
+# Remove any subscribers that fail current email validation.
+_before_clean = len(_startup_subs)
+_startup_subs = [s for s in _startup_subs if _valid_email(s.get("email", ""))]
+if len(_startup_subs) < _before_clean:
+    _save_subscribers(_startup_subs)
+    print(f"[subscribers] Cleaned {_before_clean - len(_startup_subs)} invalid subscriber(s). {len(_startup_subs)} remain.", flush=True)
 
 # Check for Google credentials at startup so misconfiguration is visible immediately.
 _gc = os.environ.get("GOOGLE_CREDENTIALS_JSON", "")
@@ -202,13 +233,6 @@ def _append_to_sheet(name, email, timestamp):
 # Routes
 # ---------------------------------------------------------------------------
 
-def _valid_email(email):
-    if "@" not in email:
-        return False
-    domain = email.split("@", 1)[1]
-    return "." in domain and not domain.endswith(".")
-
-
 @downloads_bp.app_errorhandler(429)
 def ratelimit_exceeded(e):
     return redirect("/")
@@ -217,6 +241,8 @@ def ratelimit_exceeded(e):
 @downloads_bp.route("/subscribe", methods=["POST"])
 @limiter.limit("3 per hour")
 def subscribe():
+    if not request.headers.get("User-Agent", "").strip():
+        return redirect("/")
     if request.form.get("website"):
         return redirect("/")
 
@@ -256,6 +282,8 @@ def thank_you():
 @downloads_bp.route("/download/aloha_wellness_freebie", methods=["GET", "POST"])
 @limiter.limit("3 per hour")
 def aloha_wellness_freebie():
+    if not request.headers.get("User-Agent", "").strip():
+        return redirect("/")
     if request.method == "POST":
         if request.form.get("website"):
             return redirect("/")
