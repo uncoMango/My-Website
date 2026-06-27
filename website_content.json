@@ -104,6 +104,15 @@
         }
       ]
     },
+
+    {
+  "id": "rotten_fencepost_field_guide",
+  "name": "Rotten Fencepost Field Guide",
+  "price": "9.00",
+  "active": true,
+  "cover_image": "",
+  "description": "Why everything keeps falling apart — and what God actually designed instead."
+}
     "kingdom_keys": {
       "title": "FREE Kingdom Keys Booklets",
       "hero_image": "/static/images/taro_field_2.jpg",
