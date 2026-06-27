@@ -32,7 +32,7 @@ def render_page(page_id, data):
 def home():
     data = load_content()
     return render_page("home", data)
-    @pages_bp.route("/rotten-fencepost")
+@pages_bp.route("/rotten-fencepost")
 def rotten_fencepost():
     data = load_content()
     nav_items = get_nav_items(data)
