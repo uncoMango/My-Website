@@ -32,6 +32,29 @@ def render_page(page_id, data):
 def home():
     data = load_content()
     return render_page("home", data)
+@pages_bp.route("/rotten-fencepost")
+def rotten_fencepost():
+    data = load_content()
+    nav_items = get_nav_items(data)
+    return render_template(
+        "rotten_fencepost.html",
+        nav_items=nav_items,
+        logo_path=LOGO_PATH,
+        logo_height=LOGO_HEIGHT,
+        footer_text=FOOTER_TEXT,
+    )
+
+@pages_bp.route("/rotten-fencepost/success")
+def rotten_fencepost_success():
+    data = load_content()
+    nav_items = get_nav_items(data)
+    return render_template(
+        "rotten_fencepost_success.html",
+        nav_items=nav_items,
+        logo_path=LOGO_PATH,
+        logo_height=LOGO_HEIGHT,
+        footer_text=FOOTER_TEXT,
+    )
 
 @pages_bp.route("/myron-golden")
 def myron_golden():
