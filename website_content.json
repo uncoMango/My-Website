@@ -1,6 +1,16 @@
 {
   "funnel_youtube_url": "https://www.youtube.com/embed/O_-J8t0NHLc",
   "founding_reader_remaining": 100,
+  "products": [
+    {
+      "id": "rotten_fencepost_field_guide",
+      "name": "Rotten Fencepost Field Guide",
+      "price": "9.00",
+      "active": true,
+      "cover_image": "",
+      "description": "Why everything keeps falling apart — and what God actually designed instead."
+    }
+  ],
   "order": [
     "home",
     "kingdom_wealth",

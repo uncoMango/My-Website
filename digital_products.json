@@ -40,6 +40,19 @@
       "total_sales": 0
     },
     {
+      "id": "rotten_fencepost_field_guide",
+      "name": "Rotten Fencepost Field Guide",
+      "description": "Why everything keeps falling apart — and what God actually designed instead.",
+      "price": 9.00,
+      "category": "ebook",
+      "filename": "rotten_fencepost_field_guide.pdf",
+      "file_path": "static/downloads/rotten_fencepost_field_guide.pdf",
+      "cover_image": "",
+      "active": true,
+      "downloads": 0,
+      "total_sales": 0
+    },
+    {
       "id": "prod_nahenahe_cd",
       "name": "Nahenahe Voice CD",
       "description": "Live recording at the historic Molokai Ranch Lodge year 2000, a 5-star property now abandoned. This recording cannot be made again.",
