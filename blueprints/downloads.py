@@ -351,6 +351,16 @@ def kingdom_is_here():
 def kingdom_wealth_booklet():
     return _send(BASE / "Kingdom_Wealth_Booklet2.pdf")
 
+@downloads_bp.route("/download/product/<product_id>")
+def download_product(product_id):
+    from content import get_product_by_id
+    product = get_product_by_id(product_id)
+    if not product or not product.get("active", True):
+        abort(404)
+    file_path = BASE / product.get("file_path", "")
+    return _send(file_path)
+
+
 @downloads_bp.route("/static/covers/<filename>")
 def serve_cover(filename):
     cover_path = BASE / filename
