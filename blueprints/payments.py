@@ -44,6 +44,35 @@ payments_bp = Blueprint("payments", __name__)
 
 
 # =========================================================
+# SUCCESS PAGE HELPER
+# Partnership tiers have no digital file to deliver, so they get
+# a dedicated thank-you template instead of the "your download is
+# ready" page used for real digital products.
+# =========================================================
+
+def _render_payment_success(product, order_id):
+    if product.get("category") == "partnership":
+        return render_template(
+            "partner_success.html",
+            product=product,
+            order_id=order_id,
+            logo_path=LOGO_PATH,
+            logo_height=LOGO_HEIGHT,
+            footer_text=FOOTER_TEXT,
+        )
+    download_url = f"/download/product/{product['id']}"
+    return render_template(
+        "payment_success.html",
+        product=product,
+        order_id=order_id,
+        download_url=download_url,
+        logo_path=LOGO_PATH,
+        logo_height=LOGO_HEIGHT,
+        footer_text=FOOTER_TEXT,
+    )
+
+
+# =========================================================
 # EMAIL NOTIFICATION HELPER
 # =========================================================
 
@@ -169,16 +198,7 @@ def paypal_success():
 
     _send_sale_notification(product["name"], float(product["price"]), order_id, buyer_name, buyer_email)
 
-    download_url = f"/download/product/{product_id}"
-    return render_template(
-        "payment_success.html",
-        product=product,
-        order_id=order_id,
-        download_url=download_url,
-        logo_path=LOGO_PATH,
-        logo_height=LOGO_HEIGHT,
-        footer_text=FOOTER_TEXT,
-    )
+    return _render_payment_success(product, order_id)
 
 
 @payments_bp.route("/paypal/cancel")
@@ -248,7 +268,7 @@ def stripe_success():
 
     session = stripe.checkout.Session.retrieve(session_id)
     if session.payment_status != "paid":
-        abort(402)
+        return ("Payment not completed.", 402)
 
     product = get_product_by_id(product_id)
     if not product:
@@ -266,16 +286,7 @@ def stripe_success():
     buyer_email = getattr(customer_details, "email", None) or ""
     _send_sale_notification(product["name"], float(product["price"]), session_id, buyer_name, buyer_email)
 
-    download_url = f"/download/product/{product_id}"
-    return render_template(
-        "payment_success.html",
-        product=product,
-        order_id=session_id,
-        download_url=download_url,
-        logo_path=LOGO_PATH,
-        logo_height=LOGO_HEIGHT,
-        footer_text=FOOTER_TEXT,
-    )
+    return _render_payment_success(product, session_id)
 
 
 @payments_bp.route("/stripe/webhook", methods=["POST"])

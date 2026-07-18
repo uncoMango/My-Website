@@ -44,10 +44,16 @@
             <h2>About This Product</h2>
             <div class="product-description">{{ product.description }}</div>
             <ul class="features">
+                {% if product.category == 'partnership' %}
+                <li>Your gift supports Kingdom teaching and ministry work</li>
+                <li>Confirmation sent to your email</li>
+                <li>Contact Kahu Phil directly with any questions</li>
+                {% else %}
                 <li>Instant digital download</li>
                 <li>Read on any device</li>
                 <li>Full lifetime access</li>
                 <li>No DRM – yours forever</li>
+                {% endif %}
             </ul>
             <div class="price">${{ product.price }}</div>
             <a href="/checkout/{{ product.id }}" class="buy-button">Buy Now – ${{ product.price }}</a>

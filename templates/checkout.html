@@ -74,16 +74,22 @@
     <div class="product-summary">
         <div>
             <div class="product-name">{{ product.name }}</div>
-            <div class="product-type">Digital Ebook – Instant Download</div>
+            <div class="product-type">{% if product.category == 'partnership' %}Ministry Partnership{% else %}Digital Ebook – Instant Download{% endif %}</div>
         </div>
         <div class="product-price">${{ "%.2f"|format(product.price) }}</div>
     </div>
 
     <ul class="features">
+        {% if product.category == 'partnership' %}
+        <li>Your gift supports Kingdom teaching and ministry work</li>
+        <li>Confirmation sent to your email</li>
+        <li>From Kahu Phil Stephens, Molokaʻi</li>
+        {% else %}
         <li>Instant digital download after payment</li>
         <li>Read on any device – phone, tablet, computer</li>
         <li>Full lifetime access</li>
         <li>From Kahu Phil Stephens, Molokaʻi</li>
+        {% endif %}
     </ul>
 
     {% if stripe_enabled %}

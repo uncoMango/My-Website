@@ -111,6 +111,7 @@
 .tier-card li:last-child { border-bottom: none; }
 .tier-card li::before { content: "\2713\0020"; color: #d4af37; font-weight: bold; }
 .tier-buttons { margin-top: auto; display: flex; flex-direction: column; gap: 0.6rem; }
+.paypal-btn-slot { width: 100%; min-height: 45px; }
 .tier-btn-stripe {
     display: block; width: 100%; padding: 0.8rem; border: none; border-radius: 8px;
     font-size: 1rem; font-weight: bold; cursor: pointer; transition: all 0.2s ease;
@@ -254,6 +255,15 @@
         </div>
     </div>
 
+    <!-- Single, shared PayPal-unavailable notice - never duplicated per button.
+         Visible immediately (no JS needed) if PayPal isn't configured at all;
+         can also be revealed by JS below if the SDK is configured but fails
+         to load at runtime. -->
+    <div id="paypal-unavailable-notice" style="display:{% if not paypal_enabled %}block{% else %}none{% endif %}; text-align:center; max-width:600px; margin:0 auto 2rem; padding:1rem 1.5rem; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:rgba(255,255,255,0.85); font-size:0.95rem;">
+        PayPal is temporarily unavailable. You can still give by card above where available, or email
+        <a href="mailto:kahuphil@keaupuni.faith" style="color:#d4af37;">kahuphil@keaupuni.faith</a> to arrange your partnership directly.
+    </div>
+
     <!-- Partnership Tiers -->
     <div class="tiers-grid">
         <!-- Tier 1 -->
@@ -268,13 +278,15 @@
                 <li>Name listed on Partner Wall of Aloha</li>
             </ul>
             <div class="tier-buttons">
+                {% if stripe_enabled %}
                 <form action="/stripe/create-session/partner_tier1" method="POST" onsubmit="return injectPartnerInfo(this);">
                     <input type="hidden" name="partner_name" value="">
                     <input type="hidden" name="partner_email" value="">
                     <input type="hidden" name="partner_address" value="">
                     <button type="submit" class="tier-btn-stripe">Pay with Card &ndash; $25</button>
                 </form>
-                <button class="tier-btn-paypal" onclick="payWithPayPal('Aloha Partner', '25.00')">PayPal &ndash; $25</button>
+                {% endif %}
+                {% if paypal_enabled %}<div id="paypal-btn-tier1" class="paypal-btn-slot"></div>{% endif %}
             </div>
         </div>
 
@@ -290,13 +302,15 @@
                 <li>Quarterly video call with Kahu Phil</li>
             </ul>
             <div class="tier-buttons">
+                {% if stripe_enabled %}
                 <form action="/stripe/create-session/partner_tier2" method="POST" onsubmit="return injectPartnerInfo(this);">
                     <input type="hidden" name="partner_name" value="">
                     <input type="hidden" name="partner_email" value="">
                     <input type="hidden" name="partner_address" value="">
                     <button type="submit" class="tier-btn-stripe">Pay with Card &ndash; $100</button>
                 </form>
-                <button class="tier-btn-paypal" onclick="payWithPayPal('Kingdom Partner', '100.00')">PayPal &ndash; $100</button>
+                {% endif %}
+                {% if paypal_enabled %}<div id="paypal-btn-tier2" class="paypal-btn-slot"></div>{% endif %}
             </div>
         </div>
 
@@ -313,13 +327,15 @@
                 <li>Name featured in published works</li>
             </ul>
             <div class="tier-buttons">
+                {% if stripe_enabled %}
                 <form action="/stripe/create-session/partner_tier3" method="POST" onsubmit="return injectPartnerInfo(this);">
                     <input type="hidden" name="partner_name" value="">
                     <input type="hidden" name="partner_email" value="">
                     <input type="hidden" name="partner_address" value="">
                     <button type="submit" class="tier-btn-stripe">Pay with Card &ndash; $250</button>
                 </form>
-                <button class="tier-btn-paypal" onclick="payWithPayPal('Legacy Partner', '250.00')">PayPal &ndash; $250</button>
+                {% endif %}
+                {% if paypal_enabled %}<div id="paypal-btn-tier3" class="paypal-btn-slot"></div>{% endif %}
             </div>
         </div>
 
@@ -337,13 +353,15 @@
                 <li>VIP access to all live events</li>
             </ul>
             <div class="tier-buttons">
+                {% if stripe_enabled %}
                 <form action="/stripe/create-session/partner_tier4" method="POST" onsubmit="return injectPartnerInfo(this);">
                     <input type="hidden" name="partner_name" value="">
                     <input type="hidden" name="partner_email" value="">
                     <input type="hidden" name="partner_address" value="">
                     <button type="submit" class="tier-btn-stripe">Pay with Card &ndash; $450</button>
                 </form>
-                <button class="tier-btn-paypal" onclick="payWithPayPal('Covenant Partner', '450.00')">PayPal &ndash; $450</button>
+                {% endif %}
+                {% if paypal_enabled %}<div id="paypal-btn-tier4" class="paypal-btn-slot"></div>{% endif %}
             </div>
         </div>
     </div>
@@ -354,13 +372,15 @@
         <p class="cd-desc">Live recording at the historic Molokai Ranch Lodge year 2000, a 5-star property now abandoned. This recording cannot be made again.</p>
         <div class="cd-price">$15.00</div>
         <div class="cd-buttons">
+            {% if stripe_enabled %}
             <form action="/stripe/create-session/prod_nahenahe_cd" method="POST" onsubmit="return injectPartnerInfo(this);">
                 <input type="hidden" name="partner_name" value="">
                 <input type="hidden" name="partner_email" value="">
                 <input type="hidden" name="partner_address" value="">
                 <button type="submit" class="tier-btn-stripe">Pay with Card &ndash; $15</button>
             </form>
-            <button class="tier-btn-paypal" onclick="payWithPayPal('Nahenahe Voice CD', '15.00')">PayPal &ndash; $15</button>
+            {% endif %}
+            {% if paypal_enabled %}<div id="paypal-btn-cd" class="paypal-btn-slot"></div>{% endif %}
         </div>
     </div>
 
@@ -394,7 +414,7 @@
 {% endblock %}
 
 {% block extra_scripts %}
-<script src="https://www.paypal.com/sdk/js?client-id={{ paypal_client_id }}&currency=USD"></script>
+{% if paypal_enabled %}<script src="https://www.paypal.com/sdk/js?client-id={{ paypal_client_id }}&currency=USD"></script>{% endif %}
 <script>
 /* Copy form fields into hidden inputs before Stripe form submit */
 function injectPartnerInfo(form) {
@@ -412,42 +432,74 @@ function injectPartnerInfo(form) {
     return true;
 }
 
-/* PayPal: create order, capture, and redirect */
-function payWithPayPal(itemName, amount) {
+/* PayPal: each tier/product gets its own real, visible button mounted
+   directly into the page - never a detached, unattached element. */
+function partnerFieldsFilled() {
     var name = document.getElementById('partner_name').value.trim();
     var email = document.getElementById('partner_email').value.trim();
     var address = document.getElementById('partner_address').value.trim();
-    if (!name || !email || !address) {
-        alert('Please fill in your name, email, and mailing address above before paying.');
-        document.getElementById('partnerForm').scrollIntoView({behavior:'smooth'});
+    return !!(name && email && address);
+}
+
+function showPayPalUnavailableNotice() {
+    var notice = document.getElementById('paypal-unavailable-notice');
+    if (notice) notice.style.display = 'block';
+}
+
+/* Defensive: only true once the SDK script has actually loaded and
+   exposes what we need to call. Protects against the script tag being
+   present but the SDK failing to load (network issue, ad blocker, etc). */
+function paypalSdkReady() {
+    return typeof paypal !== 'undefined' && typeof paypal.Buttons === 'function';
+}
+
+function mountPartnerPayPalButton(containerId, itemName, productId, amount) {
+    var container = document.getElementById(containerId);
+    if (!container) return;
+    if (!paypalSdkReady()) {
+        showPayPalUnavailableNotice();
         return;
     }
-    paypal.Buttons({
-        createOrder: function(data, actions) {
-            return actions.order.create({
-                purchase_units: [{
-                    amount: { value: amount },
-                    description: itemName + ' - ' + name + ' (' + email + ')'
-                }]
-            });
-        },
-        onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
-                window.location.href = '/paypal/partner-success'
-                    + '?orderID=' + encodeURIComponent(data.orderID)
-                    + '&name=' + encodeURIComponent(name)
-                    + '&email=' + encodeURIComponent(email)
-                    + '&address=' + encodeURIComponent(address)
-                    + '&tier=' + encodeURIComponent(itemName)
-                    + '&amount=' + encodeURIComponent(amount);
-            });
-        },
-        onError: function(err) {
-            alert('Payment error. Please try again or contact kahuphil@keaupuni.faith');
-        }
-    }).render(document.createElement('div')).then(function() {
-        /* PayPal buttons rendered in a temporary div; the popup opens automatically */
-    });
+    try {
+        paypal.Buttons({
+            onClick: function(data, actions) {
+                if (!partnerFieldsFilled()) {
+                    alert('Please fill in your name, email, and mailing address above before paying.');
+                    document.getElementById('partnerForm').scrollIntoView({behavior:'smooth'});
+                    return actions.reject();
+                }
+                return actions.resolve();
+            },
+            createOrder: function(data, actions) {
+                var name = document.getElementById('partner_name').value.trim();
+                var email = document.getElementById('partner_email').value.trim();
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: { value: amount },
+                        description: itemName + ' - ' + name + ' (' + email + ')'
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    window.location.href = '/paypal/success'
+                        + '?orderID=' + encodeURIComponent(data.orderID)
+                        + '&product_id=' + encodeURIComponent(productId);
+                });
+            },
+            onError: function(err) {
+                alert('Payment error. Please try again or contact kahuphil@keaupuni.faith');
+            }
+        }).render('#' + containerId);
+    } catch (e) {
+        showPayPalUnavailableNotice();
+    }
 }
+
+mountPartnerPayPalButton('paypal-btn-tier1', 'Aloha Partner', 'partner_tier1', '25.00');
+mountPartnerPayPalButton('paypal-btn-tier2', 'Kingdom Partner', 'partner_tier2', '100.00');
+mountPartnerPayPalButton('paypal-btn-tier3', 'Legacy Partner', 'partner_tier3', '250.00');
+mountPartnerPayPalButton('paypal-btn-tier4', 'Covenant Partner', 'partner_tier4', '450.00');
+mountPartnerPayPalButton('paypal-btn-cd', 'Nahenahe Voice CD', 'prod_nahenahe_cd', '15.00');
 </script>
 {% endblock %}

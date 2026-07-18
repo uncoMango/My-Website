@@ -64,6 +64,58 @@
       "active": true,
       "downloads": 0,
       "total_sales": 0
+    },
+    {
+      "id": "partner_tier1",
+      "name": "Aloha Partner",
+      "description": "Monthly Kingdom newsletter, access to free digital booklets, prayer support from Kahu Phil, and your name listed on the Partner Wall of Aloha.",
+      "price": 25.00,
+      "category": "partnership",
+      "filename": "",
+      "file_path": "",
+      "cover_image": "",
+      "active": true,
+      "downloads": 0,
+      "total_sales": 0
+    },
+    {
+      "id": "partner_tier2",
+      "name": "Kingdom Partner",
+      "description": "Everything in Aloha Partner, plus exclusive Kingdom teaching recordings, a signed copy of The Call to Repentance, and a quarterly video call with Kahu Phil.",
+      "price": 100.00,
+      "category": "partnership",
+      "filename": "",
+      "file_path": "",
+      "cover_image": "",
+      "active": true,
+      "downloads": 0,
+      "total_sales": 0
+    },
+    {
+      "id": "partner_tier3",
+      "name": "Legacy Partner",
+      "description": "Everything in Kingdom Partner, plus the complete Kingdom Series (all 5 volumes), a signed Nahenahe Voice CD, a monthly one-on-one Kingdom coaching call, and your name featured in published works.",
+      "price": 250.00,
+      "category": "partnership",
+      "filename": "",
+      "file_path": "",
+      "cover_image": "",
+      "active": true,
+      "downloads": 0,
+      "total_sales": 0
+    },
+    {
+      "id": "partner_tier4",
+      "name": "Covenant Partner",
+      "description": "Everything in Legacy Partner, plus a private retreat invitation on Moloka'i, all future books and resources free, weekly personal prayer and mentorship, an advisory role in ministry direction, and VIP access to all live events.",
+      "price": 450.00,
+      "category": "partnership",
+      "filename": "",
+      "file_path": "",
+      "cover_image": "",
+      "active": true,
+      "downloads": 0,
+      "total_sales": 0
     }
   ]
 }

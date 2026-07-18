@@ -3,7 +3,7 @@ import markdown
 from datetime import datetime
 from flask import Blueprint, abort, render_template, Response, send_from_directory
 from content import load_content, get_nav_items
-from config import LOGO_PATH, LOGO_HEIGHT, FOOTER_TEXT, PAYPAL_CLIENT_ID, STRIPE_ENABLED, STRIPE_PUBLISHABLE_KEY
+from config import LOGO_PATH, LOGO_HEIGHT, FOOTER_TEXT, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, STRIPE_ENABLED, STRIPE_PUBLISHABLE_KEY
 
 pages_bp = Blueprint("pages", __name__)
 
@@ -79,6 +79,7 @@ def partner_page():
         logo_height=LOGO_HEIGHT,
         footer_text=FOOTER_TEXT,
         paypal_client_id=PAYPAL_CLIENT_ID,
+        paypal_enabled=bool(PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET),
         stripe_enabled=STRIPE_ENABLED,
         stripe_publishable_key=STRIPE_PUBLISHABLE_KEY if STRIPE_ENABLED else "",
     )
