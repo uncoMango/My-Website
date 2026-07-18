@@ -1,7 +1,7 @@
 # app.py
 import os
 from flask import Flask
-from config import PRODUCTS_FOLDER, DATA_FILE
+from config import PRODUCTS_FOLDER, DATA_FILE, FLASK_SECRET_KEY
 from content import load_content, save_content, DEFAULT_PAGES
 
 from blueprints.pages import pages_bp
@@ -13,6 +13,19 @@ from limiter import limiter
 
 app = Flask(__name__)
 limiter.init_app(app)
+
+# Session cookie used only for /kahu admin login. If FLASK_SECRET_KEY is not
+# set, Flask falls back to a random key generated at process start — sessions
+# still work, but won't survive a restart/redeploy, so admins would just be
+# logged out rather than the site being left insecure.
+app.secret_key = FLASK_SECRET_KEY or os.urandom(32)
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Lax",
+    # Render sets RENDER=true for deployed services; only require HTTPS-only
+    # cookies there so local `flask run` (plain http) can still log in.
+    SESSION_COOKIE_SECURE=bool(os.environ.get("RENDER")),
+)
 
 # Initialize on startup (works with gunicorn too)
 PRODUCTS_FOLDER.mkdir(exist_ok=True)

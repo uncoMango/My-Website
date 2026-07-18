@@ -5,11 +5,50 @@
 # =========================================================
 
 import re
-from flask import Blueprint, abort, redirect, render_template, request
+from urllib.parse import urlparse
+from flask import Blueprint, abort, redirect, render_template, request, session
 from content import load_content, save_content, get_nav_items
 from config import ORDER
+from auth import require_admin, check_password, admin_configured, SESSION_KEY
+from limiter import limiter
 
 admin_bp = Blueprint("admin", __name__)
+
+
+def _safe_next(target):
+    """Only allow redirecting to a same-site relative path after login."""
+    if not target:
+        return "/kahu"
+    parsed = urlparse(target)
+    if parsed.scheme or parsed.netloc:
+        return "/kahu"
+    return target if target.startswith("/") else "/kahu"
+
+
+@admin_bp.route("/kahu/login", methods=["GET", "POST"])
+@limiter.limit("10 per hour")
+def login():
+    error = None
+    if request.method == "POST":
+        if not admin_configured():
+            return abort(503, "Admin login is not configured. Set ADMIN_PASSWORD on the server.")
+        if check_password(request.form.get("password", "")):
+            session.clear()
+            session[SESSION_KEY] = True
+            return redirect(_safe_next(request.form.get("next") or request.args.get("next")))
+        error = "Incorrect password."
+    return render_template(
+        "admin/login.html",
+        error=error,
+        next=request.args.get("next", "/kahu"),
+        configured=admin_configured(),
+    )
+
+
+@admin_bp.route("/kahu/logout", methods=["POST"])
+def logout():
+    session.clear()
+    return redirect("/kahu/login")
 
 
 def _youtube_to_embed(url):
@@ -28,6 +67,7 @@ def _youtube_to_embed(url):
 
 
 @admin_bp.route("/kahu", methods=["GET", "POST"])
+@require_admin
 def admin_panel():
     data = load_content()
     if request.method == "POST":
@@ -66,6 +106,7 @@ def admin_panel():
 
 
 @admin_bp.route("/admin/delete-page/<page_id>", methods=["POST"])
+@require_admin
 def delete_page(page_id):
     data = load_content()
     pages = data.get("pages", {})
@@ -77,6 +118,7 @@ def delete_page(page_id):
 
 
 @admin_bp.route("/admin/edit/<page_id>", methods=["GET", "POST"])
+@require_admin
 def edit_page(page_id):
     data = load_content()
     pages = data.get("pages", {})

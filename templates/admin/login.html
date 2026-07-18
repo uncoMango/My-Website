@@ -1,0 +1,37 @@
+{# templates/admin/login.html #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Ke Aupuni O Ke Akua</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:system-ui,sans-serif; background:linear-gradient(135deg,#667eea,#764ba2); min-height:100vh; padding:2rem; display:flex; align-items:center; justify-content:center; }
+        .container { max-width:400px; width:100%; background:white; border-radius:16px; padding:2.5rem; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+        h1 { color:#2c3e50; margin-bottom:1.5rem; font-size:1.5rem; }
+        label { display:block; font-weight:600; color:#2c3e50; margin-bottom:0.4rem; font-size:0.9rem; }
+        input[type="password"] { width:100%; padding:0.75rem 0.9rem; border:2px solid #ced4da; border-radius:8px; font-size:1rem; margin-bottom:1.25rem; }
+        input[type="password"]:focus { border-color:#667eea; outline:none; }
+        .btn { width:100%; padding:0.85rem; border:none; border-radius:8px; cursor:pointer; font-size:1rem; font-weight:600; background:linear-gradient(135deg,#667eea,#764ba2); color:white; }
+        .error { background:#fdecea; color:#c0392b; border:1px solid #f5c6cb; border-radius:8px; padding:0.75rem 1rem; margin-bottom:1.25rem; font-size:0.9rem; }
+        .notice { background:#fff5f0; color:#a35b1f; border:1px solid #e67e22; border-radius:8px; padding:0.75rem 1rem; margin-bottom:1.25rem; font-size:0.9rem; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Admin Login</h1>
+    {% if not configured %}
+    <div class="notice">Admin login is not configured on this server. Set the ADMIN_PASSWORD environment variable to enable access.</div>
+    {% elif error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+    <form method="POST" action="/kahu/login">
+        <input type="hidden" name="next" value="{{ next }}">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required {% if not configured %}disabled{% endif %} autofocus>
+        <button type="submit" class="btn" {% if not configured %}disabled{% endif %}>Log In</button>
+    </form>
+</div>
+</body>
+</html>

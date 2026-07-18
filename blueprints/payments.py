@@ -83,6 +83,8 @@ def checkout_page(product_id):
     product = get_product_by_id(product_id)
     if not product or not product.get("active", True):
         abort(404)
+    if not (PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET):
+        abort(503, "Payments are not configured on this server. Set PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET.")
     return render_template(
         "checkout.html",
         product=product,

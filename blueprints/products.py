@@ -16,6 +16,7 @@ from content import (
     get_product_by_id,
 )
 from config import PRODUCTS_FOLDER, LOGO_PATH, LOGO_HEIGHT, FOOTER_TEXT, CONTACT_EMAIL
+from auth import require_admin
 
 products_bp = Blueprint("products", __name__)
 
@@ -62,6 +63,7 @@ def download_product(product_id):
 # =========================================================
 
 @products_bp.route("/admin/products")
+@require_admin
 def admin_products():
     products_data = load_digital_products()
     return render_template(
@@ -75,6 +77,7 @@ def admin_products():
 # =========================================================
 
 @products_bp.route("/admin/products/add", methods=["POST"])
+@require_admin
 def add_product():
     name = request.form.get("name")
     description = request.form.get("description")
@@ -115,6 +118,7 @@ def add_product():
 # =========================================================
 
 @products_bp.route("/admin/products/edit/<product_id>", methods=["GET", "POST"])
+@require_admin
 def edit_product(product_id):
     products_data = load_digital_products()
     product = next(
@@ -141,6 +145,7 @@ def edit_product(product_id):
 # =========================================================
 
 @products_bp.route("/admin/products/delete/<product_id>", methods=["POST"])
+@require_admin
 def delete_product(product_id):
     products_data = load_digital_products()
     product = next(

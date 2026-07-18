@@ -933,7 +933,7 @@ def page(page_id):
         abort(404)
     return render_page(page_id, data)
 
-PAYPAL_CLIENT_ID_FOR_WELLNESS = "Af3hvjHUPRVuFeQ8xO_T18V234j-B-qvN9I9ydlWnEU9M0vKKOVyMw0si6r-N47Y_fg-Mw35VvAifkZ6"
+PAYPAL_CLIENT_ID_FOR_WELLNESS = os.environ.get("PAYPAL_CLIENT_ID", "")
 
 ALOHA_WELLNESS_CHECKOUT = """<!DOCTYPE html>
 <html lang="en">
@@ -1125,7 +1125,7 @@ def serve_cover(filename):
         return send_file(cover_path, mimetype='image/jpeg')
     abort(404)
 
-ADMIN_PASSWORD = "Kingdom2024"
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 
 
@@ -2457,8 +2457,8 @@ import urllib.request
 import urllib.parse
 import base64
 
-PAYPAL_CLIENT_ID = "Af3hvjHUPRVuFeQ8xO_T18V234j-B-qvN9I9ydlWnEU9M0vKKOVyMw0si6r-N47Y_fg-Mw35VvAifkZ6"
-PAYPAL_CLIENT_SECRET = "ECBlGV46JMgXmIk2H9u_i-kyMUO1X5--GYkjqYlqf2QMv4LbrWFhUNwd3rzCswN1-UfrwbPrk5WIUPHQ"
+PAYPAL_CLIENT_ID = os.environ.get("PAYPAL_CLIENT_ID", "")
+PAYPAL_CLIENT_SECRET = os.environ.get("PAYPAL_CLIENT_SECRET", "")
 PAYPAL_BASE_URL = "https://api-m.paypal.com"
 
 def get_paypal_access_token():
@@ -3064,7 +3064,7 @@ def paypal_cancel():
     return html
 
 
-PAYPAL_CLIENT_ID_FOR_WELLNESS = "Af3hvjHUPRVuFeQ8xO_T18V234j-B-qvN9I9ydlWnEU9M0vKKOVyMw0si6r-N47Y_fg-Mw35VvAifkZ6"
+PAYPAL_CLIENT_ID_FOR_WELLNESS = os.environ.get("PAYPAL_CLIENT_ID", "")
 
 ALOHA_WELLNESS_CHECKOUT = """<!DOCTYPE html>
 <html lang="en">
@@ -3119,7 +3119,7 @@ body { font-family: Georgia, serif; background: linear-gradient(135deg, #1a4a3a 
 <a href="/aloha_wellness" class="back">← Back to Aloha Wellness page</a>
 </div>
 </div>
-<script src="https://www.paypal.com/sdk/js?client-id=Af3hvjHUPRVuFeQ8xO_T18V234j-B-qvN9I9ydlWnEU9M0vKKOVyMw0si6r-N47Y_fg-Mw35VvAifkZ6&currency=USD"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=PAYPAL_CLIENT_ID_FOR_WELLNESS_PLACEHOLDER&currency=USD"></script>
 <script>
 paypal.Buttons({
     style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay' },
@@ -3184,7 +3184,9 @@ Kahu Phil will send your ebook within 24 hours. Aloha!
 
 @app.route("/aloha-wellness-buy")
 def aloha_wellness_buy():
-    return ALOHA_WELLNESS_CHECKOUT
+    return ALOHA_WELLNESS_CHECKOUT.replace(
+        "PAYPAL_CLIENT_ID_FOR_WELLNESS_PLACEHOLDER", PAYPAL_CLIENT_ID_FOR_WELLNESS
+    )
 
 
 @app.route("/aloha-wellness-thankyou")

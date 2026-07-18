@@ -31,6 +31,10 @@ ORDER = [
 # ----- ADMIN -----
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
+# ----- SESSIONS -----
+# Signs the admin login session cookie. Required for /kahu auth to work.
+FLASK_SECRET_KEY = os.environ.get("FLASK_SECRET_KEY", "")
+
 # ----- PAYPAL -----
 # Live credentials (already active)
 PAYPAL_CLIENT_ID = os.environ.get("PAYPAL_CLIENT_ID", "")
