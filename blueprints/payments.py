@@ -232,6 +232,13 @@ def stripe_create_session(product_id):
 
     price_cents = int(float(product["price"]) * 100)
 
+    # Stripe requires product_data.images to be fully-qualified (http/https)
+    # URLs; it rejects relative paths like "/static/covers/foo.jpg" with a
+    # 400 InvalidRequestError, which surfaces to the buyer as a 500.
+    cover_image = product.get("cover_image", "")
+    if cover_image and not cover_image.startswith(("http://", "https://")):
+        cover_image = f"{SITE_DOMAIN}{cover_image}"
+
     session = stripe.checkout.Session.create(
         payment_method_types=["card"],
         line_items=[{
@@ -239,7 +246,7 @@ def stripe_create_session(product_id):
                 "currency": "usd",
                 "product_data": {
                     "name": product["name"],
-                    "images": [product.get("cover_image", "")] if product.get("cover_image") else [],
+                    "images": [cover_image] if cover_image else [],
                 },
                 "unit_amount": price_cents,
             },

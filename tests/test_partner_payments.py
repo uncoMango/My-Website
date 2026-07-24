@@ -89,6 +89,29 @@ def test_stripe_checkout_session_created_for_partner_tiers(client, monkeypatch, 
     assert captured["line_items"][0]["price_data"]["unit_amount"] == expected_amount_cents
 
 
+def test_stripe_checkout_sends_absolute_image_urls(client, monkeypatch):
+    """Stripe rejects product_data.images entries that aren't fully-qualified
+    (http/https) URLs with a 400 InvalidRequestError, which - uncaught -
+    surfaces to the buyer as a 500. Catalog entries store cover_image as a
+    site-relative path (e.g. "/static/covers/foo.jpg"), so the route must
+    qualify it with SITE_DOMAIN before handing it to Stripe."""
+    monkeypatch.setattr(payments_module, "STRIPE_ENABLED", True)
+
+    captured = {}
+
+    def fake_create(**kwargs):
+        captured.update(kwargs)
+        return FakeStripeSession()
+
+    monkeypatch.setattr(stripe.checkout.Session, "create", staticmethod(fake_create))
+
+    resp = client.post("/stripe/create-session/prod_find_the_cause_not_the_symptoms")
+    assert resp.status_code == 303
+    images = captured["line_items"][0]["price_data"]["product_data"]["images"]
+    assert images == ["https://keaupuniakeakua.faith/static/covers/find_the_cause_not_the_symptoms_cover_web.jpg"]
+    assert images[0].startswith(("http://", "https://"))
+
+
 def test_stripe_checkout_still_404s_for_genuinely_unknown_product(client, monkeypatch):
     monkeypatch.setattr(payments_module, "STRIPE_ENABLED", True)
     monkeypatch.setattr(stripe.checkout.Session, "create", staticmethod(lambda **kw: FakeStripeSession()))
