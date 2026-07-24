@@ -13,7 +13,7 @@
 
 ## Critical
 
-> **IMPLEMENTED — awaiting live verification** (Work Order 002, 2026-07-24). See `CLAUDE.md` Change Log for the full before/after detail on each item below.
+> **VERIFIED LIVE** (Work Order 002, deployed and confirmed 2026-07-24, commit `31827a4`). See `CLAUDE.md` Change Log for the full before/after detail on each item below. Live verification was HTTP-based (curl against `keaupuniakeakua.faith`) — nav markup, CSS, all repaired links, and page content were confirmed byte-for-byte live; pixel-level visual checks (exact nav wrapping/spacing at each viewport width, dropdown open/close feel) still need a human look since the Claude-in-Chrome extension remained unavailable this session.
 
 ### 1. Desktop nav will overflow or become unreadable on almost every real screen width
 **Page:** Sitewide (`templates/base.html`, `templates/partials/styles.css`) — every single page uses this same hardcoded nav.
@@ -22,7 +22,7 @@
 **Recommended implementation:** Add an intermediate breakpoint (e.g. below ~1400–1500px) that either shrinks nav font-size/padding significantly, drops to the hamburger menu earlier, or reduces visible top-level items (move some into a dropdown). Verify visually across 1280px, 1366px, 1440px, and 1920px widths.
 **Priority:** Critical
 
-> **IMPLEMENTED — awaiting live verification**
+> **VERIFIED LIVE** — 2026-07-24
 
 ### 2. Every content page's real title is invisible for the entire first screen
 **Page:** All `page.html`-driven pages — the 9 primary nav pages, `/ecosystem`, and all 18 SEO sub-pages (28 pages total).
@@ -31,7 +31,7 @@
 **Recommended implementation:** Remove or override `.hero h1 { display: none; }` for `page.html`'s hero (it appears to have been added for one specific page that had its own redundant title text, and then applied globally). Style the H1 to match the existing hero text-shadow treatment used elsewhere (e.g. `rotten_fencepost.html`'s hero, which does show its H1 correctly).
 **Priority:** Critical
 
-> **IMPLEMENTED — awaiting live verification**
+> **VERIFIED LIVE** — 2026-07-24
 
 ### 3. Clicking into any product strands the visitor outside the site, with no way back except browser-back
 **Page:** `/product/<product_id>` (`templates/product_page.html`) and `/checkout/<product_id>` (`templates/checkout.html`)
@@ -40,7 +40,7 @@
 **Recommended implementation:** At minimum, add a small "← Back to Ke Aupuni O Ke Akua" link/logo to both templates. Longer-term, consider having these extend `base.html` (or a lightweight variant) so nav/footer/branding stay consistent through checkout — a common, well-tested pattern is to keep checkout distraction-free but still branded.
 **Priority:** Critical
 
-> **IMPLEMENTED — awaiting live verification**
+> **VERIFIED LIVE** — 2026-07-24
 
 ### 4. Several prominent "learn more" links are dead — they 404
 **Page:** `/ecosystem`, and the SEO sub-pages `/wellness/eating-when-hungry`, `/wellness/the-rotten-fencepost-principle`, `/wellness/kupuna-wisdom-and-modern-health`, `/kingdom/understanding-scripture-through-original-words`, `/wellness/god-never-told-adam-when-to-eat`, `/kingdom/stewardship-in-the-kingdom-of-god`
@@ -53,7 +53,7 @@
 **Recommended implementation:** Either build the missing `/support`, `/kingdom`, and `/wellness/what-actually-works-instead-of-dieting` pages, or repoint each broken link to the nearest real equivalent (`/partner` for support, `/ecosystem` or `/kingdom_wealth`+`/call_to_repentance` for `/kingdom`, `/wellness/why-diets-fail` for the dieting link). For `/scripture-tools`, either point to `/scripture-tools/hebrew-greek-meaning-tool` directly or build a real index page at that path.
 **Priority:** Critical
 
-> **IMPLEMENTED — awaiting live verification**
+> **VERIFIED LIVE** — 2026-07-24
 
 ### 5. Purchase-confirmation page text is white-on-white — effectively invisible
 **Page:** `/rotten-fencepost/success` (`templates/rotten_fencepost_success.html`)
