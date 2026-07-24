@@ -3,9 +3,24 @@
 {% block title %}{{ page.title }}{% endblock %}
 {% block meta_description %}{{ page.get("meta_description", "Ke Aupuni O Ke Akua - Kingdom ministry from Molokai, Hawaii by Native Hawaiian Pastor Kahu Phil Stephens.") }}{% endblock %}
 {% block content %}
-<header class="hero" style="background-image: url('{{ page.hero_image }}');">
+<header class="hero{% if current_page == 'home' %} home-hero{% endif %}" style="background-image: url('{{ page.hero_image }}');">
     <div class="hero-overlay"></div>
+    {% if current_page == 'home' %}
+    <div class="hero-content home-hero-content">
+        <h1>Find the Cause, Not the Symptoms.</h1>
+        <p class="home-hero-sub">Helping people uncover the hidden causes behind recurring problems in health, faith, relationships, stewardship, and everyday life.</p>
+        <div class="home-hero-identity">
+            <p class="home-hero-identity-name">Ke Aupuni O Ke Akua</p>
+            <p class="home-hero-identity-tag">Building lives on the principles of the Kingdom of God.</p>
+        </div>
+        <div class="home-hero-ctas">
+            <a href="/rotten-fencepost" class="home-hero-btn home-hero-btn-primary">Start With Rotten Fencepost</a>
+            <a href="/call_to_repentance" class="home-hero-btn home-hero-btn-secondary">Explore the Kingdom</a>
+        </div>
+    </div>
+    {% else %}
     <div class="hero-content"><h1>{{ page.title }}</h1></div>
+    {% endif %}
 </header>
 {% if current_page == 'home' %}
 <div style="background: linear-gradient(135deg, #241a12 0%, #3a2a1a 50%, #241a12 100%); border-top: 3px solid #d4a574; border-bottom: 3px solid #d4a574; padding: 3rem 2rem;">

@@ -76,5 +76,9 @@ SITE_NAME = "Ke Aupuni O Ke Akua"
 SITE_DOMAIN = "https://keaupuniakeakua.faith"
 CONTACT_EMAIL = "kahuphil@keaupuni.faith"
 LOGO_PATH = "/static/images/output-onlinepngtools.png"
-LOGO_HEIGHT = "180px"
+# Actual displayed size is set responsively by .site-logo in
+# templates/partials/styles.css (210px desktop / 140px / 110px / 90px at
+# narrower breakpoints), not by this value -- kept here as the documented
+# desktop reference size only.
+LOGO_HEIGHT = "210px"
 FOOTER_TEXT = "© 2025 Ke Aupuni O Ke Akua. All rights reserved. Made with aloha in Hawaiʻi."
