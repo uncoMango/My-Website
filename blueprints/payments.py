@@ -19,6 +19,7 @@ from email.mime.text import MIMEText
 
 from flask import Blueprint, abort, redirect, render_template, request, url_for
 from content import load_digital_products, save_digital_products, get_product_by_id
+from download_tokens import generate_download_token
 from config import (
     PAYPAL_CLIENT_ID,
     PAYPAL_CLIENT_SECRET,
@@ -38,6 +39,7 @@ from config import (
     SMTP_USER,
     SMTP_PASS,
     NOTIFY_EMAIL,
+    CONTACT_EMAIL,
 )
 
 payments_bp = Blueprint("payments", __name__)
@@ -60,12 +62,14 @@ def _render_payment_success(product, order_id):
             logo_height=LOGO_HEIGHT,
             footer_text=FOOTER_TEXT,
         )
-    download_url = f"/download/product/{product['id']}"
+    token = generate_download_token(product["id"], order_id)
+    download_url = f"/download/product/{product['id']}/{token}" if token else None
     return render_template(
         "payment_success.html",
         product=product,
         order_id=order_id,
         download_url=download_url,
+        contact_email=CONTACT_EMAIL,
         logo_path=LOGO_PATH,
         logo_height=LOGO_HEIGHT,
         footer_text=FOOTER_TEXT,

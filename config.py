@@ -12,6 +12,7 @@ BASE = Path(__file__).parent
 DATA_FILE = BASE / "website_content.json"
 PRODUCTS_FILE = BASE / "digital_products.json"
 PRODUCTS_FOLDER = BASE / "digital_products"
+DOWNLOAD_TOKEN_USAGE_FILE = BASE / "download_token_usage.json"
 EMAILS_FILE = BASE / "email_subscribers.json"
 SUBSCRIBERS_FILE = BASE / "data" / "subscribers.json"
 
@@ -30,6 +31,14 @@ ORDER = [
 
 # ----- ADMIN -----
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
+
+# ----- DOWNLOAD TOKENS -----
+# Signs the time-limited, product-bound tokens minted after a verified
+# PayPal/Stripe payment (see download_tokens.py). Deliberately separate
+# from FLASK_SECRET_KEY so rotating one never invalidates the other.
+# If unset, /download/product/<id>/<token> fails closed (403) rather
+# than falling back to an unsigned or shared secret.
+DOWNLOAD_TOKEN_SECRET = os.environ.get("DOWNLOAD_TOKEN_SECRET", "")
 
 # ----- SESSIONS -----
 # Signs the admin login session cookie. Required for /kahu auth to work.

@@ -27,7 +27,14 @@
     <h1>Mahalo! Payment Received</h1>
     <p class="subtitle">Your download is ready, {{ product.name }}</p>
 
+    {% if download_url %}
     <a href="{{ download_url }}" class="download-btn">Download Your Ebook Now</a>
+    {% else %}
+    <div class="message" style="border-left-color:#e67e22;">
+        Your payment was received, but we could not generate a download link automatically.
+        Please contact <a href="mailto:{{ contact_email }}">{{ contact_email }}</a> with your Order ID below and we will send your file directly.
+    </div>
+    {% endif %}
 
     <div class="message">
         <strong>A note from Kahu Phil:</strong><br><br>

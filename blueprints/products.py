@@ -17,6 +17,7 @@ from content import (
 )
 from config import PRODUCTS_FOLDER, LOGO_PATH, LOGO_HEIGHT, FOOTER_TEXT, CONTACT_EMAIL
 from auth import require_admin
+from download_tokens import validate_and_consume_token
 
 products_bp = Blueprint("products", __name__)
 
@@ -63,13 +64,25 @@ def product_page(product_id):
 
 # =========================================================
 # PUBLIC: Download product file (after payment)
+# Requires a signed, product-bound, time-limited token minted by
+# _render_payment_success() in blueprints/payments.py right after a
+# verified PayPal/Stripe payment. See download_tokens.py.
 # =========================================================
 
-@products_bp.route("/download/product/<product_id>")
-def download_product(product_id):
+@products_bp.route("/download/product/<product_id>/<token>")
+def download_product(product_id, token):
     product = get_product_by_id(product_id)
     if not product:
         abort(404)
+    ok, reason = validate_and_consume_token(product_id, token)
+    if not ok:
+        # "not_configured" is a server misconfiguration (missing
+        # DOWNLOAD_TOKEN_SECRET) -> 503, matching how this app already
+        # signals missing ADMIN_PASSWORD/PayPal secrets elsewhere.
+        # Everything else is a bad/expired/reused/mismatched token from
+        # the requester -> 403, and deliberately not distinguished further
+        # in the response so a forged-token attempt can't be fingerprinted.
+        abort(503 if reason == "not_configured" else 403)
     products_data = load_digital_products()
     for p in products_data["products"]:
         if p["id"] == product_id:

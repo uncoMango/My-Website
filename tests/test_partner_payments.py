@@ -29,6 +29,7 @@ sys.path.insert(0, str(ROOT))
 from blueprints import payments as payments_module  # noqa: E402
 from blueprints import pages as pages_module  # noqa: E402
 from content import get_product_by_id  # noqa: E402
+import download_tokens as download_tokens_module  # noqa: E402
 import app as app_module  # noqa: E402
 
 PARTNER_TIER_IDS = ["partner_tier1", "partner_tier2", "partner_tier3", "partner_tier4"]
@@ -252,7 +253,14 @@ def test_paypal_partner_success_returns_200_without_download_claim(client, monke
 
 
 def test_regular_product_paypal_success_still_offers_download(client, monkeypatch):
-    """Non-partnership products must keep their existing download-success page."""
+    """Non-partnership products must keep their existing download-success page.
+
+    The download link is now a signed, token-gated URL (see
+    tests/test_download_tokens.py) rather than the old bare product-ID
+    URL, so this only checks the link still targets this product's
+    download route, not the exact old URL string.
+    """
+    monkeypatch.setattr(download_tokens_module, "DOWNLOAD_TOKEN_SECRET", "test-only-download-secret-not-real")
     monkeypatch.setattr(
         payments_module, "_get_paypal_token",
         lambda: (_ for _ in ()).throw(Exception("no network in tests")),
@@ -261,7 +269,7 @@ def test_regular_product_paypal_success_still_offers_download(client, monkeypatc
     resp = client.get("/paypal/success?orderID=fake_order&product_id=prod_aloha_wellness")
     assert resp.status_code == 200
     html = resp.get_data(as_text=True)
-    assert "download_product/prod_aloha_wellness" in html or "/download/product/prod_aloha_wellness" in html
+    assert "/download/product/prod_aloha_wellness/" in html
 
 
 def test_success_template_selection_ignores_visitor_supplied_category(client, monkeypatch):
@@ -270,6 +278,7 @@ def test_success_template_selection_ignores_visitor_supplied_category(client, mo
     the route never reads request.args for category at all; it only ever
     trusts product.get('category') from the server-side catalog record
     resolved from product_id."""
+    monkeypatch.setattr(download_tokens_module, "DOWNLOAD_TOKEN_SECRET", "test-only-download-secret-not-real")
     monkeypatch.setattr(
         payments_module, "_get_paypal_token",
         lambda: (_ for _ in ()).throw(Exception("no network in tests")),
@@ -281,7 +290,7 @@ def test_success_template_selection_ignores_visitor_supplied_category(client, mo
     assert resp.status_code == 200
     html = resp.get_data(as_text=True)
     # Still the real ebook's download-success page, not the partner template.
-    assert "/download/product/prod_aloha_wellness" in html
+    assert "/download/product/prod_aloha_wellness/" in html
     assert "Mahalo, Partner." not in html
 
 
