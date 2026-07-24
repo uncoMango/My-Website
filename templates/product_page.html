@@ -1,43 +1,45 @@
 {# templates/product_page.html #}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ product.seo_title or (product.name ~ ' – Ke Aupuni O Ke Akua') }}</title>
-    <meta name="description" content="{{ product.meta_description or product.description }}">
-    <meta property="og:type" content="product">
-    <meta property="og:title" content="{{ product.seo_title or product.name }}">
-    <meta property="og:description" content="{{ product.meta_description or product.description }}">
-    {% if product.cover_image %}<meta property="og:image" content="{{ product.cover_image if product.cover_image.startswith('http') else (request.url_root.rstrip('/') + product.cover_image) }}">{% endif %}
-    <meta property="og:url" content="{{ request.url }}">
-    <meta name="twitter:card" content="summary_large_image">
-    <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:system-ui,sans-serif; background:linear-gradient(135deg,#667eea,#764ba2); min-height:100vh; padding:2rem; }
-        .container { max-width:900px; margin:0 auto; background:white; border-radius:16px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
-        .product-header { background:linear-gradient(135deg,#667eea,#764ba2); color:white; padding:3rem 2rem; text-align:center; }
-        .product-header h1 { font-size:2.5rem; margin-bottom:1rem; }
-        .product-header .subtitle { font-size:1.15rem; opacity:0.9; font-style:italic; margin-top:-0.5rem; margin-bottom:1rem; }
-        .product-meta { color:#6c757d; font-size:0.95rem; margin-bottom:1.5rem; line-height:1.6; }
-        .product-content { display:grid; grid-template-columns:1fr 1fr; gap:2rem; padding:2rem; }
-        .product-image img { max-width:100%; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
-        .product-details h2 { color:#2c3e50; margin-bottom:1rem; }
-        .product-description { color:#495057; line-height:1.6; margin-bottom:2rem; white-space:pre-line; }
-        .price { font-size:3rem; color:#28a745; font-weight:bold; margin-bottom:2rem; }
-        .buy-button { display:block; width:100%; padding:1.5rem; background:#28a745; color:white; text-align:center; font-size:1.25rem; font-weight:bold; border-radius:8px; text-decoration:none; transition:all 0.3s ease; }
-        .buy-button:hover { background:#218838; transform:translateY(-2px); box-shadow:0 6px 20px rgba(40,167,69,0.4); }
-        .features { list-style:none; margin-bottom:2rem; }
-        .features li { padding:0.5rem 0; border-bottom:1px solid #e9ecef; }
-        .features li:before { content:"-"; color:#28a745; font-weight:bold; }
-        @media (max-width:768px) {
-            .product-content { grid-template-columns:1fr; }
-            .product-header h1 { font-size:1.75rem; }
-        }
-    </style>
-</head>
-<body>
-<div class="container">
+{% extends "base.html" %}
+{% block title %}{{ product.seo_title or (product.name ~ ' – Ke Aupuni O Ke Akua') }}{% endblock %}
+{% block meta_description %}{{ product.meta_description or product.description }}{% endblock %}
+{% block extra_head %}
+<meta property="og:type" content="product">
+<meta property="og:title" content="{{ product.seo_title or product.name }}">
+<meta property="og:description" content="{{ product.meta_description or product.description }}">
+{% if product.cover_image %}<meta property="og:image" content="{{ product.cover_image if product.cover_image.startswith('http') else (request.url_root.rstrip('/') + product.cover_image) }}">{% endif %}
+<meta property="og:url" content="{{ request.url }}">
+<meta name="twitter:card" content="summary_large_image">
+{% endblock %}
+{% block extra_styles %}
+.product-page-wrap {
+    max-width: 900px; margin: 230px auto 3rem; background: rgba(0,0,0,0.35);
+    border-radius: 16px; overflow: hidden;
+}
+.product-header {
+    background: linear-gradient(135deg, var(--accent-teal), #4a8b8e);
+    color: white; padding: 3rem 2rem; text-align: center;
+}
+.product-header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; text-shadow: 2px 2px 6px rgba(0,0,0,0.6); }
+.product-header .subtitle { font-size: 1.1rem; opacity: 0.9; font-style: italic; margin-top: 0.25rem; }
+.product-content { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; padding: 2rem; color: white; }
+.product-image img { max-width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+.product-details h2 { color: white; margin-bottom: 1rem; }
+.product-meta { color: rgba(255,255,255,0.7); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.6; }
+.product-description { color: rgba(255,255,255,0.9); line-height: 1.6; margin-bottom: 2rem; white-space: pre-line; }
+.price { font-size: 2.5rem; color: #FFD700; font-weight: bold; margin-bottom: 1.5rem; }
+.product-features { list-style: none; margin-bottom: 2rem; }
+.product-features li { padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.85); }
+.product-features li::before { content: "\2713\0020"; color: #FFD700; font-weight: bold; }
+.product-nav-links { padding: 0 2rem 2rem; display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.product-nav-links a { color: rgba(255,255,255,0.75); text-decoration: underline; font-size: 0.95rem; }
+@media (max-width: 768px) {
+    .product-content { grid-template-columns: 1fr; }
+    .product-header h1 { font-size: 1.6rem; }
+    .product-page-wrap { margin-top: 230px; }
+}
+{% endblock %}
+{% block content %}
+<div class="product-page-wrap">
     <div class="product-header">
         <h1>{{ product.name }}</h1>
         {% if product.subtitle %}<p class="subtitle">{{ product.subtitle }}</p>{% endif %}
@@ -59,7 +61,7 @@
             </div>
             {% endif %}
             <div class="product-description">{{ product.description }}</div>
-            <ul class="features">
+            <ul class="product-features">
                 {% if product.category == 'partnership' %}
                 <li>Your gift supports Kingdom teaching and ministry work</li>
                 <li>Confirmation sent to your email</li>
@@ -68,13 +70,17 @@
                 <li>Instant digital download</li>
                 <li>Read on any device</li>
                 <li>Full lifetime access</li>
-                <li>No DRM – yours forever</li>
+                <li>No DRM &ndash; yours forever</li>
                 {% endif %}
             </ul>
-            <div class="price">${{ product.price }}</div>
-            <a href="/checkout/{{ product.id }}" class="buy-button">Buy Now – ${{ product.price }}</a>
+            <div class="price">${{ "%.2f"|format(product.price) }}</div>
+            <a href="/checkout/{{ product.id }}" class="buy-button" style="display:block; text-align:center; font-size:1.2rem;">Buy Now &ndash; ${{ "%.2f"|format(product.price) }}</a>
         </div>
     </div>
+
+    <div class="product-nav-links">
+        <a href="/products">&larr; Back to All Products</a>
+        <a href="/">Return to Homepage</a>
+    </div>
 </div>
-</body>
-</html>
+{% endblock %}

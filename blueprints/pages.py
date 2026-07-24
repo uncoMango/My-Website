@@ -111,7 +111,7 @@ _ECOSYSTEM_PAGE = {
         "Health is not something imposed on the body. It is something restored to it.\n\n"
         "[**Why Diets Fail Long-Term →**](/wellness/why-diets-fail)\n\n"
         "[**Is Three Meals a Day Necessary? →**](/wellness/three-meals-a-day-necessary)\n\n"
-        "[**What Actually Works Instead of Dieting →**](/wellness/what-actually-works-instead-of-dieting)\n\n"
+        "[**What Actually Works Instead of Dieting →**](/wellness/lose-weight-without-dieting)\n\n"
         "---\n\n"
         "#### Scripture Language Insight Tool — Meaning and Original Language Clarity\n\n"
         "Most readers of Scripture encounter a translation — a carefully rendered text that makes the original accessible. But translation by necessity compresses meaning. Words in Hebrew and Greek carry layers of nuance that a single English word cannot always hold.\n\n"
@@ -124,7 +124,7 @@ _ECOSYSTEM_PAGE = {
         "#### Kingdom — Identity, Purpose, and Alignment\n\n"
         "Kingdom teaching at Ke Aupuni O Ke Akua is not abstract theology. It is a practical framework for how to live — how to understand identity, steward resources, apply biblical wisdom, and align daily decisions with purpose.\n\n"
         "This section draws from original language Scripture study, Hawaiian cultural wisdom, and decades of pastoral experience on Molokaʻi.\n\n"
-        "[**Kingdom Teaching →**](/kingdom)\n\n"
+        "[**Kingdom Teaching →**](/call_to_repentance)\n\n"
         "---\n\n"
         "### How Everything Connects\n\n"
         "These three pillars are not separate categories. They are expressions of the same principle applied to different areas of life.\n\n"
@@ -148,7 +148,7 @@ _ECOSYSTEM_PAGE = {
         "---\n\n"
         "**If you are searching for meaning, direction, or life purpose:**\n\n"
         "The Kingdom section addresses those questions from a biblical and ancestral framework — without abstraction or pressure.\n\n"
-        "[**Start with Kingdom Teaching →**](/kingdom)\n\n"
+        "[**Start with Kingdom Teaching →**](/call_to_repentance)\n\n"
         "---\n\n"
         "### Why This Ecosystem Exists\n\n"
         "Ke Aupuni O Ke Akua is a Kingdom ministry based on Molokaʻi, Hawaii, led by Kahu Phil Stephens — a Native Hawaiian pastor, Paniolo, and lifelong student of Scripture.\n\n"
@@ -164,7 +164,7 @@ _ECOSYSTEM_PAGE = {
         "The framework will hold regardless of where you enter.\n\n"
         "[**Wellness: Body Rhythm and Stewardship →**](/wellness/why-diets-fail)\n\n"
         "[**Scripture Tools: Original Language Meaning →**](/scripture-tools/hebrew-greek-meaning-tool)\n\n"
-        "[**Kingdom: Identity and Life Direction →**](/kingdom)"
+        "[**Kingdom: Identity and Life Direction →**](/call_to_repentance)"
     ),
 }
 
@@ -841,10 +841,10 @@ _SEO_PAGES = {
             "[**Explore the Wellness Ecosystem →**](/ecosystem)\n\n"
             "[**Ancestral Eating Patterns →**](/wellness/ancestral-eating-patterns)\n\n"
             "[**Is Three Meals a Day Necessary? →**](/wellness/three-meals-a-day-necessary)\n\n"
-            "[**Scripture Study Tools →**](/scripture-tools)\n\n"
+            "[**Scripture Study Tools →**](/scripture-tools/hebrew-greek-meaning-tool)\n\n"
             "---\n\n"
             "If this teaching is helping you, consider supporting the mission.\n\n"
-            "[**Support the Ministry →**](/support)"
+            "[**Support the Ministry →**](/partner)"
         ),
     },
     ("wellness", "the-rotten-fencepost-principle"): {
@@ -883,7 +883,7 @@ _SEO_PAGES = {
             "[**What Is the Kingdom of God? →**](/kingdom/what-is-the-kingdom-of-god)\n\n"
             "---\n\n"
             "Continue learning through the wellness and Kingdom ecosystem.\n\n"
-            "[**Support the Ministry →**](/support)"
+            "[**Support the Ministry →**](/partner)"
         ),
     },
     ("wellness", "kupuna-wisdom-and-modern-health"): {
@@ -920,10 +920,10 @@ _SEO_PAGES = {
             "[**Explore the Wellness Ecosystem →**](/ecosystem)\n\n"
             "[**Ancestral Eating Patterns →**](/wellness/ancestral-eating-patterns)\n\n"
             "[**The Rotten Fencepost Principle →**](/wellness/the-rotten-fencepost-principle)\n\n"
-            "[**Scripture Study Tools →**](/scripture-tools)\n\n"
+            "[**Scripture Study Tools →**](/scripture-tools/hebrew-greek-meaning-tool)\n\n"
             "---\n\n"
             "Explore the broader ecosystem and teachings.\n\n"
-            "[**Support the Ministry →**](/support)"
+            "[**Support the Ministry →**](/partner)"
         ),
     },
     ("kingdom", "understanding-scripture-through-original-words"): {
@@ -958,13 +958,13 @@ _SEO_PAGES = {
             "When readers understand which original word is behind the English rendering they are reading, they gain access to the frame. They begin to see not just what the translation chose to say, but what the original writer actually expressed.\n\n"
             "That shift in understanding does not diminish the translated text. It adds light to it.\n\n"
             "---\n\n"
-            "[**Scripture Study Tools →**](/scripture-tools)\n\n"
+            "[**Scripture Study Tools →**](/scripture-tools/hebrew-greek-meaning-tool)\n\n"
             "[**Explore the Kingdom Ecosystem →**](/ecosystem)\n\n"
             "[**What Is the Kingdom of God? →**](/kingdom/what-is-the-kingdom-of-god)\n\n"
             "[**The Kingdom Message of Jesus →**](/kingdom/jesus-kingdom-message)\n\n"
             "---\n\n"
             "Explore the Scripture study tools and Kingdom ecosystem.\n\n"
-            "[**Support the Ministry →**](/support)"
+            "[**Support the Ministry →**](/partner)"
         ),
     },
     ("wellness", "god-never-told-adam-when-to-eat"): {
@@ -1005,7 +1005,7 @@ _SEO_PAGES = {
             "---\n\n"
             "If this teaching is helping you see wellness differently, explore the full Aloha Wellness teaching or support this ministry so these resources can keep reaching people who need them.\n\n"
             "[**Aloha Wellness Book →**](/aloha_wellness)\n\n"
-            "[**Support the Ministry →**](/support)"
+            "[**Support the Ministry →**](/partner)"
         ),
     },
     ("kingdom", "stewardship-in-the-kingdom-of-god"): {
@@ -1041,10 +1041,10 @@ _SEO_PAGES = {
             "[**Explore the Kingdom Ecosystem →**](/ecosystem)\n\n"
             "[**What Is the Kingdom of God? →**](/kingdom/what-is-the-kingdom-of-god)\n\n"
             "[**Biblical Stewardship Principles →**](/wealth/biblical-stewardship-principles)\n\n"
-            "[**Scripture Study Tools →**](/scripture-tools)\n\n"
+            "[**Scripture Study Tools →**](/scripture-tools/hebrew-greek-meaning-tool)\n\n"
             "---\n\n"
             "Continue exploring the Kingdom ecosystem and teachings.\n\n"
-            "[**Support the Ministry →**](/support)"
+            "[**Support the Ministry →**](/partner)"
         ),
     },
 }
