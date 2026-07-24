@@ -97,12 +97,13 @@ def test_homepage_still_has_free_health_guide_form(client):
     assert "Get the FREE Kingdom Health Guide" in html
 
 
-def test_homepage_still_has_three_pillars_content(client):
-    """Existing longer personal story / three pillars content must not be deleted."""
+def test_homepage_no_longer_has_three_pillars_section(client):
+    """Correction 003-A: the Three Pillars section was intentionally removed
+    from the homepage (redundant with /ecosystem and the "Where would you
+    like to begin?" cards, and it was overlapping the new hero content).
+    The text itself is preserved as a comment in content.py, not deleted."""
     html = client.get("/").get_data(as_text=True)
-    assert "The Three Pillars of Ke Aupuni O Ke Akua" in html
-    assert "Kingdom Wellness" in html
-    assert "Kingdom Wealth" in html
+    assert "The Three Pillars of Ke Aupuni O Ke Akua" not in html
 
 
 def test_homepage_does_not_duplicate_closing_aloha_line(client):

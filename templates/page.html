@@ -80,8 +80,8 @@
     </div>
 </div>
 {% endif %}
-<main class="container">
-    <article class="content-card">
+<main class="{% if current_page == 'home' %}home-container{% else %}container{% endif %}">
+    <article class="{% if current_page == 'home' %}home-content-card{% else %}content-card{% endif %}">
         {{ body_html|safe }}
 
         {% if page.gallery_images %}

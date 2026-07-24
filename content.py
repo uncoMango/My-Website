@@ -3,6 +3,34 @@ import json
 from datetime import datetime
 from config import DATA_FILE, PRODUCTS_FILE, ORDER
 
+# --- Preserved: removed from the homepage in Correction 003-A -----------
+# The homepage's original "Three Pillars of Ke Aupuni O Ke Akua" section
+# was removed to fix a hero/body overlap and reduce redundancy with
+# /ecosystem's own three-pillar framework (Wellness / Scripture Language
+# Insight / Kingdom) and with the homepage's "Where would you like to
+# begin?" cards, which already link to Kingdom teaching, wellness, and
+# Kingdom Wealth. Not deleted -- kept here verbatim for reuse. The
+# Kingdom Wealth angle specifically has no equivalent on /ecosystem
+# today; if that page's "three pillars" framing is ever revisited, this
+# is the natural source text for a fourth pillar there.
+# ### The Three Pillars of Ke Aupuni O Ke Akua
+#
+# **The Kingdom of God** - Rediscover what Jesus actually preached. Not church. Not religion. The revolutionary Kingdom message that transforms your mind, your identity, and your purpose.
+#
+# **[Explore the Kingdom Series](/call_to_repentance)**
+#
+# ---
+#
+# **Kingdom Wellness** - Your body is not a burden. It is a temple - and the Kingdom has a design for it. Discover how a Paniolo pastor from Molokaʻi lost 54 pounds without dieting, through a revelation rooted in Scripture and confirmed by a life on horseback.
+#
+# **[Discover Aloha Wellness](/aloha_wellness)**
+#
+# ---
+#
+# **Kingdom Wealth** - The Kingdom operates on stewardship, not ownership. Learn the biblical principles of increase that most churches never teach.
+#
+# **[Learn Kingdom Wealth](/kingdom_wealth)**
+# ---------------------------------------------------------------------
 DEFAULT_PAGES = {
     "funnel_youtube_url": "https://www.youtube.com/embed/O_-J8t0NHLc",
     "order": ORDER,
@@ -11,7 +39,7 @@ DEFAULT_PAGES = {
             "title": "Ke Aupuni O Ke Akua — Find the Cause, Not the Symptoms",
             "hero_image": "/static/images/molokai_coast.jpg",
             "meta_description": "Find the cause, not the symptoms. Ke Aupuni O Ke Akua helps you uncover what's really holding you back, in health, faith, and stewardship, through the Kingdom of God.",
-            "body_md": "### The Three Pillars of Ke Aupuni O Ke Akua\r\n\r\n**The Kingdom of God** - Rediscover what Jesus actually preached. Not church. Not religion. The revolutionary Kingdom message that transforms your mind, your identity, and your purpose.\r\n\r\n**[Explore the Kingdom Series](/call_to_repentance)**\r\n\r\n---\r\n\r\n**Kingdom Wellness** - Your body is not a burden. It is a temple - and the Kingdom has a design for it. Discover how a Paniolo pastor from Molokaʻi lost 54 pounds without dieting, through a revelation rooted in Scripture and confirmed by a life on horseback.\r\n\r\n**[Discover Aloha Wellness](/aloha_wellness)**\r\n\r\n---\r\n\r\n**Kingdom Wealth** - The Kingdom operates on stewardship, not ownership. Learn the biblical principles of increase that most churches never teach.\r\n\r\n**[Learn Kingdom Wealth](/kingdom_wealth)**\r\n\r\n---\r\n\r\n### New — Find the Cause, Not the Symptoms\r\n\r\nMost people spend their lives treating symptoms instead of discovering what caused the problem in the first place. Using the simple illustration of a rotten fencepost, Kahu Phil Stephens presents a practical framework for identifying hidden causes behind recurring problems in health, finances, relationships, leadership, work, and everyday life.\r\n\r\n**[Get the Rotten Fencepost Foundational Guide](/product/prod_find_the_cause_not_the_symptoms)**\r\n\r\n---\r\n\r\n### Start Here - FREE\r\n\r\nNot sure where to begin? Start with our **FREE Kingdom Keys** - short, powerful booklets drawn from almost 30 years of studying Scripture, including the last 5 years in the ancient Hebrew and Greek languages.\r\n\r\n**[Get Your FREE Kingdom Keys](/kingdom_keys)** - 4 powerful booklets\r\n\r\n**[Get Your FREE Kingdom Booklets](/free_booklets)** - 6 more Kingdom resources\r\n\r\nBoth sets completely free - no strings attached.",
+            "body_md": "### New — Find the Cause, Not the Symptoms\r\n\r\nMost people spend their lives treating symptoms instead of discovering what caused the problem in the first place. Using the simple illustration of a rotten fencepost, Kahu Phil Stephens presents a practical framework for identifying hidden causes behind recurring problems in health, finances, relationships, leadership, work, and everyday life.\r\n\r\n**[Get the Rotten Fencepost Foundational Guide](/product/prod_find_the_cause_not_the_symptoms)**\r\n\r\n---\r\n\r\n### Start Here - FREE\r\n\r\nNot sure where to begin? Start with our **FREE Kingdom Keys** - short, powerful booklets drawn from almost 30 years of studying Scripture, including the last 5 years in the ancient Hebrew and Greek languages.\r\n\r\n**[Get Your FREE Kingdom Keys](/kingdom_keys)** - 4 powerful booklets\r\n\r\n**[Get Your FREE Kingdom Booklets](/free_booklets)** - 6 more Kingdom resources\r\n\r\nBoth sets completely free - no strings attached.",
             "product_url": "",
             "gumroad_url": "https://keaupuni.gumroad.com",
         },

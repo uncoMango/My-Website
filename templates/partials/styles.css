@@ -85,6 +85,11 @@ body {
     background-size: cover; background-position: center;
     position: relative; display: flex; align-items: flex-end; overflow: hidden;
 }
+/* The homepage hero carries a full heading/CTA stack (see .home-hero-content
+   below), not just a single title line -- let it grow past 100vh on any
+   width where that content needs more room, rather than clipping it via the
+   base rule's overflow:hidden + fixed height. */
+.home-hero { height: auto; min-height: 100vh; overflow: visible; }
 .hero-overlay {
     position: absolute; inset: 0;
     background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
@@ -151,14 +156,30 @@ body {
     padding: 3rem 5rem; box-shadow: none;
     margin-top: 25vh; padding-top: 4rem; color: white; text-align: center;
 }
-.content-card h2 { color: white; margin-bottom: 1rem; font-size: 2.2rem; text-shadow: 3px 3px 6px rgba(0,0,0,0.9); text-align: center; }
-.content-card h3 { color: white; margin: 2rem 0 1rem; font-size: 1.6rem; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); text-align: center; }
-.content-card a { color: #FFD700; text-decoration: underline; font-weight: 600; }
-.content-card p { margin-bottom: 1.5rem; font-size: 1.2rem; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); line-height: 1.8; text-align: center; }
-.content-card strong { color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
-.content-card li { color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); line-height: 1.8; }
-.content-card img { max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: block; }
-.content-card img[alt*="Cover"], .content-card img[alt*="Volume"] { max-width: 300px; margin: 20px auto; }
+/* Homepage-only counterpart to .container/.content-card: same visual look
+   (shared via the combined selectors below), but plain normal-flow block
+   layout instead of position:absolute-over-the-hero. The overlay pattern on
+   .container relies on the hero having little/no visible content to sit
+   under it; the homepage hero now carries a full heading/CTA stack, so its
+   body content renders after the hero instead of on top of it. Every other
+   page.html page is untouched -- still uses .container/.content-card. */
+.home-container {
+    max-width: 1500px; margin: 0 auto; padding: 2rem; width: 100%;
+}
+.home-content-card {
+    background: rgba(0,0,0,0.25); border: none;
+    padding: 3rem 5rem; box-shadow: none;
+    padding-top: 3rem; color: white; text-align: center;
+}
+.content-card h2, .home-content-card h2 { color: white; margin-bottom: 1rem; font-size: 2.2rem; text-shadow: 3px 3px 6px rgba(0,0,0,0.9); text-align: center; }
+.content-card h3, .home-content-card h3 { color: white; margin: 2rem 0 1rem; font-size: 1.6rem; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); text-align: center; }
+.content-card a, .home-content-card a { color: #FFD700; text-decoration: underline; font-weight: 600; }
+.content-card p, .home-content-card p { margin-bottom: 1.5rem; font-size: 1.2rem; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); line-height: 1.8; text-align: center; }
+.content-card strong, .home-content-card strong { color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+.content-card li, .home-content-card li { color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); line-height: 1.8; }
+.content-card img, .home-content-card img { max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: block; }
+.content-card img[alt*="Cover"], .content-card img[alt*="Volume"],
+.home-content-card img[alt*="Cover"], .home-content-card img[alt*="Volume"] { max-width: 300px; margin: 20px auto; }
 
 .buy-section { text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.3); }
 .buy-button, .music-button {
@@ -254,16 +275,21 @@ body {
 
 @media (max-width: 768px) {
     .hero { height: 45vh; min-height: 300px; }
-    /* The homepage hero carries a heading, supporting line, identity block,
-       and two buttons -- the generic 45vh/300px mobile hero is too short
-       for that stack, so it grows to fit its own content instead. */
-    .home-hero { height: auto; min-height: 560px; padding-bottom: 2.5rem; }
+    /* The homepage hero keeps its universal auto-height/100vh-floor rule
+       (see .home-hero above) instead of the generic 45vh/300px mobile hero
+       -- that stack (heading, supporting line, identity block, two buttons)
+       needs more room than a single title line does. Just add breathing
+       room below the bottom-anchored buttons. */
+    .home-hero { padding-bottom: 2.5rem; }
     .container { position: relative; height: auto; margin-top: 0; padding: 0 1rem 2rem; transform: none; left: 0; }
+    .home-container { padding: 0 1rem 2rem; }
+    .home-content-card { padding: 2rem 1.5rem; padding-top: 2rem; }
     .content-card { padding: 2rem 1.5rem; margin-top: 2rem; padding-top: 3rem; }
-    .content-card h2 { font-size: 1.8rem; }
-    .content-card h3 { font-size: 1.4rem; }
+    .content-card h2, .home-content-card h2 { font-size: 1.8rem; }
+    .content-card h3, .home-content-card h3 { font-size: 1.4rem; }
     .music-buttons { flex-direction: column; }
     .music-button { width: 100%; }
-    .content-card img[alt*="Cover"], .content-card img[alt*="Volume"] { max-width: 100%; }
+    .content-card img[alt*="Cover"], .content-card img[alt*="Volume"],
+    .home-content-card img[alt*="Cover"], .home-content-card img[alt*="Volume"] { max-width: 100%; }
     .gallery-grid { grid-template-columns: 1fr; }
 }
