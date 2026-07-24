@@ -4,17 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ product.name }} – Ke Aupuni O Ke Akua</title>
+    <title>{{ product.seo_title or (product.name ~ ' – Ke Aupuni O Ke Akua') }}</title>
+    <meta name="description" content="{{ product.meta_description or product.description }}">
+    <meta property="og:type" content="product">
+    <meta property="og:title" content="{{ product.seo_title or product.name }}">
+    <meta property="og:description" content="{{ product.meta_description or product.description }}">
+    {% if product.cover_image %}<meta property="og:image" content="{{ product.cover_image if product.cover_image.startswith('http') else (request.url_root.rstrip('/') + product.cover_image) }}">{% endif %}
+    <meta property="og:url" content="{{ request.url }}">
+    <meta name="twitter:card" content="summary_large_image">
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:system-ui,sans-serif; background:linear-gradient(135deg,#667eea,#764ba2); min-height:100vh; padding:2rem; }
         .container { max-width:900px; margin:0 auto; background:white; border-radius:16px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
         .product-header { background:linear-gradient(135deg,#667eea,#764ba2); color:white; padding:3rem 2rem; text-align:center; }
         .product-header h1 { font-size:2.5rem; margin-bottom:1rem; }
+        .product-header .subtitle { font-size:1.15rem; opacity:0.9; font-style:italic; margin-top:-0.5rem; margin-bottom:1rem; }
+        .product-meta { color:#6c757d; font-size:0.95rem; margin-bottom:1.5rem; line-height:1.6; }
         .product-content { display:grid; grid-template-columns:1fr 1fr; gap:2rem; padding:2rem; }
         .product-image img { max-width:100%; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
         .product-details h2 { color:#2c3e50; margin-bottom:1rem; }
-        .product-description { color:#495057; line-height:1.6; margin-bottom:2rem; }
+        .product-description { color:#495057; line-height:1.6; margin-bottom:2rem; white-space:pre-line; }
         .price { font-size:3rem; color:#28a745; font-weight:bold; margin-bottom:2rem; }
         .buy-button { display:block; width:100%; padding:1.5rem; background:#28a745; color:white; text-align:center; font-size:1.25rem; font-weight:bold; border-radius:8px; text-decoration:none; transition:all 0.3s ease; }
         .buy-button:hover { background:#218838; transform:translateY(-2px); box-shadow:0 6px 20px rgba(40,167,69,0.4); }
@@ -31,7 +40,8 @@
 <div class="container">
     <div class="product-header">
         <h1>{{ product.name }}</h1>
-        <p>From Ke Aupuni O Ke Akua Press</p>
+        {% if product.subtitle %}<p class="subtitle">{{ product.subtitle }}</p>{% endif %}
+        <p>From {{ product.publisher or "Ke Aupuni O Ke Akua Press" }}</p>
     </div>
 
     <div class="product-content">
@@ -42,6 +52,12 @@
 
         <div class="product-details">
             <h2>About This Product</h2>
+            {% if product.author or product.series %}
+            <div class="product-meta">
+                {% if product.author %}By {{ product.author }}{% endif %}
+                {% if product.series %}{% if product.author %} &middot; {% endif %}{{ product.series }} Series{% endif %}
+            </div>
+            {% endif %}
             <div class="product-description">{{ product.description }}</div>
             <ul class="features">
                 {% if product.category == 'partnership' %}

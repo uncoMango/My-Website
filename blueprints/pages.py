@@ -1086,6 +1086,8 @@ def sitemap():
         ("/nahenahe_voice",     "0.8", "monthly"),
         ("/myron-golden",       "0.8", "weekly"),
         ("/kingdom-study",                          "0.9", "weekly"),
+        ("/products",                                "0.9", "weekly"),
+        ("/product/prod_find_the_cause_not_the_symptoms", "0.8", "monthly"),
         ("/wellness/why-diets-fail",               "0.8", "monthly"),
         ("/wellness/lose-weight-without-dieting",  "0.8", "monthly"),
         ("/wellness/three-meals-a-day-necessary",  "0.8", "monthly"),

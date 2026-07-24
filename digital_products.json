@@ -40,6 +40,26 @@
       "total_sales": 0
     },
     {
+      "id": "prod_find_the_cause_not_the_symptoms",
+      "name": "Find the Cause, Not the Symptoms",
+      "subtitle": "A Rotten Fencepost Foundational Guide",
+      "author": "Kahu Phil Stephens",
+      "publisher": "Ke Aupuni O Ke Akua Publishing",
+      "series": "Rotten Fencepost™",
+      "seo_title": "Find the Cause, Not the Symptoms | Rotten Fencepost Foundational Guide",
+      "meta_description": "Discover why recurring problems continue to return and learn a practical framework for identifying root causes instead of repeatedly treating symptoms.",
+      "description": "Most people spend their lives treating symptoms instead of discovering what caused the problem in the first place.\n\nUsing the simple illustration of a rotten fencepost, Kahu Phil Stephens presents a practical framework that helps readers identify hidden causes behind recurring problems in health, finances, relationships, leadership, work, and everyday life.\n\nInstead of asking, \"How do I fix this?\"\n\nLearn to ask,\n\n\"What caused this problem to appear?\"\n\nThat one question can change everything.",
+      "price": 9.99,
+      "category": "ebook",
+      "filename": "find_the_cause_not_the_symptoms.pdf",
+      "file_path": "digital_products/find_the_cause_not_the_symptoms.pdf",
+      "cover_image": "/static/covers/find_the_cause_not_the_symptoms_cover_web.jpg",
+      "print_cover_image": "/static/covers/find_the_cause_not_the_symptoms_cover.jpg",
+      "active": true,
+      "downloads": 0,
+      "total_sales": 0
+    },
+    {
       "id": "rotten_fencepost_field_guide",
       "name": "Rotten Fencepost Field Guide",
       "description": "Why everything keeps falling apart — and what God actually designed instead.",

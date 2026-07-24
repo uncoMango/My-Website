@@ -22,6 +22,27 @@ products_bp = Blueprint("products", __name__)
 
 
 # =========================================================
+# PUBLIC: Products listing page
+# =========================================================
+
+@products_bp.route("/products")
+def products_list():
+    products_data = load_digital_products()
+    products = [
+        p for p in products_data.get("products", [])
+        if p.get("active", True) and p.get("category") != "partnership"
+    ]
+    return render_template(
+        "products.html",
+        products=products,
+        logo_path=LOGO_PATH,
+        logo_height=LOGO_HEIGHT,
+        footer_text=FOOTER_TEXT,
+        contact_email=CONTACT_EMAIL,
+    )
+
+
+# =========================================================
 # PUBLIC: Product sales page
 # =========================================================
 

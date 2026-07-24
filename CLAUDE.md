@@ -75,6 +75,15 @@ All secrets are loaded via `os.environ[]` with **no fallback defaults** — the 
 
 ## Change Log
 
+### 2026-07-23
+- **Added Product 001: "Find the Cause, Not the Symptoms"** (`prod_find_the_cause_not_the_symptoms` in `digital_products.json`, $9.99, category `ebook`). Uses the existing generic `/product/<id>` + `product_page.html` flow — no bespoke funnel page. `product_page.html` gained optional `subtitle`/`author`/`publisher`/`series`/`seo_title`/`meta_description` fields (backward compatible, unused fields are simply ignored by older entries).
+- **New public `/products` listing page** (`blueprints/products.py` + `templates/products.html`) — lists all `active` non-`partnership` catalog products as cards. Added to nav in `base.html` and to `sitemap.xml`.
+- Approved cover (`static/covers/find_the_cause_not_the_symptoms_cover.jpg`, full KDP wraparound print spread) and finalized PDF (`digital_products/find_the_cause_not_the_symptoms.pdf`) received from Kahu Phil and installed. Generated `find_the_cause_not_the_symptoms_cover_web.jpg` — a front-cover-only crop — for on-site display (`cover_image`); the untouched wraparound file is kept as `print_cover_image` for reference and is not itself displayed anywhere on the site. Product 001 is now `"active": true`.
+- Added a homepage promo band (`content.py`, `home` page `body_md`) linking to the new product page.
+- Added `og:title`/`og:description`/`og:image`/`twitter:card` meta tags to `product_page.html` (none existed anywhere on the site before) so product links share correctly.
+- **Bugfix:** `serve_cover()` in `blueprints/downloads.py` (a leftover route from before the blueprint refactor) resolved `/static/covers/<filename>` against the repo root instead of `static/covers/`, so it shadowed Flask's default static handler and 404'd on every file in that folder — including the pre-existing `cover1.jpg`/`cover2.jpg`/`cover3.jpg`, not just the new cover. Fixed the path join; confirmed all four now serve correctly.
+- All changes tested locally via `flask run` (nav, homepage band, `/products`, `/product/prod_find_the_cause_not_the_symptoms`, cover image, `/download/product/...`, checkout route, sitemap.xml). Not yet committed, pushed, or deployed — awaiting Kahu Phil's explicit go-ahead.
+
 ### 2026-03-03
 - **Dynamic YouTube embed on `/aloha-wellness` funnel** — `funnel_youtube_url` stored in `website_content.json` (top-level key). Admin can paste any YouTube URL format into the `/kahu` panel "Weekly YouTube Video" field to update the embed without code changes. `_youtube_to_embed()` in `admin.py` converts share/watch/embed URLs to embed format.
 - **Fixed `edit_page` save** — now preserves all top-level JSON keys (was previously stripping unknown keys like `funnel_youtube_url`).

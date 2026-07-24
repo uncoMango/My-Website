@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Products | Ke Aupuni O Ke Akua{% endblock %}
+{% block meta_description %}Browse books and resources from Ke Aupuni O Ke Akua Publishing — Kingdom teaching, wellness, and practical frameworks by Kahu Phil Stephens.{% endblock %}
+{% block content %}
+
+<div class="hero" style="background-image: url('/static/images/molokai_coast.jpg'); height: 45vh;">
+    <div class="hero-overlay"></div>
+    <div class="hero-content" style="text-align: center; width: 100%;">
+        <h1 style="display: block; font-size: 2.4rem; font-weight: 800; color: white; text-shadow: 3px 3px 8px rgba(0,0,0,0.9);">Products</h1>
+        <p style="font-size: 1.1rem; color: white; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">Books and resources from Ke Aupuni O Ke Akua Publishing</p>
+    </div>
+</div>
+
+<div style="background: #1a1a1a; color: white; padding: 3rem 2rem;">
+    <div style="max-width: 1100px; margin: 0 auto;">
+
+        {% if products %}
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem;">
+            {% for product in products %}
+            <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;">
+                {% if product.cover_image %}
+                <a href="/product/{{ product.id }}">
+                    <img src="{{ product.cover_image }}" alt="{{ product.name }}" style="width: 100%; display: block;">
+                </a>
+                {% endif %}
+                <div style="padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1;">
+                    <h3 style="color: #c9a842; font-size: 1.2rem; margin-bottom: 0.5rem;">
+                        <a href="/product/{{ product.id }}" style="color: #c9a842; text-decoration: none;">{{ product.name }}</a>
+                    </h3>
+                    {% if product.subtitle %}
+                    <p style="font-size: 0.95rem; font-style: italic; color: #ccc; margin-bottom: 0.75rem;">{{ product.subtitle }}</p>
+                    {% endif %}
+                    <p style="font-size: 0.95rem; color: #ddd; line-height: 1.6; margin-bottom: 1.5rem; flex-grow: 1;">{{ (product.description or "")[:140] }}{% if (product.description or "")|length > 140 %}&hellip;{% endif %}</p>
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+                        <span style="font-size: 1.3rem; font-weight: 800; color: white;">${{ "%.2f"|format(product.price) }}</span>
+                        <a href="/product/{{ product.id }}" class="buy-button" style="padding: 0.6rem 1.25rem; font-size: 0.95rem;">View</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p style="text-align: center; font-size: 1.1rem; color: #ccc;">New products are on the way. Check back soon.</p>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

@@ -363,7 +363,7 @@ def download_product(product_id):
 
 @downloads_bp.route("/static/covers/<filename>")
 def serve_cover(filename):
-    cover_path = BASE / filename
+    cover_path = BASE / "static" / "covers" / filename
     if cover_path.exists():
         return send_file(cover_path, mimetype="image/jpeg")
     abort(404)
