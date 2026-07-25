@@ -1,6 +1,6 @@
 {# templates/page.html #}
 {% extends "base.html" %}
-{% block title %}{{ page.title }}{% endblock %}
+{% block title %}{{ page.get("seo_title", page.title) }}{% endblock %}
 {% block meta_description %}{{ page.get("meta_description", "Ke Aupuni O Ke Akua - Kingdom ministry from Molokai, Hawaii by Native Hawaiian Pastor Kahu Phil Stephens.") }}{% endblock %}
 {% block body_attrs %} style="--page-hero-bg: url('{{ page.hero_image }}');"{% endblock %}
 {% block content %}

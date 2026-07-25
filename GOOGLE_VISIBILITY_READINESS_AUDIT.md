@@ -80,6 +80,8 @@ Sitemap: https://keaupuniakeakua.faith/sitemap.xml
 
 ## 4. Metadata
 
+> **RESOLVED (Titles + Meta Descriptions) — Work Order 005 "Unique Metadata Implementation" (2026-07-24, second work order to carry that number this session — see `CLAUDE.md`).** All 8 pages sharing the fallback description, plus `rotten_fencepost.html`, now have unique meta descriptions; the 7 `page.html`-driven pages among them also gained a dedicated `seo_title` field for the `<title>` tag, decoupled from the visible on-page heading so no content was changed. Full implementation record in `CLAUDE.md`. Open Graph, Twitter Cards, and structured data (the rest of this section and Section 5) are unchanged and still open — this work order was scoped to titles/descriptions only.
+
 ### Titles
 Present on every page checked (16 sampled). Lengths range from 13 characters (`/free_booklets` — "FREE Booklets") to 70 (product page). No missing `<title>` tags found anywhere, including the 5 standalone templates that don't extend `base.html`.
 
@@ -219,7 +221,7 @@ Ordered by priority, with effort and whether Google account access is needed:
 | # | Recommendation | Priority | Effort | Type | Status |
 |---|---|---|---|---|---|
 | 1 | Add the missing real pages to `sitemap.xml` (`/ecosystem`, `/partner`, `/rotten-fencepost`, `/aloha-wellness`, 3 `scripture-tools/*` pages) | High | Low | Code-only | **DONE — Work Order 005** |
-| 2 | Write unique meta descriptions for the 8 pages sharing the generic fallback, plus `rotten_fencepost.html` and `aloha_wellness_funnel.html` | High | Medium | Code-only | Not started |
+| 2 | Write unique meta descriptions for the 8 pages sharing the generic fallback, plus `rotten_fencepost.html` and `aloha_wellness_funnel.html` | High | Medium | Code-only | **DONE for 8 + `rotten_fencepost.html` — Work Order 005 (2nd).** `aloha_wellness_funnel.html` (a standalone template, not part of the original 8) still open. |
 | 3 | Add sitewide Open Graph + Twitter Card tags to `base.html` (dynamic per-page, using existing `page.title`/`hero_image`) so every page — not just products — gets a real social preview | High | Low–Medium | Code-only | Not started |
 | 4 | Add `noindex` to transactional pages (`/checkout/*`, success/thank-you pages) | Medium | Low | Code-only | Not started |
 | 5 | Add canonical + OG tags to the 5 standalone templates (`aloha_wellness_funnel.html`, `kingdom_study.html`, `myron_golden_funnel.html`, `partner_success.html`, `payment_success.html`) | Medium | Low | Code-only | Not started |
