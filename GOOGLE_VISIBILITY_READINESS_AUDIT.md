@@ -99,7 +99,10 @@ Additionally, two commercially important standalone pages have **no meta descrip
 - `templates/aloha_wellness_funnel.html` (`/aloha-wellness`) — has a custom `<title>` but zero `<meta name="description">` tag (not even a fallback — the tag is simply absent, since this template doesn't extend `base.html`).
 
 ### Canonical URLs
-Present sitewide on every template extending `base.html` (`templates/base.html:13`, dynamic per `request.path`, confirmed correct format live: `https://keaupuniakeakua.faith/`). **Absent on the 5 standalone templates**: `aloha_wellness_funnel.html`, `kingdom_study.html`, `myron_golden_funnel.html`, `partner_success.html`, `payment_success.html` — none of these have a `<link rel="canonical">` at all.
+
+> **RESOLVED — Work Order 008 "Canonical Tags & Internal Link Architecture" (2026-07-24).** Added a self-referencing, absolute-HTTPS canonical tag to the 3 public standalone templates that lacked one (`aloha_wellness_funnel.html`, `kingdom_study.html`, `myron_golden_funnel.html`). `partner_success.html` and `payment_success.html` remain without one — correctly, since they're transactional confirmation pages explicitly out of scope for canonical tags. Full crawl of all 34 sitemap URLs confirmed: exactly one canonical per page, zero duplicates, zero mismatches. Full implementation record in `CLAUDE.md`.
+
+Present sitewide on every template extending `base.html` (`templates/base.html:13`, dynamic per `request.path`, confirmed correct format live: `https://keaupuniakeakua.faith/`). **Absent on the 5 standalone templates**: `aloha_wellness_funnel.html`, `kingdom_study.html`, `myron_golden_funnel.html`, `partner_success.html`, `payment_success.html` — none of these have a `<link rel="canonical">` at all. (Historical record, left as originally written — see the resolution note above.)
 
 ### Open Graph / Twitter Cards
 
@@ -116,9 +119,9 @@ Present sitewide on every template extending `base.html` (`templates/base.html:1
 | `/` | ✓ (54 char) | ✓ (own) | ✓ | ✗ |
 | `/kingdom_wealth` | ✓ | fallback | ✓ | ✗ |
 | `/rotten-fencepost` | ✓ | fallback | ✓ | ✗ |
-| `/aloha-wellness` | ✓ | **missing** | **missing** | ✗ |
-| `/kingdom-study` | ✓ | ✓ (own) | **missing** | ✗ |
-| `/myron-golden` | ✓ | ✓ (own) | **missing** | ✗ |
+| `/aloha-wellness` | ✓ | **missing** | ✓ (WO008) | ✗ |
+| `/kingdom-study` | ✓ | ✓ (own) | ✓ (WO008) | ✗ |
+| `/myron-golden` | ✓ | ✓ (own) | ✓ (WO008) | ✗ |
 | `/ecosystem` | ✓ | ✓ (own) | ✓ | ✗ |
 | `/product/<id>` | ✓ | ✓ (own) | ✓ | ✓ |
 
@@ -146,6 +149,8 @@ Both validated as syntactically correct JSON via a live parse test.
 ---
 
 ## 6. Internal Linking
+
+> **PARTIALLY ADDRESSED — Work Order 008 "Canonical Tags & Internal Link Architecture" (2026-07-24).** Added 4 natural, contextual internal links between pages that already share subject matter: `/wellness/the-rotten-fencepost-principle` ↔ `/rotten-fencepost`, and `/kingdom/understanding-scripture-through-original-words` → `/kingdom-study`, `/scripture-tools/hebrew-greek-meaning-tool` → `/kingdom-study`. This does not resolve the orphan pages listed below (none of those 4 links target an orphan — the orphans found in the original audit were deliberately left alone rather than forcing an unnatural link just to close them; see `CLAUDE.md` for the reasoning) or add coverage to `/aloha-wellness`, `/myron-golden`, or the still-orphaned product pages. Full implementation record in `CLAUDE.md`.
 
 ### Navigation
 12 destinations, all working (verified in the Work Order 002 audit and reconfirmed here). Nav does not cover: `/free_booklets`, `/myron-golden`, `/aloha-wellness`, any of the 18 SEO sub-pages, or any individual `/product/<id>` page — all reachable only through body-content links or direct URL.
@@ -231,8 +236,8 @@ Ordered by priority, with effort and whether Google account access is needed:
 | 2 | Write unique meta descriptions for the 8 pages sharing the generic fallback, plus `rotten_fencepost.html` and `aloha_wellness_funnel.html` | High | Medium | Code-only | **DONE for 8 + `rotten_fencepost.html` — Work Order 005 (2nd).** `aloha_wellness_funnel.html` (a standalone template, not part of the original 8) still open. |
 | 3 | Add sitewide Open Graph + Twitter Card tags to `base.html` (dynamic per-page, using existing `page.title`/`hero_image`) so every page — not just products — gets a real social preview | High | Low–Medium | Code-only | **DONE — Work Order 006.** |
 | 4 | Add `noindex` to transactional pages (`/checkout/*`, success/thank-you pages) | Medium | Low | Code-only | Not started |
-| 5 | Add canonical + OG tags to the 5 standalone templates (`aloha_wellness_funnel.html`, `kingdom_study.html`, `myron_golden_funnel.html`, `partner_success.html`, `payment_success.html`) | Medium | Low | Code-only | Not started |
-| 6 | Resolve orphan pages — link `/product/rotten_fencepost_field_guide` from somewhere public, or confirm intentional and leave as-is (`/aloha-wellness` is now in the sitemap as of Work Order 005, which helps discovery but doesn't add an internal link to it) | Medium | Low | Code-only | Partially addressed |
+| 5 | Add canonical + OG tags to the 5 standalone templates (`aloha_wellness_funnel.html`, `kingdom_study.html`, `myron_golden_funnel.html`, `partner_success.html`, `payment_success.html`) | Medium | Low | Code-only | **OG tags DONE — Work Order 006. Canonical DONE for the 3 public templates — Work Order 008.** `partner_success.html`/`payment_success.html` correctly remain without canonical (transactional, out of scope). |
+| 6 | Resolve orphan pages — link `/product/rotten_fencepost_field_guide` from somewhere public, or confirm intentional and leave as-is (`/aloha-wellness` is now in the sitemap as of Work Order 005, which helps discovery but doesn't add an internal link to it) | Medium | Low | Code-only | Partially addressed. **Work Order 008** added 4 natural contextual links elsewhere on the site (see Section 6) but did not target this specific orphan list — `/product/rotten_fencepost_field_guide`, the other orphaned product pages, and `/aloha-wellness`/`/myron-golden` still have no inbound body-content link; still open. |
 | 7 | Add `Product` JSON-LD to product pages, `Article` JSON-LD to the 18 content pages, `WebSite` schema to `base.html` | Medium | Medium–High | Code-only | **DONE — Work Order 007.** (No `SearchAction`: the site has no genuine site-search feature, and the work order explicitly said not to add one merely for appearance.) |
 | 8 | `sitemap.xml`'s `<lastmod>` | Low | Low–Medium | Code-only | **RESOLVED — Work Order 005.** Determined a reliably accurate per-page value isn't achievable without either a real CMS/timestamp layer (out of scope) or fragile runtime `git log` calls (introduces the "unnecessary complexity" the work order explicitly said to avoid). Removed `<lastmod>` entirely rather than continue fabricating "today" on every request — see `CLAUDE.md` for full reasoning. |
 | 9 | Confirm/complete the manual Google Search Console + Bing Webmaster Tools setup (Section 9) | High | — | Google account access | Not started |
