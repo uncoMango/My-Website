@@ -146,23 +146,24 @@ body {
     .home-hero-btn { width: 100%; white-space: normal; }
 }
 
+/* Work Order 004-C: .container used to be position:absolute; top:0;
+   height:100vh -- pinned to the same document region as the hero, so its
+   content (peeking through from margin-top:25vh) rendered layered on top of
+   the hero instead of after it, on every one of the 26 pages that used it.
+   That's the same defect Correction 003-A fixed for the homepage; this
+   applies the same normal-flow fix here instead of duplicating it per page.
+   .home-container/.home-content-card (below) are left exactly as Correction
+   003-A built them -- now functionally similar to these, but kept separate
+   and untouched per Work Order 004-C's explicit instruction not to modify
+   the homepage-specific layout. */
 .container {
-    max-width: 1500px; margin: 0 auto; padding: 2rem;
-    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-    width: 100%; height: 100vh; overflow-y: auto; z-index: 3;
+    max-width: 1500px; margin: 0 auto; padding: 2rem; width: 100%;
 }
 .content-card {
     background: rgba(0,0,0,0.25); border: none;
     padding: 3rem 5rem; box-shadow: none;
-    margin-top: 25vh; padding-top: 4rem; color: white; text-align: center;
+    padding-top: 3rem; color: white; text-align: center;
 }
-/* Homepage-only counterpart to .container/.content-card: same visual look
-   (shared via the combined selectors below), but plain normal-flow block
-   layout instead of position:absolute-over-the-hero. The overlay pattern on
-   .container relies on the hero having little/no visible content to sit
-   under it; the homepage hero now carries a full heading/CTA stack, so its
-   body content renders after the hero instead of on top of it. Every other
-   page.html page is untouched -- still uses .container/.content-card. */
 .home-container {
     max-width: 1500px; margin: 0 auto; padding: 2rem; width: 100%;
 }
@@ -281,10 +282,8 @@ body {
        needs more room than a single title line does. Just add breathing
        room below the bottom-anchored buttons. */
     .home-hero { padding-bottom: 2.5rem; }
-    .container { position: relative; height: auto; margin-top: 0; padding: 0 1rem 2rem; transform: none; left: 0; }
-    .home-container { padding: 0 1rem 2rem; }
-    .home-content-card { padding: 2rem 1.5rem; padding-top: 2rem; }
-    .content-card { padding: 2rem 1.5rem; margin-top: 2rem; padding-top: 3rem; }
+    .container, .home-container { padding: 0 1rem 2rem; }
+    .content-card, .home-content-card { padding: 2rem 1.5rem; padding-top: 2rem; }
     .content-card h2, .home-content-card h2 { font-size: 1.8rem; }
     .content-card h3, .home-content-card h3 { font-size: 1.4rem; }
     .music-buttons { flex-direction: column; }
