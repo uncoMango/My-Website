@@ -1,6 +1,5 @@
 ﻿# blueprints/pages.py
 import markdown
-from datetime import datetime
 from flask import Blueprint, abort, render_template, Response, send_from_directory
 from content import load_content, get_nav_items
 from config import LOGO_PATH, LOGO_HEIGHT, FOOTER_TEXT, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, STRIPE_ENABLED, STRIPE_PUBLISHABLE_KEY
@@ -1074,7 +1073,17 @@ def seo_subpage(parent, slug):
 
 @pages_bp.route("/sitemap.xml")
 def sitemap():
-    """XML sitemap so Google and Bing can find and index all pages."""
+    """XML sitemap so Google and Bing can find and index all pages.
+
+    No <lastmod> is emitted (see Work Order 005 / GOOGLE_VISIBILITY_READINESS_AUDIT.md):
+    this app has no per-page modification timestamp anywhere in its data model
+    (content lives in hardcoded dicts in content.py and this file, with no
+    "last updated" field), so there is no real date to report. The prior
+    implementation stamped every URL with today's date on every request,
+    which is not a modification date at all -- it just always said "today."
+    <lastmod> is optional per the sitemap protocol; omitting it is honest,
+    omitting it is safer than fabricating one, and it costs nothing indexing-wise.
+    """
     pages = [
         ("/",                   "1.0", "weekly"),
         ("/kingdom_wealth",     "0.9", "weekly"),
@@ -1084,7 +1093,11 @@ def sitemap():
         ("/aloha_wellness",     "0.9", "weekly"),
         ("/pastor_planners",    "0.8", "monthly"),
         ("/nahenahe_voice",     "0.8", "monthly"),
+        ("/partner",            "0.8", "monthly"),
+        ("/ecosystem",          "0.9", "weekly"),
+        ("/rotten-fencepost",   "0.9", "weekly"),
         ("/myron-golden",       "0.8", "weekly"),
+        ("/aloha-wellness",     "0.8", "weekly"),
         ("/kingdom-study",                          "0.9", "weekly"),
         ("/products",                                "0.9", "weekly"),
         ("/product/prod_find_the_cause_not_the_symptoms", "0.8", "monthly"),
@@ -1097,6 +1110,9 @@ def sitemap():
         ("/kingdom/what-is-the-kingdom-of-god",              "0.8", "monthly"),
         ("/kingdom/jesus-kingdom-message",         "0.8", "monthly"),
         ("/wealth/biblical-stewardship-principles","0.8", "monthly"),
+        ("/scripture-tools/hebrew-greek-meaning-tool",       "0.8", "weekly"),
+        ("/scripture-tools/translation-gap-in-scripture",    "0.8", "monthly"),
+        ("/scripture-tools/original-language-meaning",       "0.8", "monthly"),
         ("/wellness/eating-when-hungry",                              "0.8", "weekly"),
         ("/wellness/the-rotten-fencepost-principle",                  "0.8", "weekly"),
         ("/wellness/kupuna-wisdom-and-modern-health",                 "0.8", "weekly"),
@@ -1105,13 +1121,11 @@ def sitemap():
         ("/wellness/god-never-told-adam-when-to-eat",                 "0.8", "weekly"),
     ]
     base_url = "https://keaupuniakeakua.faith"
-    today = datetime.now().strftime("%Y-%m-%d")
     xml = ['<?xml version="1.0" encoding="UTF-8"?>']
     xml.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
     for path, priority, freq in pages:
         xml.append("  <url>")
         xml.append(f"    <loc>{base_url}{path}</loc>")
-        xml.append(f"    <lastmod>{today}</lastmod>")
         xml.append(f"    <changefreq>{freq}</changefreq>")
         xml.append(f"    <priority>{priority}</priority>")
         xml.append("  </url>")
