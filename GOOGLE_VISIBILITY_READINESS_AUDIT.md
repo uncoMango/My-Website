@@ -102,9 +102,14 @@ Additionally, two commercially important standalone pages have **no meta descrip
 Present sitewide on every template extending `base.html` (`templates/base.html:13`, dynamic per `request.path`, confirmed correct format live: `https://keaupuniakeakua.faith/`). **Absent on the 5 standalone templates**: `aloha_wellness_funnel.html`, `kingdom_study.html`, `myron_golden_funnel.html`, `partner_success.html`, `payment_success.html` — none of these have a `<link rel="canonical">` at all.
 
 ### Open Graph / Twitter Cards
-**Exist on exactly one template: `product_page.html`** (`og:type`, `og:title`, `og:description`, `og:image`, `og:url`, `twitter:card`). Every other page on the site — the homepage, `/rotten-fencepost`, `/kingdom-study`, `/ecosystem`, all 18 article pages, `/products`, `/partner` — has **no Open Graph or Twitter Card tags whatsoever**. Sharing any of these links on Facebook, X, iMessage, Slack, or Discord today produces a bare link with no title, description, or preview image.
+
+> **RESOLVED — Work Order 006 "Open Graph & Social Sharing Metadata Implementation" (2026-07-24).** All 10 required fields (`og:title`, `og:description`, `og:type`, `og:url`, `og:image`, `og:site_name`, `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`) now render on every one of the 36 public pages checked, sourced from each page's own already-established title/description rather than duplicated by hand. Full implementation record in `CLAUDE.md`. Canonical tags (mentioned in the paragraph below, on the 5 standalone templates) and structured data (Section 5) remain open — out of scope for this work order.
+
+**Previously exist on exactly one template: `product_page.html`** (`og:type`, `og:title`, `og:description`, `og:image`, `og:url`, `twitter:card`). Every other page on the site — the homepage, `/rotten-fencepost`, `/kingdom-study`, `/ecosystem`, all 18 article pages, `/products`, `/partner` — had **no Open Graph or Twitter Card tags whatsoever**. Sharing any of these links on Facebook, X, iMessage, Slack, or Discord produced a bare link with no title, description, or preview image. (Historical record, left as originally written — see the resolution note above.)
 
 ### Summary table (sampled pages)
+
+> This table is the original audit snapshot, left unedited as the historical record. Title/meta description gaps were resolved in Work Order 005; OG tags in Work Order 006 (now present on every row below, including the standalone-template rows that still show "missing" canonical — canonical tags remain unresolved, see the note above). Don't read this table as current status — see the resolution banners above each subsection instead.
 
 | Page | Title | Meta desc. | Canonical | OG tags |
 |---|---|---|---|---|
@@ -222,7 +227,7 @@ Ordered by priority, with effort and whether Google account access is needed:
 |---|---|---|---|---|---|
 | 1 | Add the missing real pages to `sitemap.xml` (`/ecosystem`, `/partner`, `/rotten-fencepost`, `/aloha-wellness`, 3 `scripture-tools/*` pages) | High | Low | Code-only | **DONE — Work Order 005** |
 | 2 | Write unique meta descriptions for the 8 pages sharing the generic fallback, plus `rotten_fencepost.html` and `aloha_wellness_funnel.html` | High | Medium | Code-only | **DONE for 8 + `rotten_fencepost.html` — Work Order 005 (2nd).** `aloha_wellness_funnel.html` (a standalone template, not part of the original 8) still open. |
-| 3 | Add sitewide Open Graph + Twitter Card tags to `base.html` (dynamic per-page, using existing `page.title`/`hero_image`) so every page — not just products — gets a real social preview | High | Low–Medium | Code-only | Not started |
+| 3 | Add sitewide Open Graph + Twitter Card tags to `base.html` (dynamic per-page, using existing `page.title`/`hero_image`) so every page — not just products — gets a real social preview | High | Low–Medium | Code-only | **DONE — Work Order 006.** |
 | 4 | Add `noindex` to transactional pages (`/checkout/*`, success/thank-you pages) | Medium | Low | Code-only | Not started |
 | 5 | Add canonical + OG tags to the 5 standalone templates (`aloha_wellness_funnel.html`, `kingdom_study.html`, `myron_golden_funnel.html`, `partner_success.html`, `payment_success.html`) | Medium | Low | Code-only | Not started |
 | 6 | Resolve orphan pages — link `/product/rotten_fencepost_field_guide` from somewhere public, or confirm intentional and leave as-is (`/aloha-wellness` is now in the sitemap as of Work Order 005, which helps discovery but doesn't add an internal link to it) | Medium | Low | Code-only | Partially addressed |

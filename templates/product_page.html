@@ -2,14 +2,10 @@
 {% extends "base.html" %}
 {% block title %}{{ product.seo_title or (product.name ~ ' – Ke Aupuni O Ke Akua') }}{% endblock %}
 {% block meta_description %}{{ product.meta_description or product.description }}{% endblock %}
-{% block extra_head %}
-<meta property="og:type" content="product">
-<meta property="og:title" content="{{ product.seo_title or product.name }}">
-<meta property="og:description" content="{{ product.meta_description or product.description }}">
-{% if product.cover_image %}<meta property="og:image" content="{{ product.cover_image if product.cover_image.startswith('http') else (request.url_root.rstrip('/') + product.cover_image) }}">{% endif %}
-<meta property="og:url" content="{{ request.url }}">
-<meta name="twitter:card" content="summary_large_image">
-{% endblock %}
+{% block og_type %}product{% endblock %}
+{% block og_title %}{{ product.seo_title or product.name }}{% endblock %}
+{% block og_description %}{{ product.meta_description or product.description }}{% endblock %}
+{% block og_image %}{% if product.cover_image %}{{ product.cover_image if product.cover_image.startswith('http') else (request.url_root.rstrip('/') + product.cover_image) }}{% else %}{{ request.url_root.rstrip('/') }}{{ logo_path }}{% endif %}{% endblock %}
 {% block extra_styles %}
 .product-page-wrap {
     max-width: 900px; margin: 230px auto 3rem; background: rgba(0,0,0,0.35);

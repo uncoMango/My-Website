@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from urllib.parse import quote
 from email.mime.text import MIMEText
 from flask import Blueprint, send_file, abort, request, redirect, render_template
-from config import BASE, EMAILS_FILE, SUBSCRIBERS_FILE, SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, NOTIFY_EMAIL
+from config import BASE, EMAILS_FILE, SUBSCRIBERS_FILE, SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, NOTIFY_EMAIL, LOGO_PATH, LOGO_HEIGHT, FOOTER_TEXT
 from limiter import limiter
 
 downloads_bp = Blueprint("downloads", __name__)
@@ -276,7 +276,13 @@ def subscribe():
 @downloads_bp.route("/thank-you")
 def thank_you():
     name = request.args.get("name", "").strip()
-    return render_template("thank_you.html", name=name)
+    return render_template(
+        "thank_you.html",
+        name=name,
+        logo_path=LOGO_PATH,
+        logo_height=LOGO_HEIGHT,
+        footer_text=FOOTER_TEXT,
+    )
 
 
 @downloads_bp.route("/download/aloha_wellness_freebie", methods=["GET", "POST"])

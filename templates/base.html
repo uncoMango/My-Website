@@ -11,6 +11,25 @@
     <meta name="google-site-verification" content="ba5d8e311152a3a0" />
     <meta name="msvalidate.01" content="2728FA73D4512593659D170D39E32016" />
     <link rel="canonical" href="https://keaupuniakeakua.faith{{ request.path }}" />
+    {# Open Graph / Twitter Card metadata (Work Order 006). Every field
+       defaults to reusing what the page already declared for <title> and
+       <meta name="description"> via self.title()/self.meta_description() --
+       no page has to restate its own title or description a second time.
+       A page only needs to override og_title/og_description/og_image/
+       og_type/twitter_card directly if it genuinely needs something
+       different (e.g. a product page's cover image instead of the sitewide
+       default). Twitter tags in turn default to whatever og_title/
+       og_description/og_image resolved to, for the same reason. #}
+    <meta property="og:site_name" content="Ke Aupuni O Ke Akua" />
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}" />
+    <meta property="og:title" content="{% block og_title %}{{ self.title() }}{% endblock %}" />
+    <meta property="og:description" content="{% block og_description %}{{ self.meta_description() }}{% endblock %}" />
+    <meta property="og:url" content="{{ request.url }}" />
+    <meta property="og:image" content="{% block og_image %}{{ request.url_root.rstrip('/') }}{{ logo_path }}{% endblock %}" />
+    <meta name="twitter:card" content="{% block twitter_card %}summary_large_image{% endblock %}" />
+    <meta name="twitter:title" content="{{ self.og_title() }}" />
+    <meta name="twitter:description" content="{{ self.og_description() }}" />
+    <meta name="twitter:image" content="{{ self.og_image() }}" />
     {% block extra_head %}{% endblock %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+Hebrew:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
