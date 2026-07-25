@@ -29,6 +29,8 @@
 ## 2. Sitemap
 
 > **COMPLETED — Work Order 005 (2026-07-24).** All 7 omissions below were added, `<lastmod>` was removed (see the updated note at the end of this section for why), and the sitemap was re-validated: 34 URLs, zero duplicates, every URL resolves 200, every `<loc>` matches that page's own canonical tag. Deployed and live-verified. This section is left in its original (pre-fix) form below as the historical record of what the audit found; the fix itself is documented in `CLAUDE.md`.
+>
+> **FOLLOW-UP — Work Order 009 (2026-07-24).** Re-audited product-page coverage specifically (line 50 below). Added the 4 remaining active, non-partnership product pages that were still missing (`prod_aloha_wellness`, `prod_kingdom_booklet1`, `prod_kingdom_booklet2`, `prod_nahenahe_cd`) — sitemap is now 38 URLs. `/product/rotten_fencepost_field_guide` remains deliberately excluded (near-duplicate of the already-indexed `/rotten-fencepost`), as do the 4 `partner_tierN` product pages (see Section 6's existing note — still an open, non-clear-cut call, not resolved). Full record in `CLAUDE.md`.
 
 **File:** `blueprints/pages.py:1075-1119` (`/sitemap.xml`) — a hardcoded Python list, not auto-generated from routes.
 
@@ -215,6 +217,9 @@ This clustering is already good information architecture; it just isn't fully co
 
 ## 9. Manual Google Tasks (cannot be done in code — requires Kahu Phil's Google account access)
 
+> **NEW — Work Order 009 (2026-07-24).** Found a genuine technical defect that requires Cloudflare/Render dashboard access, not a Google account, added here as the same category of "can't be fixed in this codebase" item — see the checklist item below.
+
+- [ ] **Fix or remove the `www` subdomain.** `www.keaupuniakeakua.faith` resolves in DNS (Cloudflare-proxied, pointing at the same Render origin as the apex domain) but has no working TLS certificate or redirect rule: HTTPS requests fail with a TLS handshake failure, and plain HTTP requests return a bare `409 Conflict` from Cloudflare instead of a redirect to `https://keaupuniakeakua.faith`. Confirmed via `openssl s_client` and raw HTTP requests — not a browser/client quirk. If anyone or anything (a backlink, a typed-in URL, a search engine) ever tries the `www` form, they hit a broken connection instead of landing on the site. Fix requires either removing the `www` DNS record entirely, or configuring it as a proper custom domain alias in Render with a 301 redirect to the apex domain — both are dashboard actions, not code changes.
 - [ ] **Confirm Search Console ownership is actually claimed.** The verification meta tag is live on the site (Section 1), but that only proves the tag exists — someone needs to log into [Google Search Console](https://search.google.com/search-console) with the account tied to this property and confirm it shows as verified.
 - [ ] **Submit `https://keaupuniakeakua.faith/sitemap.xml` in Search Console** (Sitemaps section), once the sitemap omissions in Section 2 are addressed.
 - [ ] **Same for Bing Webmaster Tools** (verification already present via `msvalidate.01` + `BingSiteAuth.xml` — confirm the property is claimed there too).

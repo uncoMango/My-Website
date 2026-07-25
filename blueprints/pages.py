@@ -1153,6 +1153,14 @@ def sitemap():
     which is not a modification date at all -- it just always said "today."
     <lastmod> is optional per the sitemap protocol; omitting it is honest,
     omitting it is safer than fabricating one, and it costs nothing indexing-wise.
+
+    Deliberately excluded product ids (Work Order 009 audit): `rotten_fencepost_field_guide`
+    is not listed under /product/<id> because /rotten-fencepost is already its
+    canonical, indexed sales page -- listing both would be near-duplicate content
+    for the same item. `partner_tier1`-`partner_tier4` are not listed because
+    /partner is the canonical entry point for donation tiers; the individual
+    /product/partner_tierN pages exist for checkout plumbing, not as distinct
+    content, matching the same call already made in GOOGLE_VISIBILITY_READINESS_AUDIT.md.
     """
     pages = [
         ("/",                   "1.0", "weekly"),
@@ -1171,6 +1179,10 @@ def sitemap():
         ("/kingdom-study",                          "0.9", "weekly"),
         ("/products",                                "0.9", "weekly"),
         ("/product/prod_find_the_cause_not_the_symptoms", "0.8", "monthly"),
+        ("/product/prod_aloha_wellness",             "0.8", "monthly"),
+        ("/product/prod_kingdom_booklet1",           "0.8", "monthly"),
+        ("/product/prod_kingdom_booklet2",           "0.8", "monthly"),
+        ("/product/prod_nahenahe_cd",                "0.8", "monthly"),
         ("/wellness/why-diets-fail",               "0.8", "monthly"),
         ("/wellness/lose-weight-without-dieting",  "0.8", "monthly"),
         ("/wellness/three-meals-a-day-necessary",  "0.8", "monthly"),
