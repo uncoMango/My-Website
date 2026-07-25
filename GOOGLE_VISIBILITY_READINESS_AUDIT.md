@@ -126,7 +126,9 @@ Present sitewide on every template extending `base.html` (`templates/base.html:1
 
 ## 5. Structured Data
 
-**What exists:** exactly two JSON-LD blocks, both in `templates/base.html:29-57`, both present on every page that extends `base.html`:
+> **RESOLVED — Work Order 007 "Structured Data / Schema.org Implementation" (2026-07-24).** `WebSite`, `Article`, `Product`, `CollectionPage`, and `BreadcrumbList` schema all implemented, sourced entirely from real site data via a new `schema.py` module. `FAQPage` remains not-applicable (no FAQ content exists to justify it — unchanged from the original finding below). Full implementation record in `CLAUDE.md`.
+
+**Previously existed (historical record):** exactly two JSON-LD blocks, both in `templates/base.html:29-57`, both present on every page that extends `base.html`:
 - `Person` (Kahu Phil Stephens)
 - `Organization` (Ke Aupuni O Ke Akua Press)
 
@@ -231,9 +233,9 @@ Ordered by priority, with effort and whether Google account access is needed:
 | 4 | Add `noindex` to transactional pages (`/checkout/*`, success/thank-you pages) | Medium | Low | Code-only | Not started |
 | 5 | Add canonical + OG tags to the 5 standalone templates (`aloha_wellness_funnel.html`, `kingdom_study.html`, `myron_golden_funnel.html`, `partner_success.html`, `payment_success.html`) | Medium | Low | Code-only | Not started |
 | 6 | Resolve orphan pages — link `/product/rotten_fencepost_field_guide` from somewhere public, or confirm intentional and leave as-is (`/aloha-wellness` is now in the sitemap as of Work Order 005, which helps discovery but doesn't add an internal link to it) | Medium | Low | Code-only | Partially addressed |
-| 7 | Add `Product` JSON-LD to product pages, `Article` JSON-LD to the 18 content pages, `WebSite` schema with `SearchAction` to `base.html` | Medium | Medium–High | Code-only | Not started |
+| 7 | Add `Product` JSON-LD to product pages, `Article` JSON-LD to the 18 content pages, `WebSite` schema to `base.html` | Medium | Medium–High | Code-only | **DONE — Work Order 007.** (No `SearchAction`: the site has no genuine site-search feature, and the work order explicitly said not to add one merely for appearance.) |
 | 8 | `sitemap.xml`'s `<lastmod>` | Low | Low–Medium | Code-only | **RESOLVED — Work Order 005.** Determined a reliably accurate per-page value isn't achievable without either a real CMS/timestamp layer (out of scope) or fragile runtime `git log` calls (introduces the "unnecessary complexity" the work order explicitly said to avoid). Removed `<lastmod>` entirely rather than continue fabricating "today" on every request — see `CLAUDE.md` for full reasoning. |
 | 9 | Confirm/complete the manual Google Search Console + Bing Webmaster Tools setup (Section 9) | High | — | Google account access | Not started |
-| 10 | Add `BreadcrumbList` schema | Low | Medium | Code-only | Not started |
+| 10 | Add `BreadcrumbList` schema | Low | Medium | Code-only | **DONE for the 18 SEO articles (Home → Article) and product pages (Home → Products → Product) — Work Order 007.** A 3-level breadcrumb for articles (Home → Category → Article) was considered and deliberately not done — no real `/wellness`, `/kingdom`, etc. index page exists to link the middle level to, and inventing one just for the breadcrumb would be exactly the fabrication the work order prohibited. Building real category hub pages first (see Section 8's cluster discussion) would unlock this. |
 
 Items 1 and 8 are complete as of Work Order 005 (2026-07-24) — see `CLAUDE.md` Change Log for the deployed commit and live verification. All other items are unchanged from the original audit and awaiting a future work order.

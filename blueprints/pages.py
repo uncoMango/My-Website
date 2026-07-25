@@ -1,13 +1,17 @@
 ﻿# blueprints/pages.py
 import markdown
-from flask import Blueprint, abort, render_template, Response, send_from_directory
-from content import load_content, get_nav_items
+from flask import Blueprint, abort, render_template, Response, send_from_directory, request
+from content import load_content, get_nav_items, get_product_by_id
 from config import LOGO_PATH, LOGO_HEIGHT, FOOTER_TEXT, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, STRIPE_ENABLED, STRIPE_PUBLISHABLE_KEY
+from schema import SITE_URL, build_webpage_schema, build_article_schema, build_breadcrumb_schema, build_collection_itemlist_schema, build_product_schema
 
 pages_bp = Blueprint("pages", __name__)
 
 def md_to_html(md_text):
     return markdown.markdown(md_text or "", extensions=["extra", "nl2br"])
+
+def _abs_image(hero_image):
+    return request.url_root.rstrip("/") + hero_image if hero_image else None
 
 def render_page(page_id, data):
     pages = data.get("pages", {})
@@ -15,6 +19,13 @@ def render_page(page_id, data):
         abort(404)
     page = pages[page_id]
     nav_items = get_nav_items(data)
+    page_url = SITE_URL + request.path
+    page_schema = build_webpage_schema(
+        name=page.get("title"),
+        description=page.get("meta_description"),
+        url=page_url,
+        image_url=_abs_image(page.get("hero_image")),
+    )
     return render_template(
         "page.html",
         page=page,
@@ -25,6 +36,7 @@ def render_page(page_id, data):
         logo_height=LOGO_HEIGHT,
         footer_text=FOOTER_TEXT,
         founding_reader_remaining=data.get("founding_reader_remaining", 100),
+        page_schema=page_schema,
     )
 
 @pages_bp.route("/")
@@ -36,12 +48,25 @@ def home():
 def rotten_fencepost():
     data = load_content()
     nav_items = get_nav_items(data)
+    page_url = SITE_URL + request.path
+    product_schema = None
+    product = get_product_by_id("rotten_fencepost_field_guide")
+    if product:
+        # This product has no cover_image in the catalog (digital_products.json).
+        # Use this page's own hero photo rather than borrowing another
+        # product's cover art -- accurate to what's actually on this page.
+        product_schema = build_product_schema(
+            product,
+            url=page_url,
+            image_url=_abs_image("/static/images/diana-sanders-c24miY2R0FI-unsplash.jpg"),
+        )
     return render_template(
         "rotten_fencepost.html",
         nav_items=nav_items,
         logo_path=LOGO_PATH,
         logo_height=LOGO_HEIGHT,
         footer_text=FOOTER_TEXT,
+        product_schema=product_schema,
     )
 
 @pages_bp.route("/rotten-fencepost/success")
@@ -71,6 +96,12 @@ def myron_golden():
 def partner_page():
     data = load_content()
     nav_items = get_nav_items(data)
+    page_schema = build_webpage_schema(
+        name="Partner With Us - Ke Aupuni O Ke Akua",
+        description="Partner with Ke Aupuni O Ke Akua to support Kingdom teaching from Molokai - monthly giving tiers, free booklets, and direct ministry impact.",
+        url=SITE_URL + request.path,
+        image_url=_abs_image("/static/images/helping_hands.jpg"),
+    )
     return render_template(
         "partner.html",
         nav_items=nav_items,
@@ -81,6 +112,7 @@ def partner_page():
         paypal_enabled=bool(PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET),
         stripe_enabled=STRIPE_ENABLED,
         stripe_publishable_key=STRIPE_PUBLISHABLE_KEY if STRIPE_ENABLED else "",
+        page_schema=page_schema,
     )
 
 @pages_bp.route("/kingdom-study")
@@ -173,6 +205,20 @@ def ecosystem():
     nav_items = get_nav_items(data)
     page = dict(_ECOSYSTEM_PAGE)
     page["hero_image"] = data.get("pages", {}).get("home", {}).get("hero_image", "/static/images/taro_root.jpg")
+    page_url = SITE_URL + request.path
+    # CollectionPage: this page genuinely functions as a hub linking out to
+    # the site's three real content pillars, via the same links its own
+    # "Begin Where You Are" section already uses.
+    page_schema = build_collection_itemlist_schema(
+        name=page.get("title"),
+        description=page.get("meta_description"),
+        url=page_url,
+        items=[
+            ("Wellness: Body Rhythm and Stewardship", SITE_URL + "/wellness/why-diets-fail"),
+            ("Scripture Tools: Original Language Meaning", SITE_URL + "/scripture-tools/hebrew-greek-meaning-tool"),
+            ("Kingdom: Identity and Life Direction", SITE_URL + "/call_to_repentance"),
+        ],
+    )
     return render_template(
         "page.html",
         page=page,
@@ -183,6 +229,7 @@ def ecosystem():
         logo_height=LOGO_HEIGHT,
         footer_text=FOOTER_TEXT,
         founding_reader_remaining=data.get("founding_reader_remaining", 100),
+        page_schema=page_schema,
     )
 
 # ===== SEO ENTRY SUB-PAGES =====
@@ -1056,6 +1103,24 @@ def seo_subpage(parent, slug):
         abort(404)
     data = load_content()
     nav_items = get_nav_items(data)
+    page_url = SITE_URL + request.path
+    # Article, not WebPage: these 18 pages are genuinely article-shaped
+    # (headline, body, single author). No datePublished/dateModified --
+    # no reliable dates exist anywhere in this site's data.
+    page_schema = build_article_schema(
+        headline=page.get("title"),
+        description=page.get("meta_description"),
+        url=page_url,
+        image_url=_abs_image(page.get("hero_image")),
+    )
+    # 2-level breadcrumb only (Home -> Article). A 3-level "Home -> Wellness
+    # -> Article" would require a real /wellness index page to link the
+    # middle level to -- none exists, and inventing one just for the
+    # breadcrumb would be exactly the fabrication the work order prohibits.
+    breadcrumb_schema = build_breadcrumb_schema([
+        ("Home", SITE_URL + "/"),
+        (page.get("title"), page_url),
+    ])
     return render_template(
         "page.html",
         page=page,
@@ -1066,6 +1131,8 @@ def seo_subpage(parent, slug):
         logo_height=LOGO_HEIGHT,
         footer_text=FOOTER_TEXT,
         founding_reader_remaining=data.get("founding_reader_remaining", 100),
+        page_schema=page_schema,
+        breadcrumb_schema=breadcrumb_schema,
     )
 
 

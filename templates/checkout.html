@@ -1,6 +1,7 @@
 {# templates/checkout.html #}
 {% extends "base.html" %}
 {% block title %}Checkout - {{ product.name }}{% endblock %}
+{% block extra_head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
 {% block extra_styles %}
 .checkout-container { max-width: 600px; margin: 230px auto 3rem; background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
 .checkout-header { text-align: center; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 2px solid #e9ecef; }

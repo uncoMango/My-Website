@@ -45,35 +45,70 @@
         {% include 'partials/styles.css' %}
         {% block extra_styles %}{% endblock %}
     </style>
+{# Sitewide structured data (Work Order 007). Organization/Person/WebSite are
+   fixed, always-present entities with stable @id values so page-specific
+   schema (rendered from the page_schema/breadcrumb_schema variables below)
+   can
+   reference them instead of repeating their data -- e.g. an Article's
+   "publisher" is {"@id": ".../#organization"}, not a second copy of the
+   Organization object. This single @graph replaces what used to be two
+   separate, unlinked Person/Organization <script> tags. Every value below
+   was already present elsewhere on the site before this change (logo file,
+   YouTube link, founder/description text) -- nothing here is new or
+   invented. #}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Kahu Phil Stephens",
-  "jobTitle": "Pastor, Author, Kingdom Theology Teacher",
-  "description": "Native Hawaiian pastor, author, and Paniolo based on Molokai, Hawaii. Teacher of Kingdom Health, Bible Truth, and Kingdom Wealth from original Hebrew and Greek Scripture.",
-  "url": "https://keaupuniakeakua.faith",
-  "knowsAbout": ["Kingdom Theology", "Native Hawaiian Health", "Biblical Nutrition", "Hebrew and Greek Scripture", "Polynesian Ancestral Food Traditions", "Kingdom Wealth"],
-  "worksFor": {
-    "@type": "Organization",
-    "name": "Ke Aupuni O Ke Akua Press",
-    "url": "https://keaupuniakeakua.faith"
-  }
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://keaupuniakeakua.faith/#organization",
+      "name": "Ke Aupuni O Ke Akua Press",
+      "url": "https://keaupuniakeakua.faith",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://keaupuniakeakua.faith/static/images/output-onlinepngtools.png"
+      },
+      "description": "Kingdom theology publishing ministry based on Molokai, Hawaii. Offering biblical truth, Kingdom health teaching, and Kingdom wealth principles rooted in Native Hawaiian and Polynesian ancestral wisdom.",
+      "founder": { "@id": "https://keaupuniakeakua.faith/#person" },
+      "sameAs": ["https://www.youtube.com/@keaupuniokeakua"]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://keaupuniakeakua.faith/#person",
+      "name": "Kahu Phil Stephens",
+      "jobTitle": "Pastor, Author, Kingdom Theology Teacher",
+      "description": "Native Hawaiian pastor, author, and Paniolo based on Molokai, Hawaii. Teacher of Kingdom Health, Bible Truth, and Kingdom Wealth from original Hebrew and Greek Scripture.",
+      "url": "https://keaupuniakeakua.faith",
+      "knowsAbout": ["Kingdom Theology", "Native Hawaiian Health", "Biblical Nutrition", "Hebrew and Greek Scripture", "Polynesian Ancestral Food Traditions", "Kingdom Wealth"],
+      "worksFor": { "@id": "https://keaupuniakeakua.faith/#organization" }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://keaupuniakeakua.faith/#website",
+      "name": "Ke Aupuni O Ke Akua",
+      "url": "https://keaupuniakeakua.faith",
+      "publisher": { "@id": "https://keaupuniakeakua.faith/#organization" }
+    }
+  ]
 }
 </script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Ke Aupuni O Ke Akua Press",
-  "url": "https://keaupuniakeakua.faith",
-  "description": "Kingdom theology publishing ministry based on Molokai, Hawaii. Offering biblical truth, Kingdom health teaching, and Kingdom wealth principles rooted in Native Hawaiian and Polynesian ancestral wisdom.",
-  "founder": {
-    "@type": "Person",
-    "name": "Kahu Phil Stephens"
-  }
-}
-</script>
+{# Page-specific structured data (WebPage/CollectionPage/Article/Product),
+   built centrally in schema.py and passed in as plain dicts -- see that
+   file for why (guaranteed-valid JSON regardless of which optional fields
+   are present, instead of hand-assembled JSON text with conditional
+   commas). Rendered only when a route actually provides one, so pages
+   that intentionally have none (transactional/private pages, see those
+   templates' own noindex tags) emit nothing here. #}
+{% if page_schema %}
+<script type="application/ld+json">{{ page_schema | tojson }}</script>
+{% endif %}
+{% if breadcrumb_schema %}
+<script type="application/ld+json">{{ breadcrumb_schema | tojson }}</script>
+{% endif %}
+{% if product_schema %}
+<script type="application/ld+json">{{ product_schema | tojson }}</script>
+{% endif %}
 </head>
 <body{% block body_attrs %}{% endblock %}>
 

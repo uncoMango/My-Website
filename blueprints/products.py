@@ -18,8 +18,17 @@ from content import (
 from config import PRODUCTS_FOLDER, LOGO_PATH, LOGO_HEIGHT, FOOTER_TEXT, CONTACT_EMAIL
 from auth import require_admin
 from download_tokens import validate_and_consume_token
+from schema import SITE_URL, build_product_schema, build_breadcrumb_schema, build_collection_itemlist_schema
 
 products_bp = Blueprint("products", __name__)
+
+
+def _abs_image(image):
+    if not image:
+        return None
+    if image.startswith("http"):
+        return image
+    return request.url_root.rstrip("/") + image
 
 
 # =========================================================
@@ -33,6 +42,15 @@ def products_list():
         p for p in products_data.get("products", [])
         if p.get("active", True) and p.get("category") != "partnership"
     ]
+    # CollectionPage with a lightweight ItemList (name/url only) -- not
+    # Product schema on the listing itself, per the work order's guidance
+    # to keep full Product data on the individual product pages only.
+    page_schema = build_collection_itemlist_schema(
+        name="Products | Ke Aupuni O Ke Akua",
+        description="Browse books and resources from Ke Aupuni O Ke Akua Publishing.",
+        url=SITE_URL + request.path,
+        items=[(p.get("name"), SITE_URL + "/product/" + p["id"]) for p in products],
+    )
     return render_template(
         "products.html",
         products=products,
@@ -40,6 +58,7 @@ def products_list():
         logo_height=LOGO_HEIGHT,
         footer_text=FOOTER_TEXT,
         contact_email=CONTACT_EMAIL,
+        page_schema=page_schema,
     )
 
 
@@ -52,6 +71,23 @@ def product_page(product_id):
     product = get_product_by_id(product_id)
     if not product or not product.get("active", True):
         abort(404)
+    page_url = SITE_URL + request.path
+    product_schema = None
+    breadcrumb_schema = None
+    if product.get("category") != "partnership":
+        # Partnership tiers are donation/membership levels, not goods for
+        # sale -- Product schema doesn't accurately describe them, so they
+        # get no Product/Offer markup (their page still renders normally).
+        product_schema = build_product_schema(
+            product,
+            url=page_url,
+            image_url=_abs_image(product.get("cover_image")),
+        )
+        breadcrumb_schema = build_breadcrumb_schema([
+            ("Home", SITE_URL + "/"),
+            ("Products", SITE_URL + "/products"),
+            (product.get("name"), page_url),
+        ])
     return render_template(
         "product_page.html",
         product=product,
@@ -59,6 +95,8 @@ def product_page(product_id):
         logo_height=LOGO_HEIGHT,
         footer_text=FOOTER_TEXT,
         contact_email=CONTACT_EMAIL,
+        product_schema=product_schema,
+        breadcrumb_schema=breadcrumb_schema,
     )
 
 
