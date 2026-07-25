@@ -1,6 +1,6 @@
 # Sitewide Layout Root-Cause Investigation
 
-> **RESOLVED — Work Order 004-C (2026-07-24).** All 26 pages listed below were corrected. See "Implementation (Work Order 004-C)" near the end of this document for what was done and how it was verified. The investigation content below (Work Order 004-B) is left as-written — it's the record of what was found and why the fix was scoped the way it was.
+> **RESOLVED — Work Orders 004-C and 004-D (2026-07-24).** All 26 pages listed below were corrected (004-C), and the full-page hero-background ambiance the structural fix incidentally removed was restored (004-D) without reintroducing the overlap. See "Implementation (Work Order 004-C)" and "Full-Page Background Restoration (Work Order 004-D)" near the end of this document. The investigation content below (Work Order 004-B) is left as-written — it's the record of what was found and why the fix was scoped the way it was.
 
 **Date:** 2026-07-24
 **Scope:** Work Order 004-B — investigation only. No code was changed, nothing was committed.
@@ -155,7 +155,46 @@ Mobile (`≤768px`) was never affected by the original bug — a pre-existing ov
 
 ---
 
+## Full-Page Background Restoration (Work Order 004-D)
+
+### The aesthetic regression, and what actually produced the old ambiance
+
+Live visual review after 004-C found that the hero image now visibly ends after one screen, with a flat, disconnected-feeling body/footer below it on all 26 corrected pages.
+
+**Investigation finding: the old "continuous ambiance" was an accidental side effect of the overlap bug itself — not a deliberate background treatment anywhere in the code.** There was never a dedicated full-page background element, fixed background image, or pseudo-element producing it. What actually happened: `.container` was `position: absolute; top: 0; height: 100vh; overflow-y: auto`, pinned to the exact same screen region as the hero, with `z-index: 3` stacking it on top. Because that box never contributed height to the page's own scroll flow, most of a visitor's *reading* of the article happened by scrolling **inside** that fixed-height box — during which the hero image (a separate, opaque, differently-stacked element occupying that same screen region) stayed visible behind `.content-card`'s `background: rgba(0,0,0,0.25)` semi-transparent panel the entire time, because the hero itself was never actually being scrolled away. The "ambiance" people remembered was the hero being trapped on-screen by the very bug that also caused the overlap — the two were never separable, which is exactly why removing one removed the other.
+
+### The normal-flow solution implemented
+
+A per-page `background-image` on `<body>` — pure CSS painting, with zero relationship to element position or document flow, so it cannot reintroduce overlap or clipping regardless of how it's tuned.
+
+- `templates/base.html`: `<body>` → `<body{% block body_attrs %}{% endblock %}>`, a new empty-by-default block.
+- `templates/page.html`: fills that block with `style="--page-hero-bg: url('{{ page.hero_image }}');"` — the exact same image URL the page's own hero already uses. This line applies to every `page.html` render, home included (see "Homepage" below).
+- `templates/partials/styles.css`: `body`'s `background-image` gained a third layer, `var(--page-hero-bg, none)`, alongside the two existing faint radial gradients — `none` by default, so any template that doesn't set the variable (every template other than `page.html`) renders an identical body background to before, unchanged. Where it *is* set: `background-size: cover; background-position: center center; background-attachment: fixed` (matching the hero's own `background-position: center`, for the smoothest visual handoff where the hero ends and the fixed layer takes over) — a classic, standard "parallax background" pattern. `background-attachment: fixed` is disabled (falls back to `scroll`) at `≤768px`, since it's known to be unreliable/janky on mobile browsers; the image still shows and still scrolls with the page there, just without the "pinned" feel.
+- No change was needed to `.footer` or `.signup-strip` — `.footer` already had `background: none` and `.signup-strip` already had `background: rgba(0,0,0,0.55)`, both already transparent/semi-transparent by design, so the new body background shows through them automatically, integrating the footer with the rest of the page.
+- **Why `body`'s background-color was deliberately left untouched:** 7 templates extend `base.html` but never define their own `body {}` rule (`rotten_fencepost.html`, `partner.html`, `product_page.html`, `checkout.html`, `products.html`, `thank_you.html`, `rotten_fencepost_success.html`) — they currently rely on the shared stylesheet's plain body background. Adding a solid fallback `background-color` there (considered and rejected) would have visibly changed the tint behind several of their own semi-transparent panels — pages this work order explicitly said not to touch. Only the new `var(--page-hero-bg, none)` *image* layer was added; the existing `background: transparent` and its color behavior are untouched.
+
+### Homepage
+
+The homepage has the same discontinuity **after** its own hero (its `.home-content-card` panel, further down the page, sits on the same plain background the 26 pages did) — Correction 003-A's colorful promo bands in between soften it, but the underlying cause is identical. Applied the same fix: since `page.html`'s `body_attrs` block isn't conditional on `current_page`, home gets `--page-hero-bg` too, using its own `hero_image` (`molokai_coast.jpg`), with zero changes to `.home-hero`, `.home-container`, `.home-content-card`, the hero content, both CTA buttons, or section order — confirmed via test and live check that Correction 003-A's structure is completely intact.
+
+### Pages outside the shared layout
+
+Confirmed, not just assumed: `rotten-fencepost`, `partner`, `product/<id>`, `checkout/<id>`, `products`, `rotten-fencepost/success` (and by extension the other independently-designed templates) all render `<body>` with **no attributes at all** — the `body_attrs` block correctly defaults to empty for every template except `page.html`. None of them were modified.
+
+### Verification
+
+- **5 representative pages checked** (`/kingdom_wealth`, `/ecosystem`, `/kingdom/understanding-scripture-through-original-words`, `/kingdom_keys` as the shorter primary page, and `/`): each renders `--page-hero-bg` set to that exact page's own hero image; `.container`'s CSS still contains no `position` property at all (the 004-C fix intact); footer renders normally.
+- **Automated tests: 180/180 pass** (170 prior + 10 new — variable-matches-hero-image checks on 4 pages, a regression guard that `body`'s rule contains the `var(--page-hero-bg` layer and no `background-color`, and confirmation that 5 independent templates' `<body>` tags carry no attributes).
+- **Full 35-page/49-link crawl: zero broken links.**
+- **Commerce/download regression check:** checkout still renders with the PayPal button container present; download-token endpoint's response to an invalid token is unchanged (503, the same pre-existing local-environment behavior noted in every prior work order — unrelated to this change).
+- **Mobile:** `background-attachment` correctly falls back to `scroll` at `≤768px` in the rendered CSS.
+
+Visual confirmation of how the parallax handoff actually *looks* (whether the seam between hero and fixed background reads as seamless, whether `rgba(0,0,0,0.25)` content-card panels stay comfortably readable over each page's specific photo for the full scroll length) still requires a live browser — flagged for Kahu Phil.
+
+---
+
 ## Stop Point
 
 Work Order 004-B: no code was changed, nothing was committed — investigation only.
 Work Order 004-C: implementation complete, locally verified. See `CLAUDE.md` for commit/deploy/live-verification record.
+Work Order 004-D: implementation complete, locally verified. See `CLAUDE.md` for commit/deploy/live-verification record.

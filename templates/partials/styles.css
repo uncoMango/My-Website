@@ -10,6 +10,18 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* Work Order 004-D: --page-hero-bg is set per-page by page.html's
+   body_attrs block (url(page.hero_image), same image the hero itself
+   uses). It defaults to `none` here, so any template that doesn't set it
+   (every non-page.html template) renders this exact body background it
+   always has -- unaffected. Where it *is* set, it becomes a third,
+   fixed-attachment background-image layer behind normal-flow content: a
+   pure paint-time effect with zero relationship to document position/flow,
+   so it can't reintroduce the overlap/clipping .container used to cause.
+   This is what makes the hero image feel like it continues behind the
+   whole page (hero, body, and footer, since .footer/.signup-strip already
+   had transparent/semi-transparent backgrounds relying on something being
+   behind them) instead of stopping dead after the first viewport. */
 body {
     font-family: 'Noto Sans', 'Noto Sans JP', 'Noto Sans Hebrew', sans-serif;
     line-height: 1.6;
@@ -17,7 +29,18 @@ body {
     background: transparent;
     background-image:
         radial-gradient(circle at 20% 50%, rgba(175,216,248,0.05) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(212,165,116,0.05) 0%, transparent 50%);
+        radial-gradient(circle at 80% 20%, rgba(212,165,116,0.05) 0%, transparent 50%),
+        var(--page-hero-bg, none);
+    background-size: auto, auto, cover;
+    background-position: 0 0, 0 0, center center;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    background-attachment: scroll, scroll, fixed;
+}
+@media (max-width: 768px) {
+    /* background-attachment:fixed is unreliable/janky on mobile browsers;
+       falls back to scrolling with the page, which still gives full-page
+       continuity, just without the parallax-style "stuck" feel. */
+    body { background-attachment: scroll, scroll, scroll; }
 }
 
 .site-nav {
