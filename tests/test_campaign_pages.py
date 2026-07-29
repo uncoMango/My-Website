@@ -88,6 +88,86 @@ class TestCampaignPageSEOPreserved:
             assert tag in html
 
 
+class TestRottenFencepostHubEmbed:
+    """Work Order P-003: a curated, bounded set of campaign videos
+    (content.py's HUB_FEATURED_CAMPAIGN_IDS) embedded directly on
+    /rotten-fencepost, sourced from the same CAMPAIGNS data /campaign/001
+    renders from."""
+
+    def test_embeds_correct_video(self, client):
+        resp = client.get("/rotten-fencepost", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "https://www.youtube.com/embed/GywmvlrxXQ0" in html
+
+    def test_iframe_title_matches_campaign_title(self, client):
+        resp = client.get("/rotten-fencepost", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert re.search(r'<iframe[^>]*title="Find the Cause, Not the Symptoms"', html)
+
+    def test_links_to_campaign_page_for_sharing(self, client):
+        resp = client.get("/rotten-fencepost", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert 'href="/campaign/001"' in html
+
+    def test_hub_h1_unchanged(self, client):
+        # The video embed must not replace or compete with the hub's own
+        # product-focused title.
+        resp = client.get("/rotten-fencepost", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "<h1" in html and "The Rotten Fencepost Field Guide" in html
+
+    def test_hub_only_renders_featured_campaigns_not_all(self, client):
+        # The hub must loop over the curated HUB_FEATURED_CAMPAIGN_IDS
+        # list, not every CAMPAIGNS entry -- this is what keeps the hub
+        # from growing unbounded as the campaign library grows past 60.
+        import content
+        resp = client.get("/rotten-fencepost", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        embed_count = html.count("youtube.com/embed/")
+        assert embed_count == len(content.HUB_FEATURED_CAMPAIGN_IDS)
+
+
+class TestNoInternalIdentifierPublic:
+    """Work Order P-002/P-003: 'Campaign 001' is an internal identifier
+    and must never render on a public page."""
+
+    def test_not_on_campaign_page(self, client):
+        resp = client.get("/campaign/001", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "campaign 001" not in html.lower()
+
+    def test_not_on_rotten_fencepost_hub(self, client):
+        resp = client.get("/rotten-fencepost", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "campaign 001" not in html.lower()
+
+
+class TestCampaignPageShorts:
+    """Work Order P-003: campaign.shorts is a real, ready-to-use field on
+    the CAMPAIGNS data structure, but must render nothing when empty --
+    no fabricated/placeholder Shorts."""
+
+    def test_no_shorts_section_when_none_published(self, client):
+        resp = client.get("/campaign/001", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "Shorts From This Video" not in html
+
+    def test_shorts_render_when_present(self, client):
+        import content
+        original = content.CAMPAIGNS["001"]["shorts"]
+        content.CAMPAIGNS["001"]["shorts"] = [
+            {"youtube_id": "abc123", "title": "Test Short"}
+        ]
+        try:
+            resp = client.get("/campaign/001", base_url=BASE)
+            html = resp.get_data(as_text=True)
+            assert "Shorts From This Video" in html
+            assert "youtube.com/embed/abc123" in html
+            assert "Test Short" in html
+        finally:
+            content.CAMPAIGNS["001"]["shorts"] = original
+
+
 class TestSitemapAndInternalLinks:
     def test_sitemap_includes_campaign_001(self, client):
         resp = client.get("/sitemap.xml", base_url=BASE)

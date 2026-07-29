@@ -1,7 +1,7 @@
 ﻿# blueprints/pages.py
 import markdown
 from flask import Blueprint, abort, render_template, Response, send_from_directory, request
-from content import load_content, get_nav_items, get_product_by_id, get_campaign_by_id
+from content import load_content, get_nav_items, get_product_by_id, get_campaign_by_id, get_hub_featured_campaigns
 from config import LOGO_PATH, LOGO_HEIGHT, FOOTER_TEXT, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, STRIPE_ENABLED, STRIPE_PUBLISHABLE_KEY
 from schema import SITE_URL, build_webpage_schema, build_article_schema, build_breadcrumb_schema, build_collection_itemlist_schema, build_product_schema
 
@@ -60,6 +60,14 @@ def rotten_fencepost():
             url=page_url,
             image_url=_abs_image("/static/images/diana-sanders-c24miY2R0FI-unsplash.jpg"),
         )
+    # Work Order P-003: surface a curated, bounded set of campaign videos
+    # directly on this hub page (HUB_FEATURED_CAMPAIGN_IDS in content.py),
+    # sourced from the same CAMPAIGNS data /campaign/<id> renders from, so
+    # video/title/copy stay in sync between the hub and each campaign's
+    # own page by construction. This does NOT loop over every campaign --
+    # the ecosystem is expected to grow past 60, and the featured list is
+    # what keeps this page from growing unbounded as that happens.
+    hub_campaigns = get_hub_featured_campaigns()
     return render_template(
         "rotten_fencepost.html",
         nav_items=nav_items,
@@ -67,6 +75,7 @@ def rotten_fencepost():
         logo_height=LOGO_HEIGHT,
         footer_text=FOOTER_TEXT,
         product_schema=product_schema,
+        hub_campaigns=hub_campaigns,
     )
 
 @pages_bp.route("/campaign/<campaign_id>")

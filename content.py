@@ -185,6 +185,7 @@ def get_product_by_id(product_id):
 # pattern) -- no new route or template code.
 CAMPAIGNS = {
     "001": {
+        "id": "001",
         "title": "Find the Cause, Not the Symptoms",
         "subtitle": "The Rotten Fencepost Principle",
         "seo_title": "Watch: Find the Cause, Not the Symptoms | Rotten Fencepost",
@@ -197,6 +198,11 @@ CAMPAIGNS = {
             "a simple way of seeing what is actually causing the problems that keep "
             "repeating in your life.</p>"
         ),
+        # Shorts derived from this video. None published yet -- do not add
+        # placeholders here. Each entry, once real, is
+        # {"youtube_id": "...", "title": "..."}; campaign_page.html already
+        # renders this list (guarded, so an empty list shows nothing).
+        "shorts": [],
         "related_links": [
             {"label": "Get the Rotten Fencepost Field Guide", "url": "/rotten-fencepost"},
             {"label": "Read “Find the Cause, Not the Symptoms”", "url": "/product/prod_find_the_cause_not_the_symptoms"},
@@ -205,5 +211,17 @@ CAMPAIGNS = {
     },
 }
 
+# Controls which campaigns are surfaced as playable videos on the
+# /rotten-fencepost hub, and in what order (Work Order P-003). The
+# ecosystem is expected to grow past 60 campaigns, so the hub deliberately
+# does NOT loop over every CAMPAIGNS entry -- it only renders the ids
+# listed here. Add a campaign's id to this list when it should be featured
+# on the hub; every campaign remains reachable at its own /campaign/<id>
+# regardless of whether it appears here.
+HUB_FEATURED_CAMPAIGN_IDS = ["001"]
+
 def get_campaign_by_id(campaign_id):
     return CAMPAIGNS.get(campaign_id)
+
+def get_hub_featured_campaigns():
+    return [CAMPAIGNS[cid] for cid in HUB_FEATURED_CAMPAIGN_IDS if cid in CAMPAIGNS]
