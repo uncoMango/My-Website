@@ -176,3 +176,33 @@ def get_product_by_id(product_id):
     return next(
         (p for p in products_data["products"] if p["id"] == product_id), None
     )
+
+# --- Discovery Operations campaigns (Work Order P-001) -------------------
+# Data for the generic /campaign/<id> route (blueprints/pages.py) and
+# templates/campaign_page.html. Adding a future Campaign 002, 003, etc.
+# requires only a new entry here (plus its own line in the sitemap() list
+# in blueprints/pages.py, matching that route's existing manual-curation
+# pattern) -- no new route or template code.
+CAMPAIGNS = {
+    "001": {
+        "title": "Campaign 001: Find the Cause, Not the Symptoms",
+        "seo_title": "Watch: Find the Cause, Not the Symptoms | Rotten Fencepost",
+        "meta_description": "Watch the Rotten Fencepost video on finding hidden causes instead of chasing symptoms, then go deeper with the Field Guide and companion book.",
+        "hero_image": "/static/images/diana-sanders-c24miY2R0FI-unsplash.jpg",
+        "youtube_id": "GywmvlrxXQ0",
+        "intro_html": (
+            "<p>Most people spend their lives fixing symptoms instead of finding "
+            "causes. This video walks through the Rotten Fencepost principle &mdash; "
+            "a simple way of seeing what is actually causing the problems that keep "
+            "repeating in your life.</p>"
+        ),
+        "related_links": [
+            {"label": "Get the Rotten Fencepost Field Guide", "url": "/rotten-fencepost"},
+            {"label": "Read “Find the Cause, Not the Symptoms”", "url": "/product/prod_find_the_cause_not_the_symptoms"},
+            {"label": "The Rotten Fencepost Principle and Modern Wellness Confusion", "url": "/wellness/the-rotten-fencepost-principle"},
+        ],
+    },
+}
+
+def get_campaign_by_id(campaign_id):
+    return CAMPAIGNS.get(campaign_id)

@@ -1,7 +1,7 @@
 ﻿# blueprints/pages.py
 import markdown
 from flask import Blueprint, abort, render_template, Response, send_from_directory, request
-from content import load_content, get_nav_items, get_product_by_id
+from content import load_content, get_nav_items, get_product_by_id, get_campaign_by_id
 from config import LOGO_PATH, LOGO_HEIGHT, FOOTER_TEXT, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, STRIPE_ENABLED, STRIPE_PUBLISHABLE_KEY
 from schema import SITE_URL, build_webpage_schema, build_article_schema, build_breadcrumb_schema, build_collection_itemlist_schema, build_product_schema
 
@@ -67,6 +67,40 @@ def rotten_fencepost():
         logo_height=LOGO_HEIGHT,
         footer_text=FOOTER_TEXT,
         product_schema=product_schema,
+    )
+
+@pages_bp.route("/campaign/<campaign_id>")
+def campaign_page(campaign_id):
+    """Generic evergreen page for a published Discovery Operations campaign
+    video (Work Order P-001). Campaign 002, 003, etc. need only a new entry
+    in content.py's CAMPAIGNS dict -- this route and its template are
+    already generic over campaign_id."""
+    campaign = get_campaign_by_id(campaign_id)
+    if not campaign:
+        abort(404)
+    data = load_content()
+    nav_items = get_nav_items(data)
+    page_url = SITE_URL + request.path
+    page_schema = build_webpage_schema(
+        name=campaign.get("title"),
+        description=campaign.get("meta_description"),
+        url=page_url,
+        image_url=_abs_image(campaign.get("hero_image")),
+    )
+    breadcrumb_schema = build_breadcrumb_schema([
+        ("Home", SITE_URL + "/"),
+        ("Rotten Fencepost", SITE_URL + "/rotten-fencepost"),
+        (campaign.get("title"), page_url),
+    ])
+    return render_template(
+        "campaign_page.html",
+        campaign=campaign,
+        nav_items=nav_items,
+        logo_path=LOGO_PATH,
+        logo_height=LOGO_HEIGHT,
+        footer_text=FOOTER_TEXT,
+        page_schema=page_schema,
+        breadcrumb_schema=breadcrumb_schema,
     )
 
 @pages_bp.route("/rotten-fencepost/success")
@@ -1161,6 +1195,11 @@ def sitemap():
     /partner is the canonical entry point for donation tiers; the individual
     /product/partner_tierN pages exist for checkout plumbing, not as distinct
     content, matching the same call already made in GOOGLE_VISIBILITY_READINESS_AUDIT.md.
+
+    Discovery Operations campaign pages (Work Order P-001, generic
+    /campaign/<id> route sourced from content.py's CAMPAIGNS dict) are
+    listed manually here too, same as every other section of this list --
+    add one line per new campaign (e.g. "/campaign/002") when it publishes.
     """
     pages = [
         ("/",                   "1.0", "weekly"),
@@ -1174,6 +1213,7 @@ def sitemap():
         ("/partner",            "0.8", "monthly"),
         ("/ecosystem",          "0.9", "weekly"),
         ("/rotten-fencepost",   "0.9", "weekly"),
+        ("/campaign/001",       "0.7", "monthly"),
         ("/myron-golden",       "0.8", "weekly"),
         ("/aloha-wellness",     "0.8", "weekly"),
         ("/kingdom-study",                          "0.9", "weekly"),
