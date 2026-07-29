@@ -185,7 +185,8 @@ def get_product_by_id(product_id):
 # pattern) -- no new route or template code.
 CAMPAIGNS = {
     "001": {
-        "title": "Campaign 001: Find the Cause, Not the Symptoms",
+        "title": "Find the Cause, Not the Symptoms",
+        "subtitle": "The Rotten Fencepost Principle",
         "seo_title": "Watch: Find the Cause, Not the Symptoms | Rotten Fencepost",
         "meta_description": "Watch the Rotten Fencepost video on finding hidden causes instead of chasing symptoms, then go deeper with the Field Guide and companion book.",
         "hero_image": "/static/images/diana-sanders-c24miY2R0FI-unsplash.jpg",
