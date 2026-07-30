@@ -144,7 +144,7 @@ All four distribution channels from the kit require an account, identity verific
 - Title: `Find the Cause, Not the Symptoms`
 - Subtitle: `A Rotten Fencepost Foundational Guide`
 - Author: `Kahu Phil Stephens`
-- Publisher: `Ke Aupuni O Ke Akua Publishing`
+- Publisher: `Rotten Fencepost Publishing`
 - Description: "Most people spend their lives treating symptoms instead of discovering what caused the problem in the first place. Using the simple illustration of a rotten fencepost, Kahu Phil Stephens presents a practical framework that helps readers identify hidden causes behind recurring problems in health, finances, relationships, leadership, work, and everyday life. Instead of asking, 'How do I fix this?' — learn to ask, 'What caused this problem to appear?' That one question can change everything."
 - Cover image: `find_the_cause_not_the_symptoms_cover_web.jpg` (already exists in the site's `static/covers/` folder — can be downloaded from `https://keaupuniakeakua.faith/static/covers/find_the_cause_not_the_symptoms_cover_web.jpg` and uploaded to Goodreads)
 - Format: Digital / ebook, no ISBN

@@ -101,12 +101,17 @@ def build_product_schema(product, url, image_url=None):
         if product.get("active", True)
         else "https://schema.org/OutOfStock"
     )
+    brand = (
+        {"@type": "Organization", "name": product["publisher"]}
+        if product.get("publisher")
+        else org_ref()
+    )
     schema = {
         "@context": "https://schema.org",
         "@type": "Product",
         "name": product.get("name"),
         "url": url,
-        "brand": org_ref(),
+        "brand": brand,
         "offers": {
             "@type": "Offer",
             "url": url,

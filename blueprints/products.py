@@ -47,7 +47,7 @@ def products_list():
     # to keep full Product data on the individual product pages only.
     page_schema = build_collection_itemlist_schema(
         name="Products | Ke Aupuni O Ke Akua",
-        description="Browse books and resources from Ke Aupuni O Ke Akua Publishing.",
+        description="Browse books and resources from Rotten Fencepost Publishing.",
         url=SITE_URL + request.path,
         items=[(p.get("name"), SITE_URL + "/product/" + p["id"]) for p in products],
     )

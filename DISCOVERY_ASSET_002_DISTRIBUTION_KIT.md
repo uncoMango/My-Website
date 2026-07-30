@@ -50,7 +50,7 @@ Copy these fields directly into any submission form below. Source: `digital_prod
 | **Title** | Find the Cause, Not the Symptoms |
 | **Subtitle** | A Rotten Fencepost Foundational Guide |
 | **Author** | Kahu Phil Stephens |
-| **Publisher** | Ke Aupuni O Ke Akua Publishing |
+| **Publisher** | Rotten Fencepost Publishing |
 | **Series** | Rotten Fencepost |
 | **Format / Price** | Digital ebook (PDF), $9.99 |
 | **Short description** (155 chars, for fields with tight limits) | Discover why recurring problems continue to return and learn a practical framework for identifying root causes instead of repeatedly treating symptoms. |

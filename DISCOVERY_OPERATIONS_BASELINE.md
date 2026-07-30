@@ -53,7 +53,7 @@ From `digital_products.json` (`prod_find_the_cause_not_the_symptoms`): **[CODE]*
 | `total_sales` | `0` |
 | `downloads` | `0` |
 | `author` | Kahu Phil Stephens |
-| `publisher` | Ke Aupuni O Ke Akua Publishing |
+| `publisher` | Rotten Fencepost Publishing |
 | `series` | Rotten Fencepost |
 
 Live checkout button confirmed functional (links to checkout page) as of this session. **[LIVE]** No purchase was attempted (would create a real transaction).
