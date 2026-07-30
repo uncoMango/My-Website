@@ -68,12 +68,20 @@ All secrets are loaded via `os.environ[]` with **no fallback defaults** — the 
 | `SMTP_PORT` | SMTP port (e.g. `587`) |
 | `SMTP_USER` | SMTP login email address |
 | `SMTP_PASS` | SMTP login password |
+| `FLASK_SECRET_KEY` | Signs the admin (`/kahu`) session cookie. If unset, the app still runs (a random key is generated at process start) but every admin session is invalidated on every restart/redeploy. Added 2026-07-17; was missing from this table until 2026-07-29. |
+| `DOWNLOAD_TOKEN_SECRET` | Signs the time-limited, product-bound tokens minted after a verified PayPal/Stripe payment (`download_tokens.py`) and required by `/download/product/<id>/<token>`. If unset, digital-product downloads fail closed (503) for every product — this is a single, application-wide secret; it does not need to be set per product. Added 2026-07-23; was missing from this table until 2026-07-29, which is the confirmed root cause of a production incident where automatic post-purchase downloads were unavailable. |
 
 **Optional** (safe empty-string defaults):
 - `STRIPE_PUBLISHABLE_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` — Set when activating Stripe
 - `STRIPE_ENABLED` — Set to `true` to show Stripe button on checkout
 
 ## Change Log
+
+### 2026-07-29 (Work Order A-003 — Download Secret Root-Cause Fix)
+- **Root cause identified and fixed for the production incident where automatic post-purchase downloads returned 503 for every digital product.** A read-only audit traced it to `DOWNLOAD_TOKEN_SECRET` (added 2026-07-23, commit `ffb26c0`) never having been set on Render — unlike every other secret this project has added, it never received a corresponding "set this in Render" note in this Change Log or in the "Environment Variables (Required on Render)" table above, so nothing ever prompted anyone to configure it. Full audit trail: this session's prior root-cause report.
+- **Fix applied:** added the two rows above for `FLASK_SECRET_KEY` and `DOWNLOAD_TOKEN_SECRET` (both previously missing from this table) so the documented checklist matches what the code actually requires. This is the only code/doc change in this work order — the secret value itself was generated locally and given to Kahu Phil directly to enter in Render's dashboard; it was never written to any file, log, or commit in this repository.
+- **Also confirmed, and worth recording:** `DOWNLOAD_TOKEN_SECRET` is a single, application-wide secret (not per-product) — every current and future digital product's download route reads the same `config.py` value, so no further Render configuration is needed as the catalog grows.
+- **Testing**: full suite re-run, no functional code touched (documentation-only change).
 
 ### 2026-07-29 (Work Order A-002 — Publisher Identity Migration)
 - **Established "Rotten Fencepost Publishing" as the ecosystem's publishing imprint**, distinct from "Ke Aupuni O Ke Akua" (the ministry/organization identity, unchanged). Follows Work Order A-001 (Publishing Identity Audit), which found three inconsistent name variants ("Ke Aupuni O Ke Akua", "...Press", "...Publishing") live simultaneously across the site.
