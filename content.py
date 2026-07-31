@@ -127,6 +127,20 @@ DEFAULT_PAGES = {
             "hero_image": "/static/images/helping_hands.jpg",
             "body_md": "## Partner With Ke Aupuni O Ke Akua Press\r\n\r\nKahu Phil Stephens has served the community of Molokaʻi and the Pacific for decades — as a pastor, a Paniolo, a land rights advocate, and a Kingdom teacher. This ministry runs on faith, kuleana, and the generous support of those who believe in what God is doing here.\r\n\r\nA word about **Kokua** — the true Hawaiian meaning of this word is not simply \"help for free.\" Kokua means to give at no cost to yourself — a selfless act of Kingdom generosity. When you support this ministry, you are practicing true Kokua in the Kingdom sense. Mahalo nui loa.\r\n\r\n---\r\n\r\n### Why Partner With Us?\r\n\r\nEvery dollar that comes into this ministry goes directly to:\r\n\r\n- Publishing Kingdom theology resources in Hawaiian, Samoan, Tongan, and other Pacific languages\r\n- Making FREE booklets and Kingdom Keys available to anyone who needs them\r\n- Supporting the community of Molokaʻi through land rights advocacy and pastoral care\r\n- Expanding the reach of Kingdom Health, Kingdom Wealth, and Bible Truth teaching\r\n\r\n---\r\n\r\n### Ways to Partner\r\n\r\n**Aloha Partner** — Any amount. Every seed matters in the Kingdom.\r\n\r\n**Kingdom Partner** — Monthly support that keeps the ministry moving forward.\r\n\r\n**Covenant Partner** — A deeper commitment to see this work established across the Pacific.\r\n\r\n---\r\n\r\n### How to Give\r\n\r\nUse the secure form below to sow into this ministry. Your generosity is a Kingdom investment — not just into a ministry, but into the lives of the people of Molokaʻi and the Pacific.\r\n\r\n*Mahalo nui loa. The Kingdom of God advances because of people like you.*",
         },
+        # Work Order D-003 (Goodreads Author Program identity verification):
+        # a single, clearly-labeled page stating the three facts a Goodreads
+        # reviewer (or any external verifier) needs to confirm the official
+        # author identity -- name, official website, official contact --
+        # plus links to the author's genuinely published, active catalog
+        # entries. Reuses the same page.html/DEFAULT_PAGES pattern as every
+        # other content page; no new template, route, or nav entry.
+        "author": {
+            "title": "Kahu Phil Stephens — About the Author",
+            "hero_image": "/static/images/molokai_coast.jpg",
+            "seo_title": "Kahu Phil Stephens | Author, Ke Aupuni O Ke Akua",
+            "meta_description": "Official author page for Kahu Phil Stephens, author of Find the Cause, Not the Symptoms and Aloha Wellness. Official website and contact information.",
+            "body_md": "## Kahu Phil Stephens\r\n\r\nKahu Phil Stephens is a pastor, author, and Paniolo (Hawaiian cowboy) who has spent 30 years riding the ranches of Molokaʻi, Maui, the Big Island, and Colorado. He serves a community of 7,000 on Molokaʻi — many living below the poverty line — and has spent decades studying Scripture in the original Greek and Hebrew.\r\n\r\n---\r\n\r\n### Official Author Information\r\n\r\n**Name:** Kahu Phil Stephens\r\n\r\n**Official website:** [keaupuniakeakua.faith](https://keaupuniakeakua.faith) — this is that site\r\n\r\n**Official contact:** [kahuphil@keaupuni.faith](mailto:kahuphil@keaupuni.faith)\r\n\r\n---\r\n\r\n### Published Works\r\n\r\n**[Find the Cause, Not the Symptoms](/product/prod_find_the_cause_not_the_symptoms)** — A Rotten Fencepost Foundational Guide, published by Rotten Fencepost Publishing.\r\n\r\n**[Aloha Wellness](/product/prod_aloha_wellness)** — Island-Inspired Healthy Living Guide, available on Amazon and direct from this site.\r\n\r\n**[See all published resources](/products)**",
+        },
     },
 }
 

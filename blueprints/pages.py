@@ -1221,6 +1221,7 @@ def sitemap():
         ("/nahenahe_voice",     "0.8", "monthly"),
         ("/partner",            "0.8", "monthly"),
         ("/ecosystem",          "0.9", "weekly"),
+        ("/author",             "0.6", "monthly"),
         ("/rotten-fencepost",   "0.9", "weekly"),
         ("/campaign/001",       "0.7", "monthly"),
         ("/myron-golden",       "0.8", "weekly"),
