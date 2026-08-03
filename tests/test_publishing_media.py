@@ -225,6 +225,32 @@ def test_register_handles_real_discovery_engine_asset_id_format(tmp_path, media_
     assert stored_entry["asset_id"] == real_asset_id  # original id preserved for Records/Verification
 
 
+def test_resolve_all_urls_mints_one_url_per_manifest_entry_in_one_call(tmp_path, media_env):
+    source1 = _make_source(tmp_path, name="a.mp4", content=b"content-a")
+    source2 = _make_source(tmp_path, name="b.mp4", content=b"content-b")
+    publish_media.copy_asset_into_media_dir("campaign_001:planning_document:short_01:v2", source1, "video/mp4", "campaign_001")
+    publish_media.copy_asset_into_media_dir("campaign_001:planning_document:short_02:v2", source2, "video/mp4", "campaign_001")
+
+    urls = publish_media.resolve_all_urls()
+
+    assert set(urls.keys()) == {
+        "campaign_001:planning_document:short_01:v2",
+        "campaign_001:planning_document:short_02:v2",
+    }
+    for asset_id, url in urls.items():
+        path = url.replace("https://keaupuniakeakua.faith", "")
+        resp = media_env["client"].get(path)
+        assert resp.status_code == 200
+
+
+def test_resolve_all_urls_raises_without_secret(tmp_path, media_env, monkeypatch):
+    source = _make_source(tmp_path)
+    publish_media.copy_asset_into_media_dir("short_01", source, "video/mp4")
+    monkeypatch.setattr(publishing_media_tokens, "DOWNLOAD_TOKEN_SECRET", "")
+    with pytest.raises(ValueError):
+        publish_media.resolve_all_urls()
+
+
 def test_cleanup_keeps_verified_entries_still_within_grace_period(tmp_path, media_env):
     source = _make_source(tmp_path)
     publish_media.register("short_01", source, "video/mp4")

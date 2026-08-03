@@ -33,8 +33,11 @@
 #
 # Usage:
 #   python publish_media.py register <asset_id> <source_path> <mimetype> [campaign_id]
-#   python publish_media.py build-url <asset_id>     # re-mint a URL for an
-#                                                     # already-registered asset;
+#   python publish_media.py build-url <asset_id>     # re-mint one URL;
+#                                                     # needs DOWNLOAD_TOKEN_SECRET
+#   python publish_media.py resolve-all              # re-mint every URL
+#                                                     # currently in the manifest,
+#                                                     # in one run (JSON out);
 #                                                     # needs DOWNLOAD_TOKEN_SECRET
 #   python publish_media.py mark-verified <asset_id>
 #   python publish_media.py cleanup
@@ -197,6 +200,21 @@ def cleanup() -> list[str]:
     return removed
 
 
+def resolve_all_urls() -> dict[str, str]:
+    """Mints a fresh signed URL for every asset currently in the
+    manifest, in one call — this is the 'one command' the Discovery
+    Workforce's Publishing Department (or Kahu Phil, once, from wherever
+    the real DOWNLOAD_TOKEN_SECRET is available) runs instead of one
+    build-url per asset. Returns {real_asset_id: url}. Raises ValueError
+    if DOWNLOAD_TOKEN_SECRET isn't configured — never returns partial or
+    unsigned URLs."""
+    manifest = load_manifest()
+    return {
+        entry["asset_id"]: build_public_url(entry["asset_id"])
+        for entry in manifest.values()
+    }
+
+
 def _main(argv: list[str]) -> int:
     if not argv:
         print(__doc__)
@@ -210,6 +228,9 @@ def _main(argv: list[str]) -> int:
         return 0
     if command == "build-url":
         print(build_public_url(argv[1]))
+        return 0
+    if command == "resolve-all":
+        print(json.dumps(resolve_all_urls(), indent=2))
         return 0
     if command == "mark-verified":
         mark_verified(argv[1])
