@@ -977,6 +977,45 @@ _SEO_PAGES = {
             "[**Support the Ministry →**](/partner)"
         ),
     },
+    ("rotten-fencepost", "find-the-cause-not-the-symptoms"): {
+        "title": "Find the Cause, Not the Symptoms — The Rotten Fencepost Principle | Ke Aupuni O Ke Akua",
+        "meta_description": "Why do the same problems keep coming back? The Rotten Fencepost Principle explains why treating symptoms instead of causes guarantees they'll return — in health, finances, relationships, and leadership.",
+        "hero_image": "/static/covers/find_the_cause_not_the_symptoms_cover_web.jpg",
+        "body_md": (
+            "## Find the Cause, Not the Symptoms\n\n"
+            "If you've ever fixed the same problem twice, you already know something is wrong — not with the problem, but with the fix.\n\n"
+            "Maybe it's a disagreement that keeps resurfacing with someone you love, no matter how many times you've \"resolved\" it. Maybe it's a budget that balances for a month and then quietly falls apart again. Maybe it's a project at work that keeps stalling in the same place, or a health complaint that fades and returns like clockwork.\n\n"
+            "In each case, there's a natural instinct: fix what's visible. Smooth over the argument. Cover the shortfall. Push the deadline. Treat the symptom. And that instinct isn't wrong — sometimes the visible problem genuinely needs attention right now. But if that's the only thing that happens, the problem hasn't been solved. It's been postponed.\n\n"
+            "---\n\n"
+            "### The Rotten Fencepost\n\n"
+            "Kahu Phil Stephens teaches this idea through a simple, physical picture: a fencepost on a working ranch. From above the ground, a rotten post can look completely fine — the wire is taut, the post is upright, the fence appears sound. But below the soil line, where nothing is visible, the wood has been quietly rotting for months, sometimes years. The post holds — until, without warning, it doesn't. And when it fails, it often takes a stretch of fence line down with it, because everything attached to that post inherited its hidden weakness.\n\n"
+            "That's the whole principle in one image: what looks fine on the surface can still be failing underneath, and the surface will eventually show it.\n\n"
+            "---\n\n"
+            "### Why This Shows Up Everywhere\n\n"
+            "The rotten fencepost isn't just a metaphor for one kind of problem — it's a pattern that shows up almost anywhere something keeps failing in the same way:\n\n"
+            "- **In health**, a symptom treated in isolation — pain, fatigue, a recurring flare-up — often returns because whatever is actually producing it was never addressed.\n"
+            "- **In finances**, a budget \"fix\" that only rearranges numbers for one month doesn't survive the month after, because the underlying spending pattern or income gap is still there.\n"
+            "- **In relationships**, the same argument keeps happening because the actual disagreement underneath it was smoothed over instead of resolved.\n"
+            "- **In leadership and work**, the same project keeps stalling at the same stage because a structural or communication problem — not the individual failure everyone blames — was never fixed.\n\n"
+            "Different surfaces. Same underlying pattern.\n\n"
+            "---\n\n"
+            "### A Simple Way to Find the Cause\n\n"
+            "You don't need a framework or a consultant to start applying this. The exercise Kahu Phil teaches is short enough to use on almost anything:\n\n"
+            "1. Name the problem in one sentence — the thing that keeps recurring.\n"
+            "2. Ask \"why did this happen?\" and write down the honest answer.\n"
+            "3. Take that answer and ask \"why\" again. Keep going — usually four or five layers is enough — until you reach something that feels less like a circumstance and more like a real cause: a habit, a decision, an unspoken assumption, a structural gap.\n"
+            "4. Choose one action this week that addresses that answer, not the original symptom.\n\n"
+            "This is deliberately small. The goal isn't to solve everything at once — it's to stop patching the same rotten post and start dealing with what's actually underneath it.\n\n"
+            "---\n\n"
+            "### Going Deeper\n\n"
+            "This article is a general introduction to the principle across everyday life. If you're specifically working through wellness and health patterns, the companion piece — [The Rotten Fencepost Principle and Modern Wellness Confusion](/wellness/the-rotten-fencepost-principle) — applies the same idea directly to diet culture and modern health advice.\n\n"
+            "For the full teaching — including the video this article accompanies and a growing library of Rotten Fencepost content — visit the [Rotten Fencepost hub](/rotten-fencepost). And if you want a structured way to work through this exercise for your own recurring problem, the companion guide, [*Find the Cause, Not the Symptoms: A Rotten Fencepost Foundational Guide*](/product/prod_find_the_cause_not_the_symptoms), walks through the method in full, with a workbook you can use on a real situation in your own life.\n\n"
+            "The next time you find yourself fixing the same problem for the second or third time, pause before you patch it again. Ask what's actually rotting underneath — and go find the cause, not just the symptom.\n\n"
+            "---\n\n"
+            "[**Get the Rotten Fencepost Field Guide →**](/rotten-fencepost)\n\n"
+            "[**Support the Ministry →**](/partner)"
+        ),
+    },
     ("wellness", "kupuna-wisdom-and-modern-health"): {
         "title": "Kupuna Wisdom and Modern Health | Ke Aupuni O Ke Akua",
         "meta_description": "Explore how Hawaiian kupuna wisdom, stewardship, simplicity, and rhythm can help modern people rethink wellness and health.",
@@ -1251,6 +1290,7 @@ def sitemap():
         ("/kingdom/understanding-scripture-through-original-words",   "0.8", "weekly"),
         ("/kingdom/stewardship-in-the-kingdom-of-god",               "0.8", "weekly"),
         ("/wellness/god-never-told-adam-when-to-eat",                 "0.8", "weekly"),
+        ("/rotten-fencepost/find-the-cause-not-the-symptoms",         "0.8", "weekly"),
     ]
     base_url = "https://keaupuniakeakua.faith"
     xml = ['<?xml version="1.0" encoding="UTF-8"?>']

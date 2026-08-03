@@ -16,6 +16,21 @@ DOWNLOAD_TOKEN_USAGE_FILE = BASE / "download_token_usage.json"
 EMAILS_FILE = BASE / "email_subscribers.json"
 SUBSCRIBERS_FILE = BASE / "data" / "subscribers.json"
 
+# Dedicated directory the Discovery Workforce's Publishing Department
+# bridges approved campaign media (Shorts, campaign images) into so
+# Buffer/YouTube/Facebook can fetch them over a stable HTTPS URL. See
+# blueprints/publishing_media.py and publish_media.py. Committed to git
+# like digital_products/ (this app has no persistent disk/object storage
+# — the git repo is the deploy artifact, same as every other real file
+# this site serves) — publish_media.py register is run locally, as part
+# of the same authorized engineering session that commits/pushes/deploys
+# the rest of that campaign's changes, never as a separate runtime step.
+# Never holds anything except what publish_media.py itself copies in —
+# no other code writes here, and this directory is never served by
+# directory listing, only by exact (asset_id, signed token) lookup.
+PUBLISHING_MEDIA_DIR = BASE / "publishing_media"
+PUBLISHING_MEDIA_MANIFEST_FILE = PUBLISHING_MEDIA_DIR / "manifest.json"
+
 # ----- PAGE ORDER (controls nav menu order) -----
 ORDER = [
     "home",

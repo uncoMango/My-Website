@@ -1,0 +1,52 @@
+{
+  "campaign_001_planning_document_short_01_v2": {
+    "asset_id": "campaign_001:planning_document:short_01:v2",
+    "filename": "campaign_001_planning_document_short_01_v2.mp4",
+    "campaign_id": "campaign_001",
+    "mimetype": "video/mp4",
+    "content_hash": "15901197a9baa5c5b2e9a666357c2acc109e1e8b48cd7665fea0edd20e083141",
+    "added_at": "2026-08-03T18:27:17.833851+00:00",
+    "verified": false,
+    "verified_at": null
+  },
+  "campaign_001_planning_document_short_02_v2": {
+    "asset_id": "campaign_001:planning_document:short_02:v2",
+    "filename": "campaign_001_planning_document_short_02_v2.mp4",
+    "campaign_id": "campaign_001",
+    "mimetype": "video/mp4",
+    "content_hash": "e78cbc6f601a841a349a63b63b9e4946f2ac75f23ba724cef63f7b84c65e25d0",
+    "added_at": "2026-08-03T18:27:17.937058+00:00",
+    "verified": false,
+    "verified_at": null
+  },
+  "campaign_001_planning_document_short_03_v2": {
+    "asset_id": "campaign_001:planning_document:short_03:v2",
+    "filename": "campaign_001_planning_document_short_03_v2.mp4",
+    "campaign_id": "campaign_001",
+    "mimetype": "video/mp4",
+    "content_hash": "fe69627452e001a8b8a7ff81cad1c3970d0dbc6bdc18401b310de40ae5ae752c",
+    "added_at": "2026-08-03T18:27:18.038243+00:00",
+    "verified": false,
+    "verified_at": null
+  },
+  "campaign_001_planning_document_short_04_v2": {
+    "asset_id": "campaign_001:planning_document:short_04:v2",
+    "filename": "campaign_001_planning_document_short_04_v2.mp4",
+    "campaign_id": "campaign_001",
+    "mimetype": "video/mp4",
+    "content_hash": "cf3b33508fb9a5e6f42192bc5491930b0ba9c39611f22aa00abe244abf7f3584",
+    "added_at": "2026-08-03T18:27:18.169256+00:00",
+    "verified": false,
+    "verified_at": null
+  },
+  "campaign_001_planning_document_short_05_v2": {
+    "asset_id": "campaign_001:planning_document:short_05:v2",
+    "filename": "campaign_001_planning_document_short_05_v2.mp4",
+    "campaign_id": "campaign_001",
+    "mimetype": "video/mp4",
+    "content_hash": "dfa032f74ad0f7851b58c3844df9e66b1ce6fbebb86b28e2df477889738590c8",
+    "added_at": "2026-08-03T18:27:18.278618+00:00",
+    "verified": false,
+    "verified_at": null
+  }
+}

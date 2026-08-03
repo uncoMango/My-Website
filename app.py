@@ -9,6 +9,7 @@ from blueprints.downloads import downloads_bp
 from blueprints.products import products_bp
 from blueprints.payments import payments_bp
 from blueprints.admin import admin_bp
+from blueprints.publishing_media import publishing_media_bp
 from limiter import limiter
 
 app = Flask(__name__)
@@ -36,6 +37,7 @@ app.register_blueprint(downloads_bp)
 app.register_blueprint(products_bp)
 app.register_blueprint(payments_bp)
 app.register_blueprint(admin_bp)
+app.register_blueprint(publishing_media_bp)
 app.register_blueprint(pages_bp)
 
 if __name__ == "__main__":
