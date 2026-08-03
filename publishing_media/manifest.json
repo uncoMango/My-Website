@@ -48,5 +48,35 @@
     "added_at": "2026-08-03T18:27:18.278618+00:00",
     "verified": false,
     "verified_at": null
+  },
+  "campaign_001_planning_document_short_02_v3": {
+    "asset_id": "campaign_001:planning_document:short_02:v3",
+    "filename": "campaign_001_planning_document_short_02_v3.mp4",
+    "campaign_id": "campaign_001",
+    "mimetype": "video/mp4",
+    "content_hash": "32efa9f87da0970cb7029cc8b710a5b6b978a615cf3936be6101da702b01d015",
+    "added_at": "2026-08-03T22:18:15.167165+00:00",
+    "verified": false,
+    "verified_at": null
+  },
+  "campaign_001_planning_document_short_04_v3": {
+    "asset_id": "campaign_001:planning_document:short_04:v3",
+    "filename": "campaign_001_planning_document_short_04_v3.mp4",
+    "campaign_id": "campaign_001",
+    "mimetype": "video/mp4",
+    "content_hash": "f8ffb4e6f926f486359722d1e9e861c783f582605e510ae5c40a764821718d9d",
+    "added_at": "2026-08-03T22:18:15.352112+00:00",
+    "verified": false,
+    "verified_at": null
+  },
+  "campaign_001_planning_document_short_05_v3": {
+    "asset_id": "campaign_001:planning_document:short_05:v3",
+    "filename": "campaign_001_planning_document_short_05_v3.mp4",
+    "campaign_id": "campaign_001",
+    "mimetype": "video/mp4",
+    "content_hash": "3f4343469914c24cf8729cdc2bc808c1b9824d88bb1e5b3d9f24a5038b7f5635",
+    "added_at": "2026-08-03T22:18:15.475992+00:00",
+    "verified": false,
+    "verified_at": null
   }
 }
