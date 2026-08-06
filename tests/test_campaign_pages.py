@@ -109,12 +109,14 @@ class TestRottenFencepostHubEmbed:
         html = resp.get_data(as_text=True)
         assert 'href="/campaign/001"' in html
 
-    def test_hub_h1_unchanged(self, client):
-        # The video embed must not replace or compete with the hub's own
-        # product-focused title.
+    def test_hub_h1_is_the_principle(self, client):
+        # Work Order V001-002: the hub leads with the Rotten Fencepost
+        # Principle itself, not a product name -- the video embed must not
+        # compete with that single, page-level H1.
         resp = client.get("/rotten-fencepost", base_url=BASE)
         html = resp.get_data(as_text=True)
-        assert "<h1" in html and "The Rotten Fencepost Field Guide" in html
+        assert re.search(r"<h1[^>]*>The Rotten Fencepost Principle</h1>", html)
+        assert html.count("<h1") == 1
 
     def test_hub_only_renders_featured_campaigns_not_all(self, client):
         # The hub must loop over the curated HUB_FEATURED_CAMPAIGN_IDS

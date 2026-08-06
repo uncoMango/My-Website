@@ -49,6 +49,16 @@ def rotten_fencepost():
     data = load_content()
     nav_items = get_nav_items(data)
     page_url = SITE_URL + request.path
+    # Work Order V001-002: the page now leads with the Rotten Fencepost
+    # Principle itself, not the Field Guide product -- a WebPage entity
+    # describing that is more accurate than relying on Product schema
+    # alone to say what this page is about.
+    page_schema = build_webpage_schema(
+        name="The Rotten Fencepost Principle",
+        description="Recurring problems aren't solved by treating symptoms again and again -- they're solved by finding the cause.",
+        url=page_url,
+        image_url=_abs_image("/static/images/diana-sanders-c24miY2R0FI-unsplash.jpg"),
+    )
     product_schema = None
     product = get_product_by_id("rotten_fencepost_field_guide")
     if product:
@@ -74,6 +84,7 @@ def rotten_fencepost():
         logo_path=LOGO_PATH,
         logo_height=LOGO_HEIGHT,
         footer_text=FOOTER_TEXT,
+        page_schema=page_schema,
         product_schema=product_schema,
         hub_campaigns=hub_campaigns,
     )
