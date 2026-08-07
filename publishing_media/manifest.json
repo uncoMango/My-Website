@@ -78,5 +78,55 @@
     "added_at": "2026-08-03T22:18:15.475992+00:00",
     "verified": false,
     "verified_at": null
+  },
+  "campaign_002_planning_document_short_01_v2": {
+    "asset_id": "campaign_002:planning_document:short_01:v2",
+    "filename": "campaign_002_planning_document_short_01_v2.mp4",
+    "campaign_id": "campaign_002",
+    "mimetype": "video/mp4",
+    "content_hash": "49acf1146e37e2207d9ed0e5afce60526c149537bc4d6c5d03f3524fac954b72",
+    "added_at": "2026-08-07T23:04:19.083538+00:00",
+    "verified": false,
+    "verified_at": null
+  },
+  "campaign_002_planning_document_short_02_v2": {
+    "asset_id": "campaign_002:planning_document:short_02:v2",
+    "filename": "campaign_002_planning_document_short_02_v2.mp4",
+    "campaign_id": "campaign_002",
+    "mimetype": "video/mp4",
+    "content_hash": "79a80c79287383ee1d50bd3fab687c6fce9098675cdb196d828b8ed1ff32d38f",
+    "added_at": "2026-08-07T23:04:19.259907+00:00",
+    "verified": false,
+    "verified_at": null
+  },
+  "campaign_002_planning_document_short_03_v2": {
+    "asset_id": "campaign_002:planning_document:short_03:v2",
+    "filename": "campaign_002_planning_document_short_03_v2.mp4",
+    "campaign_id": "campaign_002",
+    "mimetype": "video/mp4",
+    "content_hash": "ed7bb921d9f4e31f9d698e46e47ba7153b4d952aae04ae8dc55d4be1eba839a8",
+    "added_at": "2026-08-07T23:04:19.419051+00:00",
+    "verified": false,
+    "verified_at": null
+  },
+  "campaign_002_planning_document_short_04_v1": {
+    "asset_id": "campaign_002:planning_document:short_04:v1",
+    "filename": "campaign_002_planning_document_short_04_v1.mp4",
+    "campaign_id": "campaign_002",
+    "mimetype": "video/mp4",
+    "content_hash": "2f97c80f184eedbbd000c99782f485abdc4d2bee86cddcfd05c3c16a7a718d2a",
+    "added_at": "2026-08-07T23:04:19.598737+00:00",
+    "verified": false,
+    "verified_at": null
+  },
+  "campaign_002_planning_document_short_05_v1": {
+    "asset_id": "campaign_002:planning_document:short_05:v1",
+    "filename": "campaign_002_planning_document_short_05_v1.mp4",
+    "campaign_id": "campaign_002",
+    "mimetype": "video/mp4",
+    "content_hash": "2a6f48858934fb36da0b12fd8f3226d30eeff87680822e050c01a00b0374764c",
+    "added_at": "2026-08-07T23:04:20.087516+00:00",
+    "verified": false,
+    "verified_at": null
   }
 }
