@@ -18,10 +18,10 @@
 
 import json
 
-from flask import Blueprint, abort, send_file
+from flask import Blueprint, abort, redirect, send_file
 
 from config import PUBLISHING_MEDIA_DIR, PUBLISHING_MEDIA_MANIFEST_FILE
-from publishing_media_tokens import validate_publishing_media_token
+from publishing_media_tokens import generate_publishing_media_token, validate_publishing_media_token
 
 publishing_media_bp = Blueprint("publishing_media", __name__)
 
@@ -61,3 +61,22 @@ def serve_publishing_media(asset_id, token):
         abort(404)
 
     return send_file(file_path, mimetype=entry.get("mimetype", "application/octet-stream"))
+
+
+@publishing_media_bp.route("/media/<safe_asset_id>")
+def evergreen_media_link(safe_asset_id):
+    """A permanent public link for an already-approved, freely-released
+    asset (e.g. a free campaign workbook) -- mints a fresh
+    publishing-media token on every request and redirects to the
+    existing signed route above, so a link embedded in a public page
+    never goes stale even though each individual signed URL expires
+    after TOKEN_MAX_AGE_SECONDS (14 days). Buffer/platform fetches keep
+    using the directly-minted, short-lived URL from publish_media.py --
+    this route exists only for assets meant to stay public indefinitely."""
+    manifest = _load_manifest()
+    if safe_asset_id not in manifest:
+        abort(404)
+    token = generate_publishing_media_token(safe_asset_id)
+    if token is None:
+        abort(503)
+    return redirect(f"/publishing-media/{safe_asset_id}/{token}")

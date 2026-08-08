@@ -128,5 +128,15 @@
     "added_at": "2026-08-07T23:04:20.087516+00:00",
     "verified": false,
     "verified_at": null
+  },
+  "campaign_002_planning_document_workbook_pdf_v5": {
+    "asset_id": "campaign_002:planning_document:workbook_pdf:v5",
+    "filename": "campaign_002_planning_document_workbook_pdf_v5.pdf",
+    "campaign_id": "campaign_002",
+    "mimetype": "application/pdf",
+    "content_hash": "6230c2a84e816523b3c1290e172f5bb00805dd70cb3bacc668d3f5eb2e49ef7e",
+    "added_at": "2026-08-08T02:40:49.354293+00:00",
+    "verified": false,
+    "verified_at": null
   }
 }

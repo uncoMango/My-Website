@@ -224,6 +224,32 @@ CAMPAIGNS = {
             {"label": "Find the Cause, Not the Symptoms: The Rotten Fencepost Principle", "url": "/rotten-fencepost/find-the-cause-not-the-symptoms"},
         ],
     },
+    "002": {
+        "id": "002",
+        "title": "Why Do I Keep Starting Over?",
+        "subtitle": "The Rotten Fencepost Principle",
+        "seo_title": "Watch: Why Do I Keep Starting Over? | Rotten Fencepost",
+        "meta_description": "Maybe the problem isn't discipline. Maybe you're fixing the wrong thing. Kahu Phil Stephens shares a lesson from ranching in Hawaii on why the same problems keep coming back.",
+        "hero_image": "/static/images/paniolo_phil.jpg",
+        "youtube_id": "_nnPJXOwV3I",
+        "intro_html": (
+            "<p>Have you ever caught yourself saying, &ldquo;this time will be different&rdquo; &mdash; "
+            "and then found yourself right back where you started? This video shares a lesson from years "
+            "of ranching in Hawaii: a fence rarely fails all at once, and neither do the patterns we keep "
+            "repeating. Maybe, just maybe, you're fixing the wrong thing.</p>"
+        ),
+        # Shorts derived from this video. None published yet -- do not add
+        # placeholders here. Each entry, once real, is
+        # {"youtube_id": "...", "title": "..."}; campaign_page.html already
+        # renders this list (guarded, so an empty list shows nothing).
+        "shorts": [],
+        "related_links": [
+            {"label": "Explore the Rotten Fencepost Principle", "url": "/rotten-fencepost"},
+            {"label": "Why Do I Keep Starting Over? A Rotten Fencepost Look at Repeated Failure", "url": "/rotten-fencepost/why-do-i-keep-starting-over"},
+            {"label": "Find the Cause, Not the Symptoms: The Rotten Fencepost Principle", "url": "/rotten-fencepost/find-the-cause-not-the-symptoms"},
+            {"label": "Download the free companion workbook (PDF)", "url": "/media/campaign_002_planning_document_workbook_pdf_v5"},
+        ],
+    },
 }
 
 # Controls which campaigns are surfaced as playable videos on the

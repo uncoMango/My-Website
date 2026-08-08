@@ -289,6 +289,35 @@ def ecosystem():
 # ===== SEO ENTRY SUB-PAGES =====
 
 _SEO_PAGES = {
+    ("rotten-fencepost", "why-do-i-keep-starting-over"): {
+        "title": "Why Do I Keep Starting Over? — A Rotten Fencepost Look at Repeated Failure",
+        "meta_description": "Maybe the problem isn't discipline. Maybe you're fixing the wrong thing. A Rotten Fencepost look at why the same problems keep coming back.",
+        "hero_image": "/static/images/paniolo_phil.jpg",
+        "body_md": (
+            "## This time will be different\n\n"
+            "Have you ever found yourself saying those words? Maybe it was about your health, your finances, your relationship, or your walk with the Lord. You made a decision. You had every intention to follow through — for a little while, you did. Then one day you woke up and realized you were right back where you started.\n\n"
+            "If that's ever happened to you, here's something worth considering: maybe the problem isn't that you don't care. Maybe it isn't that you're lazy. Maybe it isn't even that you lack discipline. Maybe, just maybe, you're fixing the wrong thing.\n\n"
+            "---\n\n"
+            "## What is this fence attached to?\n\n"
+            "For many years, Kahu Phil Stephens has been blessed to live and work as a paniolo in Hawaii. One lesson the land teaches over and over is this: a fence doesn't usually fail all at once. You might first notice a loose wire, then a leaning section, then an animal gets through. Most people look at the wire, because that's what they can see. But an experienced paniolo learns to ask another question: what is this fence attached to? Because if the post underneath has begun rotting, it doesn't matter how tight you pull that wire. Sooner or later, the fence is coming down.\n\n"
+            "People are not much different. We spend so much of our lives repairing the wire in our lives — we buy another planner, start another diet, make another budget, promise ourselves that tomorrow will be different. There's nothing wrong with those things. The problem comes when we expect them to fix something they were never designed to fix. If the fence post is rotten, new wire is not the answer.\n\n"
+            "---\n\n"
+            "## A very different question\n\n"
+            "In ministry, the same honest questions come up again and again: \"I've asked God to forgive me a hundred times.\" \"I keep making the same mistake.\" \"I don't understand why I can't seem to change.\" Those are honest questions — and also, often, the wrong ones. Instead of asking \"why can't I stay consistent,\" what if the question became: \"what keeps bringing me back here?\" That's a very different question. And sometimes, just sometimes, it's the beginning of freedom.\n\n"
+            "Symptoms are often loud. Causes are usually quiet. Symptoms demand attention today; causes patiently wait on the ground. That is true in relationships, in finances, in health, and in our spiritual lives. If all we ever do is respond to what we can see, we may spend our entire lives repairing the same fence.\n\n"
+            "---\n\n"
+            "## Begin with curiosity, not guilt\n\n"
+            "The next time you catch yourself starting over, don't begin with guilt. Don't begin with shame. Begin with curiosity. Ask yourself: what happened before I quit? What happened before I became discouraged? What happened before I made that decision? Better yet — what is feeding this? Those questions may just lead you to the fence post that is rotting. And once you find it, you finally have something you can repair.\n\n"
+            "The subjects change, but the principles do not. Whether we're talking about families, health, money, leadership, or faith, the principle remains the same: if you find the cause, if you fix the cause, you can change the future.\n\n"
+            "---\n\n"
+            "### Going Deeper\n\n"
+            "This article accompanies the video [Why Do I Keep Starting Over?](/campaign/002). For the broader teaching this builds on, see [Find the Cause, Not the Symptoms](/rotten-fencepost/find-the-cause-not-the-symptoms). For the full teaching library, visit the [Rotten Fencepost hub](/rotten-fencepost).\n\n"
+            "---\n\n"
+            "[**Watch the video →**](/campaign/002)\n\n"
+            "[**Download the free companion workbook (PDF) →**](/media/campaign_002_planning_document_workbook_pdf_v5)\n\n"
+            "[**Explore the Rotten Fencepost Principle →**](/rotten-fencepost)"
+        ),
+    },
     ("wellness", "why-diets-fail"): {
         "title": "Why Diets Fail Long-Term (And What Actually Works Instead)",
         "meta_description": "Most diets fail because they are structurally unsustainable and conflict with how the human body is designed. This page explores ancestral, biblical, and lifestyle-based principles that explain why dieting breaks down and what actually creates lasting health.",
@@ -1274,6 +1303,7 @@ def sitemap():
         ("/author",             "0.6", "monthly"),
         ("/rotten-fencepost",   "0.9", "weekly"),
         ("/campaign/001",       "0.7", "monthly"),
+        ("/campaign/002",       "0.7", "monthly"),
         ("/myron-golden",       "0.8", "weekly"),
         ("/aloha-wellness",     "0.8", "weekly"),
         ("/kingdom-study",                          "0.9", "weekly"),
@@ -1302,6 +1332,7 @@ def sitemap():
         ("/kingdom/stewardship-in-the-kingdom-of-god",               "0.8", "weekly"),
         ("/wellness/god-never-told-adam-when-to-eat",                 "0.8", "weekly"),
         ("/rotten-fencepost/find-the-cause-not-the-symptoms",         "0.8", "weekly"),
+        ("/rotten-fencepost/why-do-i-keep-starting-over",             "0.8", "weekly"),
     ]
     base_url = "https://keaupuniakeakua.faith"
     xml = ['<?xml version="1.0" encoding="UTF-8"?>']

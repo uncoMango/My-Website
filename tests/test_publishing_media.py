@@ -251,6 +251,57 @@ def test_resolve_all_urls_raises_without_secret(tmp_path, media_env, monkeypatch
         publish_media.resolve_all_urls()
 
 
+# --- Evergreen public link (2026-08-07) -----------------------------------
+# A signed /publishing-media/<id>/<token> URL expires after
+# TOKEN_MAX_AGE_SECONDS (14 days) — fine for a Buffer/platform fetch, wrong
+# for a link embedded permanently in a public page (e.g. a free workbook
+# download). /media/<safe_asset_id> mints a fresh token per request and
+# redirects, so the embedded link itself never goes stale.
+
+
+def test_evergreen_link_redirects_to_a_working_signed_url(tmp_path, media_env):
+    source = _make_source(tmp_path, name="workbook.pdf", content=b"fake-pdf-bytes")
+    publish_media.copy_asset_into_media_dir("campaign_002:planning_document:workbook_pdf:v5", source, "application/pdf", "campaign_002")
+    safe_id = publish_media.safe_id("campaign_002:planning_document:workbook_pdf:v5")
+
+    resp = media_env["client"].get(f"/media/{safe_id}", follow_redirects=False)
+    assert resp.status_code == 302
+    assert resp.location.startswith(f"/publishing-media/{safe_id}/")
+
+    followed = media_env["client"].get(f"/media/{safe_id}", follow_redirects=True)
+    assert followed.status_code == 200
+    assert followed.data == b"fake-pdf-bytes"
+
+
+def test_evergreen_link_mints_a_fresh_token_each_time(tmp_path, media_env):
+    source = _make_source(tmp_path, name="workbook.pdf", content=b"fake-pdf-bytes")
+    publish_media.copy_asset_into_media_dir("workbook_v5", source, "application/pdf")
+
+    first = media_env["client"].get("/media/workbook_v5", follow_redirects=False)
+    second = media_env["client"].get("/media/workbook_v5", follow_redirects=False)
+    # Both work independently even though the token in the redirect differs
+    # run to run (itsdangerous timestamps the payload) — the point is every
+    # visit gets a currently-valid token, not a single baked-in one.
+    for resp in (first, second):
+        assert resp.status_code == 302
+        followed = media_env["client"].get(resp.location)
+        assert followed.status_code == 200
+
+
+def test_evergreen_link_404s_for_unregistered_asset(media_env):
+    resp = media_env["client"].get("/media/never_registered")
+    assert resp.status_code == 404
+
+
+def test_evergreen_link_503s_when_secret_not_configured(tmp_path, media_env, monkeypatch):
+    source = _make_source(tmp_path, name="workbook.pdf", content=b"fake-pdf-bytes")
+    publish_media.copy_asset_into_media_dir("workbook_v5", source, "application/pdf")
+    monkeypatch.setattr(publishing_media_tokens, "DOWNLOAD_TOKEN_SECRET", "")
+
+    resp = media_env["client"].get("/media/workbook_v5")
+    assert resp.status_code == 503
+
+
 def test_cleanup_keeps_verified_entries_still_within_grace_period(tmp_path, media_env):
     source = _make_source(tmp_path)
     publish_media.register("short_01", source, "video/mp4")
