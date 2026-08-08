@@ -983,9 +983,9 @@ _SEO_PAGES = {
         ),
     },
     ("wellness", "the-rotten-fencepost-principle"): {
-        "title": "The Rotten Fencepost Principle and Modern Wellness Confusion | Ke Aupuni O Ke Akua",
-        "meta_description": "Why do so many modern health systems fail people? Explore the Rotten Fencepost Principle and how broken foundations affect wellness understanding.",
-        "hero_image": "/static/images/taro_root.jpg",
+        "title": "The Rotten Fencepost Principle: When the Foundation Is Off | Ke Aupuni O Ke Akua",
+        "meta_description": "The Rotten Fencepost Principle: why problems keep repeating until the real foundation is fixed. This piece applies that principle to wellness -- one application of a larger framework.",
+        "hero_image": "/static/images/molokai_ranch.jpg",
         "body_md": (
             "## The Rotten Fencepost Principle — When the Foundation Is Off\n\n"
             "*This article applies the [Rotten Fencepost Principle](/rotten-fencepost) to one specific area of life: wellness. "
@@ -1056,7 +1056,7 @@ _SEO_PAGES = {
             "This is deliberately small. The goal isn't to solve everything at once — it's to stop patching the same rotten post and start dealing with what's actually underneath it.\n\n"
             "---\n\n"
             "### Going Deeper\n\n"
-            "This article is a general introduction to the principle across everyday life. If you're specifically working through wellness and health patterns, the companion piece — [The Rotten Fencepost Principle and Modern Wellness Confusion](/wellness/the-rotten-fencepost-principle) — applies the same idea directly to diet culture and modern health advice.\n\n"
+            "This article is a general introduction to the principle across everyday life. If you're specifically working through wellness and health patterns, the companion piece — [The Rotten Fencepost Principle: When the Foundation Is Off](/wellness/the-rotten-fencepost-principle) — applies the same idea directly to diet culture and modern health advice.\n\n"
             "For the full teaching — including the video this article accompanies and a growing library of Rotten Fencepost content — visit the [Rotten Fencepost hub](/rotten-fencepost). And if you want a structured way to work through this exercise for your own recurring problem, the companion guide, [*Find the Cause, Not the Symptoms: A Rotten Fencepost Foundational Guide*](/product/prod_find_the_cause_not_the_symptoms), walks through the method in full, with a workbook you can use on a real situation in your own life.\n\n"
             "The next time you find yourself fixing the same problem for the second or third time, pause before you patch it again. Ask what's actually rotting underneath — and go find the cause, not just the symptom.\n\n"
             "---\n\n"

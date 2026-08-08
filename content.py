@@ -220,7 +220,7 @@ CAMPAIGNS = {
         "related_links": [
             {"label": "Get the Rotten Fencepost Field Guide", "url": "/rotten-fencepost"},
             {"label": "Read “Find the Cause, Not the Symptoms”", "url": "/product/prod_find_the_cause_not_the_symptoms"},
-            {"label": "The Rotten Fencepost Principle and Modern Wellness Confusion", "url": "/wellness/the-rotten-fencepost-principle"},
+            {"label": "The Rotten Fencepost Principle: When the Foundation Is Off", "url": "/wellness/the-rotten-fencepost-principle"},
             {"label": "Find the Cause, Not the Symptoms: The Rotten Fencepost Principle", "url": "/rotten-fencepost/find-the-cause-not-the-symptoms"},
         ],
     },

@@ -215,6 +215,18 @@ class TestCampaignWorkbookCTA:
         assert "Free Companion Workbook" in html
         assert 'href="/media/campaign_002_planning_document_workbook_pdf_v5"' in html
 
+    def test_campaign_002_workbook_cta_is_a_light_high_contrast_box_not_dark_on_dark(self, client):
+        """2026-08-07 (second correction): the CTA on /campaign/002 previously
+        used a dark teal gradient (#1a4040/#0d2b2b) on the page's #1a1a1a
+        background -- effectively invisible. Kahu Phil could not find it on
+        the live site despite it being present in the HTML. Fixed by matching
+        the article page's already-proven light box (#eef2f0) treatment."""
+        resp = client.get("/campaign/002", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "#1a4040" not in html
+        assert "#0d2b2b" not in html
+        assert "#eef2f0" in html
+
 
 class TestFirstPersonTeachingVoice:
     """2026-08-07: Kahu Phil-authored teaching must speak FROM him, not
@@ -253,6 +265,40 @@ class TestRottenFencepostNotPrimarilyWellness:
         html = resp.get_data(as_text=True)
         assert "isn&#39;t a wellness program" in html or "isn't a wellness program" in html
         assert 'href="/rotten-fencepost"' in html
+
+    def test_wellness_article_title_is_rotten_fencepost_centered(self, client):
+        """2026-08-07 (second correction): the old title, 'The Rotten
+        Fencepost Principle and Modern Wellness Confusion', made wellness
+        read as if it defined the Principle. Retitled around the article's
+        own existing content instead of inventing new framing."""
+        resp = client.get("/wellness/the-rotten-fencepost-principle", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "Modern Wellness Confusion" not in html
+        assert "The Rotten Fencepost Principle: When the Foundation Is Off" in html
+
+    def test_wellness_article_hero_image_is_not_taro(self, client):
+        """The taro close-up (taro_root.jpg) read as generic food/wellness
+        imagery unrelated to the fencepost teaching. Replaced with an
+        existing, already-approved ranch photo (molokai_ranch.jpg) -- no
+        new imagery was introduced."""
+        resp = client.get("/wellness/the-rotten-fencepost-principle", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "taro_root.jpg" not in html
+        assert "molokai_ranch.jpg" in html
+
+    def test_cross_references_use_updated_title_text(self, client):
+        """Other pages that link to the wellness article using the OLD
+        title as visible anchor text would otherwise still tell a visitor
+        this is primarily about 'wellness confusion' -- undermining the
+        retitle. All must be updated to matching anchor text."""
+        for path in (
+            "/rotten-fencepost",
+            "/rotten-fencepost/find-the-cause-not-the-symptoms",
+            "/campaign/001",
+        ):
+            resp = client.get(path, base_url=BASE)
+            html = resp.get_data(as_text=True)
+            assert "Modern Wellness Confusion" not in html, f"{path} still uses the old wellness-article title"
 
 
 class TestSitemapAndInternalLinks:
