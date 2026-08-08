@@ -87,21 +87,28 @@ body {
 
 /* Logo: a soft radial backing plus a shape-following drop-shadow give the
    transparent artwork (crown, kalo leaf, mountains, badge outline) contrast
-   against busy hero photos without covering it in an opaque box. Sized
-   responsively per breakpoint so the nav never grows tall enough to force
-   item overflow at any width. */
+   against busy hero photos without covering it in an opaque box.
+   2026-08-07: was 210px on desktop (down to 90px on mobile) -- unusually
+   large for a *persistent, fixed* nav bar (it renders at that size on
+   every page, at every scroll position, not just once in a hero). That
+   inflated .site-nav to ~230px tall (confirmed by Kahu Phil's own
+   rendered-browser review: logo/title/nav visibly collided at the top of
+   the page), eating into the clearance .hero's min-height is supposed to
+   guarantee against the bottom-anchored title below it. Sized down to a
+   conventional nav-logo scale at every breakpoint -- same shape/treatment,
+   proportionally smaller nav footprint at every width. */
 .site-logo-wrap {
     display: inline-flex; align-items: center; justify-content: center;
     padding: 6px; border-radius: 50%;
     background: radial-gradient(circle, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.12) 55%, transparent 75%);
 }
 .site-logo {
-    height: 210px; width: auto; display: block;
+    height: 72px; width: auto; display: block;
     filter: drop-shadow(0 2px 10px rgba(0,0,0,0.55)) drop-shadow(0 0 3px rgba(0,0,0,0.45));
 }
-@media (max-width: 1100px) { .site-logo { height: 140px; } }
-@media (max-width: 768px) { .site-logo { height: 110px; } }
-@media (max-width: 480px) { .site-logo { height: 90px; } }
+@media (max-width: 1100px) { .site-logo { height: 60px; } }
+@media (max-width: 768px) { .site-logo { height: 48px; } }
+@media (max-width: 480px) { .site-logo { height: 40px; } }
 
 .hero {
     /* min-height is a deliberate floor, not just a small-screen fallback:
@@ -114,10 +121,13 @@ body {
        bars routinely leave well under 700px of usable height on common
        laptop screens, even though 100vh/80vh alone would suggest more
        room), 600px left too little margin against the nav's worst-case
-       height (~230px, driven by the 210px logo) plus a wrapped title --
-       raised to 700px so that clearance holds on realistic short
-       viewports, not just tall ones. */
-    height: 100vh; min-height: 700px;
+       height and a wrapped title -- raised to 700px (Work Order V001-003).
+       2026-08-07: still collided on a real long, wrapped title -- the
+       primary fix was shrinking the oversized 210px logo that was
+       inflating the nav's worst-case height (see .site-logo above); this
+       raises the floor a second time too, as extra margin now that the
+       nav itself is far shorter. */
+    height: 100vh; min-height: 760px;
     background-size: cover; background-position: center;
     position: relative; display: flex; align-items: flex-end; overflow: hidden;
 }
@@ -200,24 +210,25 @@ body {
 .container {
     max-width: 1500px; margin: 0 auto; padding: 2rem; width: 100%;
 }
-/* 2026-08-07: .content-card (long-form article reading surface -- every
-   page.html render except the homepage) used to be a translucent
-   rgba(0,0,0,0.25) panel with white text, on the assumption the fixed
-   hero background image behind it would always be dark enough for that
-   text to read against. Real photos (a taro closeup, a portrait, etc.)
-   have light/detailed regions that broke that assumption, and on mobile
-   the background falls back to `scroll` (see the comment at the top of
-   this file), exposing the near-white --primary-bg gradient directly
-   under white text below the hero's own height. Root cause: reading
-   contrast was outsourced to an image nobody controls per-page. Fixed by
-   making the reading surface itself opaque and self-sufficient --
-   contrast no longer depends on what's behind it. .home-content-card
-   (the homepage's own dark, colorful sections) is deliberately left
-   untouched -- a separate class, not a redesign of the homepage. */
+/* 2026-08-07, corrected same day: .content-card (long-form article
+   reading surface -- every page.html render except the homepage) was
+   first made fully opaque and light (var(--primary-bg)/var(--text-dark))
+   to fix a real readability defect -- but that introduced a different,
+   real defect Kahu Phil's own rendered-browser review caught: a large
+   near-white page treatment nothing else on the site uses, breaking
+   visual continuity with the site's established dark, photo-backed
+   identity (the same identity .home-content-card already uses
+   successfully). Corrected: .content-card now uses that same,
+   already-proven dark treatment -- white text, gold links, text-shadow
+   -- but at much higher, near-total opacity (0.88 vs. the original
+   0.25) so contrast no longer depends on the hero photo staying dark
+   underneath at every scroll position (the original defect). Kept as
+   its own class (not merged back into .home-content-card) only because
+   the homepage's own styling must stay untouched. */
 .content-card {
-    background: var(--primary-bg); border: none;
-    padding: 3rem 5rem; box-shadow: 0 4px 24px rgba(0,0,0,0.15);
-    padding-top: 3rem; color: var(--text-dark); text-align: center;
+    background: rgba(10,10,10,0.88); border: none;
+    padding: 3rem 5rem; box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    padding-top: 3rem; color: white; text-align: center;
 }
 .home-container {
     max-width: 1500px; margin: 0 auto; padding: 2rem; width: 100%;
@@ -227,24 +238,14 @@ body {
     padding: 3rem 5rem; box-shadow: none;
     padding-top: 3rem; color: white; text-align: center;
 }
-.content-card h2 { color: var(--text-dark); margin-bottom: 1rem; font-size: 2.2rem; text-align: center; }
-.content-card h3 { color: var(--text-dark); margin: 2rem 0 1rem; font-size: 1.6rem; text-align: center; }
-.content-card a { color: #3d7a7c; text-decoration: underline; font-weight: 600; }
-.content-card p { margin-bottom: 1.5rem; font-size: 1.2rem; color: var(--text-dark); line-height: 1.8; text-align: center; }
-.content-card strong { color: var(--text-dark); }
-.content-card li { color: var(--text-dark); line-height: 1.8; }
-.content-card em { color: #5a6b7a; }
-.content-card img { max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: block; }
-.content-card img[alt*="Cover"], .content-card img[alt*="Volume"] { max-width: 300px; margin: 20px auto; }
-
-.home-content-card h2, .home-content-card h3 { color: white; text-align: center; }
-.home-content-card h2 { margin-bottom: 1rem; font-size: 2.2rem; text-shadow: 3px 3px 6px rgba(0,0,0,0.9); }
-.home-content-card h3 { margin: 2rem 0 1rem; font-size: 1.6rem; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
-.home-content-card a { color: #FFD700; text-decoration: underline; font-weight: 600; }
-.home-content-card p { margin-bottom: 1.5rem; font-size: 1.2rem; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); line-height: 1.8; text-align: center; }
-.home-content-card strong { color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
-.home-content-card li { color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); line-height: 1.8; }
-.home-content-card img { max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: block; }
+.content-card h2, .home-content-card h2 { color: white; margin-bottom: 1rem; font-size: 2.2rem; text-shadow: 3px 3px 6px rgba(0,0,0,0.9); text-align: center; }
+.content-card h3, .home-content-card h3 { color: white; margin: 2rem 0 1rem; font-size: 1.6rem; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); text-align: center; }
+.content-card a, .home-content-card a { color: #FFD700; text-decoration: underline; font-weight: 600; }
+.content-card p, .home-content-card p { margin-bottom: 1.5rem; font-size: 1.2rem; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); line-height: 1.8; text-align: center; }
+.content-card strong, .home-content-card strong { color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+.content-card li, .home-content-card li { color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); line-height: 1.8; }
+.content-card img, .home-content-card img { max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: block; }
+.content-card img[alt*="Cover"], .content-card img[alt*="Volume"],
 .home-content-card img[alt*="Cover"], .home-content-card img[alt*="Volume"] { max-width: 300px; margin: 20px auto; }
 
 .buy-section { text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.3); }
