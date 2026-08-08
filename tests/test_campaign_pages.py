@@ -170,6 +170,91 @@ class TestCampaignPageShorts:
             content.CAMPAIGNS["001"]["shorts"] = original
 
 
+class TestCampaignWorkbookCTA:
+    """2026-08-07: a produced, free, publicly-hosted workbook is not
+    fruition unless a visitor can actually find it -- workbook_cta is a
+    campaign-generic optional field (like `shorts`) that renders nothing
+    when absent, and a clearly-labeled, prominently-placed callout when
+    present."""
+
+    def test_no_workbook_cta_when_field_absent(self, client):
+        resp = client.get("/campaign/001", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "Free Companion Workbook" not in html
+
+    def test_workbook_cta_renders_when_present(self, client):
+        import content
+        original = content.CAMPAIGNS["001"].get("workbook_cta")
+        content.CAMPAIGNS["001"]["workbook_cta"] = {
+            "title": "Test Workbook", "description": "A test description.",
+            "label": "Download the Free Workbook", "url": "/media/test_workbook",
+        }
+        try:
+            resp = client.get("/campaign/001", base_url=BASE)
+            html = resp.get_data(as_text=True)
+            assert "Free Companion Workbook" in html
+            assert "Test Workbook" in html
+            assert 'href="/media/test_workbook"' in html
+            assert "Download the Free Workbook" in html
+        finally:
+            if original is None:
+                content.CAMPAIGNS["001"].pop("workbook_cta", None)
+            else:
+                content.CAMPAIGNS["001"]["workbook_cta"] = original
+
+    def test_campaign_002_workbook_cta_is_real_and_free(self, client):
+        resp = client.get("/campaign/002", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "Free Companion Workbook" in html
+        assert 'href="/media/campaign_002_planning_document_workbook_pdf_v5"' in html
+        assert "Download the Free Workbook" in html
+
+    def test_campaign_002_article_also_has_workbook_cta(self, client):
+        resp = client.get("/rotten-fencepost/why-do-i-keep-starting-over", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "Free Companion Workbook" in html
+        assert 'href="/media/campaign_002_planning_document_workbook_pdf_v5"' in html
+
+
+class TestFirstPersonTeachingVoice:
+    """2026-08-07: Kahu Phil-authored teaching must speak FROM him, not
+    describe him in third person (About/bio pages remain a legitimate
+    exception -- see test_author_page_stays_third_person below)."""
+
+    def test_campaign_001_article_uses_first_person(self, client):
+        resp = client.get("/rotten-fencepost/find-the-cause-not-the-symptoms", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "Kahu Phil Stephens teaches this idea" not in html
+        assert "I teach this idea through a simple" in html
+
+    def test_campaign_002_article_uses_first_person(self, client):
+        resp = client.get("/rotten-fencepost/why-do-i-keep-starting-over", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "Kahu Phil Stephens has been blessed" not in html
+        assert "I&#39;ve been blessed to live and work as a paniolo" in html or "I've been blessed to live and work as a paniolo" in html
+
+    def test_wellness_article_uses_first_person(self, client):
+        resp = client.get("/wellness/the-rotten-fencepost-principle", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "Kahu Phil Stephens learned this lesson" not in html
+        assert "I learned this lesson working cattle" in html
+
+    def test_author_page_stays_third_person(self, client):
+        # Legitimate exception: an "About the Author" page is genuinely
+        # written about him, not as his own teaching voice.
+        resp = client.get("/author", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "Kahu Phil Stephens is a pastor and author" in html
+
+
+class TestRottenFencepostNotPrimarilyWellness:
+    def test_wellness_article_frames_principle_as_overarching(self, client):
+        resp = client.get("/wellness/the-rotten-fencepost-principle", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "isn&#39;t a wellness program" in html or "isn't a wellness program" in html
+        assert 'href="/rotten-fencepost"' in html
+
+
 class TestSitemapAndInternalLinks:
     def test_sitemap_includes_campaign_001(self, client):
         resp = client.get("/sitemap.xml", base_url=BASE)

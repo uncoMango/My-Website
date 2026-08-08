@@ -243,11 +243,16 @@ CAMPAIGNS = {
         # {"youtube_id": "...", "title": "..."}; campaign_page.html already
         # renders this list (guarded, so an empty list shows nothing).
         "shorts": [],
+        "workbook_cta": {
+            "title": "Why Do I Keep Starting Over?",
+            "description": "A short companion workbook to help you apply this teaching to your own life — find the fence post that's actually rotting, not just the wire.",
+            "label": "Download the Free Workbook",
+            "url": "/media/campaign_002_planning_document_workbook_pdf_v5",
+        },
         "related_links": [
             {"label": "Explore the Rotten Fencepost Principle", "url": "/rotten-fencepost"},
             {"label": "Why Do I Keep Starting Over? A Rotten Fencepost Look at Repeated Failure", "url": "/rotten-fencepost/why-do-i-keep-starting-over"},
             {"label": "Find the Cause, Not the Symptoms: The Rotten Fencepost Principle", "url": "/rotten-fencepost/find-the-cause-not-the-symptoms"},
-            {"label": "Download the free companion workbook (PDF)", "url": "/media/campaign_002_planning_document_workbook_pdf_v5"},
         ],
     },
 }
