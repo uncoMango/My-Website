@@ -45,6 +45,29 @@ def _rules_for(css_text, prefix, *, exclude_prefix=None):
     return matched
 
 
+class TestFooterHasItsOwnDarkBackground:
+    """2026-08-07 (third correction): Kahu Phil reported RF pages still
+    showing white backgrounds after the .content-card fix above. Root
+    cause found this time via the actual live HTML/CSS, not guessed:
+    .footer had `background: none`, correct only on page.html routes
+    where body's --page-hero-bg layer stays visible behind it. Several
+    templates (rotten_fencepost.html, campaign_page.html, partner.html)
+    deliberately don't set that variable (Work Order 004-D) and instead
+    style themselves dark on their own -- their footer/signup-strip band
+    sits below wherever that per-template dark background ends, with
+    nothing behind it: white-on-white footer text under a bare shadow.
+    Fixed by giving .footer its own solid dark background -- does not
+    touch body or --page-hero-bg, so it can't reintroduce the Work Order
+    004-D regression (see test_shared_layout.py)."""
+
+    def test_footer_has_a_solid_dark_background(self):
+        css = STYLES_PATH.read_text(encoding="utf-8")
+        rules = _rules_for(css, ".footer", exclude_prefix=".footer >")
+        joined = " ".join(rules)
+        assert "background: #1a1a1a" in joined
+        assert "background: none" not in joined
+
+
 def test_content_card_is_opaque_not_the_old_translucent_panel():
     css = STYLES_PATH.read_text(encoding="utf-8")
     rules = _rules_for(css, ".content-card", exclude_prefix=".home-content-card")

@@ -320,7 +320,18 @@ body {
     .signup-strip button { width: 100%; }
 }
 
-.footer { text-align: center; padding: 0 0 2rem; color: white; background: none; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+/* 2026-08-07: .footer relied on `background: none` -- fine only as long as
+   something dark was always painted behind it by body's own background.
+   That's true on page.html routes (--page-hero-bg is set), but several
+   templates deliberately don't set that variable (Work Order 004-D) and
+   style themselves dark some other way instead (rotten_fencepost.html,
+   campaign_page.html, partner.html, etc. all use white text against their
+   own explicit dark backgrounds). On exactly those routes the footer sits
+   below wherever the template's own dark background ends, with nothing
+   behind it -- white-on-white text under a bare shadow. Giving .footer its
+   own solid dark background makes it correct on every route without
+   touching body or --page-hero-bg. */
+.footer { text-align: center; padding: 0 0 2rem; color: white; background: #1a1a1a; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
 .footer > p { margin-top: 1.5rem; }
 
 /* Nav collapses to the hamburger menu at 1100px and below. This is
