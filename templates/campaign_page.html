@@ -23,7 +23,7 @@
         {{ campaign.intro_html | safe }}
 
         <div class="yt-lite" data-yt-id="{{ campaign.youtube_id }}" data-yt-title="{{ campaign.title }}" onclick="rfPlayVideo(this)" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 2.5rem 0; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); background: #000; cursor: pointer;">
-            <img src="https://i.ytimg.com/vi/{{ campaign.youtube_id }}/hqdefault.jpg" alt="{{ campaign.title }}" loading="lazy"
+            <img src="{{ campaign.thumbnail_image or ('https://i.ytimg.com/vi/' ~ campaign.youtube_id ~ '/hqdefault.jpg') }}" alt="{{ campaign.title }}" loading="lazy"
                  style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; background: #000;">
             <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 68px; height: 48px; background: rgba(0,0,0,0.75); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
                 <div style="width: 0; height: 0; border-top: 12px solid transparent; border-bottom: 12px solid transparent; border-left: 20px solid white; margin-left: 4px;"></div>

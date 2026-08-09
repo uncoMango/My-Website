@@ -41,12 +41,15 @@ class TestCampaignPageRenders:
         # Click-to-play lite embed (2026-08-08 visual-rendering repair):
         # no raw <iframe> in the initial HTML anymore -- the real video id
         # is carried on data-yt-id and only becomes an iframe on click
-        # (see base.html's rfPlayVideo). The real YouTube thumbnail is
-        # still fetched directly so the correct video is unambiguous.
+        # (see base.html's rfPlayVideo). 2026-08-08 photo library work
+        # order: Campaign 001 now has a real local branded thumbnail
+        # (thumbnail_image), so it no longer falls back to YouTube's own
+        # hqdefault.jpg -- the correct video is still unambiguous via
+        # data-yt-id.
         resp = client.get("/campaign/001", base_url=BASE)
         html = resp.get_data(as_text=True)
         assert 'data-yt-id="GywmvlrxXQ0"' in html
-        assert "https://i.ytimg.com/vi/GywmvlrxXQ0/hqdefault.jpg" in html
+        assert "/static/rf_photo_library/derivatives/campaign_001_thumbnail_16x9.jpg" in html
 
     def test_links_to_rotten_fencepost_hub(self, client):
         resp = client.get("/campaign/001", base_url=BASE)
@@ -104,7 +107,7 @@ class TestRottenFencepostHubEmbed:
         resp = client.get("/rotten-fencepost", base_url=BASE)
         html = resp.get_data(as_text=True)
         assert 'data-yt-id="GywmvlrxXQ0"' in html
-        assert "https://i.ytimg.com/vi/GywmvlrxXQ0/hqdefault.jpg" in html
+        assert "/static/rf_photo_library/derivatives/campaign_001_thumbnail_16x9.jpg" in html
 
     def test_iframe_title_matches_campaign_title(self, client):
         resp = client.get("/rotten-fencepost", base_url=BASE)
@@ -192,8 +195,22 @@ class TestVideoLiteEmbedAndHeroFit:
         assert "<iframe src=" not in html
         assert 'class="yt-lite"' in html
         assert 'data-yt-id="GywmvlrxXQ0"' in html
-        assert "https://i.ytimg.com/vi/GywmvlrxXQ0/hqdefault.jpg" in html
+        assert "/static/rf_photo_library/derivatives/campaign_001_thumbnail_16x9.jpg" in html
         assert "object-fit: contain" in html
+
+    def test_thumbnail_image_falls_back_to_youtube_when_unset(self, client):
+        # Future-campaign standard: a campaign without a custom
+        # thumbnail_image yet must still work, via the same YouTube
+        # hqdefault.jpg fallback used before this library existed.
+        import content
+        original = content.CAMPAIGNS["001"].pop("thumbnail_image", None)
+        try:
+            resp = client.get("/campaign/001", base_url=BASE)
+            html = resp.get_data(as_text=True)
+            assert "https://i.ytimg.com/vi/GywmvlrxXQ0/hqdefault.jpg" in html
+        finally:
+            if original is not None:
+                content.CAMPAIGNS["001"]["thumbnail_image"] = original
 
     def test_hub_card_uses_lite_embed_not_raw_iframe(self, client):
         resp = client.get("/rotten-fencepost", base_url=BASE)
@@ -207,15 +224,36 @@ class TestVideoLiteEmbedAndHeroFit:
         assert "function rfPlayVideo(container)" in html
 
     def test_campaign_002_hero_uses_contain_not_cover(self, client):
-        # paniolo_phil.jpg is a small (203x206), near-square graphic --
-        # under the shared .hero rule's background-size:cover, a box this
-        # much wider than the image forces a centered crop showing only
-        # the middle band. hero_fit="contain" letterboxes it instead so
+        # 2026-08-08 photo library work order: hero_image now points at
+        # the best-resolution recovered copy (still near-square) rather
+        # than the old 203x206 static/images/paniolo_phil.jpg. Under the
+        # shared .hero rule's background-size:cover, a box this much wider
+        # than the image would still force a centered crop showing only
+        # the middle band -- hero_fit="contain" letterboxes it instead so
         # the full composition (Kahu Phil, the horse, the ukulele) stays
         # visible.
         resp = client.get("/campaign/002", base_url=BASE)
         html = resp.get_data(as_text=True)
+        assert "/static/rf_photo_library/sources/rf_phil_horse_ukulele_beach.jpg" in html
         assert "background-size: contain" in html
+
+    def test_article_hero_also_uses_contain_not_cover(self, client):
+        # The Campaign 002 article (/rotten-fencepost/why-do-i-keep-
+        # starting-over) has its own separate hero_image field in
+        # blueprints/pages.py's _SEO_PAGES, rendered by page.html (not
+        # campaign_page.html) -- same underlying image, same crop defect,
+        # so it needs the same hero_fit support and the same fix.
+        resp = client.get("/rotten-fencepost/why-do-i-keep-starting-over", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "/static/rf_photo_library/sources/rf_phil_horse_ukulele_beach.jpg" in html
+        assert "background-size: contain" in html
+
+    def test_homepage_hero_still_uses_default_cover(self, client):
+        # page.html's header now conditionally supports hero_fit -- must
+        # not affect the homepage (which never sets that field).
+        resp = client.get("/", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "background-size: contain" not in html
 
     def test_campaign_001_hero_still_uses_default_cover(self, client):
         # Campaign 001's hero is a properly-sized landscape photo -- must

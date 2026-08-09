@@ -292,7 +292,13 @@ _SEO_PAGES = {
     ("rotten-fencepost", "why-do-i-keep-starting-over"): {
         "title": "Why Do I Keep Starting Over? — A Rotten Fencepost Look at Repeated Failure",
         "meta_description": "Maybe the problem isn't discipline. Maybe you're fixing the wrong thing. A Rotten Fencepost look at why the same problems keep coming back.",
-        "hero_image": "/static/images/paniolo_phil.jpg",
+        # 2026-08-08 photo library work order: same replacement and same
+        # reasoning as CAMPAIGNS["002"] in content.py -- best-resolution
+        # recovered copy of the same photo, still near-square, so
+        # hero_fit="contain" (now supported by page.html's header, mirroring
+        # campaign_page.html) is kept to avoid center-cropping the subject.
+        "hero_image": "/static/rf_photo_library/sources/rf_phil_horse_ukulele_beach.jpg",
+        "hero_fit": "contain",
         "body_md": (
             "## This time will be different\n\n"
             "Have you ever found yourself saying those words? Maybe it was about your health, your finances, your relationship, or your walk with the Lord. You made a decision. You had every intention to follow through — for a little while, you did. Then one day you woke up and realized you were right back where you started.\n\n"

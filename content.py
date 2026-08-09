@@ -206,6 +206,12 @@ CAMPAIGNS = {
         "meta_description": "Watch the Rotten Fencepost video on finding hidden causes instead of chasing symptoms, then go deeper with the Field Guide and companion book.",
         "hero_image": "/static/images/diana-sanders-c24miY2R0FI-unsplash.jpg",
         "youtube_id": "GywmvlrxXQ0",
+        # Local Rotten Fencepost photo-library asset (2026-08-08 photo
+        # library work order) used as the click-to-play poster instead of
+        # depending on YouTube's own cropped iframe thumbnail. See
+        # static/rf_photo_library/INVENTORY.md for the source photo this
+        # was built from and why it was chosen.
+        "thumbnail_image": "/static/rf_photo_library/derivatives/campaign_001_thumbnail_16x9.jpg",
         "intro_html": (
             "<p>Most people spend their lives fixing symptoms instead of finding "
             "causes. This video walks through the Rotten Fencepost principle &mdash; "
@@ -230,19 +236,22 @@ CAMPAIGNS = {
         "subtitle": "The Rotten Fencepost Principle",
         "seo_title": "Watch: Why Do I Keep Starting Over? | Rotten Fencepost",
         "meta_description": "Maybe the problem isn't discipline. Maybe you're fixing the wrong thing. Kahu Phil Stephens shares a lesson from ranching in Hawaii on why the same problems keep coming back.",
-        "hero_image": "/static/images/paniolo_phil.jpg",
-        # paniolo_phil.jpg is a small (203x206), near-square graphic -- not
-        # a wide hero photo. Under the shared .hero rule's background-size:
-        # cover, a box this much wider than the image forces a centered
-        # vertical crop that shows only the middle band (hips/saddle),
-        # cropping away the head and horse. hero_fit="contain" (read by
-        # campaign_page.html) opts this one campaign out of the shared
-        # cover behavior in favor of letterboxing, which preserves the
-        # full composition -- explicitly requested over any global .hero
-        # change, which would affect every other (properly-sized) hero
-        # photo on the site.
+        # 2026-08-08 photo library work order: replaced the old
+        # static/images/paniolo_phil.jpg (203x206, near-square) with the
+        # same photo at the best resolution recovered from Kahu Phil's RF
+        # Photos collection (596x604 -- still near-square, but ~3x the
+        # linear resolution and the full, uncropped composition). See
+        # static/rf_photo_library/INVENTORY.md.
+        "hero_image": "/static/rf_photo_library/sources/rf_phil_horse_ukulele_beach.jpg",
+        # Still near-square like the image it replaces, so the same
+        # cover-vs-crop math applies: a wide, short hero box would still
+        # force a centered vertical crop that cuts off the head and horse.
+        # hero_fit="contain" is kept deliberately, not blindly reverted --
+        # determined from this replacement image's own composition, not
+        # just carried over out of habit.
         "hero_fit": "contain",
         "youtube_id": "_nnPJXOwV3I",
+        "thumbnail_image": "/static/rf_photo_library/derivatives/campaign_002_thumbnail_16x9.jpg",
         "intro_html": (
             "<p>Have you ever caught yourself saying, &ldquo;this time will be different&rdquo; &mdash; "
             "and then found yourself right back where you started? This video shares a lesson from years "
