@@ -38,9 +38,15 @@ class TestCampaignPageRenders:
         assert resp.status_code == 404
 
     def test_embeds_correct_video(self, client):
+        # Click-to-play lite embed (2026-08-08 visual-rendering repair):
+        # no raw <iframe> in the initial HTML anymore -- the real video id
+        # is carried on data-yt-id and only becomes an iframe on click
+        # (see base.html's rfPlayVideo). The real YouTube thumbnail is
+        # still fetched directly so the correct video is unambiguous.
         resp = client.get("/campaign/001", base_url=BASE)
         html = resp.get_data(as_text=True)
-        assert "https://www.youtube.com/embed/GywmvlrxXQ0" in html
+        assert 'data-yt-id="GywmvlrxXQ0"' in html
+        assert "https://i.ytimg.com/vi/GywmvlrxXQ0/hqdefault.jpg" in html
 
     def test_links_to_rotten_fencepost_hub(self, client):
         resp = client.get("/campaign/001", base_url=BASE)
@@ -97,12 +103,13 @@ class TestRottenFencepostHubEmbed:
     def test_embeds_correct_video(self, client):
         resp = client.get("/rotten-fencepost", base_url=BASE)
         html = resp.get_data(as_text=True)
-        assert "https://www.youtube.com/embed/GywmvlrxXQ0" in html
+        assert 'data-yt-id="GywmvlrxXQ0"' in html
+        assert "https://i.ytimg.com/vi/GywmvlrxXQ0/hqdefault.jpg" in html
 
     def test_iframe_title_matches_campaign_title(self, client):
         resp = client.get("/rotten-fencepost", base_url=BASE)
         html = resp.get_data(as_text=True)
-        assert re.search(r'<iframe[^>]*title="Find the Cause, Not the Symptoms"', html)
+        assert re.search(r'data-yt-title="Find the Cause, Not the Symptoms"', html)
 
     def test_links_to_campaign_page_for_sharing(self, client):
         resp = client.get("/rotten-fencepost", base_url=BASE)
@@ -125,7 +132,7 @@ class TestRottenFencepostHubEmbed:
         import content
         resp = client.get("/rotten-fencepost", base_url=BASE)
         html = resp.get_data(as_text=True)
-        embed_count = html.count("youtube.com/embed/")
+        embed_count = html.count('class="yt-lite"')
         assert embed_count == len(content.HUB_FEATURED_CAMPAIGN_IDS)
 
 
@@ -168,6 +175,54 @@ class TestCampaignPageShorts:
             assert "Test Short" in html
         finally:
             content.CAMPAIGNS["001"]["shorts"] = original
+
+
+class TestVideoLiteEmbedAndHeroFit:
+    """2026-08-08 (Urgent Visual Rendering Repair): YouTube's own iframe
+    poster crops its custom thumbnail to fill the fixed 16:9 box, cutting
+    off the subject (Campaign 001) or showing a generic placeholder before
+    interaction (Campaign 002) -- neither is controllable from our CSS
+    since the iframe's content is cross-origin. Fixed by rendering the
+    real hqdefault.jpg thumbnail ourselves via object-fit:contain, only
+    loading the real <iframe> on click (base.html's rfPlayVideo)."""
+
+    def test_campaign_page_uses_lite_embed_not_raw_iframe(self, client):
+        resp = client.get("/campaign/001", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "<iframe src=" not in html
+        assert 'class="yt-lite"' in html
+        assert 'data-yt-id="GywmvlrxXQ0"' in html
+        assert "https://i.ytimg.com/vi/GywmvlrxXQ0/hqdefault.jpg" in html
+        assert "object-fit: contain" in html
+
+    def test_hub_card_uses_lite_embed_not_raw_iframe(self, client):
+        resp = client.get("/rotten-fencepost", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "<iframe src=" not in html
+        assert 'class="yt-lite"' in html
+
+    def test_rf_play_video_function_defined_sitewide(self, client):
+        resp = client.get("/rotten-fencepost", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "function rfPlayVideo(container)" in html
+
+    def test_campaign_002_hero_uses_contain_not_cover(self, client):
+        # paniolo_phil.jpg is a small (203x206), near-square graphic --
+        # under the shared .hero rule's background-size:cover, a box this
+        # much wider than the image forces a centered crop showing only
+        # the middle band. hero_fit="contain" letterboxes it instead so
+        # the full composition (Kahu Phil, the horse, the ukulele) stays
+        # visible.
+        resp = client.get("/campaign/002", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "background-size: contain" in html
+
+    def test_campaign_001_hero_still_uses_default_cover(self, client):
+        # Campaign 001's hero is a properly-sized landscape photo -- must
+        # not be affected by Campaign 002's per-campaign hero_fit override.
+        resp = client.get("/campaign/001", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert "background-size: contain" not in html
 
 
 class TestCampaignWorkbookCTA:

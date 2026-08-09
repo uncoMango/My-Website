@@ -105,7 +105,7 @@ class TestWatchTheFoundationSeries:
     def test_video_embed_present(self, client):
         resp = client.get(PATH, base_url=BASE)
         html = resp.get_data(as_text=True)
-        assert "https://www.youtube.com/embed/GywmvlrxXQ0" in html
+        assert 'data-yt-id="GywmvlrxXQ0"' in html
 
     def test_links_to_campaign_page(self, client):
         resp = client.get(PATH, base_url=BASE)

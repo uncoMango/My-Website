@@ -161,6 +161,26 @@
 function toggleMenu() {
     document.getElementById('navMenu').classList.toggle('active');
 }
+/* Click-to-play YouTube embed (rotten_fencepost.html hub cards,
+   campaign_page.html). Renders the real hqdefault.jpg thumbnail
+   ourselves via object-fit:contain instead of relying on YouTube's own
+   iframe poster, which crops its custom thumbnail to fill the 16:9 box
+   (cutting off the subject) and can show a generic placeholder before
+   interaction. The real <iframe> only loads on click. */
+function rfPlayVideo(container) {
+    var id = container.getAttribute('data-yt-id');
+    var title = container.getAttribute('data-yt-title') || 'Video';
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1';
+    iframe.title = title;
+    iframe.style.cssText = 'position:absolute; top:0; left:0; width:100%; height:100%; border:0;';
+    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    iframe.setAttribute('allowfullscreen', '');
+    container.innerHTML = '';
+    container.appendChild(iframe);
+    container.onclick = null;
+    container.style.cursor = 'default';
+}
 function toggleDropdown(e) {
     var dropdown = e.currentTarget.closest('.nav-dropdown');
     if (dropdown) dropdown.classList.toggle('open');

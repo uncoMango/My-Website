@@ -231,6 +231,17 @@ CAMPAIGNS = {
         "seo_title": "Watch: Why Do I Keep Starting Over? | Rotten Fencepost",
         "meta_description": "Maybe the problem isn't discipline. Maybe you're fixing the wrong thing. Kahu Phil Stephens shares a lesson from ranching in Hawaii on why the same problems keep coming back.",
         "hero_image": "/static/images/paniolo_phil.jpg",
+        # paniolo_phil.jpg is a small (203x206), near-square graphic -- not
+        # a wide hero photo. Under the shared .hero rule's background-size:
+        # cover, a box this much wider than the image forces a centered
+        # vertical crop that shows only the middle band (hips/saddle),
+        # cropping away the head and horse. hero_fit="contain" (read by
+        # campaign_page.html) opts this one campaign out of the shared
+        # cover behavior in favor of letterboxing, which preserves the
+        # full composition -- explicitly requested over any global .hero
+        # change, which would affect every other (properly-sized) hero
+        # photo on the site.
+        "hero_fit": "contain",
         "youtube_id": "_nnPJXOwV3I",
         "intro_html": (
             "<p>Have you ever caught yourself saying, &ldquo;this time will be different&rdquo; &mdash; "
