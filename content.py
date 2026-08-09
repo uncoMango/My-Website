@@ -267,7 +267,7 @@ CAMPAIGNS = {
             "title": "Why Do I Keep Starting Over?",
             "description": "A short companion workbook to help you apply this teaching to your own life — find the fence post that's actually rotting, not just the wire.",
             "label": "Download the Free Workbook",
-            "url": "/media/campaign_002_planning_document_workbook_pdf_v5",
+            "url": "/media/campaign_002_planning_document_workbook_pdf_v9",
         },
         "related_links": [
             {"label": "Explore the Rotten Fencepost Principle", "url": "/rotten-fencepost"},

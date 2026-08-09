@@ -324,7 +324,7 @@ _SEO_PAGES = {
             "<div style=\"font-size: 0.8rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #3d7a7c; margin-bottom: 0.5rem;\">Free Companion Workbook</div>"
             "<h3 style=\"margin: 0 0 0.75rem 0; color: #2c3e50;\">Why Do I Keep Starting Over?</h3>"
             "<p style=\"margin: 0 0 1.5rem 0; color: #2c3e50;\">A short workbook to help you apply this teaching to your own life — find the fence post that's actually rotting, not just the wire.</p>"
-            "<a href=\"/media/campaign_002_planning_document_workbook_pdf_v5\" style=\"display: inline-block; padding: 0.9rem 2.5rem; background: linear-gradient(135deg, #d4af37, #b8960c); color: #1a1a1a; text-decoration: none; border-radius: 8px; font-weight: 900;\">Download the Free Workbook</a>"
+            "<a href=\"/media/campaign_002_planning_document_workbook_pdf_v9\" style=\"display: inline-block; padding: 0.9rem 2.5rem; background: linear-gradient(135deg, #d4af37, #b8960c); color: #1a1a1a; text-decoration: none; border-radius: 8px; font-weight: 900;\">Download the Free Workbook</a>"
             "</div>\n\n"
             "[**Explore the Rotten Fencepost Principle →**](/rotten-fencepost)"
         ),

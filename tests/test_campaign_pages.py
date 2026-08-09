@@ -299,14 +299,14 @@ class TestCampaignWorkbookCTA:
         resp = client.get("/campaign/002", base_url=BASE)
         html = resp.get_data(as_text=True)
         assert "Free Companion Workbook" in html
-        assert 'href="/media/campaign_002_planning_document_workbook_pdf_v5"' in html
+        assert 'href="/media/campaign_002_planning_document_workbook_pdf_v9"' in html
         assert "Download the Free Workbook" in html
 
     def test_campaign_002_article_also_has_workbook_cta(self, client):
         resp = client.get("/rotten-fencepost/why-do-i-keep-starting-over", base_url=BASE)
         html = resp.get_data(as_text=True)
         assert "Free Companion Workbook" in html
-        assert 'href="/media/campaign_002_planning_document_workbook_pdf_v5"' in html
+        assert 'href="/media/campaign_002_planning_document_workbook_pdf_v9"' in html
 
     def test_campaign_002_workbook_cta_is_a_light_high_contrast_box_not_dark_on_dark(self, client):
         """2026-08-07 (second correction): the CTA on /campaign/002 previously
