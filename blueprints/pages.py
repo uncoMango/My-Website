@@ -1315,6 +1315,7 @@ def sitemap():
         ("/partner",            "0.8", "monthly"),
         ("/ecosystem",          "0.9", "weekly"),
         ("/author",             "0.6", "monthly"),
+        ("/privacy-policy",     "0.5", "yearly"),
         ("/rotten-fencepost",   "0.9", "weekly"),
         ("/campaign/001",       "0.7", "monthly"),
         ("/campaign/002",       "0.7", "monthly"),
