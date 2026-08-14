@@ -292,6 +292,39 @@ CAMPAIGNS = {
             {"label": "Find the Cause, Not the Symptoms: The Rotten Fencepost Principle", "url": "/rotten-fencepost/find-the-cause-not-the-symptoms"},
         ],
     },
+    "003": {
+        "id": "003",
+        "title": "The Storm Did Not Rot the Post — It Revealed It",
+        "subtitle": "The Rotten Fencepost Principle",
+        "seo_title": "Watch: The Storm Did Not Rot the Post — It Revealed It | Rotten Fencepost",
+        "meta_description": "A storm doesn't usually create a weakness — it makes one that was already there impossible to ignore. A Rotten Fencepost look at the difference between cause and exposure.",
+        "hero_image": "/static/images/paniolo_phil.jpg",
+        "hero_fit": "contain",
+        "youtube_id": "rrwpXfaXu2E",
+        "intro_html": (
+            "<p>A fence post doesn't usually rot overnight, and neither do the weaknesses a storm in "
+            "life reveals. This teaching from Kahu Phil Stephens asks one honest question: was this "
+            "problem created by the storm, or did the storm just make visible something that had been "
+            "happening for a long time?</p>"
+        ),
+        # Shorts derived from this video. None published yet -- do not add
+        # placeholders here. Each entry, once real, is
+        # {"youtube_id": "...", "title": "..."}; campaign_page.html already
+        # renders this list (guarded, so an empty list shows nothing).
+        "shorts": [],
+        "workbook_cta": {
+            "title": "The Storm Did Not Rot the Post — It Revealed It",
+            "description": "A short companion workbook to help you find what the storm in your own life actually revealed — and decide what's really worth rebuilding.",
+            "label": "Download the Free Workbook",
+            "url": "/media/campaign_003_planning_document_workbook_pdf_v1",
+        },
+        "related_links": [
+            {"label": "Explore the Rotten Fencepost Principle", "url": "/rotten-fencepost"},
+            {"label": "The Storm Did Not Rot the Post — It Revealed It", "url": "/rotten-fencepost/the-storm-did-not-rot-the-post"},
+            {"label": "Why Do I Keep Starting Over? The Rotten Fencepost Principle", "url": "/rotten-fencepost/why-do-i-keep-starting-over"},
+            {"label": "Find the Cause, Not the Symptoms: The Rotten Fencepost Principle", "url": "/rotten-fencepost/find-the-cause-not-the-symptoms"},
+        ],
+    },
 }
 
 # Controls which campaigns are surfaced as playable videos on the

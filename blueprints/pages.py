@@ -289,6 +289,42 @@ def ecosystem():
 # ===== SEO ENTRY SUB-PAGES =====
 
 _SEO_PAGES = {
+    ("rotten-fencepost", "the-storm-did-not-rot-the-post"): {
+        "title": "The Storm Did Not Rot the Post — It Revealed It | Ke Aupuni O Ke Akua",
+        "meta_description": "A storm doesn't usually create a weakness — it makes one that was already there impossible to ignore. A Rotten Fencepost look at the difference between cause and exposure.",
+        "hero_image": "/static/images/paniolo_phil.jpg",
+        "hero_fit": "contain",
+        "body_md": (
+            "## Sometimes we blame the storm for everything that came after\n\n"
+            "Everything was fine until I lost that job. Everything was fine until the money ran out. Everything was fine until that relationship fell apart. Sometimes that's true — a storm really does cause damage. But there's another possibility that's harder to consider: what if everything wasn't fine *before* the storm? What if the storm didn't create the weakness — what if it simply made the weakness impossible to ignore?\n\n"
+            "As a paniolo here in Hawaiʻi, Kahu Phil Stephens has seen this happen with a fence. A post can stand there looking perfectly good through months of calm weather. Then a hard storm comes through, and down it goes. You could blame the storm. But when you pull that post out of the ground, you discover something important: the bottom didn't rot last night. It had been rotting for years. The storm didn't rot the post. The storm revealed it.\n\n"
+            "---\n\n"
+            "## Cause and exposure are not the same thing\n\n"
+            "There's a big difference between the cause of a problem and what merely exposed it — and confusing the two means spending years fixing the wrong thing.\n\n"
+            "Suppose somebody loses their job. Within a few weeks, everything starts falling apart financially. Naturally, the person says, \"losing my job caused this.\" And losing the job certainly mattered. But what if the real problem was no emergency savings? What if debt had already been growing? What if the family had been living with no margin for years? The job loss didn't create those things. It exposed them. That's not blame. That's diagnosis. Blame asks, \"whose fault is this?\" Diagnosis asks, \"what actually happened here?\"\n\n"
+            "We often misunderstand stability, too. Because something is standing, we assume it's strong — but those aren't the same thing. A budget can appear to work because nothing unexpected has happened yet. A relationship can appear to work because nobody's talking about the difficult stuff. Standing is not always the same thing as being sound.\n\n"
+            "---\n\n"
+            "## A choice, even in a storm you didn't choose\n\n"
+            "This isn't about pretending every hard season has a tidy lesson in it. There are things that happen in life that are simply unfair — losses nobody would choose, and no one should be told they happened just to teach a lesson.\n\n"
+            "But even when a storm isn't chosen, something else still is: even when I did not choose the storm, I can choose what I do with what it revealed. Once something has been exposed, there's a choice — cover it back up, or look at it. Covering it back up is tempting, because when the storm passes, we want normal again. But sometimes going back to the way it was is exactly the problem, because \"the way it was\" may have produced the very weakness the storm exposed. Surviving a financial crisis and returning to the same financial habits repairs nothing. Getting through a hard season in a relationship without ever naming what it exposed changes nothing.\n\n"
+            "---\n\n"
+            "## Storms reveal strength, too\n\n"
+            "It isn't only weakness that gets revealed. Maybe you've been through something you never believed you could survive, and yet here you are. Maybe your family came together. Maybe you discovered you could live with less, or found abilities you didn't know you had, or your faith became real in a way it never had to be when everything was easy.\n\n"
+            "There's a scripture about two builders — one on rock, one on sand. The same rain fell on both houses. The same storm came for both. But only one stood. The storm wasn't the difference. The foundation was. Before the rain, both houses may have looked exactly the same.\n\n"
+            "---\n\n"
+            "## One question, not twenty\n\n"
+            "If you're in a storm right now, here is not a list of twenty things to do — just one question to ask: *what is this revealing?* That's all. Don't try to rebuild your whole life today. Don't condemn yourself. Just look. Maybe it's revealing something about money, a relationship, a priority, your health, or your faith. Maybe it's revealing a strength you didn't know was there. Write it down if that helps. Pray about it. Look honestly at what life was actually like before the storm came — because once you can see clearly, you can decide what genuinely needs to change.\n\n"
+            "So before you blame the storm for everything that fell, ask yourself one more question: was this weakness *created* by the storm, or did the storm finally make visible something that had been happening for a long time? Those are not the same question — and the answer changes everything about what you rebuild.\n\n"
+            "Find the cause. Pay attention to what the storm reveals. And don't put a rotten post back into the ground.\n\n"
+            "---\n\n"
+            "### Going Deeper\n\n"
+            "This article accompanies the video [The Storm Did Not Rot the Post — It Revealed It](/campaign/003). For the broader teaching this builds on, see [Find the Cause, Not the Symptoms](/rotten-fencepost/find-the-cause-not-the-symptoms) and [Why Do I Keep Starting Over?](/rotten-fencepost/why-do-i-keep-starting-over). For the full teaching library, visit the [Rotten Fencepost hub](/rotten-fencepost).\n\n"
+            "---\n\n"
+            "[**Watch the video →**](/campaign/003)\n\n"
+            "[**Download the free companion workbook (PDF) →**](/media/campaign_003_planning_document_workbook_pdf_v1)\n\n"
+            "[**Explore the Rotten Fencepost Principle →**](/rotten-fencepost)"
+        ),
+    },
     ("rotten-fencepost", "why-do-i-keep-starting-over"): {
         "title": "Why Do I Keep Starting Over? — A Rotten Fencepost Look at Repeated Failure",
         "meta_description": "Maybe the problem isn't discipline. Maybe you're fixing the wrong thing. A Rotten Fencepost look at why the same problems keep coming back.",
@@ -1319,6 +1355,7 @@ def sitemap():
         ("/rotten-fencepost",   "0.9", "weekly"),
         ("/campaign/001",       "0.7", "monthly"),
         ("/campaign/002",       "0.7", "monthly"),
+        ("/campaign/003",       "0.7", "monthly"),
         ("/myron-golden",       "0.8", "weekly"),
         ("/aloha-wellness",     "0.8", "weekly"),
         ("/kingdom-study",                          "0.9", "weekly"),
@@ -1348,6 +1385,7 @@ def sitemap():
         ("/wellness/god-never-told-adam-when-to-eat",                 "0.8", "weekly"),
         ("/rotten-fencepost/find-the-cause-not-the-symptoms",         "0.8", "weekly"),
         ("/rotten-fencepost/why-do-i-keep-starting-over",             "0.8", "weekly"),
+        ("/rotten-fencepost/the-storm-did-not-rot-the-post",          "0.8", "weekly"),
     ]
     base_url = "https://keaupuniakeakua.faith"
     xml = ['<?xml version="1.0" encoding="UTF-8"?>']
