@@ -208,5 +208,25 @@
     "added_at": "2026-08-14T20:08:24.169046+00:00",
     "verified": false,
     "verified_at": null
+  },
+  "campaign_001_planning_document_short_01_v3": {
+    "asset_id": "campaign_001:planning_document:short_01:v3",
+    "filename": "campaign_001_planning_document_short_01_v3.mp4",
+    "campaign_id": "campaign_001",
+    "mimetype": "video/mp4",
+    "content_hash": "f9e98036bd1a76220ced4398333e132b8e3eb24abd7e88535688d42f3f6db130",
+    "added_at": "2026-08-17T07:02:11.176730+00:00",
+    "verified": false,
+    "verified_at": null
+  },
+  "campaign_001_planning_document_short_03_v3": {
+    "asset_id": "campaign_001:planning_document:short_03:v3",
+    "filename": "campaign_001_planning_document_short_03_v3.mp4",
+    "campaign_id": "campaign_001",
+    "mimetype": "video/mp4",
+    "content_hash": "4ca5f5b39bbb4a91165e20cf623ea06e03c4312f22bf2af9542e20ba456375d6",
+    "added_at": "2026-08-17T07:02:11.762951+00:00",
+    "verified": false,
+    "verified_at": null
   }
 }
