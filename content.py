@@ -334,7 +334,7 @@ CAMPAIGNS = {
 # listed here. Add a campaign's id to this list when it should be featured
 # on the hub; every campaign remains reachable at its own /campaign/<id>
 # regardless of whether it appears here.
-HUB_FEATURED_CAMPAIGN_IDS = ["001", "002"]
+HUB_FEATURED_CAMPAIGN_IDS = ["001", "002", "003"]
 
 def get_campaign_by_id(campaign_id):
     return CAMPAIGNS.get(campaign_id)

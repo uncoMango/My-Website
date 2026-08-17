@@ -138,6 +138,19 @@ class TestRottenFencepostHubEmbed:
         embed_count = html.count('class="yt-lite"')
         assert embed_count == len(content.HUB_FEATURED_CAMPAIGN_IDS)
 
+    def test_campaign_003_is_discoverable_from_the_hub(self, client):
+        # 2026-08-17 Campaign 003 website-fruition repair: Campaign 003's
+        # own /campaign/003 page, article, and workbook were all live and
+        # independently reachable, but HUB_FEATURED_CAMPAIGN_IDS was never
+        # updated to include "003" -- reachable directly, undiscoverable
+        # from the public hub a real visitor actually lands on. This test
+        # guards against a future revert of that one-line fix.
+        import content
+        assert "003" in content.HUB_FEATURED_CAMPAIGN_IDS
+        resp = client.get("/rotten-fencepost", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert 'href="/campaign/003"' in html
+
 
 class TestNoInternalIdentifierPublic:
     """Work Order P-002/P-003: 'Campaign 001' is an internal identifier
