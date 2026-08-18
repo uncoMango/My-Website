@@ -295,6 +295,31 @@ def test_regular_product_paypal_success_still_offers_download(client, monkeypatc
     assert "/download/product/prod_aloha_wellness/" in html
 
 
+def test_regular_product_paypal_success_fires_ga4_purchase_event(client, monkeypatch):
+    """The purchase-confirmation page is the one place a real sale can be
+    corroborated without trusting the ephemeral, non-persistent on-disk
+    sales counter (Render has no persistent disk - see Financial Fruition
+    Cycle 001). It must fire the same site-wide GA4 property with a real
+    ecommerce 'purchase' event, not silently skip analytics like a fully
+    standalone page normally would."""
+    monkeypatch.setattr(download_tokens_module, "DOWNLOAD_TOKEN_SECRET", "test-only-download-secret-not-real")
+    monkeypatch.setattr(
+        payments_module, "_get_paypal_token",
+        lambda: (_ for _ in ()).throw(Exception("no network in tests")),
+    )
+    monkeypatch.setattr(payments_module, "save_digital_products", lambda data: None)
+    resp = client.get(
+        "/paypal/success?orderID=fake_order_123&product_id=prod_find_the_cause_not_the_symptoms"
+    )
+    assert resp.status_code == 200
+    html = resp.get_data(as_text=True)
+    assert "G-V2NY3MEWKB" in html
+    assert "gtag('event', 'purchase'" in html
+    assert '"fake_order_123"' in html  # transaction_id
+    assert '"prod_find_the_cause_not_the_symptoms"' in html  # item_id
+    assert "value: 9.99" in html
+
+
 def test_success_template_selection_ignores_visitor_supplied_category(client, monkeypatch):
     """A visitor cannot force the partnership success page for a real,
     non-partnership product by adding an arbitrary 'category' query param -
