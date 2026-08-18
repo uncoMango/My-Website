@@ -328,5 +328,15 @@
     "added_at": "2026-08-17T07:14:13.277156+00:00",
     "verified": false,
     "verified_at": null
+  },
+  "training_001_free_guide_pdf_v1": {
+    "asset_id": "training_001:free_guide:pdf:v1",
+    "filename": "training_001_free_guide_pdf_v1.pdf",
+    "campaign_id": null,
+    "mimetype": "application/pdf",
+    "content_hash": "920de12352be5ba8d1965219abbfe4c8976868ab10475cc966fe4d56911c7eac",
+    "added_at": "2026-08-18T20:11:53.816408+00:00",
+    "verified": false,
+    "verified_at": null
   }
 }

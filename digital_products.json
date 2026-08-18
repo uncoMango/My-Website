@@ -60,6 +60,25 @@
       "total_sales": 0
     },
     {
+      "id": "prod_training_001_complete",
+      "name": "The Rotten Fencepost™ Training 001 — Complete Training",
+      "subtitle": "Why Do I Keep Starting Over? Find What Keeps Undoing Your Progress",
+      "author": "Kahu Phil Stephens",
+      "publisher": "Rotten Fencepost Publishing",
+      "series": "Rotten Fencepost™",
+      "seo_title": "Rotten Fencepost™ Training 001 — Complete Training",
+      "meta_description": "The complete Rotten Fencepost Training 001: test the suspected weak point, decide whether to repair, replace, reinforce, or maintain, build a Wind Plan for difficult days, recover from setbacks, and keep a reusable Fence Inspection Record.",
+      "description": "If the free training helped you see the problem differently, the complete training walks with you from inspection into rebuilding: test the suspected weak point, decide whether to repair, replace, reinforce, or maintain, build a Wind Plan for difficult days, recover from setbacks without automatically starting from zero, and keep a reusable Fence Inspection Record you can use again.\n\nSelf-guided. No live coaching required. No grades or submitted homework. Designed for practical reflection and action. This training is educational and reflective — it does not diagnose or treat medical or mental-health conditions and does not replace appropriate medical, mental-health, financial, legal, pastoral, or other professional assistance.",
+      "price": 149.00,
+      "category": "training",
+      "filename": "rotten_fencepost_training_001_complete_guide.pdf",
+      "file_path": "digital_products/rotten_fencepost_training_001_complete_guide.pdf",
+      "cover_image": "",
+      "active": false,
+      "downloads": 0,
+      "total_sales": 0
+    },
+    {
       "id": "rotten_fencepost_field_guide",
       "name": "Rotten Fencepost Field Guide",
       "description": "Why everything keeps falling apart — and what God actually designed instead.",

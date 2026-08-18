@@ -241,6 +241,7 @@ CAMPAIGNS = {
         # renders this list (guarded, so an empty list shows nothing).
         "shorts": [],
         "related_links": [
+            {"label": "Start the Free Rotten Fencepost™ Training: Why Do I Keep Starting Over?", "url": "/training-001/why-do-i-keep-starting-over"},
             {"label": "Get the Rotten Fencepost Field Guide", "url": "/rotten-fencepost"},
             {"label": "Read “Find the Cause, Not the Symptoms”", "url": "/product/prod_find_the_cause_not_the_symptoms"},
             {"label": "The Rotten Fencepost Principle: When the Foundation Is Off", "url": "/wellness/the-rotten-fencepost-principle"},
@@ -287,6 +288,7 @@ CAMPAIGNS = {
             "url": "/media/campaign_002_planning_document_workbook_pdf_v9",
         },
         "related_links": [
+            {"label": "Start the Free Rotten Fencepost™ Training →", "url": "/training-001/why-do-i-keep-starting-over"},
             {"label": "Explore the Rotten Fencepost Principle", "url": "/rotten-fencepost"},
             {"label": "Why Do I Keep Starting Over? A Rotten Fencepost Look at Repeated Failure", "url": "/rotten-fencepost/why-do-i-keep-starting-over"},
             {"label": "Find the Cause, Not the Symptoms: The Rotten Fencepost Principle", "url": "/rotten-fencepost/find-the-cause-not-the-symptoms"},
@@ -319,6 +321,7 @@ CAMPAIGNS = {
             "url": "/media/campaign_003_planning_document_workbook_pdf_v1",
         },
         "related_links": [
+            {"label": "Start the Free Rotten Fencepost™ Training: Inspect What the Storm Revealed", "url": "/training-001/why-do-i-keep-starting-over"},
             {"label": "Explore the Rotten Fencepost Principle", "url": "/rotten-fencepost"},
             {"label": "The Storm Did Not Rot the Post — It Revealed It", "url": "/rotten-fencepost/the-storm-did-not-rot-the-post"},
             {"label": "Why Do I Keep Starting Over? The Rotten Fencepost Principle", "url": "/rotten-fencepost/why-do-i-keep-starting-over"},
