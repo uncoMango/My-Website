@@ -1487,6 +1487,7 @@ def sitemap():
         ("/rotten-fencepost/why-do-i-keep-starting-over",             "0.8", "weekly"),
         ("/rotten-fencepost/the-storm-did-not-rot-the-post",          "0.8", "weekly"),
         ("/training-001/why-do-i-keep-starting-over",                 "0.9", "weekly"),
+        ("/product/prod_training_001_complete",                       "0.8", "monthly"),
     ]
     base_url = "https://keaupuniakeakua.faith"
     xml = ['<?xml version="1.0" encoding="UTF-8"?>']
