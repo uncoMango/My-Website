@@ -16,7 +16,10 @@ from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 
 from config import DOWNLOAD_TOKEN_SECRET, DOWNLOAD_TOKEN_USAGE_FILE
 
-TOKEN_MAX_AGE_SECONDS = 72 * 60 * 60  # 72 hours
+TOKEN_MAX_AGE_SECONDS = 14 * 24 * 60 * 60  # 14 days (Hurricane Readiness work order, 2026-08-21:
+# the owner may be genuinely unavailable for several days at a time; a
+# 72-hour window left a real customer with no self-service way to
+# re-access a real purchase if they lost the link during that absence)
 MAX_USES = 5
 _SALT = "product-download"
 

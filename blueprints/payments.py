@@ -52,7 +52,7 @@ payments_bp = Blueprint("payments", __name__)
 # ready" page used for real digital products.
 # =========================================================
 
-def _render_payment_success(product, order_id):
+def _render_payment_success(product, order_id, buyer_email=""):
     if product.get("category") == "partnership":
         return render_template(
             "partner_success.html",
@@ -64,6 +64,13 @@ def _render_payment_success(product, order_id):
         )
     token = generate_download_token(product["id"], order_id)
     download_url = f"/download/product/{product['id']}/{token}" if token else None
+    if download_url:
+        # Hurricane Readiness work order (2026-08-21): the on-screen link
+        # was the customer's only copy -- if they lost this tab or the
+        # owner was genuinely unavailable to resend it by hand, a real,
+        # already-paid customer had no self-service way to get what they
+        # bought. This never blocks or delays rendering the success page.
+        _send_customer_confirmation(buyer_email, product, download_url, order_id)
     return render_template(
         "payment_success.html",
         product=product,
@@ -102,6 +109,36 @@ def _send_sale_notification(product_name, amount, order_id, buyer_name="", buyer
             server.starttls()
             server.login(SMTP_USER, SMTP_PASS)
             server.sendmail(SMTP_USER, [NOTIFY_EMAIL], msg.as_string())
+    except Exception:
+        pass  # Never fail the payment flow due to email errors
+
+
+def _send_customer_confirmation(buyer_email, product, download_url, order_id):
+    """Sends the buyer their own copy of the real, working download link
+    (Hurricane Readiness work order, 2026-08-21) -- so a real purchase
+    does not depend on the buyer keeping the one on-screen success-page
+    tab open, or on Kahu Phil being reachable to resend it by hand if
+    they lose it. Silently skipped if SMTP is not configured or the
+    buyer's email could not be determined (PayPal/Stripe sometimes
+    withhold it) -- never fails or delays the payment flow."""
+    if not (SMTP_HOST and SMTP_USER and SMTP_PASS and buyer_email):
+        return
+    try:
+        msg = MIMEText(
+            f"Mahalo for your purchase of {product['name']}!\n\n"
+            f"Your download link:\n{SITE_DOMAIN}{download_url}\n\n"
+            f"This link is valid for 14 days and up to 5 downloads. If you have any "
+            f"trouble at all, contact {CONTACT_EMAIL} with the Order ID below and we "
+            f"will make sure you get your file.\n\n"
+            f"Order ID: {order_id}\n"
+        )
+        msg["Subject"] = f"Your download: {product['name']}"
+        msg["From"] = SMTP_USER
+        msg["To"] = buyer_email
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SMTP_USER, SMTP_PASS)
+            server.sendmail(SMTP_USER, [buyer_email], msg.as_string())
     except Exception:
         pass  # Never fail the payment flow due to email errors
 
@@ -202,7 +239,7 @@ def paypal_success():
 
     _send_sale_notification(product["name"], float(product["price"]), order_id, buyer_name, buyer_email)
 
-    return _render_payment_success(product, order_id)
+    return _render_payment_success(product, order_id, buyer_email)
 
 
 @payments_bp.route("/paypal/cancel")
@@ -297,7 +334,7 @@ def stripe_success():
     buyer_email = getattr(customer_details, "email", None) or ""
     _send_sale_notification(product["name"], float(product["price"]), session_id, buyer_name, buyer_email)
 
-    return _render_payment_success(product, session_id)
+    return _render_payment_success(product, session_id, buyer_email)
 
 
 @payments_bp.route("/stripe/webhook", methods=["POST"])
