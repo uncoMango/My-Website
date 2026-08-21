@@ -13,6 +13,12 @@ DATA_FILE = BASE / "website_content.json"
 PRODUCTS_FILE = BASE / "digital_products.json"
 PRODUCTS_FOLDER = BASE / "digital_products"
 DOWNLOAD_TOKEN_USAGE_FILE = BASE / "download_token_usage.json"
+# Hurricane Readiness work order (2026-08-21): tracks which Stripe
+# checkout sessions have already been fulfilled (sale counted, customer
+# emailed), so a Stripe webhook retry -- or the webhook and the
+# customer's own browser both completing for the same real purchase --
+# can never double-count a sale or send a duplicate fulfillment email.
+STRIPE_FULFILLED_SESSIONS_FILE = BASE / "stripe_fulfilled_sessions.json"
 EMAILS_FILE = BASE / "email_subscribers.json"
 SUBSCRIBERS_FILE = BASE / "data" / "subscribers.json"
 
@@ -66,6 +72,18 @@ PAYPAL_CLIENT_SECRET = os.environ.get("PAYPAL_CLIENT_SECRET", "")
 PAYPAL_BASE_URL = "https://api-m.paypal.com"
 PAYPAL_RETURN_URL = "https://keaupuniakeakua.faith/paypal/success"
 PAYPAL_CANCEL_URL = "https://keaupuniakeakua.faith/paypal/cancel"
+
+# Hurricane Readiness work order (2026-08-21, temporary, reversible):
+# PayPal has no server-side webhook here, so a customer whose browser
+# disappears right after paying via PayPal (lost connection, closed tab)
+# is not guaranteed automatic fulfillment the way a Stripe purchase now
+# is (see blueprints/payments.py's stripe_webhook()). Rather than build
+# a new PayPal webhook under hurricane time pressure, the PayPal option
+# is withheld at checkout for the specific product(s) listed here only
+# -- PayPal itself, its credentials, and every other product's PayPal
+# path are completely untouched. To restore PayPal for Training 001,
+# simply remove its id from this set.
+PAYPAL_DISABLED_PRODUCT_IDS = {"prod_training_001_complete"}
 
 # ----- STRIPE -----
 # Sign up at https://stripe.com then paste your keys here.

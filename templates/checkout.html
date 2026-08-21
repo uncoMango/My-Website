@@ -104,6 +104,7 @@
     </div>
     {% endif %}
 
+    {% if paypal_enabled %}
     <!-- PAYPAL -->
     <div class="paypal-section">
         <div class="paypal-section-msg">
@@ -115,6 +116,7 @@
             No PayPal account needed – credit &amp; debit cards accepted
         </p>
     </div>
+    {% endif %}
 
     <div class="checkout-nav-links">
         <a href="/product/{{ product.id }}">&larr; Back to product page</a>
@@ -123,6 +125,7 @@
 </div>
 {% endblock %}
 {% block extra_scripts %}
+{% if paypal_enabled %}
 <script src="https://www.paypal.com/sdk/js?client-id={{ paypal_client_id }}&currency=USD"></script>
 <script>
 paypal.Buttons({
@@ -144,4 +147,5 @@ paypal.Buttons({
     }
 }).render('#paypal-button-container');
 </script>
+{% endif %}
 {% endblock %}
