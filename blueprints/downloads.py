@@ -2,13 +2,17 @@
 import json
 import os
 import smtplib
-import threading
 from datetime import datetime, timezone
+from threading import Timer
 from urllib.parse import quote
 from email.mime.text import MIMEText
 from flask import Blueprint, send_file, abort, request, redirect, render_template
-from config import BASE, EMAILS_FILE, SUBSCRIBERS_FILE, SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, NOTIFY_EMAIL, LOGO_PATH, LOGO_HEIGHT, FOOTER_TEXT
+from config import BASE, EMAILS_FILE, SUBSCRIBERS_FILE, SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, NOTIFY_EMAIL, LOGO_PATH, LOGO_HEIGHT, FOOTER_TEXT, PHYSICAL_MAILING_ADDRESS
 from limiter import limiter
+import unsubscribe_tokens
+
+DAY3_SECONDS = 3 * 24 * 3600
+DAY7_SECONDS = 7 * 24 * 3600
 
 downloads_bp = Blueprint("downloads", __name__)
 
@@ -56,6 +60,33 @@ def _load_subscribers():
 def _save_subscribers(subscribers):
     SUBSCRIBERS_FILE.parent.mkdir(parents=True, exist_ok=True)
     SUBSCRIBERS_FILE.write_text(json.dumps(subscribers, indent=2))
+
+
+def _find_subscriber(subscribers, email):
+    for s in subscribers:
+        if s.get("email") == email:
+            return s
+    return None
+
+
+def _is_unsubscribed(email):
+    """Real-time check, reloaded from disk -- a day-3/day-7 send must
+    never rely on the in-memory state captured at signup time, since the
+    subscriber may have unsubscribed at any point since then."""
+    sub = _find_subscriber(_load_subscribers(), email)
+    return bool(sub and sub.get("unsubscribed"))
+
+
+def _mark_subscriber_fields(email, **fields):
+    """Updates one subscriber's own record in place (unsubscribed flag,
+    day3_sent/day7_sent markers) -- never a second, parallel store."""
+    subscribers = _load_subscribers()
+    sub = _find_subscriber(subscribers, email)
+    if sub is None:
+        return False
+    sub.update(fields)
+    _save_subscribers(subscribers)
+    return True
 
 
 # Print stored subscribers on startup so we can verify data is persisting.
@@ -109,8 +140,35 @@ def _notify_new_subscriber(email, name=""):
         print(f"[notify] FAILED for {email}: {e}", flush=True)
 
 
+def _unsubscribe_footer_html(email):
+    token = unsubscribe_tokens.generate_unsubscribe_token(email)
+    link = f"https://keaupuniakeakua.faith/unsubscribe/{token}" if token else None
+    parts = [f'<p style="color:rgba(255,255,255,0.5);font-size:0.8rem;">{PHYSICAL_MAILING_ADDRESS}</p>']
+    if link:
+        parts.append(f'<p style="color:rgba(255,255,255,0.5);font-size:0.8rem;"><a href="{link}" style="color:rgba(255,255,255,0.6);">Unsubscribe</a></p>')
+    return "\n".join(parts)
+
+
+def _unsubscribe_footer_plain(email):
+    token = unsubscribe_tokens.generate_unsubscribe_token(email)
+    lines = [PHYSICAL_MAILING_ADDRESS]
+    if token:
+        lines.append(f"Unsubscribe: https://keaupuniakeakua.faith/unsubscribe/{token}")
+    return "\n".join(lines)
+
+
+def _compliance_ready():
+    """CAN-SPAM's real floor (working unsubscribe link + physical address)
+    can only be met once Kahu Phil has supplied his own real mailing
+    address -- never fabricated here. While unset, every automated
+    marketing send below fails closed, the same convention already used
+    for a missing SMTP credential; subscriber storage and the admin
+    new-subscriber notification are unaffected either way."""
+    return bool(PHYSICAL_MAILING_ADDRESS)
+
+
 def _send_welcome_email(email, name=""):
-    if not all([SMTP_HOST, SMTP_USER, SMTP_PASS]):
+    if not all([SMTP_HOST, SMTP_USER, SMTP_PASS]) or not _compliance_ready():
         return
     try:
         greeting = name if name else "friend"
@@ -125,6 +183,7 @@ def _send_welcome_email(email, name=""):
 <p style="line-height:1.8;">Watch your inbox. What is coming is not just information — it is invitation.</p>
 <hr style="border:none;border-top:1px solid rgba(255,255,255,0.15);margin:1.5rem 0;">
 <p style="color:rgba(255,255,255,0.6);font-size:0.9rem;">Kahu Phil Stephens<br>keaupuniakeakua.faith</p>
+{_unsubscribe_footer_html(email)}
 </div>
 </body>
 </html>"""
@@ -142,7 +201,10 @@ def _send_welcome_email(email, name=""):
 
 
 def _send_followup_day3(email, name=""):
-    if not all([SMTP_HOST, SMTP_USER, SMTP_PASS]):
+    if not all([SMTP_HOST, SMTP_USER, SMTP_PASS]) or not _compliance_ready():
+        return
+    if _is_unsubscribed(email):
+        print(f"[followup-day3] Skipped {email} -- unsubscribed", flush=True)
         return
     try:
         greeting = name if name else "friend"
@@ -154,7 +216,9 @@ def _send_followup_day3(email, name=""):
             "Keep going. You are not alone in this.\n\n"
             "Mahalo for being here.\n\n"
             "Kahu Phil Stephens\n"
-            "keaupuniakeakua.faith"
+            "keaupuniakeakua.faith\n\n"
+            "--\n"
+            f"{_unsubscribe_footer_plain(email)}"
         )
         msg = MIMEText(body, "plain")
         msg["Subject"] = "A word for you — Ke Aupuni O Ke Akua"
@@ -165,12 +229,16 @@ def _send_followup_day3(email, name=""):
             server.login(SMTP_USER, SMTP_PASS)
             server.send_message(msg)
         print(f"[followup-day3] Day-3 email sent to {email}", flush=True)
+        _mark_subscriber_fields(email, day3_sent=True)
     except Exception as e:
         print(f"[followup-day3] FAILED for {email}: {e}", flush=True)
 
 
 def _send_followup_day7(email, name=""):
-    if not all([SMTP_HOST, SMTP_USER, SMTP_PASS]):
+    if not all([SMTP_HOST, SMTP_USER, SMTP_PASS]) or not _compliance_ready():
+        return
+    if _is_unsubscribed(email):
+        print(f"[followup-day7] Skipped {email} -- unsubscribed", flush=True)
         return
     try:
         greeting = name if name else "friend"
@@ -186,7 +254,9 @@ def _send_followup_day7(email, name=""):
             "No pressure. Just an invitation.\n\n"
             "Mahalo for walking this road with us.\n\n"
             "Kahu Phil Stephens\n"
-            "keaupuniakeakua.faith"
+            "keaupuniakeakua.faith\n\n"
+            "--\n"
+            f"{_unsubscribe_footer_plain(email)}"
         )
         msg = MIMEText(body, "plain")
         msg["Subject"] = "Wellness from the inside out — Aloha Wellness"
@@ -197,8 +267,37 @@ def _send_followup_day7(email, name=""):
             server.login(SMTP_USER, SMTP_PASS)
             server.send_message(msg)
         print(f"[followup-day7] Day-7 email sent to {email}", flush=True)
+        _mark_subscriber_fields(email, day7_sent=True)
     except Exception as e:
         print(f"[followup-day7] FAILED for {email}: {e}", flush=True)
+
+
+# ---------------------------------------------------------------------------
+# Follow-up scheduling -- also re-run once at process startup (bottom of
+# this file) so an in-memory threading.Timer lost to a restart is
+# recomputed from the persisted subscriber record instead of silently
+# dropped forever. Never re-sends a follow-up already marked sent, and
+# never sends to an unsubscribed address (checked again, fresh, inside
+# _send_followup_day3/_send_followup_day7 themselves).
+# ---------------------------------------------------------------------------
+
+def _schedule_followups(email, name, signup_time):
+    subscribers = _load_subscribers()
+    sub = _find_subscriber(subscribers, email) or {}
+    if sub.get("unsubscribed"):
+        return
+    elapsed = (datetime.now(timezone.utc) - signup_time).total_seconds()
+    for delay_seconds, sent_field, sender in (
+        (DAY3_SECONDS, "day3_sent", _send_followup_day3),
+        (DAY7_SECONDS, "day7_sent", _send_followup_day7),
+    ):
+        if sub.get(sent_field):
+            continue
+        remaining = delay_seconds - elapsed
+        if remaining <= 0:
+            sender(email, name)
+        else:
+            Timer(remaining, sender, args=[email, name]).start()
 
 
 # ---------------------------------------------------------------------------
@@ -255,22 +354,34 @@ def subscribe():
 
     subscribers = _load_subscribers()
     if not any(s["email"] == email for s in subscribers):
+        now = datetime.now(timezone.utc)
         subscribers.append({
             "first_name": first_name,
             "email": email,
             "source": "footer_signup",
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": now.isoformat(),
         })
         _save_subscribers(subscribers)
         print(f"[subscribe] Saved — {len(subscribers)} total subscriber(s)", flush=True)
-        _append_to_sheet(first_name, email, datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"))
+        _append_to_sheet(first_name, email, now.strftime("%Y-%m-%d %H:%M UTC"))
         _notify_new_subscriber(email, first_name)
         _send_welcome_email(email, first_name)
-        threading.Timer(3 * 24 * 3600, _send_followup_day3, args=[email, first_name]).start()
-        threading.Timer(7 * 24 * 3600, _send_followup_day7, args=[email, first_name]).start()
+        _schedule_followups(email, first_name, now)
         print(f"[followup] Scheduled day-3 and day-7 emails for {email}", flush=True)
 
     return redirect(f"/thank-you?name={quote(first_name)}")
+
+
+@downloads_bp.route("/unsubscribe/<token>")
+def unsubscribe(token):
+    email, reason = unsubscribe_tokens.resolve_unsubscribe_token(token)
+    if email is None:
+        return "This unsubscribe link is invalid or no longer usable.", 400
+    _mark_subscriber_fields(
+        email, unsubscribed=True, unsubscribed_at=datetime.now(timezone.utc).isoformat(),
+    )
+    print(f"[unsubscribe] {email} unsubscribed", flush=True)
+    return f"{email} has been unsubscribed. You will not receive further automated emails from this list."
 
 
 @downloads_bp.route("/thank-you")
@@ -369,3 +480,36 @@ def _send(path):
     if not path.exists():
         abort(404)
     return send_file(path, mimetype="application/pdf", as_attachment=True)
+
+
+# ---------------------------------------------------------------------------
+# Startup recovery -- an in-memory threading.Timer scheduled by
+# _schedule_followups() above is lost on every process restart (Render's
+# web dynos restart periodically even without a fresh deploy). Recompute
+# each still-pending day-3/day-7 follow-up from the one persisted record
+# instead of silently losing it. Scoped to source == "footer_signup" only,
+# matching exactly what _schedule_followups() was already scheduling
+# before this fix -- aloha_wellness_freebie signups never had a day-3/
+# day-7 follow-up scheduled in the first place, and this recovery pass
+# must not start sending them one now.
+#
+# This recovers a follow-up across an ordinary process restart. It does
+# NOT by itself survive a full redeploy on a host with no persistent disk
+# (data/subscribers.json itself would need to survive that, which
+# render.yaml's current lack of a `disk:` section does not guarantee) --
+# that remains a separate, larger, cost-bearing infrastructure decision,
+# not solved here.
+# ---------------------------------------------------------------------------
+
+def _recover_pending_followups():
+    for sub in _load_subscribers():
+        if sub.get("source") != "footer_signup" or sub.get("unsubscribed"):
+            continue
+        try:
+            signup_time = datetime.fromisoformat(sub["timestamp"])
+        except (KeyError, ValueError):
+            continue
+        _schedule_followups(sub["email"], sub.get("first_name", ""), signup_time)
+
+
+_recover_pending_followups()

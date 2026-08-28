@@ -392,6 +392,16 @@ class TestRottenFencepostNotPrimarilyWellness:
         assert "taro_root.jpg" not in html
         assert "molokai_ranch.jpg" in html
 
+    def test_wellness_article_links_to_its_own_paid_product(self, client):
+        """This is Campaign 001's registered free_help_path
+        (CAMPAIGNS_REGISTRY.json in the separate Discovery Engine repo) --
+        a real stranger reading the free article had no path onward to the
+        $9.99 ebook that deepens this exact teaching. Regression guard for
+        that dead end (found 2026-08-27 live walkthrough)."""
+        resp = client.get("/wellness/the-rotten-fencepost-principle", base_url=BASE)
+        html = resp.get_data(as_text=True)
+        assert 'href="/product/prod_find_the_cause_not_the_symptoms"' in html
+
     def test_cross_references_use_updated_title_text(self, client):
         """Other pages that link to the wellness article using the OLD
         title as visible anchor text would otherwise still tell a visitor

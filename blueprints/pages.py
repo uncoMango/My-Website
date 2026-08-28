@@ -1062,6 +1062,8 @@ _SEO_PAGES = {
             "[**Eating When Hungry →**](/wellness/eating-when-hungry)\n\n"
             "[**What Is the Kingdom of God? →**](/kingdom/what-is-the-kingdom-of-god)\n\n"
             "Want to apply this principle beyond wellness? [**The Rotten Fencepost Field Guide →**](/rotten-fencepost) walks through the same 3-question method for finding hidden causes in any area of life.\n\n"
+            "Want to go deeper on this exact teaching? [**Find the Cause, Not the Symptoms — $9.99 →**](/product/prod_find_the_cause_not_the_symptoms) "
+            "walks through the full method with practical exercises across health, finances, relationships, and leadership.\n\n"
             "---\n\n"
             "Continue learning through the wellness and Kingdom ecosystem.\n\n"
             "[**Support the Ministry →**](/partner)"

@@ -65,6 +65,17 @@ DOWNLOAD_TOKEN_SECRET = os.environ.get("DOWNLOAD_TOKEN_SECRET", "")
 # Signs the admin login session cookie. Required for /kahu auth to work.
 FLASK_SECRET_KEY = os.environ.get("FLASK_SECRET_KEY", "")
 
+# ----- EMAIL COMPLIANCE (CAN-SPAM) -----
+# A real, physical postal address (street address, PO box, or registered
+# commercial mail-receiving agency) is required on every automated
+# marketing email. Deliberately never hardcoded/guessed here -- only Kahu
+# Phil can supply his own real address. While unset, blueprints/downloads.py
+# skips sending the welcome/day-3/day-7 emails entirely (fail closed, same
+# convention as a missing SMTP credential) rather than send a non-compliant
+# email; subscriber storage and the admin new-subscriber notification are
+# unaffected either way.
+PHYSICAL_MAILING_ADDRESS = os.environ.get("PHYSICAL_MAILING_ADDRESS", "")
+
 # ----- PAYPAL -----
 # Live credentials (already active)
 PAYPAL_CLIENT_ID = os.environ.get("PAYPAL_CLIENT_ID", "")
