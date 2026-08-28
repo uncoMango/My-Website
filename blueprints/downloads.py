@@ -230,6 +230,7 @@ def _send_followup_day3(email, name=""):
             server.send_message(msg)
         print(f"[followup-day3] Day-3 email sent to {email}", flush=True)
         _mark_subscriber_fields(email, day3_sent=True)
+        _append_sheet_event(name, email, SHEET_EVENT_DAY3_SENT, datetime.now(timezone.utc).isoformat())
     except Exception as e:
         print(f"[followup-day3] FAILED for {email}: {e}", flush=True)
 
@@ -268,6 +269,7 @@ def _send_followup_day7(email, name=""):
             server.send_message(msg)
         print(f"[followup-day7] Day-7 email sent to {email}", flush=True)
         _mark_subscriber_fields(email, day7_sent=True)
+        _append_sheet_event(name, email, SHEET_EVENT_DAY7_SENT, datetime.now(timezone.utc).isoformat())
     except Exception as e:
         print(f"[followup-day7] FAILED for {email}: {e}", flush=True)
 
@@ -301,13 +303,37 @@ def _schedule_followups(email, name, signup_time):
 
 
 # ---------------------------------------------------------------------------
-# Google Sheets integration
+# Google Sheets integration -- the one durable, cross-redeploy record
 # ---------------------------------------------------------------------------
+#
+# data/subscribers.json lives on Render's ephemeral filesystem (no `disk:`
+# section in render.yaml) -- it is not guaranteed to survive a fresh
+# deploy. Google Sheets, already integrated here (optional, only runs if
+# GOOGLE_CREDENTIALS_JSON is set), is the one existing, no-new-cost
+# capability that does. Extended from a write-only signup log into a real,
+# append-only EVENT log -- same column shape, the "Website Signup" label
+# generalized into an event_type column that now also carries
+# "Unsubscribed"/"Day3 Sent"/"Day7 Sent" -- so a wiped local file can be
+# fully reconstructed. This matters beyond convenience: recovering only
+# the original signup fact and forgetting a real unsubscribe would resume
+# mailing someone who opted out, a real compliance regression this must
+# not introduce. Entirely inert (identical to the prior behavior) when
+# GOOGLE_CREDENTIALS_JSON is unset.
 
-def _append_to_sheet(name, email, timestamp):
+SHEET_EVENT_SIGNUP = "Website Signup"
+SHEET_EVENT_UNSUBSCRIBED = "Unsubscribed"
+SHEET_EVENT_DAY3_SENT = "Day3 Sent"
+SHEET_EVENT_DAY7_SENT = "Day7 Sent"
+
+
+def _open_sheet():
+    """Returns the real gspread Worksheet, or None if not configured or
+    unreachable. Never raises -- every caller already treats a Sheets
+    outage as non-fatal, the same discipline this file already applies
+    to an SMTP outage."""
     creds_json = os.environ.get("GOOGLE_CREDENTIALS_JSON", "")
     if not creds_json:
-        return
+        return None
     try:
         from google.oauth2.service_account import Credentials
         import gspread
@@ -320,12 +346,90 @@ def _append_to_sheet(name, email, timestamp):
             ],
         )
         client = gspread.authorize(creds)
-        sheet = client.open("Ke Aupuni Leads").sheet1
-        row = [name, email, "Website Signup", timestamp]
-        sheet.append_row(row)
-        print(f"[sheets] Row appended for {email}", flush=True)
+        return client.open("Ke Aupuni Leads").sheet1
     except Exception as e:
-        print(f"[sheets] FAILED for {email}: {type(e).__name__}: {e}", flush=True)
+        print(f"[sheets] Could not open sheet: {type(e).__name__}: {e}", flush=True)
+        return None
+
+
+def _append_sheet_event(name, email, event_type, timestamp):
+    sheet = _open_sheet()
+    if sheet is None:
+        return
+    try:
+        sheet.append_row([name, email, event_type, timestamp])
+        print(f"[sheets] {event_type} row appended for {email}", flush=True)
+    except Exception as e:
+        print(f"[sheets] FAILED to append {event_type} for {email}: {type(e).__name__}: {e}", flush=True)
+
+
+def _append_to_sheet(name, email, timestamp):
+    """Preserved name/signature -- the original signup-time call site."""
+    _append_sheet_event(name, email, SHEET_EVENT_SIGNUP, timestamp)
+
+
+def _read_sheet_state():
+    """Reconstructs one record per email from the full event log. Returns
+    {} if Sheets isn't configured or unreachable -- callers must treat
+    that exactly like "nothing to reconcile", never like "everyone
+    unsubscribed"."""
+    sheet = _open_sheet()
+    if sheet is None:
+        return {}
+    try:
+        rows = sheet.get_all_values()
+    except Exception as e:
+        print(f"[sheets] FAILED to read sheet: {type(e).__name__}: {e}", flush=True)
+        return {}
+    state = {}
+    for row in rows:
+        if len(row) < 4:
+            continue
+        name, raw_email, event_type, timestamp = row[0], row[1], row[2], row[3]
+        email = raw_email.strip().lower()
+        if not email or "@" not in email:
+            continue
+        rec = state.setdefault(email, {"email": email, "first_name": name, "source": "footer_signup"})
+        if event_type == SHEET_EVENT_SIGNUP and "timestamp" not in rec:
+            rec["timestamp"] = timestamp
+        elif event_type == SHEET_EVENT_UNSUBSCRIBED:
+            rec["unsubscribed"] = True
+        elif event_type == SHEET_EVENT_DAY3_SENT:
+            rec["day3_sent"] = True
+        elif event_type == SHEET_EVENT_DAY7_SENT:
+            rec["day7_sent"] = True
+    return state
+
+
+def _reconcile_subscribers_from_sheet():
+    """Merges the Sheet's durable event history into the local (possibly
+    just-wiped-by-a-redeploy) subscriber file. Boolean flags are OR-merged
+    -- once true anywhere, true everywhere -- so a redeploy can never
+    silently resurrect an unsubscribed contact. A correct no-op whenever
+    Sheets isn't configured (_read_sheet_state() returns {})."""
+    sheet_state = _read_sheet_state()
+    if not sheet_state:
+        return
+    subscribers = _load_subscribers()
+    by_email = {s["email"]: s for s in subscribers if s.get("email")}
+    changed = False
+    for email, sheet_rec in sheet_state.items():
+        local = by_email.get(email)
+        if local is None:
+            subscribers.append(sheet_rec)
+            by_email[email] = sheet_rec
+            changed = True
+            continue
+        for flag in ("unsubscribed", "day3_sent", "day7_sent"):
+            if sheet_rec.get(flag) and not local.get(flag):
+                local[flag] = True
+                changed = True
+        if not local.get("timestamp") and sheet_rec.get("timestamp"):
+            local["timestamp"] = sheet_rec["timestamp"]
+            changed = True
+    if changed:
+        _save_subscribers(subscribers)
+        print("[sheets] Reconciled local subscriber state from the durable event log", flush=True)
 
 
 # ---------------------------------------------------------------------------
@@ -363,7 +467,9 @@ def subscribe():
         })
         _save_subscribers(subscribers)
         print(f"[subscribe] Saved — {len(subscribers)} total subscriber(s)", flush=True)
-        _append_to_sheet(first_name, email, now.strftime("%Y-%m-%d %H:%M UTC"))
+        # ISO format, not a human-readable string -- _reconcile_subscribers_from_sheet()
+        # must be able to datetime.fromisoformat() this back on recovery.
+        _append_to_sheet(first_name, email, now.isoformat())
         _notify_new_subscriber(email, first_name)
         _send_welcome_email(email, first_name)
         _schedule_followups(email, first_name, now)
@@ -377,9 +483,10 @@ def unsubscribe(token):
     email, reason = unsubscribe_tokens.resolve_unsubscribe_token(token)
     if email is None:
         return "This unsubscribe link is invalid or no longer usable.", 400
-    _mark_subscriber_fields(
-        email, unsubscribed=True, unsubscribed_at=datetime.now(timezone.utc).isoformat(),
-    )
+    now = datetime.now(timezone.utc)
+    sub = _find_subscriber(_load_subscribers(), email)
+    _mark_subscriber_fields(email, unsubscribed=True, unsubscribed_at=now.isoformat())
+    _append_sheet_event((sub or {}).get("first_name", ""), email, SHEET_EVENT_UNSUBSCRIBED, now.isoformat())
     print(f"[unsubscribe] {email} unsubscribed", flush=True)
     return f"{email} has been unsubscribed. You will not receive further automated emails from this list."
 
@@ -493,12 +600,15 @@ def _send(path):
 # day-7 follow-up scheduled in the first place, and this recovery pass
 # must not start sending them one now.
 #
-# This recovers a follow-up across an ordinary process restart. It does
-# NOT by itself survive a full redeploy on a host with no persistent disk
-# (data/subscribers.json itself would need to survive that, which
-# render.yaml's current lack of a `disk:` section does not guarantee) --
-# that remains a separate, larger, cost-bearing infrastructure decision,
-# not solved here.
+# This recovers a follow-up across an ordinary process restart using the
+# local file alone. Surviving a full redeploy (render.yaml has no `disk:`
+# section, so data/subscribers.json itself is not guaranteed to survive
+# one) additionally requires _reconcile_subscribers_from_sheet() (above)
+# to have already rebuilt the local file from the durable Google Sheets
+# event log -- which only happens if GOOGLE_CREDENTIALS_JSON is
+# configured. Without it, this recovers a restart only, not a redeploy;
+# a real, separate, cost-bearing decision (a paid persistent disk) would
+# be the only other way to close that remaining gap.
 # ---------------------------------------------------------------------------
 
 def _recover_pending_followups():
@@ -512,4 +622,5 @@ def _recover_pending_followups():
         _schedule_followups(sub["email"], sub.get("first_name", ""), signup_time)
 
 
+_reconcile_subscribers_from_sheet()
 _recover_pending_followups()

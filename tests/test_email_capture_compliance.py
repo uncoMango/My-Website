@@ -311,6 +311,151 @@ def test_recover_never_resends_an_already_sent_followup(monkeypatch):
     assert _to("done@example.test") == []
 
 
+class FakeSheet:
+    """Stands in for a real gspread Worksheet -- append_row/get_all_values
+    only, matching exactly what downloads.py's own Sheets integration
+    actually calls. FakeSheet.rows is a class attribute so every
+    _open_sheet() call in a test returns a fresh wrapper over the same
+    shared, persistent row list -- the same behavior a real Sheet has."""
+    rows = []
+
+    def append_row(self, row):
+        FakeSheet.rows.append(row)
+
+    def get_all_values(self):
+        return list(FakeSheet.rows)
+
+
+def _enable_sheets(monkeypatch):
+    FakeSheet.rows = []
+    monkeypatch.setattr(downloads_module, "_open_sheet", lambda: FakeSheet())
+
+
+def _disable_sheets(monkeypatch):
+    monkeypatch.setattr(downloads_module, "_open_sheet", lambda: None)
+
+
+# ---------------------------------------------------------------------------
+# Google Sheets durability -- the smallest solution consistent with the
+# existing architecture (no new paid service, no redesign): the already-
+# integrated, optional Google Sheets append becomes a real, readable
+# event log a wiped local file can be reconstructed from.
+# ---------------------------------------------------------------------------
+
+def test_reconcile_is_a_no_op_when_sheets_not_configured(monkeypatch):
+    _disable_sheets(monkeypatch)
+    downloads_module._save_subscribers([])
+
+    downloads_module._reconcile_subscribers_from_sheet()
+
+    assert downloads_module._load_subscribers() == []
+
+
+def test_reconcile_restores_wiped_local_state_from_sheet_events(monkeypatch):
+    """The real scenario this whole mechanism exists for: a redeploy wipes
+    data/subscribers.json, but the durable Sheet still has the full
+    history -- including the unsubscribe, which must NOT be forgotten."""
+    _enable_sheets(monkeypatch)
+    signup_time = (datetime.now(timezone.utc) - timedelta(days=10)).isoformat()
+    FakeSheet.rows = [
+        ["Jane", "jane@example.test", downloads_module.SHEET_EVENT_SIGNUP, signup_time],
+        ["Jane", "jane@example.test", downloads_module.SHEET_EVENT_UNSUBSCRIBED, signup_time],
+        ["Jane", "jane@example.test", downloads_module.SHEET_EVENT_DAY3_SENT, signup_time],
+    ]
+    downloads_module._save_subscribers([])  # local file wiped, as if by a fresh redeploy
+
+    downloads_module._reconcile_subscribers_from_sheet()
+
+    subscribers = downloads_module._load_subscribers()
+    assert len(subscribers) == 1
+    sub = subscribers[0]
+    assert sub["email"] == "jane@example.test"
+    assert sub["source"] == "footer_signup"
+    assert sub["timestamp"] == signup_time
+    assert sub["unsubscribed"] is True
+    assert sub["day3_sent"] is True
+    assert "day7_sent" not in sub or sub["day7_sent"] is False
+
+
+def test_reconcile_never_downgrades_a_true_flag(monkeypatch):
+    _enable_sheets(monkeypatch)
+    FakeSheet.rows = []  # sheet has nothing yet (e.g. a prior append failed)
+    downloads_module._save_subscribers([
+        {"email": "jane@example.test", "first_name": "Jane", "source": "footer_signup",
+         "timestamp": datetime.now(timezone.utc).isoformat(), "day3_sent": True},
+    ])
+
+    downloads_module._reconcile_subscribers_from_sheet()
+
+    sub = downloads_module._load_subscribers()[0]
+    assert sub["day3_sent"] is True
+
+
+def test_reconcile_end_to_end_survives_a_simulated_redeploy(monkeypatch):
+    """The user's own explicit requirement: verify recovery after restart
+    /redeploy, not just that the code compiles. Full cycle: sign up (via
+    recover, standing in for the original signup), both follow-ups fire
+    and log to the Sheet, the local file is then wiped (simulating a
+    redeploy), and reconciliation + recovery together must NOT re-send
+    either follow-up a second time."""
+    _enable_smtp(monkeypatch)
+    _enable_compliance(monkeypatch)
+    _enable_sheets(monkeypatch)
+    ten_days_ago = (datetime.now(timezone.utc) - timedelta(days=10)).isoformat()
+    downloads_module._save_subscribers([
+        {"email": "overdue@example.test", "first_name": "Overdue", "source": "footer_signup",
+         "timestamp": ten_days_ago},
+    ])
+
+    downloads_module._recover_pending_followups()  # first process: both fire, both logged to the Sheet
+    assert len(_to("overdue@example.test")) == 2
+    assert any(r[2] == downloads_module.SHEET_EVENT_DAY3_SENT for r in FakeSheet.rows)
+    assert any(r[2] == downloads_module.SHEET_EVENT_DAY7_SENT for r in FakeSheet.rows)
+
+    FakeSMTP.sent = []
+    downloads_module._save_subscribers([])  # simulate a redeploy wiping the local file
+
+    downloads_module._reconcile_subscribers_from_sheet()
+    downloads_module._recover_pending_followups()
+
+    assert _to("overdue@example.test") == []  # neither follow-up is sent a second time
+    sub = downloads_module._load_subscribers()[0]
+    assert sub["day3_sent"] is True and sub["day7_sent"] is True
+
+
+def test_unsubscribe_appends_sheet_event(client, monkeypatch):
+    _enable_sheets(monkeypatch)
+    _enable_compliance(monkeypatch)
+    downloads_module._save_subscribers([
+        {"email": "jane@example.test", "first_name": "Jane", "source": "footer_signup",
+         "timestamp": datetime.now(timezone.utc).isoformat()},
+    ])
+    token = unsubscribe_tokens.generate_unsubscribe_token("jane@example.test")
+
+    client.get(f"/unsubscribe/{token}")
+
+    assert any(
+        r[1] == "jane@example.test" and r[2] == downloads_module.SHEET_EVENT_UNSUBSCRIBED
+        for r in FakeSheet.rows
+    )
+
+
+def test_day3_and_day7_success_append_sheet_events(monkeypatch):
+    _enable_smtp(monkeypatch)
+    _enable_compliance(monkeypatch)
+    _enable_sheets(monkeypatch)
+    downloads_module._save_subscribers([
+        {"email": "jane@example.test", "first_name": "Jane", "source": "footer_signup",
+         "timestamp": datetime.now(timezone.utc).isoformat()},
+    ])
+
+    downloads_module._send_followup_day3("jane@example.test", "Jane")
+    downloads_module._send_followup_day7("jane@example.test", "Jane")
+
+    assert any(r[2] == downloads_module.SHEET_EVENT_DAY3_SENT for r in FakeSheet.rows)
+    assert any(r[2] == downloads_module.SHEET_EVENT_DAY7_SENT for r in FakeSheet.rows)
+
+
 def test_recover_skips_unsubscribed_subscribers(monkeypatch):
     _enable_smtp(monkeypatch)
     _enable_compliance(monkeypatch)

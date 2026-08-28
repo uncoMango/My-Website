@@ -163,10 +163,10 @@ If `PAYPAL_CLIENT_ID` or `PAYPAL_CLIENT_SECRET` is missing at request time, `/ch
 Two routes collect email addresses: `/subscribe` (the footer signup form on every page) and `/download/aloha_wellness_freebie` (a dedicated free-guide funnel). Both:
 - Run a lightweight honeypot/User-Agent check to filter obvious bots.
 - Validate the email address with a hand-written check in `downloads.py` (not a third-party validation library).
-- Save the subscriber to `data/subscribers.json`.
-- Optionally append a row to a Google Sheet, **only if** a `GOOGLE_CREDENTIALS_JSON` environment variable is set (via `gspread`); otherwise this step is silently skipped and logged.
-- Optionally send an admin notification email and a subscriber welcome email over SMTP, **only if** `SMTP_HOST`/`SMTP_USER`/`SMTP_PASS` are all set; otherwise skipped and logged.
-- Schedule two follow-up emails (day 3 and day 7) using Python's `threading.Timer`. **This is an in-process timer, not a persistent job queue** — if the server restarts or redeploys before a scheduled timer fires, that follow-up email is lost and will not be resent. This is a real, current limitation of how follow-up emails work today.
+- Save the subscriber to `data/subscribers.json` (only `/subscribe`'s footer-signup path schedules the two follow-ups below; the freebie funnel below still doesn't).
+- Optionally append a row to a Google Sheet, **only if** a `GOOGLE_CREDENTIALS_JSON` environment variable is set (via `gspread`); otherwise this step is silently skipped and logged. Since 2026-08-27 this is a real append-only event log (signup/unsubscribe/day-3-sent/day-7-sent), not just an initial-signup record — see the next point.
+- Optionally send an admin notification email and a subscriber welcome email over SMTP, **only if** `SMTP_HOST`/`SMTP_USER`/`SMTP_PASS` are all set; otherwise skipped and logged. Since 2026-08-27, the welcome/day-3/day-7 emails additionally require `PHYSICAL_MAILING_ADDRESS` to be set (CAN-SPAM) — while it's unset, these three fail closed the same way a missing SMTP credential already does; subscriber storage and the admin notification are unaffected either way. Each also carries a real, working `/unsubscribe/<token>` link (`unsubscribe_tokens.py`) that is verified (by test) to actually stop that address's future sends, not merely record a flag.
+- Schedule two follow-up emails (day 3 and day 7) using Python's `threading.Timer`, **for `/subscribe`'s footer-signup path only**. Since 2026-08-27 this survives an ordinary process restart: `_recover_pending_followups()` recomputes any still-pending send from the persisted subscriber record at startup. Surviving a full **redeploy** (Render's ephemeral filesystem, no `disk:` in `render.yaml`) additionally requires `GOOGLE_CREDENTIALS_JSON` to be configured, so `_reconcile_subscribers_from_sheet()` can rebuild the wiped local file from the durable Sheet event log before recovery runs — without that credential, a redeploy can still lose a pending follow-up; this remains a real, current limitation in that one configuration case.
 
 ---
 
@@ -250,7 +250,8 @@ Optional, with safe empty/disabled defaults if unset:
 |---|---|
 | `STRIPE_PUBLISHABLE_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` | Stripe checkout (only relevant if `STRIPE_ENABLED` is also set) |
 | `STRIPE_ENABLED` | Turns on the (otherwise dormant) Stripe routes |
-| `GOOGLE_CREDENTIALS_JSON` | Optional Google Sheets logging of new subscribers |
+| `GOOGLE_CREDENTIALS_JSON` | Optional Google Sheets event log of subscriber signups/unsubscribes/follow-ups sent -- also the durable record `_reconcile_subscribers_from_sheet()` rebuilds the local subscriber file from after a redeploy, when set |
+| `PHYSICAL_MAILING_ADDRESS` | Required (CAN-SPAM) before the welcome/day-3/day-7 subscriber emails will send at all; while unset, they fail closed -- never fabricated/defaulted, Kahu Phil's own real address only |
 | `PORT` | Set automatically by Render; used for local `python app.py` runs too, defaulting to `5000` |
 
 ---
