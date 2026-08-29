@@ -288,6 +288,13 @@ def _schedule_followups(email, name, signup_time):
     sub = _find_subscriber(subscribers, email) or {}
     if sub.get("unsubscribed"):
         return
+    # Legacy subscriber rows can predate the UTC-aware ISO convention.
+    # Normalize once at the scheduling boundary so one old row can never
+    # crash the whole web service during import/startup recovery.
+    if signup_time.tzinfo is None:
+        signup_time = signup_time.replace(tzinfo=timezone.utc)
+    else:
+        signup_time = signup_time.astimezone(timezone.utc)
     elapsed = (datetime.now(timezone.utc) - signup_time).total_seconds()
     for delay_seconds, sent_field, sender in (
         (DAY3_SECONDS, "day3_sent", _send_followup_day3),

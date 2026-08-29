@@ -281,6 +281,20 @@ def test_recover_sends_overdue_footer_signup_followups_and_marks_sent(monkeypatc
     assert sub["day7_sent"] is True
 
 
+def test_recover_accepts_legacy_naive_timestamp(monkeypatch):
+    _enable_smtp(monkeypatch)
+    _enable_compliance(monkeypatch)
+    ten_days_ago = (datetime.now(timezone.utc) - timedelta(days=10)).replace(tzinfo=None).isoformat()
+    downloads_module._save_subscribers([
+        {"email": "legacy@example.test", "first_name": "Legacy", "source": "footer_signup",
+         "timestamp": ten_days_ago},
+    ])
+
+    downloads_module._recover_pending_followups()
+
+    assert len(_to("legacy@example.test")) == 2
+
+
 def test_recover_ignores_non_footer_signup_sources(monkeypatch):
     """aloha_wellness_freebie signups never had a day-3/day-7 follow-up
     scheduled in the first place -- recovery must not start sending them

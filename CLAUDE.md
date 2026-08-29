@@ -80,6 +80,11 @@ All secrets are loaded via `os.environ[]` with **no fallback defaults** — the 
 
 ## Change Log
 
+### 2026-08-29 (Render startup recovery timestamp compatibility)
+- **Live failure:** Render deployment `dep-da9gdobncjis739a2tm0` for media commit `9fadd46` exited during app import with `TypeError: can't subtract offset-naive and offset-aware datetimes` in `_schedule_followups()`. This kept the new approved Short's public media route at 404 and prevented Buffer ingestion.
+- **Root cause and cure:** historical subscriber rows can contain timezone-naive ISO timestamps, while current scheduling uses aware UTC. `_schedule_followups()` now normalizes legacy naive values to UTC and converts aware values to UTC at the existing scheduling boundary. No subscriber, email, funnel, or deployment architecture changed.
+- **Regression:** added a real startup-recovery case using a ten-day-old naive timestamp; both governed overdue follow-ups execute without crashing. Focused compliance suite: 21 passed.
+
 ### 2026-08-27 (ACTIVATE 001–003 OUTWARD work order — Campaign 001 dead link + email compliance/reliability)
 - **Real live walkthrough (2026-08-27, from the separate Discovery Engine repo) found Campaign 001's free article never linking to its own paid product**: `/wellness/the-rotten-fencepost-principle` (this campaign's registered `free_help_path`) linked to the Field Guide and a ministry-support page, but never to `/product/prod_find_the_cause_not_the_symptoms` ($9.99, this exact teaching's own deepening). **Fix**: one added markdown link in `blueprints/pages.py`'s `_SEO_PAGES` entry for that page, matching its existing link style — no other content changed.
 - **A separate, incorrect finding from that same walkthrough was corrected before any code changed**: "Join the Kingdom Community" (the footer signup CTA) was first reported as inert text with no real email capture anywhere on the site. On inspection this was wrong — `templates/base.html`'s footer already has a real `<form method="POST" action="/subscribe">` wired to a fully working `blueprints/downloads.py` signup flow (validates, stores, notifies, sends a welcome email, schedules day-3/day-7 follow-ups). The false-positive came from checking for an `<a href>` when the CTA is actually a form-submit `<button>`. Retracted, not preserved.
