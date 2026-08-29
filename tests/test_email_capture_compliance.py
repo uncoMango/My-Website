@@ -365,6 +365,34 @@ def test_reconcile_is_a_no_op_when_sheets_not_configured(monkeypatch):
     assert downloads_module._load_subscribers() == []
 
 
+def test_startup_recovery_isolates_sheet_failure_and_still_runs_local_recovery(monkeypatch, capsys):
+    calls = []
+
+    def fail_reconcile():
+        calls.append("reconcile")
+        raise RuntimeError("malformed durable row")
+
+    monkeypatch.setattr(downloads_module, "_reconcile_subscribers_from_sheet", fail_reconcile)
+    monkeypatch.setattr(downloads_module, "_recover_pending_followups", lambda: calls.append("recover"))
+    downloads_module._run_startup_recovery()
+    assert calls == ["reconcile", "recover"]
+    assert "website startup continues" in capsys.readouterr().out
+
+
+def test_startup_recovery_isolates_local_recovery_failure(monkeypatch, capsys):
+    calls = []
+    monkeypatch.setattr(downloads_module, "_reconcile_subscribers_from_sheet", lambda: calls.append("reconcile"))
+
+    def fail_recovery():
+        calls.append("recover")
+        raise TypeError("unexpected historical timestamp")
+
+    monkeypatch.setattr(downloads_module, "_recover_pending_followups", fail_recovery)
+    downloads_module._run_startup_recovery()
+    assert calls == ["reconcile", "recover"]
+    assert "FAILED follow-up recovery" in capsys.readouterr().out
+
+
 def test_reconcile_restores_wiped_local_state_from_sheet_events(monkeypatch):
     """The real scenario this whole mechanism exists for: a redeploy wipes
     data/subscribers.json, but the durable Sheet still has the full

@@ -629,5 +629,27 @@ def _recover_pending_followups():
         _schedule_followups(sub["email"], sub.get("first_name", ""), signup_time)
 
 
-_reconcile_subscribers_from_sheet()
-_recover_pending_followups()
+def _run_startup_recovery():
+    """Run noncritical subscriber recovery without taking down the site.
+
+    Subscriber durability and follow-up recovery depend on mutable
+    historical rows and an external Sheets provider. A bad row or provider
+    regression must be reported without aborting Flask import and every
+    Render deployment. Keep the operations isolated so local recovery still
+    runs when Sheet reconciliation fails.
+    """
+    for label, operation in (
+        ("subscriber reconciliation", _reconcile_subscribers_from_sheet),
+        ("follow-up recovery", _recover_pending_followups),
+    ):
+        try:
+            operation()
+        except Exception as exc:
+            print(
+                f"[startup] FAILED {label}; website startup continues: "
+                f"{type(exc).__name__}: {exc}",
+                flush=True,
+            )
+
+
+_run_startup_recovery()
