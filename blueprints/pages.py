@@ -194,7 +194,7 @@ _ECOSYSTEM_PAGE = {
         "Most approaches to health focus on control: restrict intake, force outcomes, follow a temporary system until it collapses.\n\n"
         "The wellness teaching at Ke Aupuni O Ke Akua takes a different approach. It draws from Hawaiian ancestral eating patterns and Scripture-based stewardship principles to help people understand how the body was actually designed to function — through rhythm, awareness, and alignment rather than restriction.\n\n"
         "Health is not something imposed on the body. It is something restored to it.\n\n"
-        "[**Why Diets Fail Long-Term →**](/wellness/why-diets-fail)\n\n"
+        "[**Explore all Wellness teachings →**](/wellness)\n\n"
         "[**Is Three Meals a Day Necessary? →**](/wellness/three-meals-a-day-necessary)\n\n"
         "[**What Actually Works Instead of Dieting →**](/wellness/lose-weight-without-dieting)\n\n"
         "---\n\n"
@@ -209,7 +209,8 @@ _ECOSYSTEM_PAGE = {
         "#### Kingdom — Identity, Purpose, and Alignment\n\n"
         "Kingdom teaching at Ke Aupuni O Ke Akua is not abstract theology. It is a practical framework for how to live — how to understand identity, steward resources, apply biblical wisdom, and align daily decisions with purpose.\n\n"
         "This section draws from original language Scripture study, Hawaiian cultural wisdom, and decades of pastoral experience on Molokaʻi.\n\n"
-        "[**Kingdom Teaching →**](/call_to_repentance)\n\n"
+        "[**Explore all Kingdom teachings →**](/kingdom)\n\n"
+        "[**Explore Kingdom wealth and stewardship →**](/wealth)\n\n"
         "---\n\n"
         "### How Everything Connects\n\n"
         "These three pillars are not separate categories. They are expressions of the same principle applied to different areas of life.\n\n"
@@ -225,7 +226,7 @@ _ECOSYSTEM_PAGE = {
         "### Where to Begin\n\n"
         "**If you are struggling with health or physical patterns:**\n\n"
         "The Wellness section is the starting point. Begin with why most diet approaches fail structurally — not because of personal weakness, but because of system design.\n\n"
-        "[**Start with Wellness →**](/wellness/why-diets-fail)\n\n"
+        "[**Start with Wellness →**](/wellness)\n\n"
         "---\n\n"
         "**If you are struggling with Scripture understanding or translation confusion:**\n\n"
         "The Scripture Tools section is where to begin. Start with why translations create meaning gaps, then use the insight tool to explore original language words.\n\n"
@@ -233,7 +234,7 @@ _ECOSYSTEM_PAGE = {
         "---\n\n"
         "**If you are searching for meaning, direction, or life purpose:**\n\n"
         "The Kingdom section addresses those questions from a biblical and ancestral framework — without abstraction or pressure.\n\n"
-        "[**Start with Kingdom Teaching →**](/call_to_repentance)\n\n"
+        "[**Start with Kingdom Teaching →**](/kingdom)\n\n"
         "---\n\n"
         "### Why This Ecosystem Exists\n\n"
         "Ke Aupuni O Ke Akua is a Kingdom ministry based on Molokaʻi, Hawaii, led by Kahu Phil Stephens — a Native Hawaiian pastor, Paniolo, and lifelong student of Scripture.\n\n"
@@ -247,9 +248,9 @@ _ECOSYSTEM_PAGE = {
         "### Begin Where You Are\n\n"
         "There is no required starting point. Begin with the section that addresses the question you are carrying right now.\n\n"
         "The framework will hold regardless of where you enter.\n\n"
-        "[**Wellness: Body Rhythm and Stewardship →**](/wellness/why-diets-fail)\n\n"
+        "[**Wellness: Body Rhythm and Stewardship →**](/wellness)\n\n"
         "[**Scripture Tools: Original Language Meaning →**](/scripture-tools/hebrew-greek-meaning-tool)\n\n"
-        "[**Kingdom: Identity and Life Direction →**](/call_to_repentance)"
+        "[**Kingdom: Identity and Life Direction →**](/kingdom)"
     ),
 }
 
@@ -268,9 +269,10 @@ def ecosystem():
         description=page.get("meta_description"),
         url=page_url,
         items=[
-            ("Wellness: Body Rhythm and Stewardship", SITE_URL + "/wellness/why-diets-fail"),
+            ("Wellness: Body Rhythm and Stewardship", SITE_URL + "/wellness"),
             ("Scripture Tools: Original Language Meaning", SITE_URL + "/scripture-tools/hebrew-greek-meaning-tool"),
-            ("Kingdom: Identity and Life Direction", SITE_URL + "/call_to_repentance"),
+            ("Kingdom: Identity and Life Direction", SITE_URL + "/kingdom"),
+            ("Kingdom Wealth and Stewardship", SITE_URL + "/wealth"),
         ],
     )
     return render_template(
@@ -1373,6 +1375,82 @@ _SEO_PAGES = {
 }
 
 
+_CATEGORY_PAGES = {
+    "wellness": {
+        "title": "Kingdom Wellness Teachings | Ke Aupuni O Ke Akua",
+        "meta_description": "Explore Kahu Phil Stephens' Kingdom wellness teachings on hunger, ancestral Hawaiian eating patterns, stewardship, and sustainable health without restrictive dieting.",
+        "intro": "These teachings approach wellness through body awareness, stewardship, Hawaiian ancestral context, Scripture, and Kahu Phil's lived experience. Begin with the question that is most useful to you.",
+        "featured": [
+            ("Keaupuni Health: Kingdom Wellness God's Way", "/aloha_wellness"),
+            ("Aloha Wellness book", "/aloha-wellness"),
+        ],
+    },
+    "kingdom": {
+        "title": "Kingdom of God Teachings | Ke Aupuni O Ke Akua",
+        "meta_description": "Explore Kahu Phil Stephens' teachings on the Kingdom of God, stewardship, repentance, and Scripture through original Hebrew and Greek words.",
+        "intro": "These teachings examine the Kingdom message of Jesus as a practical foundation for identity, responsibility, service, and faithful living.",
+        "featured": [
+            ("The Call to Repentance", "/call_to_repentance"),
+            ("Kingdom Study Tools", "/kingdom-study"),
+        ],
+    },
+    "wealth": {
+        "title": "Kingdom Wealth and Stewardship | Ke Aupuni O Ke Akua",
+        "meta_description": "Explore biblical stewardship, Kingdom wealth principles, and practical resources for funding a mission without separating faith from daily work.",
+        "intro": "Kingdom wealth begins with stewardship: understanding what has been placed in your hands, serving with it faithfully, and using increase for its intended purpose.",
+        "featured": [
+            ("Keaupuni Wealth: Kingdom Prosperity God's Way", "/kingdom_wealth"),
+            ("How to Fund Your Mission Without a 9-to-5", "/myron-golden"),
+        ],
+    },
+}
+
+
+@pages_bp.route("/wellness", defaults={"category": "wellness"})
+@pages_bp.route("/kingdom", defaults={"category": "kingdom"})
+@pages_bp.route("/wealth", defaults={"category": "wealth"})
+def content_category(category):
+    category_page = _CATEGORY_PAGES.get(category)
+    if not category_page:
+        abort(404)
+
+    data = load_content()
+    page = dict(category_page)
+    page["hero_image"] = data.get("pages", {}).get("home", {}).get("hero_image", "/static/images/taro_root.jpg")
+    article_items = [
+        (item["title"], f"/{parent}/{slug}")
+        for (parent, slug), item in _SEO_PAGES.items()
+        if parent == category
+    ]
+    all_items = page["featured"] + article_items
+    links_md = "\n\n".join(f"### [{title}]({path})" for title, path in all_items)
+    page["body_md"] = f"## A clear place to begin\n\n{page['intro']}\n\n---\n\n{links_md}"
+    page_url = SITE_URL + request.path
+    page_schema = build_collection_itemlist_schema(
+        name=page["title"],
+        description=page["meta_description"],
+        url=page_url,
+        items=[(title, SITE_URL + path) for title, path in all_items],
+    )
+    breadcrumb_schema = build_breadcrumb_schema([
+        ("Home", SITE_URL + "/"),
+        (page["title"], page_url),
+    ])
+    return render_template(
+        "page.html",
+        page=page,
+        nav_items=get_nav_items(data),
+        body_html=md_to_html(page["body_md"]),
+        current_page=category,
+        logo_path=LOGO_PATH,
+        logo_height=LOGO_HEIGHT,
+        footer_text=FOOTER_TEXT,
+        founding_reader_remaining=data.get("founding_reader_remaining", 100),
+        page_schema=page_schema,
+        breadcrumb_schema=breadcrumb_schema,
+    )
+
+
 @pages_bp.route("/<parent>/<slug>")
 def seo_subpage(parent, slug):
     page = _SEO_PAGES.get((parent, slug))
@@ -1390,12 +1468,9 @@ def seo_subpage(parent, slug):
         url=page_url,
         image_url=_abs_image(page.get("hero_image")),
     )
-    # 2-level breadcrumb only (Home -> Article). A 3-level "Home -> Wellness
-    # -> Article" would require a real /wellness index page to link the
-    # middle level to -- none exists, and inventing one just for the
-    # breadcrumb would be exactly the fabrication the work order prohibits.
     breadcrumb_schema = build_breadcrumb_schema([
         ("Home", SITE_URL + "/"),
+        (parent.replace("-", " ").title(), SITE_URL + f"/{parent}"),
         (page.get("title"), page_url),
     ])
     return render_template(
@@ -1452,6 +1527,9 @@ def sitemap():
         ("/nahenahe_voice",     "0.8", "monthly"),
         ("/partner",            "0.8", "monthly"),
         ("/ecosystem",          "0.9", "weekly"),
+        ("/wellness",           "0.9", "weekly"),
+        ("/kingdom",            "0.9", "weekly"),
+        ("/wealth",             "0.8", "weekly"),
         ("/author",             "0.6", "monthly"),
         ("/privacy-policy",     "0.5", "yearly"),
         ("/rotten-fencepost",   "0.9", "weekly"),
