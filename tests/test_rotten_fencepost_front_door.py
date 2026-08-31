@@ -143,6 +143,19 @@ class TestPersonalInvitation:
         assert "Find the cause, not the symptoms" in html
 
 
+class TestContinuingRelationship:
+    def test_names_the_promise_of_staying(self, client):
+        html = client.get(PATH, base_url=BASE).get_data(as_text=True)
+        assert "Keep Riding with the Ranch" in html
+        assert "make corrections that hold" in html
+
+    def test_uses_the_existing_owned_youtube_channel(self, client):
+        html = client.get(PATH, base_url=BASE).get_data(as_text=True)
+        assert 'href="https://www.youtube.com/@keaupuniokeakua?sub_confirmation=1"' in html
+        assert "rf_relationship_follow" in html
+        assert "No paid membership" in html
+
+
 class TestNoPlaceholders:
     def test_no_workbook_placeholder(self, client):
         # No standalone Workbook product exists in the catalog -- do not

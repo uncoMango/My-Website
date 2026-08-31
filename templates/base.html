@@ -145,13 +145,20 @@
 
 <footer class="footer">
     <section class="signup-strip">
-        <h2>Stay Connected</h2>
-        <form method="POST" action="/subscribe">
-            <input type="text" name="first_name" placeholder="First Name" required>
-            <input type="email" name="email" placeholder="Email address" required>
-            <input type="text" name="website" style="display:none;" tabindex="-1" autocomplete="off">
-            <button type="submit">Join the Kingdom Community</button>
-        </form>
+        <h2>Keep Riding with the Ranch</h2>
+        <p style="max-width: 680px; margin: 0 auto 1.25rem; line-height: 1.7;">
+            Follow Kahu Phil for practical teachings that help you look beneath repeating problems,
+            test the foundation, and make corrections that hold. No paid membership or email list required.
+        </p>
+        <p>
+            <a href="https://www.youtube.com/@keaupuniokeakua?sub_confirmation=1"
+               target="_blank" rel="noopener"
+               onclick="gtag('event', 'rf_relationship_follow', {'channel': 'youtube', 'location': 'site_footer'});"
+               style="display:inline-block; padding:0.85rem 1.5rem; border-radius:8px; background:#c9a842; color:#1a1a1a; text-decoration:none; font-weight:800;">
+                Follow the Ranch on YouTube
+            </a>
+        </p>
+        <p style="margin-top:1rem;"><a href="/rotten-fencepost" style="color:#FFD700;">Return to the Ranch front door</a></p>
     </section>
     <hr style="border:none; border-top:1px solid rgba(255,255,255,0.2); margin:0 2rem;">
     <p>{{ footer_text }}</p>
