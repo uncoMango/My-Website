@@ -10,6 +10,8 @@ import pytest
 
 import app as app_module
 import blueprints.payments as payments
+import blueprints.pages as pages_module
+import content
 
 
 BASE = "https://keaupuniakeakua.faith"
@@ -26,6 +28,33 @@ AFFECTED_PATHS = [
     "/wellness/why-diets-fail",
     "/wellness/lose-weight-without-dieting",
 ]
+
+# These product routes exist for checkout plumbing or intentionally consolidate
+# onto a stronger public page.  Every other active, non-partnership product is
+# independently indexable and therefore must be represented in the sitemap.
+INTENTIONALLY_NON_INDEXABLE_PRODUCTS = {
+    "rotten_fencepost_field_guide",
+    "partner_tier1",
+    "partner_tier2",
+    "partner_tier3",
+    "partner_tier4",
+}
+
+# Public indexable routes that are not data-driven through DEFAULT_PAGES,
+# _SEO_PAGES, CAMPAIGNS, or the product catalog.
+INDEXABLE_BESPOKE_PATHS = {
+    "/aloha-wellness",
+    "/ecosystem",
+    "/kingdom-study",
+    "/myron-golden",
+    "/partner",
+    "/products",
+    "/rotten-fencepost",
+    "/wellness",
+    "/kingdom",
+    "/wealth",
+    "/scripture-tools",
+}
 
 
 class IndexingParser(HTMLParser):
@@ -90,6 +119,33 @@ def parse_response(response):
     parser = IndexingParser()
     parser.feed(response.get_data(as_text=True))
     return parser
+
+
+def expected_indexable_paths():
+    """Build the public indexing universe from the route-owning registries.
+
+    This deliberately does not copy the sitemap list.  A new real page,
+    article, campaign, or active product therefore fails the audit until its
+    public indexing decision is made explicitly.
+    """
+    paths = set(INDEXABLE_BESPOKE_PATHS)
+    for page_id in content.DEFAULT_PAGES["pages"]:
+        paths.add("/" if page_id == "home" else f"/{page_id}")
+    paths.update(f"/{parent}/{slug}" for parent, slug in pages_module._SEO_PAGES)
+    paths.update(f"/campaign/{campaign_id}" for campaign_id in content.CAMPAIGNS)
+    for product in content.load_digital_products().get("products", []):
+        if product.get("active", True) and product["id"] not in INTENTIONALLY_NON_INDEXABLE_PRODUCTS:
+            paths.add(f"/product/{product['id']}")
+    return paths
+
+
+def test_sitemap_exactly_matches_public_indexing_universe(client):
+    actual = set(sitemap_paths(client))
+    expected = expected_indexable_paths()
+    assert actual == expected, (
+        f"missing from sitemap: {sorted(expected - actual)}; "
+        f"unexpected in sitemap: {sorted(actual - expected)}"
+    )
 
 
 def test_affected_urls_are_all_in_sitemap_once(client):
