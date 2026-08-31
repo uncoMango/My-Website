@@ -98,7 +98,7 @@ def test_affected_urls_are_all_in_sitemap_once(client):
         assert paths.count(path) == 1, f"{path} must appear exactly once in sitemap.xml"
 
 
-@pytest.mark.parametrize("path", AFFECTED_PATHS + ["/wellness", "/kingdom", "/wealth"])
+@pytest.mark.parametrize("path", AFFECTED_PATHS + ["/wellness", "/kingdom", "/wealth", "/scripture-tools"])
 def test_priority_pages_have_complete_indexing_signals(client, path):
     response = client.get(path, base_url=BASE)
     parser = parse_response(response)
@@ -156,7 +156,32 @@ def test_every_sitemap_page_is_publicly_discoverable_and_links_are_sound(client)
     assert not [path for path in paths if path != "/" and inbound[path] == 0]
 
 
-@pytest.mark.parametrize("path", ["/wellness", "/kingdom", "/wealth"])
+def _schema_urls(value):
+    if isinstance(value, dict):
+        for child in value.values():
+            yield from _schema_urls(child)
+    elif isinstance(value, list):
+        for child in value:
+            yield from _schema_urls(child)
+    elif isinstance(value, str) and value.startswith(BASE):
+        yield value
+
+
+def test_all_internal_schema_urls_resolve(client):
+    checked = set()
+    for source in sitemap_paths(client):
+        parser = parse_response(client.get(source, base_url=BASE))
+        for schema_text in parser.schema_text:
+            for url in _schema_urls(json.loads(schema_text)):
+                path = urlparse(url).path or "/"
+                if path in checked:
+                    continue
+                checked.add(path)
+                response = client.get(path, base_url=BASE)
+                assert response.status_code == 200, f"{source} schema points to broken {url}"
+
+
+@pytest.mark.parametrize("path", ["/wellness", "/kingdom", "/wealth", "/scripture-tools"])
 def test_category_hubs_emit_collection_and_breadcrumb_schema(client, path):
     parser = parse_response(client.get(path, base_url=BASE))
     schemas = [json.loads(value) for value in parser.schema_text]

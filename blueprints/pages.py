@@ -202,7 +202,7 @@ _ECOSYSTEM_PAGE = {
         "Most readers of Scripture encounter a translation — a carefully rendered text that makes the original accessible. But translation by necessity compresses meaning. Words in Hebrew and Greek carry layers of nuance that a single English word cannot always hold.\n\n"
         "The Scripture Language Insight Tool was built to make original Hebrew and Greek word meaning accessible without requiring seminary training. Input a word or verse. See the original term. Understand the meaning, usage, and relational context that the source language carried.\n\n"
         "This does not change Scripture. It opens it.\n\n"
-        "[**Use the Scripture Language Insight Tool →**](/scripture-tools/hebrew-greek-meaning-tool)\n\n"
+        "[**Explore all Scripture language teachings →**](/scripture-tools)\n\n"
         "[**Why Translations Create Gaps →**](/scripture-tools/translation-gap-in-scripture)\n\n"
         "[**What Changes With Original Language Understanding →**](/scripture-tools/original-language-meaning)\n\n"
         "---\n\n"
@@ -230,7 +230,7 @@ _ECOSYSTEM_PAGE = {
         "---\n\n"
         "**If you are struggling with Scripture understanding or translation confusion:**\n\n"
         "The Scripture Tools section is where to begin. Start with why translations create meaning gaps, then use the insight tool to explore original language words.\n\n"
-        "[**Start with Scripture Tools →**](/scripture-tools/translation-gap-in-scripture)\n\n"
+        "[**Start with Scripture Tools →**](/scripture-tools)\n\n"
         "---\n\n"
         "**If you are searching for meaning, direction, or life purpose:**\n\n"
         "The Kingdom section addresses those questions from a biblical and ancestral framework — without abstraction or pressure.\n\n"
@@ -249,7 +249,7 @@ _ECOSYSTEM_PAGE = {
         "There is no required starting point. Begin with the section that addresses the question you are carrying right now.\n\n"
         "The framework will hold regardless of where you enter.\n\n"
         "[**Wellness: Body Rhythm and Stewardship →**](/wellness)\n\n"
-        "[**Scripture Tools: Original Language Meaning →**](/scripture-tools/hebrew-greek-meaning-tool)\n\n"
+        "[**Scripture Tools: Original Language Meaning →**](/scripture-tools)\n\n"
         "[**Kingdom: Identity and Life Direction →**](/kingdom)"
     ),
 }
@@ -270,7 +270,7 @@ def ecosystem():
         url=page_url,
         items=[
             ("Wellness: Body Rhythm and Stewardship", SITE_URL + "/wellness"),
-            ("Scripture Tools: Original Language Meaning", SITE_URL + "/scripture-tools/hebrew-greek-meaning-tool"),
+            ("Scripture Tools: Original Language Meaning", SITE_URL + "/scripture-tools"),
             ("Kingdom: Identity and Life Direction", SITE_URL + "/kingdom"),
             ("Kingdom Wealth and Stewardship", SITE_URL + "/wealth"),
         ],
@@ -1403,12 +1403,21 @@ _CATEGORY_PAGES = {
             ("How to Fund Your Mission Without a 9-to-5", "/myron-golden"),
         ],
     },
+    "scripture-tools": {
+        "title": "Scripture Language Tools and Teachings | Ke Aupuni O Ke Akua",
+        "meta_description": "Explore original Hebrew and Greek Scripture teachings and Kahu Phil Stephens' accessible word-study tools for understanding meaning beyond translation alone.",
+        "intro": "These teachings help non-specialists examine original Hebrew and Greek meaning, recognize where translation compresses context, and study Scripture more carefully without changing the text.",
+        "featured": [
+            ("Kingdom Study Tools: 73 Hebrew and Greek Word Studies", "/kingdom-study"),
+        ],
+    },
 }
 
 
 @pages_bp.route("/wellness", defaults={"category": "wellness"})
 @pages_bp.route("/kingdom", defaults={"category": "kingdom"})
 @pages_bp.route("/wealth", defaults={"category": "wealth"})
+@pages_bp.route("/scripture-tools", defaults={"category": "scripture-tools"})
 def content_category(category):
     category_page = _CATEGORY_PAGES.get(category)
     if not category_page:
@@ -1468,9 +1477,12 @@ def seo_subpage(parent, slug):
         url=page_url,
         image_url=_abs_image(page.get("hero_image")),
     )
+    breadcrumb_parent = {
+        "training-001": ("Rotten Fencepost Training", "/rotten-fencepost"),
+    }.get(parent, (parent.replace("-", " ").title(), f"/{parent}"))
     breadcrumb_schema = build_breadcrumb_schema([
         ("Home", SITE_URL + "/"),
-        (parent.replace("-", " ").title(), SITE_URL + f"/{parent}"),
+        (breadcrumb_parent[0], SITE_URL + breadcrumb_parent[1]),
         (page.get("title"), page_url),
     ])
     return render_template(
@@ -1530,6 +1542,7 @@ def sitemap():
         ("/wellness",           "0.9", "weekly"),
         ("/kingdom",            "0.9", "weekly"),
         ("/wealth",             "0.8", "weekly"),
+        ("/scripture-tools",    "0.9", "weekly"),
         ("/author",             "0.6", "monthly"),
         ("/privacy-policy",     "0.5", "yearly"),
         ("/rotten-fencepost",   "0.9", "weekly"),
