@@ -31,7 +31,7 @@ def test_feed_is_valid_curated_rss_with_stable_ids_images_and_attribution(client
     assert response.mimetype == "application/rss+xml"
     root = ET.fromstring(response.data)
     items = root.findall("./channel/item")
-    assert len(items) >= 10
+    assert len(items) == len(pinterest.CAMPAIGNS)
     guids = [item.findtext("guid") for item in items]
     assert len(guids) == len(set(guids))
     for item in items:
@@ -42,6 +42,8 @@ def test_feed_is_valid_curated_rss_with_stable_ids_images_and_attribution(client
         assert item.find("{http://search.yahoo.com/mrss/}content").attrib["url"].startswith("http")
         assert item.findtext("description")
     assert not any(any(word in item.findtext("link") for word in ("/admin", "/checkout", "/unsubscribe", "/thank-you")) for item in items)
+    assert not any("/product/" in item.findtext("link") for item in items)
+    assert all("/campaign/" in item.findtext("link") for item in items)
 
 
 def test_future_campaign_enters_feed_without_route_changes(monkeypatch):
@@ -49,6 +51,43 @@ def test_future_campaign_enters_feed_without_route_changes(monkeypatch):
         "title": "Future Teaching", "meta_description": "Useful future teaching.", "hero_image": "/static/images/molokai_coast.jpg",
     })
     assert any(item["id"] == "campaign-999" for item in pinterest.feed_items())
+
+
+@pytest.mark.parametrize("slug, expected_title", [
+    ("rotten-fencepost", "Rotten Fencepost"),
+    ("kingdom-of-god", "Kingdom of God"),
+    ("rotten-fencepost-wellness", "Rotten Fencepost Wellness"),
+    ("biblical-stewardship", "Biblical Stewardship"),
+    ("rotten-fencepost-wealth", "Rotten Fencepost Wealth"),
+])
+def test_each_existing_board_has_a_nonempty_valid_feed(client, slug, expected_title):
+    response = client.get(f"/pinterest-feed/{slug}.xml")
+    assert response.status_code == 200
+    root = ET.fromstring(response.data)
+    assert expected_title in root.findtext("./channel/title")
+    assert root.findall("./channel/item")
+
+
+def test_authoritative_category_addition_enters_matching_board(monkeypatch):
+    key = ("wellness", "future-authoritative-article")
+    monkeypatch.setitem(pinterest._SEO_PAGES, key, {
+        "title": "Future Wellness Teaching",
+        "meta_description": "A future authoritative teaching.",
+        "hero_image": "/static/images/breadfruit.jpg",
+    })
+    ids = {item["id"] for item in pinterest.feed_items("rotten-fencepost-wellness")}
+    assert "article-wellness-future-authoritative-article" in ids
+
+
+def test_feed_architecture_excludes_duplicate_training_and_products():
+    all_items = [
+        item
+        for board_slug in pinterest.BOARD_RULES
+        for item in pinterest.feed_items(board_slug)
+    ]
+    paths = [item["path"] for item in all_items]
+    assert not any(path.startswith("/training-") for path in paths)
+    assert not any(path.startswith("/product/") for path in paths)
 
 
 def test_pinterest_query_sets_first_party_attribution_cookie(client):
