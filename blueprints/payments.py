@@ -391,7 +391,12 @@ def stripe_create_session(product_id):
         mode="payment",
         success_url=f"{SITE_DOMAIN}/stripe/success?session_id={{CHECKOUT_SESSION_ID}}&product_id={product_id}",
         cancel_url=f"{SITE_DOMAIN}/product/{product_id}?cancelled=true",
-        metadata={"product_id": product_id},
+        metadata={
+            "product_id": product_id,
+            "attribution_source": request.cookies.get("rf_source", "direct")[:100],
+            "attribution_campaign": request.cookies.get("rf_campaign", "")[:100],
+            "attribution_content": request.cookies.get("rf_content", "")[:100],
+        },
     )
     return redirect(session.url, code=303)
 

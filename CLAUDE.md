@@ -80,6 +80,12 @@ All secrets are loaded via `os.environ[]` with **no fallback defaults** — the 
 
 ## Change Log
 
+### 2026-09-01 (Pinterest Fence Line final delivery)
+- Added Pinterest's exact domain-verification token to the shared site head without changing the existing canonical or Google Analytics configuration.
+- Added `/pinterest-feed.xml`, a deliberately small RSS 2.0 + Media RSS projection of existing authoritative campaigns, selected articles, and active products. Every destination carries stable Pinterest organic UTM attribution; campaigns enter automatically, while articles/products remain explicitly curated so transactional, administrative, private, duplicate, and thin URLs cannot leak into Pins.
+- Preserved first-touch Pinterest attribution for 90 days in HTTP-only cookies and attached source/campaign/content to Stripe Checkout metadata. Existing Buffer publishing and other social channels are independent and unchanged.
+- Added focused regression coverage for the verification tag, feed validity/safety, future campaign inclusion, and attribution persistence. Pinterest account claim, board creation, and RSS connection remain owner/platform actions after live technical verification.
+
 ### 2026-08-31 (Open the Ranch — zero-new-cost continuing relationship)
 - **Foundational obstruction:** existing discovery, free teaching, products, checkout, fulfillment, and measurement were real, but the public relationship promise still depended on an automated email sequence intentionally paused until an owner-only mailing address exists. The Ranch therefore had no honest, immediate answer to "what do I get if I stay?" despite already owning an active YouTube channel and autonomous outward publishing path.
 - **Cure:** the existing YouTube channel is now the primary continuing-relationship doorway. The sitewide footer, `/rotten-fencepost`, and every `/campaign/00X` page state one shared promise: practical teachings that help people find recurring root causes, inspect foundations, and make corrections that hold. Each links directly to the existing channel's subscription-confirmation URL. No new account, subscription, service, platform, or recurring expense was added.
