@@ -1,3 +1,4 @@
+import json
 from xml.etree import ElementTree as ET
 from pathlib import Path
 
@@ -146,7 +147,15 @@ def test_complete_pin_records_cover_existing_short_inventory(client):
     assert len({record["id"] for record in records}) == len(records)
     assert all(required <= record.keys() for record in records)
     short_records = [record for record in records if record["record_type"] == "short_video"]
-    assert len(short_records) == 19
+    manifest = json.loads(pinterest.PUBLISHING_MEDIA_MANIFEST_FILE.read_text(encoding="utf-8"))
+    expected_short_ids = {
+        (match.group(1), int(match.group(2)))
+        for safe_id, asset in manifest.items()
+        if asset.get("mimetype") == "video/mp4"
+        and (match := pinterest.SHORT_PATTERN.match(safe_id))
+        and match.group(1) in pinterest.CAMPAIGNS
+    }
+    assert len(short_records) == len(expected_short_ids)
     assert {record["target_board"] for record in short_records} == {"Rotten Fencepost"}
 
 
