@@ -8,15 +8,18 @@ directly and has no Buffer dependency.
 from __future__ import annotations
 
 import os
+import json
+import re
 from datetime import datetime, timezone
 from email.utils import format_datetime
 from urllib.parse import urlencode
 from xml.etree import ElementTree as ET
 
-from flask import Blueprint, Response
+from flask import Blueprint, Response, abort, jsonify, render_template
 
 from content import CAMPAIGNS
 from blueprints.pages import _SEO_PAGES
+from config import PUBLISHING_MEDIA_MANIFEST_FILE
 
 pinterest_bp = Blueprint("pinterest", __name__)
 
@@ -59,6 +62,7 @@ BOARD_RULES = {
     },
 }
 FALLBACK_IMAGE = "/static/images/diana-sanders-c24miY2R0FI-unsplash.jpg"
+SHORT_PATTERN = re.compile(r"^campaign_(\d+).*short_(\d+)", re.I)
 
 
 def _absolute(value: str) -> str:
@@ -117,6 +121,83 @@ def feed_items(board_slug: str = "rotten-fencepost") -> list[dict]:
     return items
 
 
+def _short_records() -> list[dict]:
+    """Project the latest approved website media per stable Short identity.
+
+    The manifest is already populated by the Ranch publishing workflow, so a
+    future campaign Short enters this projection without a second registry.
+    """
+    if not PUBLISHING_MEDIA_MANIFEST_FILE.exists():
+        return []
+    manifest = json.loads(PUBLISHING_MEDIA_MANIFEST_FILE.read_text(encoding="utf-8"))
+    latest = {}
+    for safe_id, asset in manifest.items():
+        if asset.get("mimetype") != "video/mp4":
+            continue
+        match = SHORT_PATTERN.match(safe_id)
+        if not match:
+            continue
+        campaign_num, short_num = match.groups()
+        campaign = CAMPAIGNS.get(campaign_num)
+        if not campaign:
+            continue
+        key = (campaign_num, int(short_num))
+        candidate = (asset.get("added_at", ""), safe_id, asset)
+        if key not in latest or candidate[0] > latest[key][0]:
+            latest[key] = candidate
+    records = []
+    for (campaign_num, short_num), (_, safe_id, asset) in sorted(latest.items()):
+        campaign = CAMPAIGNS[campaign_num]
+        record_id = f"campaign-{campaign_num}-short-{short_num:02d}"
+        records.append({
+            "id": record_id,
+            "record_type": "short_video",
+            "pin_title": f"{campaign['title']} — Short {short_num:02d}",
+            "pin_description": campaign.get("meta_description") or campaign["title"],
+            "destination_url": f"{SITE_URL}/pinterest-content/{record_id}",
+            "target_board": "Rotten Fencepost",
+            "board_slug": "rotten-fencepost",
+            "image_asset": _absolute(campaign.get("thumbnail_image") or FALLBACK_IMAGE),
+            "video_asset": f"{SITE_URL}/media/{safe_id}",
+            "alt_text": f"Short video from {campaign['title']}",
+            "tagged_topics": ["Rotten Fencepost", campaign["title"]],
+            "ai_modified": None,
+            "ai_modified_disclosure": "not recorded in the authoritative source",
+            "publishing_options": {"rss_image_pin_eligible": True, "direct_video_available": True},
+            "attribution": {
+                "utm_source": "pinterest", "utm_medium": "organic",
+                "utm_campaign": "pinterest_fence_line", "utm_content": record_id,
+            },
+            "source_asset_id": asset.get("asset_id"),
+        })
+    return records
+
+
+def pinterest_records() -> list[dict]:
+    records = []
+    for board_slug, rule in BOARD_RULES.items():
+        for item in feed_items(board_slug):
+            record_id = f"{item['id']}--{board_slug}"
+            records.append({
+                "id": record_id, "record_type": "campaign" if item["id"].startswith("campaign-") else "article",
+                "pin_title": item["title"], "pin_description": item["description"],
+                "destination_url": _tracked(item["path"], item["id"]),
+                "target_board": rule["name"], "board_slug": board_slug,
+                "image_asset": _absolute(item["image"]), "video_asset": None,
+                "alt_text": item["title"], "tagged_topics": [rule["name"], item["title"]],
+                "ai_modified": None, "ai_modified_disclosure": "not recorded in the authoritative source",
+                "publishing_options": {"rss_image_pin_eligible": True},
+                "attribution": {"utm_source": "pinterest", "utm_medium": "organic", "utm_campaign": "pinterest_fence_line", "utm_content": record_id},
+            })
+    records.extend(_short_records())
+    return records
+
+
+def supply_items(board_slug: str) -> list[dict]:
+    board = BOARD_RULES[board_slug]["name"]
+    return [r for r in pinterest_records() if r["target_board"] == board]
+
+
 def build_feed(board_slug: str = "rotten-fencepost") -> bytes:
     rule = BOARD_RULES[board_slug]
     ET.register_namespace("media", MEDIA_NS)
@@ -138,6 +219,29 @@ def build_feed(board_slug: str = "rotten-fencepost") -> bytes:
     return ET.tostring(rss, encoding="utf-8", xml_declaration=True)
 
 
+def build_supply_feed(board_slug: str) -> bytes:
+    ET.register_namespace("media", MEDIA_NS)
+    rule = BOARD_RULES[board_slug]
+    rss = ET.Element("rss", {"version": "2.0"})
+    channel = ET.SubElement(rss, "channel")
+    ET.SubElement(channel, "title").text = f"{BUSINESS_NAME} — {rule['name']} supply"
+    ET.SubElement(channel, "link").text = SITE_URL
+    ET.SubElement(channel, "description").text = f"Pin-ready records for {rule['name']}."
+    for record in supply_items(board_slug):
+        node = ET.SubElement(channel, "item")
+        ET.SubElement(node, "title").text = record["pin_title"]
+        params = urlencode(record["attribution"])
+        destination = record["destination_url"]
+        if "?" not in destination:
+            destination += "?" + params
+        ET.SubElement(node, "link").text = destination
+        ET.SubElement(node, "guid", {"isPermaLink": "false"}).text = f"kaoa:pinterest:{record['id']}"
+        ET.SubElement(node, "description").text = record["pin_description"]
+        ET.SubElement(node, "category").text = record["target_board"]
+        ET.SubElement(node, f"{{{MEDIA_NS}}}content", {"url": record["image_asset"], "medium": "image"})
+    return ET.tostring(rss, encoding="utf-8", xml_declaration=True)
+
+
 @pinterest_bp.route("/pinterest-feed.xml")
 @pinterest_bp.route("/pinterest-feed/<board_slug>.xml")
 def pinterest_feed(board_slug: str = "rotten-fencepost"):
@@ -149,3 +253,23 @@ def pinterest_feed(board_slug: str = "rotten-fencepost"):
     response.headers["Cache-Control"] = "public, max-age=900"
     response.headers["X-Robots-Tag"] = "noindex, follow"
     return response
+
+
+@pinterest_bp.route("/pinterest-supply/<board_slug>.xml")
+def pinterest_supply_feed(board_slug):
+    if board_slug not in BOARD_RULES:
+        abort(404)
+    return Response(build_supply_feed(board_slug), mimetype="application/rss+xml", headers={"X-Robots-Tag": "noindex, follow"})
+
+
+@pinterest_bp.route("/pinterest-records.json")
+def pinterest_records_json():
+    return jsonify({"schema_version": 1, "records": pinterest_records()})
+
+
+@pinterest_bp.route("/pinterest-content/<record_id>")
+def pinterest_content(record_id):
+    record = next((r for r in _short_records() if r["id"] == record_id), None)
+    if not record:
+        abort(404)
+    return render_template("pinterest_content.html", record=record)

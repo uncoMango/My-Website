@@ -134,6 +134,53 @@ def test_shared_site_exposes_pinterest_without_changing_verification(client):
     assert "'channel': 'pinterest'" in html
 
 
+def test_complete_pin_records_cover_existing_short_inventory(client):
+    payload = client.get("/pinterest-records.json").get_json()
+    records = payload["records"]
+    required = {
+        "id", "record_type", "pin_title", "pin_description", "destination_url",
+        "target_board", "board_slug", "image_asset", "video_asset", "alt_text",
+        "tagged_topics", "ai_modified", "ai_modified_disclosure",
+        "publishing_options", "attribution",
+    }
+    assert len({record["id"] for record in records}) == len(records)
+    assert all(required <= record.keys() for record in records)
+    short_records = [record for record in records if record["record_type"] == "short_video"]
+    assert len(short_records) == 19
+    assert {record["target_board"] for record in short_records} == {"Rotten Fencepost"}
+
+
+def test_all_five_unconnected_supply_feeds_are_complete_and_legacy_feed_is_stable(client):
+    legacy = ET.fromstring(client.get("/pinterest-feed.xml").data)
+    assert len(legacy.findall("./channel/item")) == len(pinterest.CAMPAIGNS)
+    for slug in pinterest.BOARD_RULES:
+        response = client.get(f"/pinterest-supply/{slug}.xml")
+        assert response.status_code == 200
+        root = ET.fromstring(response.data)
+        items = root.findall("./channel/item")
+        assert items
+        assert len({item.findtext("guid") for item in items}) == len(items)
+        assert all(item.find("{http://search.yahoo.com/mrss/}content") is not None for item in items)
+
+
+def test_each_short_has_an_individual_pinterest_addressable_page(client):
+    for record in pinterest._short_records():
+        path = record["destination_url"].replace("https://keaupuniakeakua.faith", "")
+        html = client.get(path).get_data(as_text=True)
+        assert record["pin_title"] in html
+        assert record["video_asset"] in html
+        assert record["alt_text"] in html
+        assert "Explore the complete Rotten Fencepost teaching series" in html
+
+
+def test_future_manifest_short_enters_pipeline_automatically(tmp_path, monkeypatch):
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text('{"campaign_001_new_short_09_v1":{"asset_id":"campaign_001:approved_longform:short_09:v1","mimetype":"video/mp4","added_at":"2099-01-01T00:00:00Z"}}', encoding="utf-8")
+    monkeypatch.setattr(pinterest, "PUBLISHING_MEDIA_MANIFEST_FILE", manifest)
+    records = pinterest._short_records()
+    assert [record["id"] for record in records] == ["campaign-001-short-09"]
+
+
 def test_pinterest_query_sets_first_party_attribution_cookie(client):
     response = client.get("/campaign/001?utm_source=pinterest&utm_campaign=pinterest_fence_line&utm_content=campaign-001")
     cookie = "\n".join(response.headers.getlist("Set-Cookie"))
