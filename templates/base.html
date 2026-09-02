@@ -41,10 +41,19 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-V2NY3MEWKB');
+      gtag('config', 'G-V2NY3MEWKB'{% if request.args.get('rf_verify') == '1' or request.cookies.get('rf_verification') == '1' %}, {
+        'traffic_type': 'ranch_verification'
+      }{% endif %});
       if (new URLSearchParams(window.location.search).get('utm_source') === 'pinterest') {
         gtag('event', 'rf_pinterest_visit', {
           campaign: new URLSearchParams(window.location.search).get('utm_campaign') || 'pinterest_fence_line',
+          content: new URLSearchParams(window.location.search).get('utm_content') || 'unknown'
+        });
+      }
+      if (new URLSearchParams(window.location.search).get('utm_source') === 'youtube') {
+        gtag('event', 'rf_youtube_bridge_visit', {
+          campaign: new URLSearchParams(window.location.search).get('utm_campaign') || 'unknown',
+          bridge: new URLSearchParams(window.location.search).get('utm_term') || 'related_video',
           content: new URLSearchParams(window.location.search).get('utm_content') || 'unknown'
         });
       }

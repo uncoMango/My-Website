@@ -44,22 +44,45 @@ app.register_blueprint(pages_bp)
 
 
 @app.after_request
-def preserve_pinterest_attribution(response):
-    """Keep non-sensitive Pinterest campaign identity through checkout.
+def preserve_owned_discovery_attribution(response):
+    """Keep bounded, non-sensitive discovery identity through checkout.
 
-    These cookies carry no authentication or entitlement and are bounded to
-    the known Pinterest source. They let Stripe metadata and GA purchase
-    events reconcile a real downstream action without a competing analytics
-    store.
+    GA4 reads the standard UTM values on arrival. These first-party cookies
+    preserve the same campaign identity for downstream Stripe reconciliation
+    without creating a second analytics store. Only explicitly governed owned
+    sources are accepted; arbitrary query-string values never become durable
+    attribution.
     """
-    if request.args.get("utm_source", "").lower() == "pinterest":
+    verification_flag = request.args.get("rf_verify", "").lower()
+    if verification_flag == "1":
+        response.set_cookie(
+            "rf_verification", "1", max_age=60 * 60 * 24 * 90,
+            secure=bool(os.environ.get("RENDER")), httponly=True,
+            samesite="Lax",
+        )
+    elif verification_flag == "0":
+        response.delete_cookie("rf_verification")
+
+    source = request.args.get("utm_source", "").lower()
+    if source in {"pinterest", "youtube"}:
+        defaults = {
+            "pinterest": ("organic", "pinterest_fence_line", "feed", "unknown"),
+            "youtube": ("organic_video", "unknown", "related_video", "unknown"),
+        }
+        medium, campaign, bridge, content = defaults[source]
         values = {
-            "rf_source": "pinterest",
-            "rf_campaign": request.args.get("utm_campaign", "pinterest_fence_line")[:100],
-            "rf_content": request.args.get("utm_content", "unknown")[:100],
+            "rf_source": source,
+            "rf_medium": request.args.get("utm_medium", medium)[:100],
+            "rf_campaign": request.args.get("utm_campaign", campaign)[:100],
+            "rf_bridge": request.args.get("utm_term", bridge)[:100],
+            "rf_content": request.args.get("utm_content", content)[:100],
         }
         for name, value in values.items():
-            response.set_cookie(name, value, max_age=60 * 60 * 24 * 90, secure=bool(os.environ.get("RENDER")), httponly=True, samesite="Lax")
+            response.set_cookie(
+                name, value, max_age=60 * 60 * 24 * 90,
+                secure=bool(os.environ.get("RENDER")), httponly=True,
+                samesite="Lax",
+            )
     return response
 
 if __name__ == "__main__":

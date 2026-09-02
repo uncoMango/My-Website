@@ -212,6 +212,8 @@ def test_stripe_checkout_carries_pinterest_attribution(client, monkeypatch):
     assert captured["metadata"] == {
         "product_id": "rotten_fencepost_field_guide",
         "attribution_source": "pinterest",
+        "attribution_medium": "",
         "attribution_campaign": "pinterest_fence_line",
+        "attribution_bridge": "",
         "attribution_content": "product-rotten_fencepost_field_guide",
     }

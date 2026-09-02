@@ -394,7 +394,9 @@ def stripe_create_session(product_id):
         metadata={
             "product_id": product_id,
             "attribution_source": request.cookies.get("rf_source", "direct")[:100],
+            "attribution_medium": request.cookies.get("rf_medium", "")[:100],
             "attribution_campaign": request.cookies.get("rf_campaign", "")[:100],
+            "attribution_bridge": request.cookies.get("rf_bridge", "")[:100],
             "attribution_content": request.cookies.get("rf_content", "")[:100],
         },
     )
