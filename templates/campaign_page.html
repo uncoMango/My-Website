@@ -6,7 +6,7 @@
 {% extends "base.html" %}
 {% block title %}{{ campaign.seo_title or campaign.title }}{% endblock %}
 {% block meta_description %}{{ campaign.meta_description }}{% endblock %}
-{% block og_image %}{{ request.url_root.rstrip('/') }}{{ campaign.hero_image }}{% endblock %}
+{% block og_image %}{{ request.url_root.rstrip('/') }}{{ campaign.thumbnail_image or '/static/images/diana-sanders-c24miY2R0FI-unsplash.jpg' }}{% endblock %}
 {% block content %}
 
 <div class="hero" style="background-image: url('{{ campaign.hero_image }}'); height: 60vh;{% if campaign.get('hero_fit') == 'contain' %} background-size: contain; background-color: #1a1a1a;{% endif %}">

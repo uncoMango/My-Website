@@ -1,7 +1,9 @@
 from xml.etree import ElementTree as ET
+from pathlib import Path
 
 import pytest
 import stripe
+from PIL import Image
 
 import app as app_module
 from blueprints import payments, pinterest
@@ -88,6 +90,48 @@ def test_feed_architecture_excludes_duplicate_training_and_products():
     paths = [item["path"] for item in all_items]
     assert not any(path.startswith("/training-") for path in paths)
     assert not any(path.startswith("/product/") for path in paths)
+
+
+def test_every_feed_destination_is_indexable_canonical_mobile_and_social_ready(client):
+    for board_slug in pinterest.BOARD_RULES:
+        for item in pinterest.feed_items(board_slug):
+            response = client.get(item["path"] + "?utm_source=pinterest&utm_medium=organic")
+            assert response.status_code == 200
+            html = response.get_data(as_text=True)
+            assert '<meta name="viewport" content="width=device-width, initial-scale=1.0">' in html
+            assert "noindex" not in html.lower()
+            assert html.count('rel="canonical"') == 1
+            assert f'href="https://keaupuniakeakua.faith{item["path"]}"' in html
+            assert '<meta name="description" content="' in html
+            assert '<meta property="og:title" content="' in html
+            assert '<meta property="og:description" content="' in html
+            assert '<meta property="og:image" content="' in html
+            assert "<a href=" in html
+
+
+def test_every_feed_image_is_local_and_large_enough_for_outward_use():
+    repo_root = Path(__file__).resolve().parents[1]
+    for board_slug in pinterest.BOARD_RULES:
+        for item in pinterest.feed_items(board_slug):
+            assert item["image"].startswith("/static/")
+            width, height = Image.open(repo_root / item["image"].lstrip("/")).size
+            assert width >= 600
+            assert height >= 500
+
+
+def test_campaign_open_graph_uses_feed_quality_image(client):
+    for item in pinterest.feed_items("rotten-fencepost"):
+        html = client.get(item["path"]).get_data(as_text=True)
+        assert f'<meta property="og:image" content="http://localhost{item["image"]}"' in html
+
+
+def test_shared_site_exposes_pinterest_without_changing_verification(client):
+    html = client.get("/").get_data(as_text=True)
+    assert html.count('name="p:domain_verify"') == 1
+    assert 'type="application/rss+xml"' in html
+    assert 'href="https://keaupuniakeakua.faith/pinterest-feed.xml"' in html
+    assert 'href="https://www.pinterest.com/source/keaupuniakeakua.faith/"' in html
+    assert "'channel': 'pinterest'" in html
 
 
 def test_pinterest_query_sets_first_party_attribution_cookie(client):
