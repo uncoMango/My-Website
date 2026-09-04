@@ -418,5 +418,15 @@
     "added_at": "2026-09-04T02:29:33.025972+00:00",
     "verified": false,
     "verified_at": null
+  },
+  "video_001_approved_longform_short_07_retention-v1": {
+    "asset_id": "video_001:approved_longform:short_07:retention-v1",
+    "filename": "video_001_approved_longform_short_07_retention-v1.mp4",
+    "campaign_id": "video_001",
+    "mimetype": "video/mp4",
+    "content_hash": "eb00f302df545571a7c6196708a788637b12dd0dc19598d084977bf10291cbec",
+    "added_at": "2026-09-04T02:30:41.941980+00:00",
+    "verified": false,
+    "verified_at": null
   }
 }
