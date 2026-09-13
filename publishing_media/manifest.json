@@ -364,8 +364,8 @@
     "filename": "campaign_003_approved_longform_short_07_fallback-v1.mp4",
     "campaign_id": "campaign_003",
     "mimetype": "video/mp4",
-    "content_hash": "c1e0d9df080a877dfc0e19451f7cfae94ffc39ae2cd57248028f33925d22194f",
-    "added_at": "2026-08-31T18:55:17.886370+00:00",
+    "content_hash": "23122808f0267a216b53716c670111a953c966bcd3540da43f9b8c26e548cd89",
+    "added_at": "2026-09-11T21:48:50.183829+00:00",
     "verified": false,
     "verified_at": null
   },
@@ -374,8 +374,8 @@
     "filename": "campaign_003_approved_longform_short_08_fallback-v1.mp4",
     "campaign_id": "campaign_003",
     "mimetype": "video/mp4",
-    "content_hash": "b7acbcdd1480a45f8728e84993b6157fad751143be16359191f8e789fabd7b01",
-    "added_at": "2026-08-31T19:15:17.674079+00:00",
+    "content_hash": "c22a43a59edffa920455f3a372d46b1c70ce964d583d617c50f9f110d22224ba",
+    "added_at": "2026-09-11T21:49:21.605640+00:00",
     "verified": false,
     "verified_at": null
   },
@@ -384,8 +384,8 @@
     "filename": "campaign_003_approved_longform_short_09_fallback-v1.mp4",
     "campaign_id": "campaign_003",
     "mimetype": "video/mp4",
-    "content_hash": "86593e5a658e551f787ca49146bffd3ad7aa3bd9ff930a6c9225544140c15199",
-    "added_at": "2026-09-03T05:30:44.621222+00:00",
+    "content_hash": "19b57f7c24d78d81eb105cd1f66212f29aee24a52adf6335123b8016f2f89576",
+    "added_at": "2026-09-11T21:48:15.051242+00:00",
     "verified": false,
     "verified_at": null
   },
@@ -476,6 +476,26 @@
     "mimetype": "video/mp4",
     "content_hash": "ec707bbedd902eeb53d13efa72d5acaeebac85e8fad90210ce17311a5c1cf163",
     "added_at": "2026-09-10T17:15:10.801664+00:00",
+    "verified": false,
+    "verified_at": null
+  },
+  "campaign_003_approved_longform_short_13_fallback-v1": {
+    "asset_id": "campaign_003:approved_longform:short_13:fallback-v1",
+    "filename": "campaign_003_approved_longform_short_13_fallback-v1.mp4",
+    "campaign_id": "campaign_003",
+    "mimetype": "video/mp4",
+    "content_hash": "ac07dd98884864fbf495ebbfdbe6512f403a39fb7473da8015989637b3edb50f",
+    "added_at": "2026-09-12T08:44:21.506244+00:00",
+    "verified": false,
+    "verified_at": null
+  },
+  "video_001_approved_longform_short_09_fallback-v1": {
+    "asset_id": "video_001:approved_longform:short_09:fallback-v1",
+    "filename": "video_001_approved_longform_short_09_fallback-v1.mp4",
+    "campaign_id": "video_001",
+    "mimetype": "video/mp4",
+    "content_hash": "5a9305d8a0c0a21ea854078bbcda871487d6d70c65c0f03f19fb9f039d7402b4",
+    "added_at": "2026-09-13T17:13:10.838095+00:00",
     "verified": false,
     "verified_at": null
   }
