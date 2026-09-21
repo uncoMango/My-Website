@@ -568,5 +568,15 @@
     "added_at": "2026-09-21T20:50:16.670047+00:00",
     "verified": false,
     "verified_at": null
+  },
+  "video_001_approved_longform_short_2026-09-21_72_fallback-v1": {
+    "asset_id": "video_001:approved_longform:short_2026-09-21_72:fallback-v1",
+    "filename": "video_001_approved_longform_short_2026-09-21_72_fallback-v1.mp4",
+    "campaign_id": "video_001",
+    "mimetype": "video/mp4",
+    "content_hash": "300f99ae5170713943104c3eaaabad07ae312323f10f361300ba999f55d7fe96",
+    "added_at": "2026-09-21T20:57:01.888889+00:00",
+    "verified": false,
+    "verified_at": null
   }
 }
