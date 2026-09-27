@@ -13,6 +13,13 @@ import unsubscribe_tokens
 
 DAY3_SECONDS = 3 * 24 * 3600
 DAY7_SECONDS = 7 * 24 * 3600
+# How late a follow-up can be and still go out as a fresh, timely
+# touchpoint. Recovering a follow-up across an ordinary restart (hours,
+# maybe a couple of days) is the intended case; a signup reconciled back in
+# from months-old Google Sheets history (2026-09-27: a 2026-05 bot attack
+# on the signup form surfaced this -- see CLAUDE.md) is not a real recovery
+# case and must never trigger a real send.
+STALE_FOLLOWUP_CUTOFF_SECONDS = 14 * 24 * 3600
 
 downloads_bp = Blueprint("downloads", __name__)
 
@@ -304,7 +311,18 @@ def _schedule_followups(email, name, signup_time):
             continue
         remaining = delay_seconds - elapsed
         if remaining <= 0:
-            sender(email, name)
+            overdue_by = -remaining
+            if overdue_by > STALE_FOLLOWUP_CUTOFF_SECONDS:
+                # Too stale to send fresh -- mark resolved without ever
+                # contacting this address, and record it durably (the same
+                # Sheet event a real send would use) so reconciliation from
+                # Sheets can never re-surface it as still-pending again.
+                _mark_subscriber_fields(email, **{sent_field: True})
+                sheet_event = SHEET_EVENT_DAY3_SENT if sent_field == "day3_sent" else SHEET_EVENT_DAY7_SENT
+                _append_sheet_event(name, email, sheet_event, datetime.now(timezone.utc).isoformat())
+                print(f"[followup] Skipped stale {sent_field} for {email} -- {int(overdue_by / 86400)} days overdue, never sent", flush=True)
+            else:
+                sender(email, name)
         else:
             Timer(remaining, sender, args=[email, name]).start()
 

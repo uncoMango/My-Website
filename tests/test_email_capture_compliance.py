@@ -510,3 +510,66 @@ def test_recover_skips_unsubscribed_subscribers(monkeypatch):
     downloads_module._recover_pending_followups()
 
     assert _to("gone@example.test") == []
+
+
+# ---------------------------------------------------------------------------
+# Stale-followup cutoff (2026-09-27): a 2026-05 bot attack on the signup
+# form put ~35 real, non-consenting third-party email addresses into the
+# durable Google Sheets event log with a "Website Signup" timestamp.
+# Months later, _reconcile_subscribers_from_sheet() pulled them back into
+# local storage, and _recover_pending_followups() -- unaware anything was
+# wrong -- treated all of them as simply "very overdue" and began firing
+# real day-3/day-7 emails at them (caught in production after one address
+# had already received both; see CLAUDE.md's 2026-09-27 entry). A follow-up
+# recovered across an ordinary restart (hours, at most a couple of days
+# late) is the only case this mechanism was ever meant to cover.
+# ---------------------------------------------------------------------------
+
+def test_recover_skips_a_wildly_overdue_followup_without_sending(monkeypatch):
+    _enable_smtp(monkeypatch)
+    _enable_compliance(monkeypatch)
+    long_ago = (datetime.now(timezone.utc) - timedelta(days=120)).isoformat()
+    downloads_module._save_subscribers([
+        {"email": "stale@example.test", "first_name": "Stale", "source": "footer_signup",
+         "timestamp": long_ago},
+    ])
+
+    downloads_module._recover_pending_followups()
+
+    assert _to("stale@example.test") == [], "A 120-day-overdue signup must never trigger a real send"
+    sub = downloads_module._load_subscribers()[0]
+    assert sub["day3_sent"] is True and sub["day7_sent"] is True, (
+        "Must still be marked resolved, or every future restart would keep re-evaluating it"
+    )
+
+
+def test_recover_stale_skip_is_recorded_to_the_sheet_so_it_never_resurfaces(monkeypatch):
+    _enable_smtp(monkeypatch)
+    _enable_compliance(monkeypatch)
+    _enable_sheets(monkeypatch)
+    long_ago = (datetime.now(timezone.utc) - timedelta(days=120)).isoformat()
+    downloads_module._save_subscribers([
+        {"email": "stale@example.test", "first_name": "Stale", "source": "footer_signup",
+         "timestamp": long_ago},
+    ])
+
+    downloads_module._recover_pending_followups()
+
+    assert any(r[2] == downloads_module.SHEET_EVENT_DAY3_SENT for r in FakeSheet.rows)
+    assert any(r[2] == downloads_module.SHEET_EVENT_DAY7_SENT for r in FakeSheet.rows)
+
+
+def test_recover_still_sends_a_followup_that_is_only_moderately_overdue(monkeypatch):
+    """Guards against an overcorrection: recovering from an ordinary
+    restart (the mechanism's actual purpose) must still work."""
+    _enable_smtp(monkeypatch)
+    _enable_compliance(monkeypatch)
+    ten_days_ago = (datetime.now(timezone.utc) - timedelta(days=10)).isoformat()
+    downloads_module._save_subscribers([
+        {"email": "overdue@example.test", "first_name": "Overdue", "source": "footer_signup",
+         "timestamp": ten_days_ago},
+    ])
+
+    downloads_module._recover_pending_followups()
+
+    assert len(_to("overdue@example.test")) == 2
