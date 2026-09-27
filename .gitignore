@@ -1,6 +1,7 @@
 email_subscribers.json
 data/subscribers.json
 download_token_usage.json
+admin_content_overrides.json
 __pycache__/
 *.pyc
 .env

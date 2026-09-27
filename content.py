@@ -1,4 +1,5 @@
 # content.py
+import copy
 import json
 from datetime import datetime
 from config import DATA_FILE, PRODUCTS_FILE, ORDER
@@ -171,10 +172,26 @@ def _deep_merge(base, override):
     return result
 
 def load_content():
-    return DEFAULT_PAGES
+    # Always start from an independent deep copy of DEFAULT_PAGES, never
+    # the module-level object itself. admin.py's edit routes do
+    # load-then-mutate-then-save on whatever this returns; _deep_merge only
+    # rebuilds keys that exist in both the base and the saved override, so
+    # any page nobody has edited yet would otherwise stay a direct
+    # reference into DEFAULT_PAGES -- the very next unrelated edit would
+    # then mutate the real defaults in memory for the rest of this
+    # process's life, silently, not just what got saved to disk.
+    defaults = copy.deepcopy(DEFAULT_PAGES)
+    if DATA_FILE.exists():
+        try:
+            saved = json.loads(DATA_FILE.read_text(encoding="utf-8"))
+            return _deep_merge(defaults, saved)
+        except Exception as e:
+            print(f"[content] Failed to load {DATA_FILE}, using defaults only: {e}", flush=True)
+    return defaults
 
 def save_content(data):
-    pass
+    DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
+    DATA_FILE.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
 
 def get_nav_items(data):
     pages = data.get("pages", {})

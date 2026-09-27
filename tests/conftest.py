@@ -19,6 +19,7 @@ sys.path.insert(0, str(ROOT))
 
 from blueprints import payments as payments_module  # noqa: E402
 from blueprints import downloads as downloads_module  # noqa: E402
+import content as content_module  # noqa: E402
 
 
 @pytest.fixture(autouse=True)
@@ -33,3 +34,12 @@ def _isolate_subscribers(tmp_path, monkeypatch):
     without isolating it, any test exercising /subscribe or /unsubscribe
     would write real subscriber data into the actual repository file."""
     monkeypatch.setattr(downloads_module, "SUBSCRIBERS_FILE", tmp_path / "subscribers.json")
+
+
+@pytest.fixture(autouse=True)
+def _isolate_admin_content(tmp_path, monkeypatch):
+    """Same reasoning again: content.py's DATA_FILE (admin_content_overrides.json,
+    2026-09-27) is a real file on disk once save_content() actually writes --
+    without isolating it, any test that hits /kahu's edit routes would write
+    real admin content into the actual repository file."""
+    monkeypatch.setattr(content_module, "DATA_FILE", tmp_path / "admin_content_overrides.json")

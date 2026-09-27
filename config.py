@@ -9,7 +9,33 @@ from pathlib import Path
 
 # ----- PATHS -----
 BASE = Path(__file__).parent
-DATA_FILE = BASE / "website_content.json"
+
+# Persistent disk (Render): unlike the rest of this checkout, which is
+# replaced fresh on every deploy, a disk mounted here survives deploys and
+# restarts. Falls back to BASE when the mount doesn't exist (local dev on
+# Windows/Mac, or a Render service with no disk attached), so nothing here
+# requires a persistent disk to run. Only files that are runtime-written
+# and have no safe fallback if lost (subscriber list, saved admin content
+# edits) live here today -- digital_products.json/PRODUCTS_FOLDER hold real
+# git-committed catalog data and are deliberately left on the normal
+# deploy path pending their own dedicated migration.
+def _resolve_persistent_dir(candidate: Path, base: Path) -> Path:
+    return candidate if candidate.exists() else base
+
+_PERSISTENT_ROOT = Path("/var/data")
+PERSISTENT_DIR = _resolve_persistent_dir(_PERSISTENT_ROOT, BASE)
+
+# Deliberately NOT named website_content.json: that filename already exists
+# at BASE, left over from the old pre-refactor monolith (ke_aupuni_website.py)
+# and full of stale, superseded page copy (verified 2026-09-27 -- e.g. the old
+# "Three Pillars" homepage text that content.py's own comments say was
+# deliberately removed). Wiring real load/save onto that exact file would
+# have silently resurrected old content the moment the app started reading
+# it. This is a fresh, separate file so admin-panel edits start clean from
+# today's real DEFAULT_PAGES, with zero chance of that collision. Leave
+# website_content.json where it is, untouched -- it is not read by anything
+# in the current app.
+DATA_FILE = PERSISTENT_DIR / "admin_content_overrides.json"
 PRODUCTS_FILE = BASE / "digital_products.json"
 PRODUCTS_FOLDER = BASE / "digital_products"
 DOWNLOAD_TOKEN_USAGE_FILE = BASE / "download_token_usage.json"
@@ -20,7 +46,7 @@ DOWNLOAD_TOKEN_USAGE_FILE = BASE / "download_token_usage.json"
 # can never double-count a sale or send a duplicate fulfillment email.
 STRIPE_FULFILLED_SESSIONS_FILE = BASE / "stripe_fulfilled_sessions.json"
 EMAILS_FILE = BASE / "email_subscribers.json"
-SUBSCRIBERS_FILE = BASE / "data" / "subscribers.json"
+SUBSCRIBERS_FILE = PERSISTENT_DIR / "data" / "subscribers.json"
 
 # Dedicated directory the Discovery Workforce's Publishing Department
 # bridges approved campaign media (Shorts, campaign images) into so
