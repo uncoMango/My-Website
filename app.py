@@ -2,7 +2,6 @@
 import os
 from flask import Flask, request
 from config import PRODUCTS_FOLDER, DATA_FILE, FLASK_SECRET_KEY
-from content import load_content, save_content, DEFAULT_PAGES
 
 from blueprints.pages import pages_bp
 from blueprints.downloads import downloads_bp
@@ -31,8 +30,20 @@ app.config.update(
 
 # Initialize on startup (works with gunicorn too)
 PRODUCTS_FOLDER.mkdir(exist_ok=True)
-if not DATA_FILE.exists():
-    save_content(DEFAULT_PAGES)
+
+# One-time migration (2026-09-28): this used to eagerly save a full
+# snapshot of DEFAULT_PAGES to disk the first time DATA_FILE didn't exist.
+# That snapshot then permanently masked every future source-code content
+# change, forever, because load_content() always prefers a saved override
+# over the defaults -- real incident: a homepage copy rewrite never went
+# live because of exactly this. It's unnecessary: load_content() already
+# falls back to DEFAULT_PAGES cleanly when no file has been saved yet. Any
+# snapshot already sitting on a persistent disk from the old behavior is
+# moved aside once (never deleted) so a real future admin edit still
+# starts clean from the current DEFAULT_PAGES, not a frozen old copy.
+_pre_migration_snapshot = DATA_FILE.parent / (DATA_FILE.name + ".pre_2026-09-28_eager_seed_backup")
+if DATA_FILE.exists() and not _pre_migration_snapshot.exists():
+    DATA_FILE.rename(_pre_migration_snapshot)
 
 app.register_blueprint(downloads_bp)
 app.register_blueprint(products_bp)
