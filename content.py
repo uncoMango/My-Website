@@ -345,6 +345,28 @@ CAMPAIGNS = {
             {"label": "Find the Cause, Not the Symptoms: The Rotten Fencepost Principle", "url": "/rotten-fencepost/find-the-cause-not-the-symptoms"},
         ],
     },
+    "004": {
+        "id": "004",
+        "title": "One Question Too Soon",
+        "subtitle": "The Rotten Fencepost Principle",
+        "seo_title": "Watch: One Question Too Soon | Rotten Fencepost",
+        "meta_description": "You found the problem and fixed it, and months later you were right back in the same place. Kahu Phil Stephens on what happens when we stop looking one question too soon.",
+        "hero_image": "/static/images/paniolo_phil.jpg",
+        "hero_fit": "contain",
+        "youtube_id": "7l7ygAtXdkg",
+        "intro_html": (
+            "<p>You found the problem. You fixed it. And months later you were right back in the same "
+            "place. What if what you found really was a problem, but not the whole problem? In this "
+            "teaching, Kahu Phil Stephens looks at what happens when we stop looking one question too "
+            "soon, and asks us to see what the problem we can see is standing on.</p>"
+        ),
+        "shorts": [],
+        "related_links": [
+            {"label": "Explore the Rotten Fencepost Principle", "url": "/rotten-fencepost"},
+            {"label": "Find the Cause, Not the Symptoms: The Rotten Fencepost Principle", "url": "/rotten-fencepost/find-the-cause-not-the-symptoms"},
+            {"label": "Why Do I Keep Starting Over? The Rotten Fencepost Principle", "url": "/rotten-fencepost/why-do-i-keep-starting-over"},
+        ],
+    },
 }
 
 # Controls which campaigns are surfaced as playable videos on the
@@ -354,7 +376,7 @@ CAMPAIGNS = {
 # listed here. Add a campaign's id to this list when it should be featured
 # on the hub; every campaign remains reachable at its own /campaign/<id>
 # regardless of whether it appears here.
-HUB_FEATURED_CAMPAIGN_IDS = ["001", "002", "003"]
+HUB_FEATURED_CAMPAIGN_IDS = ["001", "002", "003", "004"]
 
 def get_campaign_by_id(campaign_id):
     return CAMPAIGNS.get(campaign_id)

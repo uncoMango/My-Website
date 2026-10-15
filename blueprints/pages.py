@@ -1549,6 +1549,7 @@ def sitemap():
         ("/campaign/001",       "0.7", "monthly"),
         ("/campaign/002",       "0.7", "monthly"),
         ("/campaign/003",       "0.7", "monthly"),
+        ("/campaign/004",       "0.7", "monthly"),
         ("/myron-golden",       "0.8", "weekly"),
         ("/aloha-wellness",     "0.8", "weekly"),
         ("/kingdom-study",                          "0.9", "weekly"),
