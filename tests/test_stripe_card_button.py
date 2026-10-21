@@ -92,3 +92,11 @@ def test_the_page_header_names_what_stripe_objected_to_without_leaking(client, m
     assert resp.headers["X-Checkout-Code"] == "payment_method_unactivated"
     assert resp.headers["X-Checkout-Status"] == "400"
     assert "SECRETKEY123" not in str(resp.headers) and "SECRETKEY123" not in resp.get_data(as_text=True)
+
+
+def test_the_order_does_not_force_a_payment_method_type(client, monkeypatch):
+    """Live finding 2026-10-20: Stripe answered 400 with parameter payment_method_types for every product."""
+    seen = {}
+    monkeypatch.setattr(stripe.checkout.Session, "create", staticmethod(lambda **kw: seen.update(kw) or _Session()))
+    assert client.post(f"/stripe/create-session/{PRODUCT}").status_code == 303
+    assert "payment_method_types" not in seen

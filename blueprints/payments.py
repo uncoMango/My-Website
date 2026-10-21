@@ -419,7 +419,8 @@ def stripe_create_session(product_id):
 
     try:
         session = stripe.checkout.Session.create(
-            payment_method_types=["card"],
+            # No payment_method_types here (2026-10-20): Stripe refused the forced ["card"] on every product (HTTP 400, parameter
+            # payment_method_types). Leaving it out lets Stripe offer the methods switched on in the owner's Stripe dashboard.
             line_items=[{
                 "price_data": {
                     "currency": "usd",
