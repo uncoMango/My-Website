@@ -1,0 +1,18 @@
+{# templates/checkout_problem.html -- shown when the card payment page could not be opened. No payment was started. #}
+{% extends "base.html" %}
+{% block title %}Card payment is not available right now{% endblock %}
+{% block extra_head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block extra_styles %}
+.problem-box { max-width: 600px; margin: 230px auto 3rem; background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; }
+.problem-box h1 { color: #2c3e50; font-size: 1.5rem; margin-bottom: 1rem; }
+.problem-box p { color: #495057; line-height: 1.6; margin-bottom: 1rem; }
+.problem-box a.back { display: inline-block; padding: 0.9rem 1.8rem; background: #2c3e50; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; }
+{% endblock %}
+{% block content %}
+<div class="problem-box">
+    <h1>Card payment is not available right now</h1>
+    <p>Nothing was charged. You can still pay with PayPal (a PayPal account is not needed: it also takes credit and debit cards), or try the card button again in a few minutes.</p>
+    <p><a class="back" href="/checkout/{{ product_id }}">Back to checkout</a></p>
+    <p>If it keeps happening, write to {{ contact_email }} and we will help you right away.</p>
+</div>
+{% endblock %}

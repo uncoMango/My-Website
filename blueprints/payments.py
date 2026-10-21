@@ -17,7 +17,7 @@ import urllib.parse
 from datetime import datetime, timezone
 from email.mime.text import MIMEText
 
-from flask import Blueprint, abort, redirect, render_template, request, url_for
+from flask import Blueprint, abort, make_response, redirect, render_template, request, url_for
 from content import load_digital_products, save_digital_products, get_product_by_id
 from download_tokens import generate_download_token
 from config import (
@@ -351,6 +351,31 @@ def paypal_cancel():
 # These routes exist but only work when STRIPE_ENABLED=True.
 # =========================================================
 
+def _card_payment_unavailable(product_id, exc):
+    """Stripe refused (or could not be reached). Nothing was charged. Log exactly why (no secrets) so the owner can see the
+    cause in Render's Logs, tell the buyer plainly, and point to PayPal. The category is also sent as a response header
+    (X-Checkout-Problem) so a test can read the cause without opening the logs."""
+    import re
+    name = type(exc).__name__
+    code = getattr(exc, "code", None)
+    status = getattr(exc, "http_status", None)
+    message = re.sub(r"(sk|rk|pk)_(live|test)_[A-Za-z0-9_.*]*", lambda m: m.group(1) + "_" + m.group(2) + "_...", str(exc))[:300]
+    print(f"[stripe] create-session FAILED for {product_id}: {name} http={status} code={code} message={message}", flush=True)
+    if "ermission" in name or (status == 403):
+        category = "stripe_key_permission"
+    elif status in (401,) or "uthentication" in name:
+        category = "stripe_key_rejected"
+    elif "InvalidRequest" in name:
+        category = "stripe_rejected_request"
+    elif "Connection" in name or "APIConnection" in name:
+        category = "stripe_unreachable"
+    else:
+        category = "stripe_other"
+    response = make_response(render_template("checkout_problem.html", product_id=product_id, contact_email=CONTACT_EMAIL), 502)
+    response.headers["X-Checkout-Problem"] = category
+    return response
+
+
 @payments_bp.route("/stripe/create-session/<product_id>", methods=["POST"])
 def stripe_create_session(product_id):
     if not STRIPE_ENABLED:
@@ -375,31 +400,38 @@ def stripe_create_session(product_id):
     if cover_image and not cover_image.startswith(("http://", "https://")):
         cover_image = f"{SITE_DOMAIN}{cover_image}"
 
-    session = stripe.checkout.Session.create(
-        payment_method_types=["card"],
-        line_items=[{
-            "price_data": {
-                "currency": "usd",
-                "product_data": {
-                    "name": product["name"],
-                    "images": [cover_image] if cover_image else [],
+    # Stripe treats an empty value as "remove this key". Only keys that actually have a value are sent
+    # (2026-10-20: the card button had answered "Internal Server Error" since attribution tags were added).
+    metadata = {k: v for k, v in {
+        "product_id": product_id,
+        "attribution_source": request.cookies.get("rf_source", "direct")[:100],
+        "attribution_medium": request.cookies.get("rf_medium", "")[:100],
+        "attribution_campaign": request.cookies.get("rf_campaign", "")[:100],
+        "attribution_bridge": request.cookies.get("rf_bridge", "")[:100],
+        "attribution_content": request.cookies.get("rf_content", "")[:100],
+    }.items() if v}
+
+    try:
+        session = stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            line_items=[{
+                "price_data": {
+                    "currency": "usd",
+                    "product_data": {
+                        "name": product["name"],
+                        "images": [cover_image] if cover_image else [],
+                    },
+                    "unit_amount": price_cents,
                 },
-                "unit_amount": price_cents,
-            },
-            "quantity": 1,
-        }],
-        mode="payment",
-        success_url=f"{SITE_DOMAIN}/stripe/success?session_id={{CHECKOUT_SESSION_ID}}&product_id={product_id}",
-        cancel_url=f"{SITE_DOMAIN}/product/{product_id}?cancelled=true",
-        metadata={
-            "product_id": product_id,
-            "attribution_source": request.cookies.get("rf_source", "direct")[:100],
-            "attribution_medium": request.cookies.get("rf_medium", "")[:100],
-            "attribution_campaign": request.cookies.get("rf_campaign", "")[:100],
-            "attribution_bridge": request.cookies.get("rf_bridge", "")[:100],
-            "attribution_content": request.cookies.get("rf_content", "")[:100],
-        },
-    )
+                "quantity": 1,
+            }],
+            mode="payment",
+            success_url=f"{SITE_DOMAIN}/stripe/success?session_id={{CHECKOUT_SESSION_ID}}&product_id={product_id}",
+            cancel_url=f"{SITE_DOMAIN}/product/{product_id}?cancelled=true",
+            metadata=metadata,
+        )
+    except Exception as exc:  # noqa: BLE001 - a visitor must never see a bare "Internal Server Error" at the till
+        return _card_payment_unavailable(product_id, exc)
     return redirect(session.url, code=303)
 
 
