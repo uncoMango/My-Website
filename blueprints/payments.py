@@ -373,6 +373,12 @@ def _card_payment_unavailable(product_id, exc):
         category = "stripe_other"
     response = make_response(render_template("checkout_problem.html", product_id=product_id, contact_email=CONTACT_EMAIL), 502)
     response.headers["X-Checkout-Problem"] = category
+    # Short, harmless tokens that say WHAT Stripe objected to (never the full message, never a key).
+    for header, value in (("X-Checkout-Param", getattr(exc, "param", None)), ("X-Checkout-Code", code),
+                          ("X-Checkout-Status", status)):
+        text = re.sub(r"[^A-Za-z0-9_.\[\]-]", "", str(value or ""))[:80]
+        if text:
+            response.headers[header] = text
     return response
 
 

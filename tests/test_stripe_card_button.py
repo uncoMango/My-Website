@@ -81,3 +81,14 @@ def test_unknown_product_is_still_a_404_and_disabled_stripe_still_a_404(client, 
     assert client.post("/stripe/create-session/not_a_product").status_code == 404
     monkeypatch.setattr(payments_module, "STRIPE_ENABLED", False)
     assert client.post(f"/stripe/create-session/{PRODUCT}").status_code == 404
+
+
+def test_the_page_header_names_what_stripe_objected_to_without_leaking(client, monkeypatch):
+    err = stripe.InvalidRequestError("The payment method type \"card\" is invalid. rk_live_SECRETKEY123", param="payment_method_types[0]",
+                                     code="payment_method_unactivated", http_status=400)
+    monkeypatch.setattr(stripe.checkout.Session, "create", staticmethod(lambda **kw: (_ for _ in ()).throw(err)))
+    resp = client.post(f"/stripe/create-session/{PRODUCT}")
+    assert resp.headers["X-Checkout-Param"] == "payment_method_types[0]"
+    assert resp.headers["X-Checkout-Code"] == "payment_method_unactivated"
+    assert resp.headers["X-Checkout-Status"] == "400"
+    assert "SECRETKEY123" not in str(resp.headers) and "SECRETKEY123" not in resp.get_data(as_text=True)
