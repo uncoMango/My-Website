@@ -17,7 +17,9 @@ from content import (
 )
 from config import PRODUCTS_FOLDER, LOGO_PATH, LOGO_HEIGHT, FOOTER_TEXT, CONTACT_EMAIL
 from auth import require_admin
-from download_tokens import validate_and_consume_token
+from download_tokens import validate_and_consume_token_ex
+import os
+import sale_alerts
 from schema import SITE_URL, build_product_schema, build_breadcrumb_schema, build_collection_itemlist_schema
 
 products_bp = Blueprint("products", __name__)
@@ -112,7 +114,7 @@ def download_product(product_id, token):
     product = get_product_by_id(product_id)
     if not product:
         abort(404)
-    ok, reason = validate_and_consume_token(product_id, token)
+    ok, reason, order_id, use_number = validate_and_consume_token_ex(product_id, token)
     if not ok:
         # "not_configured" is a server misconfiguration (missing
         # DOWNLOAD_TOKEN_SECRET) -> 503, matching how this app already
@@ -127,7 +129,19 @@ def download_product(product_id, token):
             p["downloads"] = p.get("downloads", 0) + 1
     save_digital_products(products_data)
     file_path = Path(product["file_path"])
-    return send_file(file_path, as_attachment=True, download_name=product["filename"])
+    if not (file_path.is_file() and os.path.getsize(file_path) > 0):
+        # A paying buyer must never meet a bare error page: say what happened and tell the owner at once (2026-10-21).
+        sale_alerts.delivery_failed(product["name"], order_id, "the product file is missing on the website")
+        return ("We are sorry: your file could not be sent just now. Nothing more is needed from you; "
+                "you will have it very soon, and you can write to us with your order number.", 503)
+    try:
+        response = send_file(file_path, as_attachment=True, download_name=product["filename"])
+    except Exception as exc:  # noqa: BLE001
+        sale_alerts.delivery_failed(product["name"], order_id, type(exc).__name__)
+        return ("We are sorry: your file could not be sent just now. You will have it very soon.", 503)
+    if use_number == 1:
+        sale_alerts.delivered(product["name"], order_id)
+    return response
 
 
 # =========================================================

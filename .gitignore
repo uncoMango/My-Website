@@ -5,3 +5,6 @@ admin_content_overrides.json
 __pycache__/
 *.pyc
 .env
+
+# runtime record of which sales already sent a phone message
+sale_alerts_sent.json

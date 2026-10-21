@@ -43,3 +43,41 @@ def _isolate_admin_content(tmp_path, monkeypatch):
     without isolating it, any test that hits /kahu's edit routes would write
     real admin content into the actual repository file."""
     monkeypatch.setattr(content_module, "DATA_FILE", tmp_path / "admin_content_overrides.json")
+
+
+# ---------------------------------------------------------------------------
+# 2026-10-21: the PayPal success page now asks PayPal whether the order was really paid, and sale/delivery alerts go to a phone.
+# Tests must never reach PayPal or a phone. By default a test gets the OLD lenient behaviour (the order is taken as paid; buyer name
+# and email are read from whatever the test mocked), and every alert is captured in `sale_alert_log`.
+# A test of the real check marks itself: @pytest.mark.real_paypal_verification
+# ---------------------------------------------------------------------------
+
+def pytest_configure(config):
+    config.addinivalue_line("markers", "real_paypal_verification: use the real PayPal order check (with PayPal itself mocked)")
+
+
+@pytest.fixture(autouse=True)
+def sale_alert_log(monkeypatch, tmp_path):
+    import sale_alerts
+    log = []
+    monkeypatch.setattr(sale_alerts, "SENT_FILE", tmp_path / "sale_alerts_sent.json")
+    monkeypatch.setattr(sale_alerts, "send", lambda title, body, urgent=False, **kw: log.append((title, body, urgent)) or True)
+    return log
+
+
+@pytest.fixture(autouse=True)
+def _lenient_paypal_check_unless_marked(request, monkeypatch):
+    if request.node.get_closest_marker("real_paypal_verification"):
+        return
+
+    def lenient(order_id, product):
+        try:
+            order = payments_module._get_paypal_order(order_id, payments_module._get_paypal_token())
+        except Exception:
+            order = {}
+        payer = order.get("payer", {})
+        name = f"{payer.get('name', {}).get('given_name', '')} {payer.get('name', {}).get('surname', '')}".strip()
+        return True, "", name, payer.get("email_address", "")
+
+    monkeypatch.setattr(payments_module, "_verify_paypal_payment", lenient)
+

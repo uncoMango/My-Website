@@ -53,37 +53,42 @@ def _save_usage(usage):
         json.dump(usage, f)
 
 
-def validate_and_consume_token(product_id, token):
+def validate_and_consume_token_ex(product_id, token):
     """Validate a token for product_id and, if valid, record one use.
 
-    Returns (True, None) on success, or (False, reason) where reason is
+    Returns (True, None, order_id, use_number) on success, or (False, reason, ...) where reason is
     one of: "not_configured", "expired", "invalid", "wrong_product",
     "limit_exceeded". Callers should map every failure to the same
     generic HTTP response (403) — the reason is for logs/tests, not for
     telling a requester which part of their forged token was wrong.
     """
     if not DOWNLOAD_TOKEN_SECRET:
-        return False, "not_configured"
+        return False, "not_configured", "", 0
 
     try:
         payload = _serializer().loads(token, max_age=TOKEN_MAX_AGE_SECONDS)
     except SignatureExpired:
-        return False, "expired"
+        return False, "expired", "", 0
     except BadSignature:
-        return False, "invalid"
+        return False, "invalid", "", 0
 
     if payload.get("pid") != product_id:
-        return False, "wrong_product"
+        return False, "wrong_product", payload.get("oid", ""), 0
 
     jti = payload.get("jti")
     if not jti:
-        return False, "invalid"
+        return False, "invalid", "", 0
 
     usage = _load_usage()
     uses = usage.get(jti, 0)
     if uses >= MAX_USES:
-        return False, "limit_exceeded"
+        return False, "limit_exceeded", payload.get("oid", ""), uses
 
     usage[jti] = uses + 1
     _save_usage(usage)
-    return True, None
+    return True, None, payload.get("oid", ""), uses + 1
+
+
+def validate_and_consume_token(product_id, token):
+    ok, reason, _order, _uses = validate_and_consume_token_ex(product_id, token)
+    return ok, reason

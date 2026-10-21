@@ -10,8 +10,10 @@
 # =========================================================
 
 import json
+import os
 import base64
 import smtplib
+import urllib.error
 import urllib.request
 import urllib.parse
 from datetime import datetime, timezone
@@ -20,6 +22,7 @@ from email.mime.text import MIMEText
 from flask import Blueprint, abort, make_response, redirect, render_template, request, url_for
 from content import load_digital_products, save_digital_products, get_product_by_id
 from download_tokens import generate_download_token
+import sale_alerts
 from config import (
     PAYPAL_CLIENT_ID,
     PAYPAL_CLIENT_SECRET,
@@ -166,6 +169,48 @@ def _mark_fulfilled(session_id):
         pass
 
 
+def _delivery_ready(product, download_url):
+    """(True, "") when a buyer of this product can really get the file right now; otherwise (False, plain reason)."""
+    if product.get("category") == "partnership":
+        return True, ""
+    if not download_url:
+        return False, "the download signing secret is not set on the website"
+    path = product.get("file_path") or ""
+    if not path or not os.path.isfile(path) or os.path.getsize(path) == 0:
+        return False, "the product file is missing on the website"
+    return True, ""
+
+
+def _verify_paypal_payment(order_id, product):
+    """Ask PayPal itself whether this order was really paid, for this product's price.
+    Returns (ok, reason, buyer_name, buyer_email). reason: "" | "not_found" | "not_paid" | "wrong_amount" | "unreachable".
+    Before 2026-10-21 the success address trusted whatever order number it was given (any made-up number delivered the file)."""
+    try:
+        token = _get_paypal_token()
+        order = _get_paypal_order(order_id, token)
+    except urllib.error.HTTPError as exc:
+        return False, ("not_found" if exc.code in (400, 404, 422) else "unreachable"), "", ""
+    except Exception:
+        return False, "unreachable", "", ""
+    payer = order.get("payer", {})
+    name = f"{payer.get('name', {}).get('given_name', '')} {payer.get('name', {}).get('surname', '')}".strip()
+    email = payer.get("email_address", "")
+    if order.get("status") != "COMPLETED":
+        return False, "not_paid", name, email
+    units = order.get("purchase_units") or [{}]
+    captures = ((units[0].get("payments") or {}).get("captures")) or []
+    if captures and any(c.get("status") != "COMPLETED" for c in captures):
+        return False, "not_paid", name, email
+    paid = (captures[0].get("amount") if captures else units[0].get("amount")) or {}
+    try:
+        right = abs(float(paid.get("value", -1)) - float(product["price"])) < 0.01 and paid.get("currency_code", "USD") == "USD"
+    except (TypeError, ValueError):
+        right = False
+    if not right:
+        return False, "wrong_amount", name, email
+    return True, "", name, email
+
+
 def _fulfill_stripe_purchase(product, session_id, buyer_name="", buyer_email=""):
     """The one real fulfillment action for a Stripe session Stripe itself
     has already confirmed paid (Hurricane Readiness work order,
@@ -188,6 +233,9 @@ def _fulfill_stripe_purchase(product, session_id, buyer_name="", buyer_email="")
 
     if already_done:
         return download_url
+
+    ready, reason = _delivery_ready(product, download_url)
+    sale_alerts.sale(product["name"], float(product["price"]), "Stripe", session_id, ready, reason)
 
     products_data = load_digital_products()
     for p in products_data["products"]:
@@ -314,31 +362,39 @@ def paypal_success():
     if not product:
         abort(404)
 
-    # Update sales tracking
-    products_data = load_digital_products()
-    for p in products_data["products"]:
-        if p["id"] == product_id:
-            p["downloads"] = p.get("downloads", 0) + 1
-            p["total_sales"] = p.get("total_sales", 0) + float(product["price"])
-    save_digital_products(products_data)
+    # Nothing is delivered, counted or announced until PayPal itself says this order was paid (2026-10-21).
+    verified, reason, buyer_name, buyer_email = _verify_paypal_payment(order_id, product)
+    if not verified:
+        if reason == "unreachable":
+            if sale_alerts.once("paypal-unreachable:" + order_id):
+                sale_alerts.send("FIX NOW: PayPal buyer may not have the file",
+                                 f"A buyer came back from PayPal but the website could not confirm the payment right now "
+                                 f"(order ...{order_id[-8:]}, {product['name']}). Check PayPal and send the file by hand if it was paid.",
+                                 urgent=True)
+            return ("We could not confirm your PayPal payment this minute. Please do not pay again. "
+                    f"Write to {CONTACT_EMAIL} with your PayPal receipt and we will send your file right away.", 503)
+        if reason == "wrong_amount" and sale_alerts.once("paypal-amount:" + order_id):
+            sale_alerts.send("Check PayPal: amount did not match", f"Order ...{order_id[-8:]} for {product['name']} was paid but not for the "
+                             f"listed price. No file was delivered.", urgent=True)
+        return ("Payment not completed.", 402)
 
-    # Retrieve buyer info from PayPal order details
-    buyer_name = ""
-    buyer_email = ""
-    try:
-        token = _get_paypal_token()
-        order_details = _get_paypal_order(order_id, token)
-        payer = order_details.get("payer", {})
-        given = payer.get("name", {}).get("given_name", "")
-        surname = payer.get("name", {}).get("surname", "")
-        buyer_name = f"{given} {surname}".strip()
-        buyer_email = payer.get("email_address", "")
-    except Exception:
-        pass
+    first_time = sale_alerts.once("paypal:" + order_id)
+    if first_time:
+        # Update sales tracking
+        products_data = load_digital_products()
+        for p in products_data["products"]:
+            if p["id"] == product_id:
+                p["downloads"] = p.get("downloads", 0) + 1
+                p["total_sales"] = p.get("total_sales", 0) + float(product["price"])
+        save_digital_products(products_data)
 
-    _send_sale_notification(product["name"], float(product["price"]), order_id, buyer_name, buyer_email)
+        _send_sale_notification(product["name"], float(product["price"]), order_id, buyer_name, buyer_email)
+        token = generate_download_token(product["id"], order_id)
+        url = f"/download/product/{product['id']}/{token}" if token else None
+        ready, why = _delivery_ready(product, url)
+        sale_alerts.sale(product["name"], float(product["price"]), "PayPal", order_id, ready, why)
 
-    return _render_payment_success(product, order_id, buyer_email)
+    return _render_payment_success(product, order_id, buyer_email if first_time else "")
 
 
 @payments_bp.route("/paypal/cancel")
@@ -528,3 +584,42 @@ def stripe_webhook():
                     _fulfill_stripe_purchase(product, session_id, buyer_name, buyer_email)
 
     return ("", 200)
+
+
+# =========================================================
+# HEALTH (no secrets): can a buyer pay and get the file? Read by the Foreman's daily check.
+# =========================================================
+
+@payments_bp.route("/health/sales")
+def health_sales():
+    from flask import jsonify
+    products = []
+    problems = []
+    for p in load_digital_products()["products"]:
+        if not p.get("active", True) or not p.get("file_path") or float(p.get("price", 0)) <= 0:
+            continue
+        path = p["file_path"]
+        file_ok = os.path.isfile(path) and os.path.getsize(path) > 0
+        products.append({"id": p["id"], "price": p["price"], "file_ok": file_ok})
+        if not file_ok:
+            problems.append(f"{p['id']}: product file missing")
+    from download_tokens import DOWNLOAD_TOKEN_SECRET
+    status = {
+        "stripe_enabled": bool(STRIPE_ENABLED and STRIPE_SECRET_KEY),
+        "paypal_ready": bool(PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET),
+        "download_secret": bool(DOWNLOAD_TOKEN_SECRET),
+        "sale_alerts_configured": sale_alerts.configured(),
+        "sale_email_configured": bool(SMTP_HOST and SMTP_USER and SMTP_PASS),
+        "products": products,
+    }
+    if not status["download_secret"]:
+        problems.append("download signing secret is not set: buyers would get no file")
+    if not status["paypal_ready"]:
+        problems.append("PayPal is not configured")
+    if not status["stripe_enabled"]:
+        problems.append("Stripe card payments are off")
+    if not status["sale_alerts_configured"]:
+        problems.append("sale phone alerts are not set up (set SALE_ALERT_NTFY_TOPIC on Render)")
+    status["problems"] = problems
+    status["ok"] = not problems
+    return jsonify(status)
