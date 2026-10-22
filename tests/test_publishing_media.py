@@ -261,8 +261,8 @@ def test_resolve_all_urls_raises_without_secret(tmp_path, media_env, monkeypatch
 
 def test_evergreen_link_redirects_to_a_working_signed_url(tmp_path, media_env):
     source = _make_source(tmp_path, name="workbook.pdf", content=b"fake-pdf-bytes")
-    publish_media.copy_asset_into_media_dir("campaign_002:planning_document:workbook_pdf:v5", source, "application/pdf", "campaign_002")
-    safe_id = publish_media.safe_id("campaign_002:planning_document:workbook_pdf:v5")
+    publish_media.copy_asset_into_media_dir("campaign_009:planning_document:workbook_pdf:v1", source, "application/pdf", "campaign_009")
+    safe_id = publish_media.safe_id("campaign_009:planning_document:workbook_pdf:v1")
 
     resp = media_env["client"].get(f"/media/{safe_id}", follow_redirects=False)
     assert resp.status_code == 302

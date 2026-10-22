@@ -298,12 +298,8 @@ CAMPAIGNS = {
         # {"youtube_id": "...", "title": "..."}; campaign_page.html already
         # renders this list (guarded, so an empty list shows nothing).
         "shorts": [],
-        "workbook_cta": {
-            "title": "Why Do I Keep Starting Over?",
-            "description": "A short companion workbook to help you apply this teaching to your own life — find the fence post that's actually rotting, not just the wire.",
-            "label": "Download the Free Workbook",
-            "url": "/media/campaign_002_planning_document_workbook_pdf_v9",
-        },
+        # 2026-10-22: the free workbook download was taken down by Kahu Phil until he has read the
+        # new version (see WITHDRAWN_MEDIA_IDS in blueprints/publishing_media.py). Restore "workbook_cta" to bring it back.
         "related_links": [
             {"label": "Start the Free Rotten Fencepost™ Training →", "url": "/training-001/why-do-i-keep-starting-over"},
             {"label": "Explore the Rotten Fencepost Principle", "url": "/rotten-fencepost"},
@@ -331,12 +327,8 @@ CAMPAIGNS = {
         # {"youtube_id": "...", "title": "..."}; campaign_page.html already
         # renders this list (guarded, so an empty list shows nothing).
         "shorts": [],
-        "workbook_cta": {
-            "title": "The Storm Did Not Rot the Post — It Revealed It",
-            "description": "A short companion workbook to help you find what the storm in your own life actually revealed — and decide what's really worth rebuilding.",
-            "label": "Download the Free Workbook",
-            "url": "/media/campaign_003_planning_document_workbook_pdf_v1",
-        },
+        # 2026-10-22: the free workbook download was taken down by Kahu Phil until he has read the
+        # new version (see WITHDRAWN_MEDIA_IDS in blueprints/publishing_media.py). Restore "workbook_cta" to bring it back.
         "related_links": [
             {"label": "Start the Free Rotten Fencepost™ Training: Inspect What the Storm Revealed", "url": "/training-001/why-do-i-keep-starting-over"},
             {"label": "Explore the Rotten Fencepost Principle", "url": "/rotten-fencepost"},

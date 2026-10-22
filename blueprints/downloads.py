@@ -181,7 +181,7 @@ def _send_welcome_email(email, name=""):
         greeting = name if name else "friend"
         body = f"""<!DOCTYPE html>
 <html>
-<body style="margin:0;padding:0;background:#1a1a1a;font-family:Georgia,serif;color:#f0ece3;">
+<body style="margin:0;padding:0;background:#1a1a1a;font-family:Noto Sans,Noto Sans Hebrew,Noto Sans JP,sans-serif;color:#f0ece3;">
 <div style="max-width:560px;margin:40px auto;padding:40px;background:#2a2a2a;border-radius:8px;">
 <h1 style="font-size:1.6rem;color:#d4a853;margin-bottom:0.5rem;">Ke Aupuni O Ke Akua Press</h1>
 <hr style="border:none;border-top:1px solid rgba(255,255,255,0.15);margin:1.5rem 0;">

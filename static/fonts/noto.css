@@ -1,0 +1,26 @@
+/* Noto fonts served from this site itself -- never from Google (Kahu Phil's standing rule, 2026-10-22).
+   Files come from D:\KAK_Press_Planners\fonts. Hebrew and Japanese only download when a page
+   actually contains those characters. Latin Noto Sans covers the Hawaiian okina and kahako,
+   Samoan, Tongan, Fijian and Greek. */
+@font-face { font-family: 'Noto Sans'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('/static/fonts/NotoSans-Regular.ttf') format('truetype'); }
+@font-face { font-family: 'Noto Sans'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('/static/fonts/NotoSans-Bold.ttf') format('truetype'); }
+@font-face { font-family: 'Noto Sans'; font-style: italic; font-weight: 400; font-display: swap;
+  src: url('/static/fonts/NotoSans-Italic.ttf') format('truetype'); }
+@font-face { font-family: 'Noto Sans'; font-style: italic; font-weight: 700; font-display: swap;
+  src: url('/static/fonts/NotoSans-BoldItalic.ttf') format('truetype'); }
+
+@font-face { font-family: 'Noto Sans Hebrew'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('/static/fonts/NotoSansHebrew-Regular.ttf') format('truetype');
+  unicode-range: U+0590-05FF, U+FB1D-FB4F; }
+@font-face { font-family: 'Noto Sans Hebrew'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('/static/fonts/NotoSansHebrew-Bold.ttf') format('truetype');
+  unicode-range: U+0590-05FF, U+FB1D-FB4F; }
+
+@font-face { font-family: 'Noto Sans JP'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('/static/fonts/NotoSansJP-Regular.ttf') format('truetype');
+  unicode-range: U+3000-30FF, U+3400-4DBF, U+4E00-9FFF, U+FF00-FFEF; }
+@font-face { font-family: 'Noto Sans JP'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('/static/fonts/NotoSansJP-Bold.ttf') format('truetype');
+  unicode-range: U+3000-30FF, U+3400-4DBF, U+4E00-9FFF, U+FF00-FFEF; }

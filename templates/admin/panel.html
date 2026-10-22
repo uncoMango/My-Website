@@ -2,12 +2,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="/static/fonts/noto.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel â€“ Ke Aupuni O Ke Akua</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:system-ui,sans-serif; background:linear-gradient(135deg,#667eea,#764ba2); min-height:100vh; padding:2rem; }
+        body { font-family: 'Noto Sans', 'Noto Sans Hebrew', 'Noto Sans JP', sans-serif; background:linear-gradient(135deg,#667eea,#764ba2); min-height:100vh; padding:2rem; }
         .container { max-width:1200px; margin:0 auto; background:white; border-radius:16px; padding:2rem; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
         h1 { color:#2c3e50; margin-bottom:0.5rem; font-size:2rem; }
         .subtitle { color:#7f8c8d; margin-bottom:2rem; }
@@ -29,7 +30,7 @@
         .settings-section h2 { color:#2c3e50; font-size:1.1rem; margin-bottom:0.25rem; }
         .settings-section p { color:#6c757d; font-size:0.85rem; margin-bottom:1rem; }
         .settings-section label { display:block; font-weight:600; color:#2c3e50; margin-bottom:0.4rem; font-size:0.9rem; }
-        .settings-section input[type="text"] { width:100%; padding:0.6rem 0.9rem; border:2px solid #ced4da; border-radius:8px; font-size:0.95rem; font-family:system-ui,sans-serif; }
+        .settings-section input[type="text"] { width:100%; padding:0.6rem 0.9rem; border:2px solid #ced4da; border-radius:8px; font-size:0.95rem; font-family: 'Noto Sans', 'Noto Sans Hebrew', 'Noto Sans JP', sans-serif; }
         .settings-section input[type="text"]:focus { border-color:#667eea; outline:none; }
         .settings-section .hint { font-size:0.78rem; color:#888; margin-top:0.3rem; }
     </style>
@@ -83,7 +84,7 @@
             <input type="text" id="mg_story_headline" name="mg_story_headline" value="{{ mg_story_headline }}">
             <br><br>
             <label for="mg_story_body">Story Body Text</label>
-            <textarea name="mg_story_body" id="mg_story_body" rows="6" style="width:100%;padding:0.6rem 0.9rem;border:2px solid #ced4da;border-radius:8px;font-size:0.95rem;font-family:system-ui,sans-serif;">{{ mg_story_body }}</textarea>
+            <textarea name="mg_story_body" id="mg_story_body" rows="6" style="width:100%;padding:0.6rem 0.9rem;border:2px solid #ced4da;border-radius:8px;font-size:0.95rem;font-family: 'Noto Sans', 'Noto Sans Hebrew', 'Noto Sans JP', sans-serif;">{{ mg_story_body }}</textarea>
             <br><br>
             <button type="submit" class="btn btn-primary">Save Myron Golden Text</button>
         </form>
@@ -91,7 +92,7 @@
     <div class="settings-section" style="background:#f0fff4;border-color:#27ae60;">
         <h2>Site Sitemap &#8212; All Public Pages</h2>
         <p>Quick reference for every published URL on this site.</p>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:0.35rem;font-size:0.875rem;font-family:monospace;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:0.35rem;font-size:0.875rem;font-family: 'Noto Sans', 'Noto Sans Hebrew', 'Noto Sans JP', sans-serif;">
             <a href="/" target="_blank" style="color:#27ae60;">/</a>
             <a href="/aloha_wellness" target="_blank" style="color:#27ae60;">/aloha_wellness</a>
             <a href="/kingdom_wealth" target="_blank" style="color:#27ae60;">/kingdom_wealth</a>

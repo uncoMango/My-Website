@@ -308,30 +308,32 @@ class TestCampaignWorkbookCTA:
             else:
                 content.CAMPAIGNS["001"]["workbook_cta"] = original
 
-    def test_campaign_002_workbook_cta_is_real_and_free(self, client):
-        resp = client.get("/campaign/002", base_url=BASE)
-        html = resp.get_data(as_text=True)
-        assert "Free Companion Workbook" in html
-        assert 'href="/media/campaign_002_planning_document_workbook_pdf_v9"' in html
-        assert "Download the Free Workbook" in html
+    # 2026-10-22: Kahu Phil took the 002 and 003 workbook downloads down until he has read the new
+    # versions. These tests keep them down; restore the old tests when he puts them back.
+    PAGES_THAT_USED_TO_OFFER_A_WORKBOOK = (
+        "/campaign/002", "/campaign/003",
+        "/rotten-fencepost/why-do-i-keep-starting-over", "/rotten-fencepost/the-storm-did-not-rot-the-post",
+    )
 
-    def test_campaign_002_article_also_has_workbook_cta(self, client):
-        resp = client.get("/rotten-fencepost/why-do-i-keep-starting-over", base_url=BASE)
-        html = resp.get_data(as_text=True)
-        assert "Free Companion Workbook" in html
-        assert 'href="/media/campaign_002_planning_document_workbook_pdf_v9"' in html
+    def test_no_workbook_button_or_link_on_campaign_pages_or_articles(self, client):
+        for path in self.PAGES_THAT_USED_TO_OFFER_A_WORKBOOK:
+            html = client.get(path, base_url=BASE).get_data(as_text=True)
+            assert "Free Companion Workbook" not in html, path
+            assert "Download the Free Workbook" not in html, path
+            assert "/media/campaign_002_planning_document_workbook" not in html, path
+            assert "/media/campaign_003_planning_document_workbook" not in html, path
 
-    def test_campaign_002_workbook_cta_is_a_light_high_contrast_box_not_dark_on_dark(self, client):
-        """2026-08-07 (second correction): the CTA on /campaign/002 previously
-        used a dark teal gradient (#1a4040/#0d2b2b) on the page's #1a1a1a
-        background -- effectively invisible. Kahu Phil could not find it on
-        the live site despite it being present in the HTML. Fixed by matching
-        the article page's already-proven light box (#eef2f0) treatment."""
-        resp = client.get("/campaign/002", base_url=BASE)
-        html = resp.get_data(as_text=True)
-        assert "#1a4040" not in html
-        assert "#0d2b2b" not in html
-        assert "#eef2f0" in html
+    def test_withdrawn_workbook_downloads_return_404(self, client):
+        for asset in ("campaign_002_planning_document_workbook_pdf_v5",
+                      "campaign_002_planning_document_workbook_pdf_v9",
+                      "campaign_003_planning_document_workbook_pdf_v1"):
+            assert client.get(f"/media/{asset}", base_url=BASE).status_code == 404, asset
+            assert client.get(f"/publishing-media/{asset}/anything", base_url=BASE).status_code == 404, asset
+
+    def test_withdrawn_workbook_files_are_kept_so_they_can_go_back_up(self):
+        import config
+        for name in ("campaign_002_planning_document_workbook_pdf_v9.pdf", "campaign_003_planning_document_workbook_pdf_v1.pdf"):
+            assert (config.PUBLISHING_MEDIA_DIR / name).is_file(), name
 
 
 class TestFirstPersonTeachingVoice:

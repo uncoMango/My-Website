@@ -25,6 +25,16 @@ from publishing_media_tokens import generate_publishing_media_token, validate_pu
 
 publishing_media_bp = Blueprint("publishing_media", __name__)
 
+# 2026-10-22, Kahu Phil: the Campaign 002 and 003 free workbook downloads are taken down until he has
+# read the new versions. The files stay in publishing_media/ and in the manifest so they can go back up:
+# remove an id from this set (and restore workbook_cta in content.py) to put one back. Checked on both
+# the evergreen link and the signed link, so an old signed URL stops working too.
+WITHDRAWN_MEDIA_IDS = frozenset({
+    "campaign_002_planning_document_workbook_pdf_v5",
+    "campaign_002_planning_document_workbook_pdf_v9",
+    "campaign_003_planning_document_workbook_pdf_v1",
+})
+
 
 def _load_manifest():
     if not PUBLISHING_MEDIA_MANIFEST_FILE.exists():
@@ -37,6 +47,8 @@ def _load_manifest():
 
 @publishing_media_bp.route("/publishing-media/<asset_id>/<token>")
 def serve_publishing_media(asset_id, token):
+    if asset_id in WITHDRAWN_MEDIA_IDS:
+        abort(404)
     ok, reason = validate_publishing_media_token(asset_id, token)
     if not ok:
         # Same fail-closed convention as /download/product/<id>/<token>:
@@ -73,6 +85,8 @@ def evergreen_media_link(safe_asset_id):
     after TOKEN_MAX_AGE_SECONDS (14 days). Buffer/platform fetches keep
     using the directly-minted, short-lived URL from publish_media.py --
     this route exists only for assets meant to stay public indefinitely."""
+    if safe_asset_id in WITHDRAWN_MEDIA_IDS:
+        abort(404)
     manifest = _load_manifest()
     if safe_asset_id not in manifest:
         abort(404)

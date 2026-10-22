@@ -323,7 +323,6 @@ _SEO_PAGES = {
             "This article accompanies the video [The Storm Did Not Rot the Post — It Revealed It](/campaign/003). For the broader teaching this builds on, see [Find the Cause, Not the Symptoms](/rotten-fencepost/find-the-cause-not-the-symptoms) and [Why Do I Keep Starting Over?](/rotten-fencepost/why-do-i-keep-starting-over). For the full teaching library, visit the [Rotten Fencepost hub](/rotten-fencepost).\n\n"
             "---\n\n"
             "[**Watch the video →**](/campaign/003)\n\n"
-            "[**Download the free companion workbook (PDF) →**](/media/campaign_003_planning_document_workbook_pdf_v1)\n\n"
             "[**Explore the Rotten Fencepost Principle →**](/rotten-fencepost)"
         ),
     },
@@ -358,12 +357,6 @@ _SEO_PAGES = {
             "This article accompanies the video [Why Do I Keep Starting Over?](/campaign/002). For the broader teaching this builds on, see [Find the Cause, Not the Symptoms](/rotten-fencepost/find-the-cause-not-the-symptoms). For the full teaching library, visit the [Rotten Fencepost hub](/rotten-fencepost).\n\n"
             "---\n\n"
             "[**Watch the video →**](/campaign/002)\n\n"
-            "<div style=\"background: #eef2f0; border: 2px solid #5f9ea0; border-radius: 12px; padding: 2rem; margin: 2rem 0; text-align: center;\">"
-            "<div style=\"font-size: 0.8rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #3d7a7c; margin-bottom: 0.5rem;\">Free Companion Workbook</div>"
-            "<h3 style=\"margin: 0 0 0.75rem 0; color: #2c3e50;\">Why Do I Keep Starting Over?</h3>"
-            "<p style=\"margin: 0 0 1.5rem 0; color: #2c3e50;\">A short workbook to help you apply this teaching to your own life — find the fence post that's actually rotting, not just the wire.</p>"
-            "<a href=\"/media/campaign_002_planning_document_workbook_pdf_v9\" style=\"display: inline-block; padding: 0.9rem 2.5rem; background: linear-gradient(135deg, #d4af37, #b8960c); color: #1a1a1a; text-decoration: none; border-radius: 8px; font-weight: 900;\">Download the Free Workbook</a>"
-            "</div>\n\n"
             "[**Explore the Rotten Fencepost Principle →**](/rotten-fencepost)"
         ),
     },
