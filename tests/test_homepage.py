@@ -136,3 +136,11 @@ def test_kahu_still_requires_login(client):
     """Homepage changes must not have touched admin auth."""
     resp = client.get("/kahu")
     assert resp.status_code in (302, 401, 403)
+
+
+def test_homepage_hero_text_and_buttons_are_centered(client):
+    """2026-10-22, Kahu Phil: the hero stack (heading, line under it, name, tagline, two buttons) sits in the middle of the page."""
+    html = client.get("/", base_url="https://keaupuniakeakua.faith").get_data(as_text=True)
+    assert ".home-hero-content { text-align: center; }" in html
+    assert ".home-hero-content h1, .home-hero-sub, .home-hero-identity { margin-left: auto; margin-right: auto; }" in html
+    assert ".home-hero-ctas { justify-content: center; }" in html

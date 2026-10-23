@@ -192,6 +192,11 @@ body {
 .home-hero-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(201,168,66,0.5); }
 .home-hero-btn-secondary { background: rgba(255,255,255,0.12); color: #ffffff; border: 2px solid rgba(255,255,255,0.75); }
 .home-hero-btn-secondary:hover { background: rgba(255,255,255,0.22); transform: translateY(-2px); }
+/* 2026-10-22, Kahu Phil: the homepage hero stack (heading, line under it, Ke Aupuni O Ke Akua, the tagline and the two
+   buttons) is centered in the middle of the page. Nothing else about it changes. */
+.home-hero-content { text-align: center; }
+.home-hero-content h1, .home-hero-sub, .home-hero-identity { margin-left: auto; margin-right: auto; }
+.home-hero-ctas { justify-content: center; }
 @media (max-width: 560px) {
     .home-hero-ctas { flex-direction: column; }
     .home-hero-btn { width: 100%; white-space: normal; }
