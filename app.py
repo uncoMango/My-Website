@@ -10,6 +10,8 @@ from blueprints.payments import payments_bp
 from blueprints.admin import admin_bp
 from blueprints.publishing_media import publishing_media_bp
 from blueprints.pinterest import pinterest_bp
+from blueprints.shelf import shelf_bp
+from blueprints.package import package_bp
 from limiter import limiter
 
 app = Flask(__name__)
@@ -51,6 +53,8 @@ app.register_blueprint(payments_bp)
 app.register_blueprint(admin_bp)
 app.register_blueprint(publishing_media_bp)
 app.register_blueprint(pinterest_bp)
+app.register_blueprint(shelf_bp)
+app.register_blueprint(package_bp)
 app.register_blueprint(pages_bp)
 
 

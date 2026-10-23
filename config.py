@@ -87,6 +87,11 @@ ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 # than falling back to an unsigned or shared secret.
 DOWNLOAD_TOKEN_SECRET = os.environ.get("DOWNLOAD_TOKEN_SECRET", "")
 
+# ----- BUYER'S SHELF (2026-10-23) -----
+# The password the Foreman sends when it adds a chapter, workbook or video to every buyer's shelf
+# (/api/shelf/...). Unset = that door stays shut (503); buyers still see everything already on the shelf.
+SHELF_ADMIN_KEY = os.environ.get("SHELF_ADMIN_KEY", "")
+
 # ----- SESSIONS -----
 # Signs the admin login session cookie. Required for /kahu auth to work.
 FLASK_SECRET_KEY = os.environ.get("FLASK_SECRET_KEY", "")

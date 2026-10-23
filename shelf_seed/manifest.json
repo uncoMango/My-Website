@@ -1,0 +1,120 @@
+{
+ "items": [
+  {
+   "id": "chapter-01",
+   "kind": "chapter",
+   "title": "Chapter 1: The Clock That Was Never There",
+   "file": "chapter-01.pdf",
+   "order": 10,
+   "added": "2026-10-23"
+  },
+  {
+   "id": "guide-find-the-cause",
+   "kind": "guide",
+   "title": "Find the Cause, Not the Symptoms",
+   "subtitle": "A Rotten Fencepost Foundational Guide",
+   "product": "prod_find_the_cause_not_the_symptoms",
+   "order": 20,
+   "added": "2026-10-23"
+  },
+  {
+   "id": "guide-field-guide",
+   "kind": "guide",
+   "title": "The Rotten Fencepost Field Guide",
+   "subtitle": "The 3 questions, the 7-day practice and a worksheet",
+   "product": "rotten_fencepost_field_guide",
+   "order": 21,
+   "added": "2026-10-23"
+  },
+  {
+   "id": "video-001",
+   "kind": "video",
+   "title": "The video",
+   "label": "Watch the video",
+   "campaign": "001",
+   "url": "/campaign/001",
+   "order": 101,
+   "added": "2026-10-23"
+  },
+  {
+   "id": "workbook-001",
+   "kind": "workbook",
+   "title": "The workbook for this video",
+   "campaign": "001",
+   "file": "workbooks/campaign-001-workbook.pdf",
+   "order": 201,
+   "added": "2026-10-23"
+  },
+  {
+   "id": "video-002",
+   "kind": "video",
+   "title": "The video",
+   "label": "Watch the video",
+   "campaign": "002",
+   "url": "/campaign/002",
+   "order": 102,
+   "added": "2026-10-23"
+  },
+  {
+   "id": "workbook-002",
+   "kind": "workbook",
+   "title": "The workbook for this video",
+   "campaign": "002",
+   "file": "workbooks/campaign-002-workbook.pdf",
+   "order": 202,
+   "added": "2026-10-23"
+  },
+  {
+   "id": "video-003",
+   "kind": "video",
+   "title": "The video",
+   "label": "Watch the video",
+   "campaign": "003",
+   "url": "/campaign/003",
+   "order": 103,
+   "added": "2026-10-23"
+  },
+  {
+   "id": "workbook-003",
+   "kind": "workbook",
+   "title": "The workbook for this video",
+   "campaign": "003",
+   "file": "workbooks/campaign-003-workbook.pdf",
+   "order": 203,
+   "added": "2026-10-23"
+  },
+  {
+   "id": "video-004",
+   "kind": "video",
+   "title": "The video",
+   "label": "Watch the video",
+   "campaign": "004",
+   "url": "/campaign/004",
+   "order": 104,
+   "added": "2026-10-23"
+  },
+  {
+   "id": "workbook-004",
+   "kind": "workbook",
+   "title": "The workbook for this video",
+   "campaign": "004",
+   "file": "workbooks/campaign-004-workbook.pdf",
+   "order": 204,
+   "added": "2026-10-23"
+  },
+  {
+   "id": "introduction",
+   "kind": "intro",
+   "title": "Smoke Is Not the Fire (the Introduction)",
+   "campaign": [
+    "001",
+    "002",
+    "003",
+    "004"
+   ],
+   "file": "introduction.pdf",
+   "order": 300,
+   "added": "2026-10-23"
+  }
+ ]
+}

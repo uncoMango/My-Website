@@ -23,6 +23,7 @@ from flask import Blueprint, abort, make_response, redirect, render_template, re
 from content import load_digital_products, save_digital_products, get_product_by_id
 from download_tokens import generate_download_token
 import sale_alerts
+import shelf
 from config import (
     PAYPAL_CLIENT_ID,
     PAYPAL_CLIENT_SECRET,
@@ -84,6 +85,17 @@ def _render_success_template(product, order_id, download_url):
     )
 
 
+def _delivery_url(product, order_id, buyer_email="", buyer_name=""):
+    """Where this buyer gets what they paid for. A shelf product (the Rotten Fencepost Package) delivers to the
+    buyer's own private shelf page, which never expires; everything else delivers one file through a signed,
+    14-day download link. None when the signing secret is not set (the caller already handles that)."""
+    if product.get("delivery") == "shelf":
+        shelf.record_buyer(order_id, buyer_email, buyer_name, product["id"])
+        return shelf.shelf_path(order_id)
+    token = generate_download_token(product["id"], order_id)
+    return f"/download/product/{product['id']}/{token}" if token else None
+
+
 def _render_payment_success(product, order_id, buyer_email=""):
     """PayPal's own success path (single caller -- there is no PayPal
     webhook, so no idempotency concern here): mints one token, emails
@@ -92,8 +104,7 @@ def _render_payment_success(product, order_id, buyer_email=""):
     its two real callers (the browser and the webhook)."""
     if product.get("category") == "partnership":
         return _render_success_template(product, order_id, None)
-    token = generate_download_token(product["id"], order_id)
-    download_url = f"/download/product/{product['id']}/{token}" if token else None
+    download_url = _delivery_url(product, order_id, buyer_email)
     if download_url:
         # Hurricane Readiness work order (2026-08-21): the on-screen link
         # was the customer's only copy -- if they lost this tab or the
@@ -175,6 +186,10 @@ def _delivery_ready(product, download_url):
         return True, ""
     if not download_url:
         return False, "the download signing secret is not set on the website"
+    if product.get("delivery") == "shelf":
+        if not shelf.item_count():
+            return False, "the buyer's shelf is empty on the website"
+        return True, ""
     path = product.get("file_path") or ""
     if not path or not os.path.isfile(path) or os.path.getsize(path) == 0:
         return False, "the product file is missing on the website"
@@ -228,8 +243,7 @@ def _fulfill_stripe_purchase(product, session_id, buyer_name="", buyer_email="")
 
     download_url = None
     if product.get("category") != "partnership":
-        token = generate_download_token(product["id"], session_id)
-        download_url = f"/download/product/{product['id']}/{token}" if token else None
+        download_url = _delivery_url(product, session_id, buyer_email, buyer_name)
 
     if already_done:
         return download_url
@@ -263,15 +277,26 @@ def _send_customer_confirmation(buyer_email, product, download_url, order_id):
     if not (SMTP_HOST and SMTP_USER and SMTP_PASS and buyer_email):
         return
     try:
-        msg = MIMEText(
-            f"Mahalo for your purchase of {product['name']}!\n\n"
-            f"Your download link:\n{SITE_DOMAIN}{download_url}\n\n"
-            f"This link is valid for 14 days and up to 5 downloads. If you have any "
-            f"trouble at all, contact {CONTACT_EMAIL} with the Order ID below and we "
-            f"will make sure you get your file.\n\n"
-            f"Order ID: {order_id}\n"
-        )
-        msg["Subject"] = f"Your download: {product['name']}"
+        if product.get("delivery") == "shelf":
+            msg = MIMEText(
+                f"Mahalo for joining {product['name']}!\n\n"
+                f"Your private shelf:\n{SITE_DOMAIN}{download_url}\n\n"
+                f"Keep this email. The link is yours, it does not expire, and anything new added to the "
+                f"package appears on your shelf. If you have any trouble at all, contact {CONTACT_EMAIL} "
+                f"with the Order ID below and we will make sure you get in.\n\n"
+                f"Order ID: {order_id}\n"
+            )
+            msg["Subject"] = f"Your shelf: {product['name']}"
+        else:
+            msg = MIMEText(
+                f"Mahalo for your purchase of {product['name']}!\n\n"
+                f"Your download link:\n{SITE_DOMAIN}{download_url}\n\n"
+                f"This link is valid for 14 days and up to 5 downloads. If you have any "
+                f"trouble at all, contact {CONTACT_EMAIL} with the Order ID below and we "
+                f"will make sure you get your file.\n\n"
+                f"Order ID: {order_id}\n"
+            )
+            msg["Subject"] = f"Your download: {product['name']}"
         msg["From"] = SMTP_USER
         msg["To"] = buyer_email
         with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
@@ -389,8 +414,7 @@ def paypal_success():
         save_digital_products(products_data)
 
         _send_sale_notification(product["name"], float(product["price"]), order_id, buyer_name, buyer_email)
-        token = generate_download_token(product["id"], order_id)
-        url = f"/download/product/{product['id']}/{token}" if token else None
+        url = _delivery_url(product, order_id, buyer_email, buyer_name)
         ready, why = _delivery_ready(product, url)
         sale_alerts.sale(product["name"], float(product["price"]), "PayPal", order_id, ready, why)
 
@@ -596,6 +620,12 @@ def health_sales():
     products = []
     problems = []
     for p in load_digital_products()["products"]:
+        if p.get("active", True) and p.get("delivery") == "shelf" and float(p.get("price", 0)) > 0:
+            shelf_ok = shelf.item_count() > 0
+            products.append({"id": p["id"], "price": p["price"], "file_ok": shelf_ok})
+            if not shelf_ok:
+                problems.append(f"{p['id']}: the buyer's shelf is empty")
+            continue
         if not p.get("active", True) or not p.get("file_path") or float(p.get("price", 0)) <= 0:
             continue
         path = p["file_path"]

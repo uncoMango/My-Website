@@ -105,6 +105,27 @@
       "total_sales": 0
     },
     {
+      "id": "prod_wyk_package",
+      "name": "What Your Body Forgot: The Rotten Fencepost Package",
+      "subtitle": "The Rotten Fencepost Package",
+      "author": "Kahu Phil Stephens",
+      "publisher": "Rotten Fencepost Publishing",
+      "series": "Rotten Fencepost",
+      "seo_title": "What Your Body Forgot: The Rotten Fencepost Package | Ke Aupuni O Ke Akua",
+      "meta_description": "Why diets fail, and what a Paniolo learned about eating the way God made you.",
+      "description": "Why diets fail, and what a Paniolo learned about eating the way God made you.",
+      "price": 47.00,
+      "category": "package",
+      "delivery": "shelf",
+      "page_url": "/what-your-body-forgot",
+      "filename": "",
+      "file_path": "",
+      "cover_image": "",
+      "active": true,
+      "downloads": 0,
+      "total_sales": 0
+    },
+    {
       "id": "partner_tier1",
       "name": "Aloha Partner",
       "description": "Monthly Kingdom newsletter, access to free digital booklets, prayer support from Kahu Phil, and your name listed on the Partner Wall of Aloha.",

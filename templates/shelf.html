@@ -1,0 +1,62 @@
+{# templates/shelf.html -- one buyer's private shelf. Built by shelf.build_shelf(); every link on it is already signed for this buyer. #}
+{% extends "base.html" %}
+{% block title %}Your Shelf | {{ product.name or "The Rotten Fencepost Package" }}{% endblock %}
+{% block meta_description %}Your private shelf for The Rotten Fencepost Package.{% endblock %}
+{% block extra_head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block extra_styles %}
+.shelf h2 { font-size: 1.7rem; color: #c9a842; margin: 3rem 0 1rem; text-align: center; }
+.shelf h3 { font-size: 1.3rem; color: white; margin: 0 0 0.25rem; }
+.shelf-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+.shelf-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 1.5rem; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.shelf-row:last-child { border-bottom: 0; }
+.shelf-row .t { flex: 1 1 260px; font-size: 1.05rem; color: #e8e8e8; line-height: 1.5; }
+.shelf-row .s { display: block; font-size: 0.9rem; color: #aaa; font-style: italic; }
+.shelf-btn { display: inline-block; padding: 0.6rem 1.25rem; border-radius: 8px; background: linear-gradient(135deg, #c9a842, #9a7a1a); color: #1a1a1a; text-decoration: none; font-weight: 800; font-size: 0.95rem; }
+.shelf-soon { font-size: 0.9rem; color: #888; }
+{% endblock %}
+{% macro row(v) %}
+<div class="shelf-row">
+    <div class="t">{{ v.title }}{% if v.subtitle %}<span class="s">{{ v.subtitle }}</span>{% endif %}</div>
+    {% if v.link %}<a class="shelf-btn" href="{{ v.link }}"{% if v.external %} target="_blank" rel="noopener"{% endif %}>{{ v.label }}</a>{% else %}<span class="shelf-soon">Not available just now</span>{% endif %}
+</div>
+{% endmacro %}
+{% block content %}
+
+<div style="background: #1a1a1a; color: white; padding: 240px 2rem 4rem;">
+    <div class="shelf" style="max-width: 760px; margin: 0 auto;">
+
+        <h1 style="font-size: 2.4rem; font-weight: 800; color: white; text-align: center; margin-bottom: 0.5rem;">Your Shelf</h1>
+        <p style="text-align: center; font-size: 1.15rem; color: #c9a842; margin-bottom: 0.5rem;">What Your Body Forgot: The Rotten Fencepost Package</p>
+        <p style="text-align: center; font-size: 0.95rem; color: #aaa; margin-bottom: 1rem;">Keep this page's address. It is yours and it does not expire. New chapters appear here.</p>
+
+        {% if shelf.book %}
+        <h2>The Book</h2>
+        <div class="shelf-card">{% for v in shelf.book %}{{ row(v) }}{% endfor %}</div>
+        {% endif %}
+
+        {% if shelf.guides %}
+        <h2>Guides</h2>
+        <div class="shelf-card">{% for v in shelf.guides %}{{ row(v) }}{% endfor %}</div>
+        {% endif %}
+
+        {% if shelf.groups %}
+        <h2>The Videos, in Order</h2>
+        {% for g in shelf.groups %}
+        <div class="shelf-card">
+            <h3>Video {{ g.id }}{% if g.title %}: {{ g.title }}{% endif %}</h3>
+            {% if g.video %}{{ row(g.video) }}{% elif g.page %}<div class="shelf-row"><div class="t">The video and everything from it</div><a class="shelf-btn" href="{{ g.page }}">Watch the video</a></div>{% endif %}
+            {% for v in g.rows %}{{ row(v) }}{% endfor %}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        {% if shelf.more %}
+        <h2>More</h2>
+        <div class="shelf-card">{% for v in shelf.more %}{{ row(v) }}{% endfor %}</div>
+        {% endif %}
+
+        <p style="text-align: center; font-size: 0.95rem; color: #888; margin-top: 3rem;">Trouble with anything here? Write to kahuphil@keaupuni.faith.</p>
+    </div>
+</div>
+
+{% endblock %}

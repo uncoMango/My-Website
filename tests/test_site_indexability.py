@@ -34,6 +34,9 @@ AFFECTED_PATHS = [
 # independently indexable and therefore must be represented in the sitemap.
 INTENTIONALLY_NON_INDEXABLE_PRODUCTS = {
     "rotten_fencepost_field_guide",
+    # The Rotten Fencepost Package has its own page (/what-your-body-forgot, listed below);
+    # /product/prod_wyk_package only redirects there.
+    "prod_wyk_package",
     "partner_tier1",
     "partner_tier2",
     "partner_tier3",
@@ -50,6 +53,8 @@ INDEXABLE_BESPOKE_PATHS = {
     "/partner",
     "/products",
     "/rotten-fencepost",
+    "/what-your-body-forgot",
+    "/smoke-is-not-the-fire",
     "/wellness",
     "/kingdom",
     "/wealth",

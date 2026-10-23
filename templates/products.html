@@ -20,13 +20,13 @@
             {% for product in products %}
             <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;">
                 {% if product.cover_image %}
-                <a href="/product/{{ product.id }}">
+                <a href="{{ product.page_url or ('/product/' ~ product.id) }}">
                     <img src="{{ product.cover_image }}" alt="{{ product.name }}" style="width: 100%; display: block;">
                 </a>
                 {% endif %}
                 <div style="padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1;">
                     <h3 style="color: #c9a842; font-size: 1.2rem; margin-bottom: 0.5rem;">
-                        <a href="/product/{{ product.id }}" style="color: #c9a842; text-decoration: none;">{{ product.name }}</a>
+                        <a href="{{ product.page_url or ('/product/' ~ product.id) }}" style="color: #c9a842; text-decoration: none;">{{ product.name }}</a>
                     </h3>
                     {% if product.subtitle %}
                     <p style="font-size: 0.95rem; font-style: italic; color: #ccc; margin-bottom: 0.75rem;">{{ product.subtitle }}</p>
@@ -34,7 +34,7 @@
                     <p style="font-size: 0.95rem; color: #ddd; line-height: 1.6; margin-bottom: 1.5rem; flex-grow: 1;">{{ (product.description or "")[:140] }}{% if (product.description or "")|length > 140 %}&hellip;{% endif %}</p>
                     <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
                         <span style="font-size: 1.3rem; font-weight: 800; color: white;">${{ "%.2f"|format(product.price) }}</span>
-                        <a href="/product/{{ product.id }}" class="buy-button" style="padding: 0.6rem 1.25rem; font-size: 0.95rem;">View</a>
+                        <a href="{{ product.page_url or ('/product/' ~ product.id) }}" class="buy-button" style="padding: 0.6rem 1.25rem; font-size: 0.95rem;">View</a>
                     </div>
                 </div>
             </div>

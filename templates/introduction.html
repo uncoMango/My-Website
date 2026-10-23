@@ -1,0 +1,67 @@
+{# templates/introduction.html -- the free Introduction, "Smoke Is Not the Fire". The Introduction text is
+   content_text/smoke_is_not_the_fire.json, one paragraph per entry, unchanged from the master manuscript. #}
+{% extends "base.html" %}
+{% block title %}Smoke Is Not the Fire: The free Introduction to What Your Body Forgot | Ke Aupuni O Ke Akua{% endblock %}
+{% block meta_description %}Read the whole Introduction here, free. No sign-up needed.{% endblock %}
+{% block og_image %}{{ request.url_root.rstrip('/') }}/static/images/diana-sanders-c24miY2R0FI-unsplash.jpg{% endblock %}
+{% block extra_styles %}
+.intro-text p { font-size: 1.15rem; line-height: 1.9; color: #e8e8e8; margin-bottom: 1.1rem; }
+.intro-after h2 { font-size: 1.6rem; color: #c9a842; margin: 0 0 0.75rem; text-align: center; }
+.intro-after p { font-size: 1.1rem; line-height: 1.8; color: #e0e0e0; text-align: center; margin-bottom: 1rem; }
+.intro-after a { color: #c9a842; }
+.intro-signup { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin-top: 1rem; }
+.intro-signup input[type=email] { flex: 1 1 260px; max-width: 360px; padding: 0.85rem 1rem; border-radius: 8px; border: 1px solid #c9a842; background: #2a2a2a; color: white; font-size: 1rem; font-family: inherit; }
+.intro-signup button { padding: 0.85rem 1.75rem; border-radius: 8px; border: 0; background: linear-gradient(135deg, #c9a842, #9a7a1a); color: #1a1a1a; font-weight: 800; font-size: 1rem; cursor: pointer; font-family: inherit; }
+.intro-trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+{% endblock %}
+{% block content %}
+
+<div class="hero" style="background-image: url('/static/images/diana-sanders-c24miY2R0FI-unsplash.jpg'); height: 70vh;">
+    <div class="hero-overlay"></div>
+    <div class="hero-content" style="text-align: center; width: 100%;">
+        <h1 style="display: block; font-size: 2.8rem; font-weight: 800; color: white; text-shadow: 3px 3px 8px rgba(0,0,0,0.9); margin-bottom: 0.75rem; line-height: 1.2;">Smoke Is Not the Fire</h1>
+        <p style="font-size: 1.3rem; font-style: italic; color: white; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">The free Introduction to <em>What Your Body Forgot</em></p>
+    </div>
+</div>
+
+<div style="background: #1a1a1a; color: white; padding: 3rem 2rem 4rem;">
+    <div style="max-width: 720px; margin: 0 auto;">
+
+        <p style="font-size: 1.2rem; line-height: 1.8; text-align: center; margin-bottom: 2.5rem; color: #c9a842;">Read the whole Introduction here, free. No sign-up needed.</p>
+
+        <div class="intro-text">
+            {% for paragraph in paragraphs %}<p>{{ paragraph }}</p>
+            {% endfor %}
+        </div>
+
+        <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.15); margin: 3rem 0;">
+
+        <div class="intro-after">
+            <h2>Want a copy to keep?</h2>
+            <p style="margin-bottom: 2rem;">
+                <a href="/smoke-is-not-the-fire/download" class="buy-button" style="background: linear-gradient(135deg, #c9a842, #9a7a1a); padding: 0.9rem 2rem; color: #1a1a1a;">Download the Introduction (PDF)</a>
+            </p>
+
+            <h2 id="keep-me-posted" style="margin-top: 2.5rem;">Want to hear when new chapters come out?</h2>
+            <p>Leave your email.</p>
+            {% if saved %}
+            <p style="color: #c9a842; font-weight: 700;">Mahalo. Your email is saved.</p>
+            {% else %}
+            <form class="intro-signup" action="/smoke-is-not-the-fire/keep-me-posted" method="POST">
+                <input type="email" name="email" placeholder="Your email" aria-label="Your email" required autocomplete="email">
+                <div class="intro-trap" aria-hidden="true"><label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+                <button type="submit">Keep Me Posted</button>
+            </form>
+            {% endif %}
+
+            <h2 style="margin-top: 3rem;">Ready for the rest?</h2>
+            <p>Chapter 1, <em>The Clock That Was Never There</em>, is waiting in the Rotten Fencepost Package, along with the <em>Find the Cause</em> guide, the Field Guide and four workbooks. Founding readers: $47.</p>
+            <p>
+                <a href="/what-your-body-forgot" class="buy-button" style="background: linear-gradient(135deg, #c9a842, #9a7a1a); padding: 0.9rem 2rem; color: #1a1a1a;">See the Package</a>
+            </p>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

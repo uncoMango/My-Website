@@ -349,6 +349,11 @@ SHEET_EVENT_SIGNUP = "Website Signup"
 SHEET_EVENT_UNSUBSCRIBED = "Unsubscribed"
 SHEET_EVENT_DAY3_SENT = "Day3 Sent"
 SHEET_EVENT_DAY7_SENT = "Day7 Sent"
+# People who leave their email on the free Introduction page ("Keep Me Posted"). Their own label, so a rebuild
+# from the Sheet can never mistake them for footer signups and start the day-3 / day-7 emails for them:
+# nothing is ever sent to these people by the website (the Foreman writes to them, if and when it does).
+SHEET_EVENT_INTRO_SIGNUP = "Introduction Signup"
+SOURCE_INTRO = "introduction_signup"
 
 
 def _open_sheet():
@@ -414,8 +419,9 @@ def _read_sheet_state():
         email = raw_email.strip().lower()
         if not email or "@" not in email:
             continue
-        rec = state.setdefault(email, {"email": email, "first_name": name, "source": "footer_signup"})
-        if event_type == SHEET_EVENT_SIGNUP and "timestamp" not in rec:
+        first_source = SOURCE_INTRO if event_type == SHEET_EVENT_INTRO_SIGNUP else "footer_signup"
+        rec = state.setdefault(email, {"email": email, "first_name": name, "source": first_source})
+        if event_type in (SHEET_EVENT_SIGNUP, SHEET_EVENT_INTRO_SIGNUP) and "timestamp" not in rec:
             rec["timestamp"] = timestamp
         elif event_type == SHEET_EVENT_UNSUBSCRIBED:
             rec["unsubscribed"] = True
@@ -501,6 +507,22 @@ def subscribe():
         print(f"[followup] Scheduled day-3 and day-7 emails for {email}", flush=True)
 
     return redirect(f"/thank-you?name={quote(first_name)}")
+
+
+def save_introduction_signup(email):
+    """Saves an email from the free Introduction page to the same lead list (local file + the durable Sheet) and tells
+    the owner. Sends NOTHING to the person and schedules NOTHING (no welcome, no day-3, no day-7). Returns True if the
+    address was new."""
+    subscribers = _load_subscribers()
+    if _find_subscriber(subscribers, email):
+        return False
+    now = datetime.now(timezone.utc)
+    subscribers.append({"first_name": "", "email": email, "source": SOURCE_INTRO, "timestamp": now.isoformat()})
+    _save_subscribers(subscribers)
+    print(f"[subscribe] Introduction signup saved — {len(subscribers)} total subscriber(s)", flush=True)
+    _append_sheet_event("", email, SHEET_EVENT_INTRO_SIGNUP, now.isoformat())
+    _notify_new_subscriber(email)
+    return True
 
 
 @downloads_bp.route("/unsubscribe/<token>")

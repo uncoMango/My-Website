@@ -72,7 +72,7 @@
     <div class="product-summary">
         <div>
             <div class="product-name">{{ product.name }}</div>
-            <div class="product-type">{% if product.category == 'partnership' %}Ministry Partnership{% else %}Digital Ebook – Instant Download{% endif %}</div>
+            <div class="product-type">{% if product.category == 'partnership' %}Ministry Partnership{% elif product.delivery == 'shelf' %}{{ product.subtitle }}{% else %}Digital Ebook – Instant Download{% endif %}</div>
         </div>
         <div class="product-price">${{ "%.2f"|format(product.price) }}</div>
     </div>
@@ -81,6 +81,10 @@
         {% if product.category == 'partnership' %}
         <li>Your gift supports Kingdom teaching and ministry work</li>
         <li>Confirmation sent to your email</li>
+        <li>From Kahu Phil Stephens, Molokaʻi</li>
+        {% elif product.delivery == 'shelf' %}
+        <li>Instant access. Your shelf link appears right after you pay, and comes to your email too.</li>
+        <li>Read on any device – phone, tablet, computer</li>
         <li>From Kahu Phil Stephens, Molokaʻi</li>
         {% else %}
         <li>Instant digital download after payment</li>
@@ -94,9 +98,11 @@
     <!-- STRIPE - Preferred Option -->
     <div class="stripe-section">
         <div class="stripe-section-label">Recommended</div>
+        {% if product.delivery != 'shelf' %}
         <div class="stripe-section-msg">
             Join our Wellness Community! Use Credit/Debit below to receive automatic email updates.
         </div>
+        {% endif %}
         <form action="/stripe/create-session/{{ product.id }}" method="POST">
             <button type="submit" class="stripe-btn">Pay with Credit / Debit Card</button>
         </form>

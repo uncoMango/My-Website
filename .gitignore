@@ -8,3 +8,5 @@ __pycache__/
 
 # runtime record of which sales already sent a phone message
 sale_alerts_sent.json
+
+shelf_live/

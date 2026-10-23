@@ -37,6 +37,14 @@ def _isolate_subscribers(tmp_path, monkeypatch):
 
 
 @pytest.fixture(autouse=True)
+def _isolate_shelf_live_files(tmp_path, monkeypatch):
+    """The buyer's shelf keeps what the Foreman adds, and the list of buyers, in shelf.LIVE_DIR (on the
+    persistent disk on Render). Every test gets its own empty one, so no test touches real shelf data."""
+    import shelf
+    monkeypatch.setattr(shelf, "LIVE_DIR", tmp_path / "shelf_live")
+
+
+@pytest.fixture(autouse=True)
 def _isolate_admin_content(tmp_path, monkeypatch):
     """Same reasoning again: content.py's DATA_FILE (admin_content_overrides.json,
     2026-09-27) is a real file on disk once save_content() actually writes --

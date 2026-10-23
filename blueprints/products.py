@@ -51,7 +51,7 @@ def products_list():
         name="Products | Ke Aupuni O Ke Akua",
         description="Browse books and resources from Rotten Fencepost Publishing.",
         url=SITE_URL + request.path,
-        items=[(p.get("name"), SITE_URL + "/product/" + p["id"]) for p in products],
+        items=[(p.get("name"), SITE_URL + (p.get("page_url") or "/product/" + p["id"])) for p in products],
     )
     return render_template(
         "products.html",
@@ -73,6 +73,9 @@ def product_page(product_id):
     product = get_product_by_id(product_id)
     if not product or not product.get("active", True):
         abort(404)
+    if product.get("page_url"):
+        # This product has its own sales page (for example the Rotten Fencepost Package): one address only.
+        return redirect(product["page_url"], code=301)
     page_url = SITE_URL + request.path
     product_schema = None
     breadcrumb_schema = None
