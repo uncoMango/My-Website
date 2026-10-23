@@ -182,6 +182,14 @@ def test_keep_me_posted_saves_the_email_and_sends_nothing_to_the_person(client, 
     assert "Mahalo. Your email is saved." in client.get("/smoke-is-not-the-fire?saved=1").get_data(as_text=True)
 
 
+def test_the_hidden_trap_field_shows_no_words_to_any_reader_but_still_catches_bots(client):
+    html = client.get("/smoke-is-not-the-fire").get_data(as_text=True)
+    assert "Leave this empty" not in html and "Leave this empty" not in _text(html)
+    assert 'name="website"' in html and 'class="intro-trap" aria-hidden="true"' in html
+    client.post("/smoke-is-not-the-fire/keep-me-posted", data={"email": "bot@example.com", "website": "x"}, headers={"User-Agent": "Mozilla/5.0"})
+    assert downloads_module._load_subscribers() == []
+
+
 def test_keep_me_posted_has_the_same_spam_guards_as_the_other_forms(client):
     ua = {"User-Agent": "Mozilla/5.0"}
     client.post("/smoke-is-not-the-fire/keep-me-posted", data={"email": "bot@example.com", "website": "http://spam"}, headers=ua)
